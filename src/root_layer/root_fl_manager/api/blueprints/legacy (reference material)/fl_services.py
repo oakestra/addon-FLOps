@@ -41,6 +41,5 @@
 #             HTTPStatus.OK,
 #         )
 
-#     # TODO delegate_image_build_and_push()
 
 #     return {"message": "FL service has been properly prepared"}, HTTPStatus.OK

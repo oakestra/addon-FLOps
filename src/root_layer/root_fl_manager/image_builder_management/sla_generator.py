@@ -33,14 +33,19 @@ def generate_builder_sla(
                             ml_repo.url,
                             ROOT_FL_IMAGE_REGISTRY_URL,
                             service_id,
-                            mqtt.main.ROOT_MQTT_BROKER_URL,
+                            # TODO need to figure out a way to provide
+                            # non docker-compose member exclusive DNS name as IP.
+                            # mqtt.main.ROOT_MQTT_BROKER_URL,
+                            "192.178.168.44",
                             mqtt.main.ROOT_MQTT_BROKER_PORT,
                             builder_app_name,
                         ],
                         "memory": 2000,
                         "vcpus": 1,
                         "storage": 15000,
-                        "code": "ghcr.io/oakestra/plugins/flops/fl-client-env-builder:latest",
+                        # TODO CHANGE THIS once the proper image is no longer private !
+                        "code": "ghcr.io/malyuk-a/fl-client-env-builder:latest",
+                        # "code": "ghcr.io/oakestra/plugins/flops/fl-client-env-builder:latest",
                     }
                 ],
             }
