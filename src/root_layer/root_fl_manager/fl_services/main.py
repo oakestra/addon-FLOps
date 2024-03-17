@@ -25,8 +25,8 @@ def handle_new_fl_service(new_fl_service: Dict) -> None:
 
 
 def handle_builder_success(builder_success_msg: Dict) -> None:
-    origin_fl_service_id = builder_success_msg["service_id"]
-    image_name_with_tag = builder_success_msg["image_name_with_tag"]
+    # origin_fl_service_id = builder_success_msg["service_id"]
+    # image_name_with_tag = builder_success_msg["image_name_with_tag"]
     builder_app_name = builder_success_msg["builder_app_name"]
     undeploy_builder_app(builder_app_name)
     # TODO continue with further FL steps

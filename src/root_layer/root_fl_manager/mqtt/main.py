@@ -4,10 +4,9 @@ import time
 
 import paho.mqtt.client as paho_mqtt
 from api.common import GITHUB_PREFIX
-from fl_services.main import handle_new_fl_service, handle_builder_success, handle_builder_failed
-from utils.logging import logger
+from fl_services.main import handle_builder_failed, handle_builder_success, handle_new_fl_service
 from mqtt.enums import Topics
-
+from utils.logging import logger
 
 ROOT_MQTT_BROKER_URL = os.environ.get("ROOT_MQTT_BROKER_URL")
 ROOT_MQTT_BROKER_PORT = os.environ.get("ROOT_MQTT_BROKER_PORT")
@@ -45,13 +44,13 @@ def _on_new_message(client, userdata, message) -> None:
         case Topics.NEW_SERVICES.value:
             if data["virtualization"] == "ml-repo" and data["code"].startswith(GITHUB_PREFIX):
                 handle_new_fl_service(data)
-                
+
         case Topics.IMAGE_BUILDER_SUCCESS.value:
             handle_builder_success(data)
-            
+
         case Topics.IMAGE_BUILDER_FAILED.value:
             handle_builder_failed(data)
-            
+
         case _:
             logger.error(f"Message received for an unsupported topic '{topic}'")
 
