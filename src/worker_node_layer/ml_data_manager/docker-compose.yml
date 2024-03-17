@@ -1,0 +1,18 @@
+version: "3.3"
+
+services:
+
+  ml_data_manager:
+    image: ml_data_manager
+    build: .
+    hostname: ml_data_manager
+    container_name: ml_data_manager
+    expose:
+      - "11027"
+    ports:
+      - "11027:11027"
+    volumes:
+      - ml_data_volume:/ml_data_volume
+      
+volumes:
+  ml_data_volume:

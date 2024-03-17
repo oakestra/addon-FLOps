@@ -1,0 +1,56 @@
+version: "3.3"
+
+services:
+
+  root_fl_manager:
+    image: root_fl_manager
+    build: .
+    hostname: root_fl_manager
+    container_name: root_fl_manager
+    environment:
+      - ROOT_FL_MANAGER_PORT=5072
+      - ROOT_FL_IMAGE_REGISTRY_PORT=5073
+      - SYSTEM_MANAGER_IP=system_manager
+      - SYSTEM_MANAGER_PORT=10000
+      - ROOT_MQTT_BROKER_PORT=9027
+      - ROOT_MQTT_BROKER_URL=root_mqtt
+      - CAROOT=/etc/ssl
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ssl:/etc/ssl
+    expose:
+      - "5072"
+    ports:
+      - "5072:5072"
+    networks:
+      - root_orchestrator_default
+  
+  root_fl_image_registry:
+    image: registry:2.8.3
+    container_name: root_fl_image_registry
+    environment:
+      - REGISTRY_HTTP_ADDR=0.0.0.0:5073
+      - REGISTRY_HTTP_TLS_CERTIFICATE=/etc/ssl/registry.pem
+      - REGISTRY_HTTP_TLS_KEY=/etc/ssl/registry-key.pem
+    volumes:
+      - registry_data:/var/lib/registry
+      - ssl:/etc/ssl
+    expose:
+      - "5073"
+    ports:
+      - "5073:5073"
+    depends_on: [root_fl_manager]
+    networks:
+      - root_orchestrator_default
+
+volumes:
+  registry_data:
+  ssl:
+
+# To be able for the root-orchestrator (RO) compose services to reach the root fl services
+# an easy solution is to place the fl root services into the same docker network.
+# Otherwise the fl root services cannot be reached by the RO services.
+# https://stackoverflow.com/a/42114724
+networks:
+  root_orchestrator_default:
+    external: true
