@@ -8,7 +8,7 @@ from utils.types import SERVICE_ID, SLA
 
 def generate_builder_sla(
     ml_repo: MlRepo,
-    service_id: SERVICE_ID,
+    original_ml_service_id: SERVICE_ID,
 ) -> SLA:
 
     builder_app_name = f"{str(ml_repo.github_repo.id)[0]}{ml_repo.latest_commit_hash}"
@@ -19,7 +19,7 @@ def generate_builder_sla(
             "main.py",
             ml_repo.url,
             ROOT_FL_IMAGE_REGISTRY_URL,
-            service_id,
+            original_ml_service_id,
             # TODO need to figure out a way to provide
             # non docker-compose member exclusive DNS name as IP.
             # mqtt.main.ROOT_MQTT_BROKER_URL,

@@ -14,5 +14,9 @@ class BuilderAppDeletionException(Exception):
     pass
 
 
+class FLUIServiceDeploymentException(Exception):
+    pass
+
+
 class BuilderServiceDeploymentException(Exception):
     pass

@@ -12,13 +12,11 @@ from utils.logging import logger
 from utils.types import SERVICE_ID
 
 
-def delegate_image_build(service_id: SERVICE_ID, ml_repo: MlRepo) -> None:
+def delegate_image_build(original_ml_service_id: SERVICE_ID, ml_repo: MlRepo) -> None:
 
-    builder_app_sla = generate_builder_sla(ml_repo, service_id)
+    builder_app_sla = generate_builder_sla(ml_repo, original_ml_service_id)
     builder_app_name = builder_app_sla["applications"][0]["application_name"]
-    logger.debug(
-        f"Created builder SLA for service '{service_id}', repo '{ml_repo.url}': {builder_app_sla}"
-    )
+    logger.debug(f"Created builder SLA based on '{ml_repo.url}': {builder_app_sla}")
 
     # Note: The called endpoint returns all apps of the user not just the newest inserted one.
     status, json_data = api.utils.handle_request(
@@ -26,7 +24,7 @@ def delegate_image_build(service_id: SERVICE_ID, ml_repo: MlRepo) -> None:
         http_method=api.common.HttpMethod.POST,
         api_endpoint="/api/application",
         data=builder_app_sla,
-        what_should_happen=f"Create new builder app for service '{service_id}', '{ml_repo.url}'",
+        what_should_happen=f"Create new builder app for '{original_ml_service_id}'-'{ml_repo.url}'",
         show_msg_on_success=True,
     )
     if status != HTTPStatus.OK:
