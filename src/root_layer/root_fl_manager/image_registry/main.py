@@ -2,7 +2,7 @@ from http import HTTPStatus
 from typing import List, Optional, Tuple
 
 from api.utils import handle_request
-from image_builder_management.repo_management import MlRepo
+from image_builder_management.common import MlRepo
 from image_registry.common import ROOT_FL_IMAGE_REGISTRY_URL
 from image_registry.utils import get_latest_commit_hash
 

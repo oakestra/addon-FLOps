@@ -1,15 +1,72 @@
 from http import HTTPStatus
 from typing import Dict
 
+import api.utils
+from image_builder_management.common import MlRepo
 from image_builder_management.main import delegate_image_build, undeploy_builder_app
-from image_builder_management.repo_management import MlRepo
 from image_registry.main import fetch_latest_matching_image
+from utils.exceptions import GetMLServiceException, MLServiceReplacementException
 from utils.logging import logger
+from utils.sla_generator import generate_sla
+from utils.types import DB_SERVICE_OBJECT, SERVICE_ID
 
 
-def handle_new_fl_service(new_fl_service: Dict) -> None:
-    service_id = new_fl_service["microserviceID"]
-    ml_repo = MlRepo(new_fl_service["code"])
+def fetch_ml_service(ml_service_id: SERVICE_ID) -> DB_SERVICE_OBJECT:
+    logger.debug("hehheheee")
+    logger.debug(ml_service_id)
+    status, json_data = api.utils.handle_request(
+        base_url=api.common.SYSTEM_MANAGER_URL,
+        http_method=api.common.HttpMethod.GET,
+        api_endpoint=f"/api/service/{ml_service_id}",
+        what_should_happen=f"Get ML service '{ml_service_id}'",
+        show_msg_on_success=True,
+    )
+    if status != HTTPStatus.OK:
+        raise GetMLServiceException()
+    return json_data
+
+
+def replace_original_ml_service_with_fl_ui(original_ml_service_id: SERVICE_ID) -> SERVICE_ID:
+    ml_service = fetch_ml_service(original_ml_service_id)
+
+    fl_service_SLA = generate_sla(
+        app_name=ml_service["app_name"],
+        app_namespace=ml_service["app_ns"],
+        app_id=ml_service["applicationID"],
+        service_name="FL UI",
+        service_namespace=ml_service["microservice_namespace"],
+        code="efrecon/mqtt-client:latest",
+        cmd="mosquitto_sub -h 192.168.178.44 -p 9027 -t flui",
+        memory=500,
+        storage=0,
+        vcpus=1,
+    )
+
+    logger.debug(fl_service_SLA)
+
+    status, json_data = api.utils.handle_request(
+        base_url=api.common.SYSTEM_MANAGER_URL,
+        http_method=api.common.HttpMethod.PUT,
+        data=fl_service_SLA,
+        api_endpoint=f"/api/service/{original_ml_service_id}",
+        what_should_happen=f"Replace ML service '{original_ml_service_id}' with FL UI service",
+        query_params="replace=true",
+        show_msg_on_success=True,
+    )
+    if status != HTTPStatus.OK:
+        raise MLServiceReplacementException()
+
+    return json_data["microserviceID"]
+
+
+def handle_new_fl_service(new_ml_service: Dict) -> None:
+    original_ml_service_id = new_ml_service["microserviceID"]
+    new_fl_service_id = replace_original_ml_service_with_fl_ui(original_ml_service_id)
+
+    logger.debug("ZU")
+    exit(0)
+
+    ml_repo = MlRepo(new_ml_service["code"])
 
     status, latest_matching_image_name = fetch_latest_matching_image(ml_repo)
     if status != HTTPStatus.OK:
@@ -21,7 +78,7 @@ def handle_new_fl_service(new_fl_service: Dict) -> None:
         # TODO logger.info(f"FL service '{service_id}' has been properly prepared")
         return
 
-    delegate_image_build(service_id, ml_repo)
+    delegate_image_build(original_ml_service_id, ml_repo)
 
 
 def handle_builder_success(builder_success_msg: Dict) -> None:

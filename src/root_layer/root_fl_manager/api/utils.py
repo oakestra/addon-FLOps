@@ -15,11 +15,17 @@ class ApiQueryComponents(NamedTuple):
 
 
 def _prepare_api_query_components(
-    base_url: str, api_endpoint: str = None, custom_headers: dict = None, data: dict = None
+    base_url: str,
+    api_endpoint: str = None,
+    custom_headers: dict = None,
+    data: dict = None,
+    query_params: str = None,
 ) -> ApiQueryComponents:
     url = base_url
     if api_endpoint is not None:
         url = f"{base_url}{api_endpoint}"
+    if query_params is not None:
+        url += f"?{query_params}"
     headers = custom_headers or {"Authorization": f"Bearer {get_login_token()}"}
     if data and not custom_headers:
         headers["Content-Type"] = "application/json"
@@ -53,9 +59,12 @@ def handle_request(
     data: dict = None,
     show_msg_on_success: bool = False,
     special_msg_on_fail: str = None,
+    query_params: str = None,
 ) -> Tuple[HTTPStatus, Optional[dict]]:
 
-    url, headers, data = _prepare_api_query_components(base_url, api_endpoint, headers, data)
+    url, headers, data = _prepare_api_query_components(
+        base_url, api_endpoint, headers, data, query_params
+    )
     args = {
         "url": url,
         "verify": False,
@@ -69,7 +78,7 @@ def handle_request(
         if response_status == HTTPStatus.OK:
             if show_msg_on_success:
                 logger.info(f"Success: '{what_should_happen}'")
-            response = response.json()
+            logger.debug(response)
             if isinstance(response, str):
                 response = json.loads(response)
             return response_status, response

@@ -7,3 +7,9 @@ class CustomEnum(enum.Enum):
 
 
 SLA = dict
+
+ID = str
+SERVICE_ID = ID
+APPLICATION_ID = ID
+
+DB_SERVICE_OBJECT = dict

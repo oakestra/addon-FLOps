@@ -1,25 +1,18 @@
 from http import HTTPStatus
 
 import api.utils
-from image_builder_management.common import BUILDER_APP_NAMESPACE
-from image_builder_management.repo_management import MlRepo
-from image_builder_management.sla_generator import generate_builder_sla
+from image_builder_management.common import BUILDER_APP_NAMESPACE, MlRepo
+from image_builder_management.util import generate_builder_sla
+from utils.exceptions import (
+    BuilderAppCreationException,
+    BuilderAppDeletionException,
+    BuilderServiceDeploymentException,
+)
 from utils.logging import logger
+from utils.types import SERVICE_ID
 
 
-class BuilderAppCreationException(Exception):
-    pass
-
-
-class BuilderAppDeletionException(Exception):
-    pass
-
-
-class BuilderServiceDeploymentException(Exception):
-    pass
-
-
-def delegate_image_build(service_id: str, ml_repo: MlRepo) -> None:
+def delegate_image_build(service_id: SERVICE_ID, ml_repo: MlRepo) -> None:
 
     builder_app_sla = generate_builder_sla(ml_repo, service_id)
     builder_app_name = builder_app_sla["applications"][0]["application_name"]

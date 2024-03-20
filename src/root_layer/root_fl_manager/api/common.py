@@ -7,6 +7,7 @@ from utils.types import CustomEnum
 class HttpMethod(CustomEnum):
     GET = "get"
     POST = "post"
+    PUT = "put"
     PATCH = "patch"
     DELETE = "delete"
 
@@ -14,6 +15,7 @@ class HttpMethod(CustomEnum):
         method_map = {
             cls.GET: requests.get,
             cls.POST: requests.post,
+            cls.PUT: requests.put,
             cls.PATCH: requests.patch,
             cls.DELETE: requests.delete,
         }
