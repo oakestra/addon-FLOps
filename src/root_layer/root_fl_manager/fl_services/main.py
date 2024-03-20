@@ -12,8 +12,6 @@ from utils.types import DB_SERVICE_OBJECT, SERVICE_ID
 
 
 def fetch_ml_service(ml_service_id: SERVICE_ID) -> DB_SERVICE_OBJECT:
-    logger.debug("hehheheee")
-    logger.debug(ml_service_id)
     status, json_data = api.utils.handle_request(
         base_url=api.common.SYSTEM_MANAGER_URL,
         http_method=api.common.HttpMethod.GET,
@@ -33,9 +31,9 @@ def replace_original_ml_service_with_fl_ui(original_ml_service_id: SERVICE_ID) -
         app_name=ml_service["app_name"],
         app_namespace=ml_service["app_ns"],
         app_id=ml_service["applicationID"],
-        service_name="FL UI",
+        service_name="flui",
         service_namespace=ml_service["microservice_namespace"],
-        code="efrecon/mqtt-client:latest",
+        code="docker.io/efrecon/mqtt-client:latest",
         cmd="mosquitto_sub -h 192.168.178.44 -p 9027 -t flui",
         memory=500,
         storage=0,

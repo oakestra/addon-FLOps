@@ -25,6 +25,11 @@ def _login_and_set_token() -> str:
     if status != HTTPStatus.OK:
         raise LoginFailed()
 
+    from utils.logging import logger
+
+    logger.debug("AAAAAAAAAAAAAAAAAA")
+    logger.debug(json_data)
+
     global _login_token
     _login_token = json_data["token"]
     return _login_token
