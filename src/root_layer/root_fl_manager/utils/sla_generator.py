@@ -34,7 +34,7 @@ def generate_sla(
                         "microservice_namespace": service_namespace,
                         "virtualization": "container",
                         "one_shot": one_shot_service,
-                        "cmd": "" if (cmd == "") else shlex.split(cmd),
+                        "cmd": [] if (cmd == "") else shlex.split(cmd),
                         "memory": memory,
                         "vcpus": vcpus,
                         "storage": storage,

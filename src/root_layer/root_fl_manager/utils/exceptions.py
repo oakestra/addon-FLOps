@@ -2,7 +2,7 @@ class GetMLServiceException(Exception):
     pass
 
 
-class MLServiceReplacementException(Exception):
+class FLUIServiceCreationException(Exception):
     pass
 
 

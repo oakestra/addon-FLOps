@@ -43,6 +43,18 @@ services:
     networks:
       - root_orchestrator_default
 
+  root_fl_mqtt:
+    image: eclipse-mosquitto:2
+    hostname: root_fl_mqtt
+    container_name: root_fl_mqtt
+    restart: unless-stopped
+    ports:
+      - "9027:9027"
+    volumes:
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - /mosquitto/data
+      - /mosquitto/log
+
 volumes:
   registry_data:
   ssl:

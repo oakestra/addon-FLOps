@@ -24,7 +24,7 @@ def generate_builder_sla(
             # non docker-compose member exclusive DNS name as IP.
             # mqtt.main.ROOT_MQTT_BROKER_URL,
             "192.178.168.44",
-            mqtt.main.ROOT_MQTT_BROKER_PORT,
+            mqtt.main.ROOT_FL_MQTT_BROKER_PORT,
             builder_app_name,
         )
     )

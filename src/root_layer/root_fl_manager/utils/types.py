@@ -7,6 +7,7 @@ class CustomEnum(enum.Enum):
 
 
 SLA = dict
+FL_SLA = SLA
 
 ID = str
 SERVICE_ID = ID

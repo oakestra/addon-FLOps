@@ -1,3 +1,3 @@
-# from .<SOME> import <SOME_blp>
+from .fl_services import flops_blp
 
-blueprints = []  # <SOME_blp>
+blueprints = [flops_blp]
