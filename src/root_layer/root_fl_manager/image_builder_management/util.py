@@ -24,7 +24,7 @@ def generate_builder_sla(
             # TODO need to figure out a way to provide
             # non docker-compose member exclusive DNS name as IP.
             # mqtt.main.ROOT_MQTT_BROKER_URL,
-            "192.178.168.44",
+            "192.168.178.44",
             mqtt.main.ROOT_FL_MQTT_BROKER_PORT,
             builder_name,
             str(flops_identifier.fl_ui_ip),

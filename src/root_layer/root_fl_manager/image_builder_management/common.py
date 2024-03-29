@@ -1,7 +1,7 @@
 from api.common import GITHUB_PREFIX
 from github import Github
 
-BUILDER_APP_NAMESPACE = "fl_build"
+BUILDER_APP_NAMESPACE = "flbuild"
 
 
 class MlRepo:

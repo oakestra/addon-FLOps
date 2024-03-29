@@ -18,6 +18,8 @@ def delegate_image_build(flops_identifier: FlOpsIdentifier, ml_repo: MlRepo) -> 
     builder_app_name = builder_app_sla["applications"][0]["application_name"]
     logger.debug(f"Created builder SLA based on '{ml_repo.url}': {builder_app_sla}")
 
+    logger.debug(builder_app_sla)
+
     # Note: The called endpoint returns all apps of the user not just the newest inserted one.
     status, json_data = api.utils.handle_request(
         base_url=api.common.SYSTEM_MANAGER_URL,
