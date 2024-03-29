@@ -11,6 +11,7 @@ from utils.exceptions import (
     FLUIServiceDeploymentException,
     GetMLServiceException,
 )
+from utils.identifier import FlOpsIdentifier
 from utils.logging import logger
 from utils.sla_generator import generate_sla
 from utils.types import DB_SERVICE_OBJECT, FL_SLA, SERVICE_ID
@@ -29,43 +30,41 @@ def fetch_ml_service(ml_service_id: SERVICE_ID) -> DB_SERVICE_OBJECT:
     return json_data
 
 
-def create_fl_ui_service(new_fl_service_sla: FL_SLA, bearer_token: str) -> Tuple[SERVICE_ID, str]:
-    unique_identifier = secrets.token_urlsafe(4)
-
+def create_fl_ui_service(
+    new_fl_service_sla: FL_SLA,
+    bearer_token: str,
+    flops_identifier: FlOpsIdentifier,
+) -> SERVICE_ID:
     fl_ui_service_SLA = generate_sla(
         customerID=new_fl_service_sla["customerID"],
-        app_name=unique_identifier,
-        app_namespace="fl_app",
-        service_name=unique_identifier,
-        service_namespace="fl_ui",
-        code="docker.io/efrecon/mqtt-client:latest",  # TODO
-        # cmd=f"mosquitto_sub -h 192.168.178.44 -p 9027 -t {original_ml_service_id}/ui",
-        memory=500,
+        app_name=f"fl{flops_identifier.flops_id}",
+        app_namespace="flui",
+        service_name=f"fl{flops_identifier.flops_id}",
+        service_namespace="flui",
+        code="ghcr.io/malyuk-a/fl-ui:latest",
+        memory=200,
         storage=0,
         vcpus=1,
+        rr_ip=flops_identifier.fl_ui_ip,
     )
-
-    logger.debug("AAAAAAAAAAAAAA")
-    logger.debug(fl_ui_service_SLA)
-
     status, json_data = api.utils.handle_request(
         base_url=api.common.SYSTEM_MANAGER_URL,
         http_method=api.common.HttpMethod.POST,
         headers={"Authorization": bearer_token},
         data=fl_ui_service_SLA,
         api_endpoint="/api/application/",
-        what_should_happen=f"Create new FL service '{unique_identifier}' with FL UI service",
+        what_should_happen=f"Create new FL UI service '{flops_identifier.flops_id}'",
         show_msg_on_success=True,
     )
     if status != HTTPStatus.OK:
         raise FLUIServiceCreationException()
 
-    return json_data["microserviceID"], unique_identifier
+    return json_data[0]["microservices"][0]
 
 
 def handle_new_fl_service(new_fl_service_sla: FL_SLA, auth_header: str) -> None:
-    fl_ui_service_id, unique_identifier = create_fl_ui_service(new_fl_service_sla, auth_header)
-    return
+    flops_identifier = FlOpsIdentifier()
+    fl_ui_service_id = create_fl_ui_service(new_fl_service_sla, auth_header, flops_identifier)
 
     status, _ = api.utils.handle_request(
         base_url=api.common.SYSTEM_MANAGER_URL,
@@ -88,8 +87,7 @@ def handle_new_fl_service(new_fl_service_sla: FL_SLA, auth_header: str) -> None:
         # TODO logger.info(f"FL service '{service_id}' has been properly prepared")
         return
 
-    return
-    delegate_image_build(unique_identifier, ml_repo)
+    delegate_image_build(flops_identifier, ml_repo)
 
 
 def handle_builder_success(builder_success_msg: Dict) -> None:

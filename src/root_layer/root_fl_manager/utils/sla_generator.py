@@ -1,3 +1,4 @@
+import ipaddress
 import shlex
 
 from utils.types import APPLICATION_ID, SLA
@@ -17,6 +18,7 @@ def generate_sla(
     memory: int = 0,
     vcpus: int = 0,
     storage: int = 0,
+    rr_ip: ipaddress.IPv4Address = None,
 ) -> SLA:
     return {
         "sla_version": "v2.0",
@@ -39,6 +41,7 @@ def generate_sla(
                         "vcpus": vcpus,
                         "storage": storage,
                         "code": code,
+                        **({"addresses": {"rr_ip": str(rr_ip)}} if rr_ip else {}),
                     }
                 ],
             }

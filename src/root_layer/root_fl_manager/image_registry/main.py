@@ -41,16 +41,16 @@ def get_current_registry_repo_image_tags(ml_repo: MlRepo) -> Tuple[HTTPStatus, O
 
 
 def fetch_latest_matching_image(ml_repo: MlRepo) -> Tuple[HTTPStatus, Optional[str]]:
-    status, current_images_repos = get_current_registry_image_repos()
 
+    status, current_images_repos = get_current_registry_image_repos()
     if status != HTTPStatus.OK or ml_repo.name not in current_images_repos:
         return status, None
 
     status, current_image_repo_tags = get_current_registry_repo_image_tags(ml_repo)
     if status != HTTPStatus.OK:
         return status, None
-    status, latest_commit_hash = get_latest_commit_hash(ml_repo)
 
+    status, latest_commit_hash = get_latest_commit_hash(ml_repo)
     if status != HTTPStatus.OK:
         return status, None
 

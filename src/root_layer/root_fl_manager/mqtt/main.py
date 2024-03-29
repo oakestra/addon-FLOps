@@ -39,9 +39,12 @@ def handle_mqtt() -> None:
 
     mqtt_client.on_disconnect = _on_disconnect
     mqtt_client.on_message = _on_new_message
-    mqtt_client.connect(ROOT_FL_MQTT_BROKER_URL, int(ROOT_FL_MQTT_BROKER_PORT))
+
+    # mqtt_client.connect(ROOT_FL_MQTT_BROKER_URL, int(ROOT_FL_MQTT_BROKER_PORT))
+    mqtt_client.connect("192.168.178.44", int(ROOT_FL_MQTT_BROKER_PORT))
     for topic in Topics:
         mqtt_client.subscribe(str(topic))
+
     mqtt_client.loop_forever()
 
 

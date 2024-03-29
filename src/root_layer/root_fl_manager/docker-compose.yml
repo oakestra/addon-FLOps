@@ -12,8 +12,8 @@ services:
       - ROOT_FL_IMAGE_REGISTRY_PORT=5073
       - SYSTEM_MANAGER_IP=system_manager
       - SYSTEM_MANAGER_PORT=10000
-      - ROOT_MQTT_BROKER_PORT=9027
-      - ROOT_MQTT_BROKER_URL=root_mqtt
+      - ROOT_FL_MQTT_BROKER_PORT=9027
+      - ROOT_FL_MQTT_BROKER_URL=root_fl_mqtt
       - CAROOT=/etc/ssl
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock

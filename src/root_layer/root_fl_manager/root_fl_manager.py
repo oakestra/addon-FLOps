@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import threading
 
 from api.main import handle_api
