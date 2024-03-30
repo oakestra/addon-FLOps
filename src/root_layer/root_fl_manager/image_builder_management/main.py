@@ -1,6 +1,7 @@
 from http import HTTPStatus
 
 import api.utils
+from fl_ui_management.notification import notify_ui
 from image_builder_management.common import BUILDER_APP_NAMESPACE, MlRepo
 from image_builder_management.util import generate_builder_sla
 from utils.exceptions import (
@@ -12,13 +13,19 @@ from utils.identifier import FlOpsIdentifier
 from utils.logging import logger
 
 
-def delegate_image_build(flops_identifier: FlOpsIdentifier, ml_repo: MlRepo) -> None:
+def delegate_image_build(
+    flops_identifier: FlOpsIdentifier, ml_repo: MlRepo, verbose: bool = False
+) -> None:
+
+    if verbose:
+        notify_ui(
+            "New FL Client image needs to be build. Start build delegation processes.",
+            flops_identifier,
+        )
 
     builder_app_sla = generate_builder_sla(ml_repo, flops_identifier)
     builder_app_name = builder_app_sla["applications"][0]["application_name"]
     logger.debug(f"Created builder SLA based on '{ml_repo.url}': {builder_app_sla}")
-
-    logger.debug(builder_app_sla)
 
     # Note: The called endpoint returns all apps of the user not just the newest inserted one.
     status, json_data = api.utils.handle_request(
@@ -31,6 +38,12 @@ def delegate_image_build(flops_identifier: FlOpsIdentifier, ml_repo: MlRepo) -> 
     )
     if status != HTTPStatus.OK:
         raise BuilderAppCreationException()
+
+    if verbose:
+        notify_ui(
+            "New Builder application created",
+            flops_identifier,
+        )
 
     new_builder_app = next(
         (app for app in json_data if app["application_name"] == builder_app_name), None
@@ -48,6 +61,12 @@ def delegate_image_build(flops_identifier: FlOpsIdentifier, ml_repo: MlRepo) -> 
     )
     if status != HTTPStatus.OK:
         raise BuilderServiceDeploymentException()
+
+    if verbose:
+        notify_ui(
+            "New Builder application deployed & started",
+            flops_identifier,
+        )
 
 
 def fetch_builder_app(builder_app_name: str) -> dict:
@@ -77,3 +96,24 @@ def undeploy_builder_app(builder_app_name: str) -> None:
     )
     if status != HTTPStatus.OK:
         raise BuilderAppDeletionException()
+
+
+def handle_builder_success(builder_success_msg: dict) -> None:
+    # origin_fl_service_id = builder_success_msg["service_id"]
+    # image_name_with_tag = builder_success_msg["image_name_with_tag"]
+    logger.debug("000000")
+    logger.debug(builder_success_msg)
+    logger.debug("111111")
+    builder_app_name = builder_success_msg["builder_app_name"]
+    undeploy_builder_app(builder_app_name)
+    # TODO continue with further FL steps
+
+
+def handle_builder_failed(builder_failed_msg: dict) -> None:
+    logger.debug("AA")
+    logger.debug(builder_failed_msg)
+
+    builder_app_name = builder_failed_msg["builder_app_name"]
+    undeploy_builder_app(builder_app_name)
+
+    logger.debug("ZZ")

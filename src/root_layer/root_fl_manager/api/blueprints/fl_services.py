@@ -19,5 +19,6 @@ def post_fl_service():
     # that can be easily realized.
     data = flask.request.json
     bearer_token = flask.request.headers.get("Authorization")
-    handle_new_fl_service(data, bearer_token)
+    verbose = data["verbose"]
+    handle_new_fl_service(data, bearer_token, verbose)
     return {"message": "New FLOps processes started"}, HTTPStatus.OK
