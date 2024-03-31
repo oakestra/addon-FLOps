@@ -69,12 +69,13 @@ def delegate_image_build(
         )
 
 
-def fetch_builder_app(builder_app_name: str) -> dict:
-    query_params = f"app_name={builder_app_name}&app_namespace={BUILDER_APP_NAMESPACE}"
+def fetch_builder_app(flops_id: str) -> dict:
+    query_params = f"app_name=bu{flops_id}&app_namespace={BUILDER_APP_NAMESPACE}"
+
     status, json_data = api.utils.handle_request(
         base_url=api.common.SYSTEM_MANAGER_URL,
         api_endpoint=f"/api/applications?{query_params}",
-        what_should_happen=f"Fetch builder app '{builder_app_name}'",
+        what_should_happen=f"Fetch builder app bu'{flops_id}'",
         show_msg_on_success=True,
     )
     if status != HTTPStatus.OK:
@@ -82,8 +83,8 @@ def fetch_builder_app(builder_app_name: str) -> dict:
     return json_data
 
 
-def undeploy_builder_app(builder_app_name: str) -> None:
-    builder_app = fetch_builder_app(builder_app_name)[0]
+def undeploy_builder_app(flops_id: str) -> None:
+    builder_app = fetch_builder_app(flops_id)[0]
 
     builder_app_id = builder_app["applicationID"]
 
@@ -91,7 +92,7 @@ def undeploy_builder_app(builder_app_name: str) -> None:
         base_url=api.common.SYSTEM_MANAGER_URL,
         http_method=api.common.HttpMethod.DELETE,
         api_endpoint=f"/api/application/{builder_app_id}",
-        what_should_happen=f"Delete builder app '{builder_app_name}'",
+        what_should_happen=f"Delete builder app for FLOps'{flops_id}'",
         show_msg_on_success=True,
     )
     if status != HTTPStatus.OK:
@@ -104,8 +105,8 @@ def handle_builder_success(builder_success_msg: dict) -> None:
     logger.debug("000000")
     logger.debug(builder_success_msg)
     logger.debug("111111")
-    builder_app_name = builder_success_msg["builder_app_name"]
-    undeploy_builder_app(builder_app_name)
+    flops_id = builder_success_msg["flops_id"]
+    undeploy_builder_app(flops_id)
     # TODO continue with further FL steps
 
 
@@ -113,7 +114,7 @@ def handle_builder_failed(builder_failed_msg: dict) -> None:
     logger.debug("AA")
     logger.debug(builder_failed_msg)
 
-    builder_app_name = builder_failed_msg["builder_app_name"]
-    undeploy_builder_app(builder_app_name)
+    flops_id = builder_failed_msg["flops_id"]
+    undeploy_builder_app(flops_id)
 
     logger.debug("ZZ")

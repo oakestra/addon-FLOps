@@ -26,7 +26,6 @@ def generate_builder_sla(
             # mqtt.main.ROOT_MQTT_BROKER_URL,
             "192.168.178.44",
             mqtt.main.ROOT_FL_MQTT_BROKER_PORT,
-            builder_name,
             str(flops_identifier.fl_ui_ip),
         )
     )

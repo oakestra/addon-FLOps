@@ -6,17 +6,14 @@ from image_builder_management.common import MlRepo
 
 
 def get_latest_commit_hash(ml_repo: MlRepo) -> Tuple[HTTPStatus, Optional[str]]:
-
-    core_git_api_endpoint = f"/repos/{ml_repo.name}/commits"
-    main_git_api_endpoint = f"{core_git_api_endpoint}/main"
-
+    git_api_endpoint = f"/repos/{ml_repo.sanitized_name}/commits/main"
     status, json_data = handle_request(
         base_url="https://api.github.com",
         what_should_happen="Fetch commits from github",
-        api_endpoint=main_git_api_endpoint,
+        api_endpoint=git_api_endpoint,
+        is_oakestra_api=False,
     )
     if status != HTTPStatus.OK:
         return status, None
 
-    # Note: Cut down the long hash to the usual short one for readability.
-    return status, json_data["sha"][:7]
+    return status, json_data["sha"]

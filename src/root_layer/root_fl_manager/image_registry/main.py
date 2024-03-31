@@ -32,7 +32,7 @@ def get_current_registry_image_repos() -> Tuple[HTTPStatus, Optional[List[str]]]
 def get_current_registry_repo_image_tags(ml_repo: MlRepo) -> Tuple[HTTPStatus, Optional[List[str]]]:
     status, json_data = handle_request(
         base_url=ROOT_FL_IMAGE_REGISTRY_URL,
-        api_endpoint=f"/v2/{ml_repo.name}/tags/list",
+        api_endpoint=f"/v2/{ml_repo.sanitized_name}/tags/list",
         what_should_happen="Get image tags",
     )
     if status != HTTPStatus.OK:
@@ -43,7 +43,8 @@ def get_current_registry_repo_image_tags(ml_repo: MlRepo) -> Tuple[HTTPStatus, O
 def fetch_latest_matching_image(ml_repo: MlRepo) -> Tuple[HTTPStatus, Optional[str]]:
 
     status, current_images_repos = get_current_registry_image_repos()
-    if status != HTTPStatus.OK or ml_repo.name not in current_images_repos:
+
+    if status != HTTPStatus.OK or ml_repo.sanitized_name not in current_images_repos:
         return status, None
 
     status, current_image_repo_tags = get_current_registry_repo_image_tags(ml_repo)

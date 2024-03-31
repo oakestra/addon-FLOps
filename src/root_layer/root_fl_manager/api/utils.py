@@ -20,13 +20,19 @@ def _prepare_api_query_components(
     custom_headers: dict = None,
     data: dict = None,
     query_params: str = None,
+    is_oakestra_api: bool = True,
 ) -> ApiQueryComponents:
     url = base_url
     if api_endpoint is not None:
         url = f"{base_url}{api_endpoint}"
     if query_params is not None:
         url += f"?{query_params}"
-    headers = custom_headers or {"Authorization": f"Bearer {get_login_token()}"}
+
+    if custom_headers:
+        headers = custom_headers
+    else:
+        headers = {"Authorization": f"Bearer {get_login_token()}"} if is_oakestra_api else {}
+
     if data and not custom_headers:
         headers["Content-Type"] = "application/json"
     return ApiQueryComponents(url, headers, data)
@@ -60,10 +66,16 @@ def handle_request(
     show_msg_on_success: bool = False,
     special_msg_on_fail: str = None,
     query_params: str = None,
+    is_oakestra_api: bool = True,
 ) -> Tuple[HTTPStatus, Optional[dict]]:
 
     url, headers, data = _prepare_api_query_components(
-        base_url, api_endpoint, headers, data, query_params
+        base_url,
+        api_endpoint,
+        headers,
+        data,
+        query_params,
+        is_oakestra_api,
     )
     args = {
         "url": url,

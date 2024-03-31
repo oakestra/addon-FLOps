@@ -39,8 +39,9 @@ def handle_new_fl_service(
         return
 
     if latest_matching_image_name is not None:
-        # TODO update_service_image(new_fl_service, existing_image_name)
-        # TODO logger.info(f"FL service '{service_id}' has been properly prepared")
+        info_msg = f"Latest FL Client ENV image already exists for provided repo: '{ml_repo.name}'"
+        notify_ui(info_msg, flops_identifier)
+        logger.info(info_msg)
         return
 
     delegate_image_build(flops_identifier, ml_repo, verbose)
