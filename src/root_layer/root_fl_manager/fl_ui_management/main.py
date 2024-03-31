@@ -1,45 +1,83 @@
-from http import HTTPStatus
-
-import api.utils
+from api.consts import SYSTEM_MANAGER_URL
+from api.custom_requests import CustomRequest, HttpMethod, RequestAuxiliaries, RequestCore
 from mqtt.main import ROOT_FL_MQTT_BROKER_PORT, ROOT_FL_MQTT_BROKER_URL
-from utils.exceptions import FLUIServiceCreationException
+from utils.exceptions import FLUIException
 from utils.identifier import FlOpsIdentifier
-from utils.sla_generator import generate_sla
-from utils.types import FL_SLA, SERVICE_ID
+from utils.sla_generator import (
+    SlaCompute,
+    SlaCore,
+    SlaDetails,
+    SlaNames,
+    SlaResources,
+    generate_sla,
+)
+from utils.types import FlSla, ServiceId
 
 
 def create_fl_ui_service(
-    new_fl_service_sla: FL_SLA,
+    new_fl_service_sla: FlSla,
     bearer_token: str,
     flops_identifier: FlOpsIdentifier,
-) -> SERVICE_ID:
+) -> ServiceId:
 
     url = ROOT_FL_MQTT_BROKER_URL
     port = ROOT_FL_MQTT_BROKER_PORT
 
-    fl_ui_service_SLA = generate_sla(
-        customerID=new_fl_service_sla["customerID"],
-        app_name=f"fl{flops_identifier.flops_id}",
-        app_namespace="flui",
-        service_name=f"fl{flops_identifier.flops_id}",
-        service_namespace="flui",
-        code="ghcr.io/malyuk-a/fl-ui:latest",
-        cmd=f"python main.py {flops_identifier.flops_id} {url} {port}",
-        memory=200,
-        storage=0,
-        vcpus=1,
-        rr_ip=flops_identifier.fl_ui_ip,
-    )
-    status, json_data = api.utils.handle_request(
-        base_url=api.common.SYSTEM_MANAGER_URL,
-        http_method=api.common.HttpMethod.POST,
-        headers={"Authorization": bearer_token},
-        data=fl_ui_service_SLA,
-        api_endpoint="/api/application/",
-        what_should_happen=f"Create new FL UI service '{flops_identifier.flops_id}'",
-        show_msg_on_success=True,
-    )
-    if status != HTTPStatus.OK:
-        raise FLUIServiceCreationException()
+    from icecream import ic
 
-    return json_data[0]["microservices"][0]
+    fl_ui_service_SLA = generate_sla(
+        core=SlaCore(
+            customerID=new_fl_service_sla["customerID"],
+            names=SlaNames(
+                app_name=f"fl{flops_identifier.flops_id}",
+                app_namespace="flui",
+                service_name=f"fl{flops_identifier.flops_id}",
+                service_namespace="flui",
+            ),
+            compute=SlaCompute(
+                code="ghcr.io/malyuk-a/fl-ui:latest",
+                cmd=f"python main.py {flops_identifier.flops_id} {url} {port}",
+            ),
+        ),
+        details=SlaDetails(
+            rr_ip=flops_identifier.fl_ui_ip,
+            resources=SlaResources(memory=200, vcpus=1, storage=0),
+        ),
+    )
+
+    ic("1", fl_ui_service_SLA)
+
+    new_fl_ui_app = CustomRequest(
+        RequestCore(
+            http_method=HttpMethod.POST,
+            base_url=SYSTEM_MANAGER_URL,
+            api_endpoint="/api/application/",
+            data=fl_ui_service_SLA,
+            custom_headers={"Authorization": bearer_token},
+        ),
+        RequestAuxiliaries(
+            what_should_happen=f"Create new FL UI service '{flops_identifier.flops_id}'",
+            flops_identifier=flops_identifier,
+            show_msg_on_success=True,
+            exception=FLUIException,
+        ),
+    )
+
+    ic("2", new_fl_ui_app)
+
+    return new_fl_ui_app[0]["microservices"][0]
+
+
+def deploy_fl_ui_service(fl_ui_service_id: ServiceId) -> None:
+    CustomRequest(
+        RequestCore(
+            http_method=HttpMethod.POST,
+            base_url=SYSTEM_MANAGER_URL,
+            api_endpoint=f"/api/service/{fl_ui_service_id}/instance",
+        ),
+        RequestAuxiliaries(
+            what_should_happen=f"Deploy FL UI service '{fl_ui_service_id}'",
+            exception=FLUIException,
+            show_msg_on_success=True,
+        ),
+    )

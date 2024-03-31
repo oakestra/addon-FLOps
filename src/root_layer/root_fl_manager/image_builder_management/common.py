@@ -1,4 +1,4 @@
-from api.common import GITHUB_PREFIX
+from api.consts import GITHUB_PREFIX
 from github import Github
 
 BUILDER_APP_NAMESPACE = "flbuild"

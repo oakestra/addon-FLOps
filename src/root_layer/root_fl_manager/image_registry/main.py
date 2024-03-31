@@ -1,61 +1,67 @@
-from http import HTTPStatus
-from typing import List, Optional, Tuple
+from typing import List, Optional
 
-from api.utils import handle_request
+from api.custom_requests import CustomRequest, RequestAuxiliaries, RequestCore
 from image_builder_management.common import MlRepo
 from image_registry.common import ROOT_FL_IMAGE_REGISTRY_URL
 from image_registry.utils import get_latest_commit_hash
+from utils.exceptions import ImageRegistryException
+from utils.identifier import FlOpsIdentifier
 
 
-def check_registry_reachable() -> HTTPStatus:
-    status, _ = handle_request(
-        base_url=ROOT_FL_IMAGE_REGISTRY_URL,
-        what_should_happen="Registry is reachable",
+def check_registry_reachable(flops_identifier: FlOpsIdentifier) -> bool:
+    CustomRequest(
+        RequestCore(
+            base_url=ROOT_FL_IMAGE_REGISTRY_URL,
+            api_endpoint="/api/application/",
+        ),
+        RequestAuxiliaries(
+            what_should_happen="Registry is reachable",
+            flops_identifier=flops_identifier,
+            exception=ImageRegistryException,
+            show_msg_on_success=True,
+        ),
     )
-    return status
+    return True
 
 
 # Note: (image) repos are the "grouping" of all tags of a single image.
 # E.g. The (image) repo "alpine" can have multiple tags "latest", "1.0.0", etc.
 # We usually first check the image repo and then its tags.
-def get_current_registry_image_repos() -> Tuple[HTTPStatus, Optional[List[str]]]:
-    status, json_data = handle_request(
-        base_url=ROOT_FL_IMAGE_REGISTRY_URL,
-        api_endpoint="/v2/_catalog",
-        what_should_happen="Get current registry repositories",
+def get_current_registry_image_repos() -> List[str]:
+    response = CustomRequest(
+        core=RequestCore(
+            base_url=ROOT_FL_IMAGE_REGISTRY_URL,
+            api_endpoint="/v2/_catalog",
+        ),
+        aux=RequestAuxiliaries(
+            what_should_happen="Get current registry repositories",
+            exception=ImageRegistryException,
+        ),
     )
-    if status != HTTPStatus.OK:
-        return status, None
-    return status, json_data["repositories"]
+    return response["repositories"]
 
 
-def get_current_registry_repo_image_tags(ml_repo: MlRepo) -> Tuple[HTTPStatus, Optional[List[str]]]:
-    status, json_data = handle_request(
-        base_url=ROOT_FL_IMAGE_REGISTRY_URL,
-        api_endpoint=f"/v2/{ml_repo.sanitized_name}/tags/list",
-        what_should_happen="Get image tags",
+def get_current_registry_repo_image_tags(ml_repo: MlRepo) -> List[str]:
+    response = CustomRequest(
+        core=RequestCore(
+            base_url=ROOT_FL_IMAGE_REGISTRY_URL,
+            api_endpoint=f"/v2/{ml_repo.sanitized_name}/tags/list",
+        ),
+        aux=RequestAuxiliaries(
+            what_should_happen="Get image tags",
+            exception=ImageRegistryException,
+        ),
     )
-    if status != HTTPStatus.OK:
-        return status, None
-    return status, json_data["tags"]
+    return response["tags"]
 
 
-def fetch_latest_matching_image(ml_repo: MlRepo) -> Tuple[HTTPStatus, Optional[str]]:
+def fetch_latest_matching_image(ml_repo: MlRepo) -> Optional[str]:
+    current_image_reqpositories = get_current_registry_image_repos()
+    if ml_repo.sanitized_name not in current_image_reqpositories:
+        return None
 
-    status, current_images_repos = get_current_registry_image_repos()
-
-    if status != HTTPStatus.OK or ml_repo.sanitized_name not in current_images_repos:
-        return status, None
-
-    status, current_image_repo_tags = get_current_registry_repo_image_tags(ml_repo)
-    if status != HTTPStatus.OK:
-        return status, None
-
-    status, latest_commit_hash = get_latest_commit_hash(ml_repo)
-    if status != HTTPStatus.OK:
-        return status, None
-
-    if latest_commit_hash in current_image_repo_tags:
-        return status, f"{ml_repo.name}:{latest_commit_hash}"
-    else:
-        return status, None
+    current_image_tags = get_current_registry_repo_image_tags(ml_repo)
+    latest_commit_hash = get_latest_commit_hash(ml_repo)
+    return (
+        f"{ml_repo.name}:{latest_commit_hash}" if latest_commit_hash in current_image_tags else None
+    )

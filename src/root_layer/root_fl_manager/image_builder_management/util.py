@@ -3,14 +3,21 @@ from image_builder_management.common import BUILDER_APP_NAMESPACE, MlRepo
 from image_registry.common import ROOT_FL_IMAGE_REGISTRY_URL
 from utils.common import FLOPS_USER_ACCOUNT
 from utils.identifier import FlOpsIdentifier
-from utils.sla_generator import generate_sla
-from utils.types import SLA
+from utils.sla_generator import (
+    SlaCompute,
+    SlaCore,
+    SlaDetails,
+    SlaNames,
+    SlaResources,
+    generate_sla,
+)
+from utils.types import Sla
 
 
 def generate_builder_sla(
     ml_repo: MlRepo,
     flops_identifier: FlOpsIdentifier,
-) -> SLA:
+) -> Sla:
 
     builder_name = f"bu{flops_identifier.flops_id}"
 
@@ -31,16 +38,26 @@ def generate_builder_sla(
     )
 
     return generate_sla(
-        code="ghcr.io/oakestra/plugins/flops/fl-client-env-builder:latest",
-        customerID=FLOPS_USER_ACCOUNT,
-        app_name=builder_name,
-        app_namespace=BUILDER_APP_NAMESPACE,
-        app_desc="fl_plugin application for building FL client env images",
-        service_name=builder_name,
-        service_namespace=BUILDER_APP_NAMESPACE,
-        one_shot_service=True,
-        cmd=cmd,
-        memory=2000,
-        vcpus=1,
-        storage=15000,
+        core=SlaCore(
+            customerID=FLOPS_USER_ACCOUNT,
+            names=SlaNames(
+                app_name=builder_name,
+                app_namespace=BUILDER_APP_NAMESPACE,
+                service_name=builder_name,
+                service_namespace=BUILDER_APP_NAMESPACE,
+            ),
+            compute=SlaCompute(
+                code="ghcr.io/oakestra/plugins/flops/fl-client-env-builder:latest",
+                one_shot_service=True,
+                cmd=cmd,
+            ),
+        ),
+        details=SlaDetails(
+            app_desc="fl_plugin application for building FL client env images",
+            resources=SlaResources(
+                memory=2000,
+                vcpus=1,
+                storage=15000,
+            ),
+        ),
     )

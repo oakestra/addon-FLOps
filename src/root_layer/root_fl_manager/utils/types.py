@@ -1,4 +1,6 @@
 import enum
+from http import HTTPStatus
+from typing import Tuple
 
 
 class CustomEnum(enum.Enum):
@@ -6,11 +8,13 @@ class CustomEnum(enum.Enum):
         return self.value
 
 
-SLA = dict
-FL_SLA = SLA
+Sla = dict
+FlSla = Sla
 
-ID = str
-SERVICE_ID = ID
-APPLICATION_ID = ID
+Id = str
+ServiceId = Id
+ApplicationId = Id
 
-DB_SERVICE_OBJECT = dict
+DbServiceObject = dict
+
+ExternalApiResponse = Tuple[dict, HTTPStatus]
