@@ -16,22 +16,32 @@ _mqtt_client = None
 
 
 def _on_new_message(client, userdata, message) -> None:
-    decoded_message = message.payload.decode()
-    data = json.loads(decoded_message)
-    logger.debug(f"Received message: {decoded_message}")
-    topic = message.topic
-    match topic:
-        case Topics.IMAGE_BUILDER_SUCCESS.value:
-            image_builder.handle_builder_success(data)
+    try:
+        decoded_message = message.payload.decode()
+        data = json.loads(decoded_message)
+        logger.debug(f"Received message: {decoded_message}")
+        topic = message.topic
+        match topic:
+            case Topics.IMAGE_BUILDER_SUCCESS.value:
+                image_builder.handle_builder_success(data)
 
-        case Topics.IMAGE_BUILDER_FAILED.value:
-            image_builder.handle_builder_failed(data)
+            case Topics.IMAGE_BUILDER_FAILED.value:
+                image_builder.handle_builder_failed(data)
 
-        case Topics.FL_UI_FAILED.value:
-            logger.critical(data)
+            case Topics.FL_UI_FAILED.value:
+                logger.critical(data)
 
-        case _:
-            logger.error(f"Message received for an unsupported topic '{topic}'")
+            case _:
+                logger.error(f"Message received for an unsupported topic '{topic}'")
+
+    except utils.exceptions.RootFLManagerException as e:
+        logger.fatal(f"{e.msg}")
+        e.try_to_notify_ui()
+        return
+    except Exception as e:
+        err_msg = f"Unexpected error occured: {e}"
+        logger.fatal(err_msg)
+        return
 
 
 def handle_mqtt() -> None:

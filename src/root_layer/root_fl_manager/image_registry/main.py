@@ -20,7 +20,7 @@ def check_registry_reachable(flops_identifier: FlOpsIdentifier) -> bool:
             exception=ImageRegistryException,
             show_msg_on_success=True,
         ),
-    )
+    ).execute()
     return True
 
 
@@ -37,7 +37,7 @@ def get_current_registry_image_repos() -> List[str]:
             what_should_happen="Get current registry repositories",
             exception=ImageRegistryException,
         ),
-    )
+    ).execute()
     return response["repositories"]
 
 
@@ -51,7 +51,7 @@ def get_current_registry_repo_image_tags(ml_repo: MlRepo) -> List[str]:
             what_should_happen="Get image tags",
             exception=ImageRegistryException,
         ),
-    )
+    ).execute()
     return response["tags"]
 
 

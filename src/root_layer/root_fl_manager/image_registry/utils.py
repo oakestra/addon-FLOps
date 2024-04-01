@@ -14,5 +14,5 @@ def get_latest_commit_hash(ml_repo: MlRepo) -> str:
             exception=ImageRegistryException,
             is_oakestra_api=False,
         ),
-    )
+    ).execute()
     return response["sha"]

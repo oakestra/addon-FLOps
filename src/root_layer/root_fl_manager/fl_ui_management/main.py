@@ -23,8 +23,6 @@ def create_fl_ui_service(
     url = ROOT_FL_MQTT_BROKER_URL
     port = ROOT_FL_MQTT_BROKER_PORT
 
-    from icecream import ic
-
     fl_ui_service_SLA = generate_sla(
         core=SlaCore(
             customerID=new_fl_service_sla["customerID"],
@@ -45,8 +43,6 @@ def create_fl_ui_service(
         ),
     )
 
-    ic("1", fl_ui_service_SLA)
-
     new_fl_ui_app = CustomRequest(
         RequestCore(
             http_method=HttpMethod.POST,
@@ -61,10 +57,7 @@ def create_fl_ui_service(
             show_msg_on_success=True,
             exception=FLUIException,
         ),
-    )
-
-    ic("2", new_fl_ui_app)
-
+    ).execute()
     return new_fl_ui_app[0]["microservices"][0]
 
 
@@ -80,4 +73,4 @@ def deploy_fl_ui_service(fl_ui_service_id: ServiceId) -> None:
             exception=FLUIException,
             show_msg_on_success=True,
         ),
-    )
+    ).execute()

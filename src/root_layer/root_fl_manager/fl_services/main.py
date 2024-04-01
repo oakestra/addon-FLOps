@@ -15,12 +15,8 @@ def handle_new_fl_service(
 ) -> None:
     flops_identifier = FlOpsIdentifier()
 
-    from icecream import ic
-
     fl_ui_service_id = create_fl_ui_service(new_fl_service_sla, auth_header, flops_identifier)
-    ic("B")
     deploy_fl_ui_service(fl_ui_service_id)
-    ic("C")
 
     ml_repo = MlRepo(new_fl_service_sla["code"])
     latest_matching_image_name = fetch_latest_matching_image(ml_repo)

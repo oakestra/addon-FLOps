@@ -1,7 +1,6 @@
 import api.custom_requests as custom_requests
 from api.consts import SYSTEM_MANAGER_URL
 from api.custom_http import HttpMethod
-from icecream import ic
 from utils.exceptions import LoginException
 
 _login_token = ""
@@ -21,7 +20,7 @@ def _login_and_set_token() -> str:
             show_msg_on_success=True,
             exception=LoginException,
         ),
-    )
+    ).execute()
 
     global _login_token
     _login_token = response["token"]
@@ -29,7 +28,6 @@ def _login_and_set_token() -> str:
 
 
 def get_login_token() -> str:
-    ic("aAa")
     if _login_token == "":
         return _login_and_set_token()
     return _login_token

@@ -32,7 +32,7 @@ def _create_new_image_builder_app(
             exception=utils.exceptions.ImageBuilderException,
             show_msg_on_success=True,
         ),
-    )
+    ).execute()
 
     if verbose:
         ui_notifier.notify_ui(
@@ -68,7 +68,7 @@ def _deploy_builder_service(
             exception=utils.exceptions.ImageBuilderException,
             show_msg_on_success=True,
         ),
-    )
+    ).execute()
     if verbose:
         ui_notifier.notify_ui(
             "New Builder application deployed & started",
@@ -94,30 +94,28 @@ def fetch_builder_app(flops_id: str) -> dict:
     response = custom_requests.CustomRequest(
         core=custom_requests.RequestCore(
             base_url=SYSTEM_MANAGER_URL,
-            api_endpoint="/api/applications",
-            query_params=f"app_name=bu{flops_id}&app_namespace={BUILDER_APP_NAMESPACE}",
+            api_endpoint=f"/api/application/{BUILDER_APP_NAMESPACE}/bu{flops_id}",
         ),
         aux=custom_requests.RequestAuxiliaries(
             what_should_happen=f"Fetch builder app bu'{flops_id}'",
             exception=utils.exceptions.ImageBuilderException,
             show_msg_on_success=True,
         ),
-    )
+    ).execute()
     return response
 
 
 def undeploy_builder_app(flops_id: str) -> None:
-    builder_app = fetch_builder_app(flops_id)[0]
+    builder_app = fetch_builder_app(flops_id)
     custom_requests.CustomRequest(
         core=custom_requests.RequestCore(
             http_method=HttpMethod.DELETE,
             base_url=SYSTEM_MANAGER_URL,
             api_endpoint=f"/api/application/{builder_app['applicationID']}",
-            query_params=f"app_name=bu{flops_id}&app_namespace={BUILDER_APP_NAMESPACE}",
         ),
         aux=custom_requests.RequestAuxiliaries(
             what_should_happen=f"Delete builder app for FLOps'{flops_id}'",
             exception=utils.exceptions.ImageBuilderException,
             show_msg_on_success=True,
         ),
-    )
+    ).execute()

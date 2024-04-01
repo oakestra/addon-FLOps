@@ -19,8 +19,8 @@ class SlaCompute(NamedTuple):
 
 
 class SlaCore(NamedTuple):
-    compute: SlaCompute
     names: SlaNames = SlaNames()
+    compute: SlaCompute = None
     customerID: str = ""
     app_id: ApplicationId = ""
 
@@ -33,15 +33,15 @@ class SlaResources(NamedTuple):
 
 class SlaDetails(NamedTuple):
     resources: SlaResources = SlaResources()
-    app_desc: str = ("",)
-    rr_ip: ipaddress.IPv4Address = (None,)
+    app_desc: str = ""
+    rr_ip: ipaddress.IPv4Address = None
 
 
 def generate_sla(
     core: SlaCore,
     details: SlaDetails,
 ) -> Sla:
-    return {
+    sla = {
         "sla_version": "v2.0",
         "customerID": core.customerID,
         "applications": [
@@ -50,21 +50,24 @@ def generate_sla(
                 "application_name": core.names.app_name,
                 "application_namespace": core.names.app_namespace,
                 "application_desc": details.app_desc,
-                "microservices": [
-                    {
-                        "microserviceID": "",
-                        "microservice_name": core.names.service_name,
-                        "microservice_namespace": core.names.service_namespace,
-                        "virtualization": "container",
-                        "one_shot": core.compute.one_shot_service,
-                        "cmd": [] if (core.compute.cmd == "") else shlex.split(core.compute.cmd),
-                        "memory": details.resources.memory,
-                        "vcpus": details.resources.vcpus,
-                        "storage": details.resources.storage,
-                        "code": core.compute.code,
-                        **({"addresses": {"rr_ip": str(details.rr_ip)}} if details.rr_ip else {}),
-                    }
-                ],
+                "microservices": [],
             }
         ],
     }
+    if core.compute:
+        sla["applications"][0]["microservices"].append(
+            {
+                "microserviceID": "",
+                "microservice_name": core.names.service_name,
+                "microservice_namespace": core.names.service_namespace,
+                "virtualization": "container",
+                "one_shot": core.compute.one_shot_service,
+                "cmd": [] if (core.compute.cmd == "") else shlex.split(core.compute.cmd),
+                "memory": details.resources.memory,
+                "vcpus": details.resources.vcpus,
+                "storage": details.resources.storage,
+                "code": core.compute.code,
+                **({"addresses": {"rr_ip": str(details.rr_ip)}} if details.rr_ip else {}),
+            }
+        )
+    return sla

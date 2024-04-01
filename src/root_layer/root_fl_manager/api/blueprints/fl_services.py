@@ -36,7 +36,3 @@ def post_fl_service() -> ExternalApiResponse:
         return {"message": err_msg}, HTTPStatus.INTERNAL_SERVER_ERROR
 
     return {"message": "New FLOps processes started successfully"}, HTTPStatus.OK
-
-
-
-TODO SLA gen fixen, da läuft was schief!!
