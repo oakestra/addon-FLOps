@@ -1,5 +1,5 @@
 import mqtt.main
-from utils.identifier import FlOpsIdentifier
+from flops.identifier import FlOpsIdentifier
 from utils.logging import logger
 
 

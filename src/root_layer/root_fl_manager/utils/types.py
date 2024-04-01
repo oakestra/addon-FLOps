@@ -15,6 +15,4 @@ Id = str
 ServiceId = Id
 ApplicationId = Id
 
-DbServiceObject = dict
-
 ExternalApiResponse = Tuple[dict, HTTPStatus]

@@ -5,8 +5,8 @@ from typing import NamedTuple
 import requests
 from api.custom_http import HttpMethod
 from api.login import get_login_token
+from flops.identifier import FlOpsIdentifier
 from utils.exceptions import RootFLManagerException
-from utils.identifier import FlOpsIdentifier
 from utils.logging import logger
 
 

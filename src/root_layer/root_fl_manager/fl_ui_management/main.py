@@ -1,8 +1,8 @@
 from api.consts import SYSTEM_MANAGER_URL
 from api.custom_requests import CustomRequest, HttpMethod, RequestAuxiliaries, RequestCore
+from flops.identifier import FlOpsIdentifier
 from mqtt.main import ROOT_FL_MQTT_BROKER_PORT, ROOT_FL_MQTT_BROKER_URL
 from utils.exceptions import FLUIException
-from utils.identifier import FlOpsIdentifier
 from utils.sla_generator import (
     SlaCompute,
     SlaCore,

@@ -2,7 +2,7 @@ from http import HTTPStatus
 
 import flask
 import flask_openapi3
-from fl_services.main import handle_new_fl_service
+from flops.main import handle_new_fl_service
 from utils.exceptions import RootFLManagerException
 from utils.logging import logger
 from utils.types import ExternalApiResponse

@@ -3,14 +3,14 @@ import fl_ui_management.notification as ui_notifier
 import utils.exceptions
 from api.consts import SYSTEM_MANAGER_URL
 from api.custom_http import HttpMethod
+from flops.identifier import FlOpsIdentifier
 from image_builder_management.common import BUILDER_APP_NAMESPACE, MlRepo
 from image_builder_management.util import generate_builder_sla
-from utils.identifier import FlOpsIdentifier
 from utils.logging import logger
 from utils.types import ServiceId
 
 
-def _create_new_image_builder_app(
+def create_new_image_builder_app(
     flops_identifier: FlOpsIdentifier,
     ml_repo: MlRepo,
     verbose: bool = False,
@@ -51,7 +51,7 @@ def _create_new_image_builder_app(
     return new_builder_app["microservices"][0]
 
 
-def _deploy_builder_service(
+def deploy_builder_service(
     builder_service_id: ServiceId,
     ml_repo: MlRepo,
     flops_identifier: FlOpsIdentifier,
@@ -74,20 +74,6 @@ def _deploy_builder_service(
             "New Builder application deployed & started",
             flops_identifier,
         )
-
-
-def delegate_image_build(
-    flops_identifier: FlOpsIdentifier,
-    ml_repo: MlRepo,
-    verbose: bool = False,
-) -> None:
-    if verbose:
-        ui_notifier.notify_ui(
-            "New FL Client image needs to be build. Start build delegation processes.",
-            flops_identifier,
-        )
-    builder_service_id = _create_new_image_builder_app(flops_identifier, ml_repo, verbose)
-    _deploy_builder_service(builder_service_id, ml_repo, flops_identifier, verbose)
 
 
 def fetch_builder_app(flops_id: str) -> dict:

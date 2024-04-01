@@ -1,11 +1,11 @@
 from typing import List, Optional
 
 from api.custom_requests import CustomRequest, RequestAuxiliaries, RequestCore
+from flops.identifier import FlOpsIdentifier
 from image_builder_management.common import MlRepo
 from image_registry.common import ROOT_FL_IMAGE_REGISTRY_URL
 from image_registry.utils import get_latest_commit_hash
 from utils.exceptions import ImageRegistryException
-from utils.identifier import FlOpsIdentifier
 
 
 def check_registry_reachable(flops_identifier: FlOpsIdentifier) -> bool:

@@ -1,9 +1,9 @@
 from fl_ui_management.main import create_fl_ui_service, deploy_fl_ui_service
 from fl_ui_management.notification import notify_ui
-from image_builder_management.app import delegate_image_build
+from flops.identifier import FlOpsIdentifier
 from image_builder_management.common import MlRepo
+from image_builder_management.main import delegate_image_build
 from image_registry.main import fetch_latest_matching_image
-from utils.identifier import FlOpsIdentifier
 from utils.logging import logger
 from utils.types import FlSla
 

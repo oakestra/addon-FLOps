@@ -1,5 +1,26 @@
-from image_builder_management.app import undeploy_builder_app
+import fl_ui_management.notification as ui_notifier
+from flops.identifier import FlOpsIdentifier
+from image_builder_management.app import (
+    create_new_image_builder_app,
+    deploy_builder_service,
+    undeploy_builder_app,
+)
+from image_builder_management.common import MlRepo
 from utils.logging import logger
+
+
+def delegate_image_build(
+    flops_identifier: FlOpsIdentifier,
+    ml_repo: MlRepo,
+    verbose: bool = False,
+) -> None:
+    if verbose:
+        ui_notifier.notify_ui(
+            "New FL Client image needs to be build. Start build delegation processes.",
+            flops_identifier,
+        )
+    builder_service_id = create_new_image_builder_app(flops_identifier, ml_repo, verbose)
+    deploy_builder_service(builder_service_id, ml_repo, flops_identifier, verbose)
 
 
 def handle_builder_success(builder_success_msg: dict) -> None:
