@@ -89,7 +89,7 @@ class CustomRequest:
             (
                 self.aux.what_should_happen,
                 "request failed",
-                f"with {self.response.status}" if self.response else "entirely, i.e. no response",
+                f"with {self.response.status}" if self.response else "- no response",
                 f"for '{self.core.http_method}' '{self.url}",
             )
         )

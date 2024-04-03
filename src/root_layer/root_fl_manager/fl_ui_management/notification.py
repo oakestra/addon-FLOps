@@ -15,5 +15,5 @@ def notify_ui(
         topic=f"flui/{flops_identifier.flops_id}",
         payload=msg,
         qos=2,
-        retain=False,
+        retain=True,
     )

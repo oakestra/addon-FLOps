@@ -22,6 +22,9 @@ def handle_new_fl_service(
     latest_matching_image_name = fetch_latest_matching_image(ml_repo)
     if latest_matching_image_name is not None:
         info_msg = f"Latest FL Client ENV image already exists for provided repo: '{ml_repo.name}'"
+        if verbose:
+            info_msg += f" - image name : '{latest_matching_image_name}'"
+
         notify_ui(info_msg, flops_identifier)
         logger.info(info_msg)
         return

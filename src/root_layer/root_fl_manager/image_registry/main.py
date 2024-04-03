@@ -3,7 +3,7 @@ from typing import List, Optional
 from api.custom_requests import CustomRequest, RequestAuxiliaries, RequestCore
 from flops.identifier import FlOpsIdentifier
 from image_builder_management.common import MlRepo
-from image_registry.common import ROOT_FL_IMAGE_REGISTRY_URL
+from image_registry.common import ROOT_FL_IMAGE_REGISTRY_IP_WITH_PORT, ROOT_FL_IMAGE_REGISTRY_URL
 from image_registry.utils import get_latest_commit_hash
 from utils.exceptions import ImageRegistryException
 
@@ -63,5 +63,7 @@ def fetch_latest_matching_image(ml_repo: MlRepo) -> Optional[str]:
     current_image_tags = get_current_registry_repo_image_tags(ml_repo)
     latest_commit_hash = get_latest_commit_hash(ml_repo)
     return (
-        f"{ml_repo.name}:{latest_commit_hash}" if latest_commit_hash in current_image_tags else None
+        f"{ROOT_FL_IMAGE_REGISTRY_IP_WITH_PORT}/{ml_repo.name}:{latest_commit_hash}"
+        if latest_commit_hash in current_image_tags
+        else None
     )
