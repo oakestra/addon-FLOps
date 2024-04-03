@@ -28,10 +28,6 @@ class FLUIException(RootFLManagerException):
     pass
 
 
-class OakestraException(RootFLManagerException):
-    pass
-
-
 class MQTTException(RootFLManagerException):
     pass
 
