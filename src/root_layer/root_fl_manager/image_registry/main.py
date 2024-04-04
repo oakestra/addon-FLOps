@@ -1,14 +1,14 @@
 from typing import List, Optional
 
 from api.custom_requests import CustomRequest, RequestAuxiliaries, RequestCore
-from flops.identifier import FlOpsIdentifier
+from flops.process import FlOpsProcess
 from image_builder_management.common import MlRepo
 from image_registry.common import ROOT_FL_IMAGE_REGISTRY_IP_WITH_PORT, ROOT_FL_IMAGE_REGISTRY_URL
 from image_registry.utils import get_latest_commit_hash
 from utils.exceptions import ImageRegistryException
 
 
-def check_registry_reachable(flops_identifier: FlOpsIdentifier) -> bool:
+def check_registry_reachable(flops_process: FlOpsProcess) -> bool:
     CustomRequest(
         RequestCore(
             base_url=ROOT_FL_IMAGE_REGISTRY_URL,
@@ -16,7 +16,7 @@ def check_registry_reachable(flops_identifier: FlOpsIdentifier) -> bool:
         ),
         RequestAuxiliaries(
             what_should_happen="Registry is reachable",
-            flops_identifier=flops_identifier,
+            flops_process=flops_process,
             exception=ImageRegistryException,
             show_msg_on_success=True,
         ),

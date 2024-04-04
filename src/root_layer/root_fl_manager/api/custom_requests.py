@@ -5,7 +5,7 @@ from typing import NamedTuple
 import requests
 from api.custom_http import HttpMethod
 from api.login import get_login_token
-from flops.identifier import FlOpsIdentifier
+from flops.process import FlOpsProcess
 from utils.exceptions import RootFLManagerException
 from utils.logging import logger
 
@@ -45,7 +45,7 @@ class RequestCore:
 class RequestAuxiliaries(NamedTuple):
     what_should_happen: str
     exception: RootFLManagerException
-    flops_identifier: FlOpsIdentifier = None
+    flops_process: FlOpsProcess = None
     show_msg_on_success: bool = False
     is_oakestra_api: bool = True
 
@@ -115,5 +115,5 @@ class CustomRequest:
         raise self.aux.exception(
             msg=error_msg,
             http_status=self.response.status if self.response else None,
-            flops_identifier=self.aux.flops_identifier,
+            flops_process=self.aux.flops_process,
         )
