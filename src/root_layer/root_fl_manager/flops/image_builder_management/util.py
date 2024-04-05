@@ -1,7 +1,7 @@
 import mqtt.main
+from flops.image_builder_management.common import BUILDER_APP_NAMESPACE, MlRepo
+from flops.image_registry.common import ROOT_FL_IMAGE_REGISTRY_URL
 from flops.process import FlOpsProcess
-from image_builder_management.common import BUILDER_APP_NAMESPACE, MlRepo
-from image_registry.common import ROOT_FL_IMAGE_REGISTRY_URL
 from utils.common import FLOPS_USER_ACCOUNT
 from utils.sla_generator import (
     SlaCompute,

@@ -1,5 +1,5 @@
 from api.custom_requests import CustomRequest, RequestAuxiliaries, RequestCore
-from image_builder_management.common import MlRepo
+from flops.image_builder_management.common import MlRepo
 from utils.exceptions import ImageRegistryException
 
 

@@ -1,6 +1,6 @@
 from http import HTTPStatus
 
-from fl_ui_management.notification import notify_ui
+from flops.fl_ui_management.notification import notify_ui
 from flops.process import FlOpsProcess
 
 

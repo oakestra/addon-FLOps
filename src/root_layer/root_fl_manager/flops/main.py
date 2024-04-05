@@ -1,11 +1,11 @@
 import threading
 
-from fl_ui_management.main import create_fl_ui_service, deploy_fl_ui_service
-from fl_ui_management.notification import notify_ui
+from flops.fl_ui_management.main import create_fl_ui_service, deploy_fl_ui_service
+from flops.fl_ui_management.notification import notify_ui
+from flops.image_builder_management.common import MlRepo
+from flops.image_builder_management.main import delegate_image_build
+from flops.image_registry.main import fetch_latest_matching_image
 from flops.process import FlOpsProcess
-from image_builder_management.common import MlRepo
-from image_builder_management.main import delegate_image_build
-from image_registry.main import fetch_latest_matching_image
 from utils.logging import logger
 from utils.types import FlSla
 

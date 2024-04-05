@@ -1,12 +1,12 @@
-import fl_ui_management.notification as ui_notifier
+import flops.fl_ui_management.notification as ui_notifier
 import flops.main
-from flops.process import FlOpsProcess
-from image_builder_management.app import (
+from flops.image_builder_management.app import (
     create_new_image_builder_app,
     deploy_builder_service,
     undeploy_builder_app,
 )
-from image_builder_management.common import MlRepo
+from flops.image_builder_management.common import MlRepo
+from flops.process import FlOpsProcess
 from utils.logging import logger
 
 

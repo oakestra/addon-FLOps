@@ -1,11 +1,11 @@
 import api.custom_requests as custom_requests
-import fl_ui_management.notification as ui_notifier
+import flops.fl_ui_management.notification as ui_notifier
 import utils.exceptions
 from api.consts import SYSTEM_MANAGER_URL
 from api.custom_http import HttpMethod
+from flops.image_builder_management.common import BUILDER_APP_NAMESPACE, MlRepo
+from flops.image_builder_management.util import generate_builder_sla
 from flops.process import FlOpsProcess
-from image_builder_management.common import BUILDER_APP_NAMESPACE, MlRepo
-from image_builder_management.util import generate_builder_sla
 from utils.logging import logger
 from utils.types import ServiceId
 
