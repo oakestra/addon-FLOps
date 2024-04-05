@@ -3,7 +3,7 @@ from http import HTTPStatus
 from typing import NamedTuple
 
 import requests
-from api.custom_http import HttpMethod
+from api.custom_http import HttpMethods
 from api.login import get_login_token
 from flops.process import FlOpsProcess
 from utils.exceptions import RootFLManagerException
@@ -16,7 +16,7 @@ class RequestCore:
         base_url: str,
         api_endpoint: str = None,
         query_params: str = None,
-        http_method: HttpMethod = HttpMethod.GET,
+        http_method: HttpMethods = HttpMethods.GET,
         custom_headers: dict = None,
         data: dict = None,
     ):

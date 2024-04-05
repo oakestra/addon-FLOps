@@ -14,7 +14,7 @@ services:
       - SYSTEM_MANAGER_PORT=10000
       - ROOT_FL_MQTT_BROKER_PORT=9027
       - ROOT_FL_MQTT_BROKER_URL=root_fl_mqtt
-      #- ROOT_FL_MONGO_DB_PORT=10027
+      - ROOT_FL_MONGO_DB_PORT=10027
       - CAROOT=/etc/ssl
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -56,22 +56,21 @@ services:
       - /mosquitto/data
       - /mosquitto/log
 
-  # Note: Currently not needed, but just in case
-  # mongo_root_fl:
-  #   image: mongo:3.6
-  #   container_name: mongo_root_fl
-  #   hostname: mongo_root_fl
-  #   ports:
-  #     - "10027:10027"
-  #   volumes:
-  #     - 'mongo_root_fl:/mongodb'
-  #   command: mongod --port 10027
+  mongo_root_fl:
+    image: mongo:3.6
+    container_name: mongo_root_fl
+    hostname: mongo_root_fl
+    ports:
+      - "10027:10027"
+    volumes:
+      - 'mongo_root_fl:/mongodb'
+    command: mongod --port 10027
 
 volumes:
   registry_data:
   ssl:
-  # mongo_root_fl:
-  #   driver: local
+  mongo_root_fl:
+    driver: local
 
 # To be able for the root-orchestrator (RO) compose services to reach the root fl services
 # an easy solution is to place the fl root services into the same docker network.

@@ -24,6 +24,10 @@ class ImageBuilderException(RootFLManagerException):
     pass
 
 
+class FlAggregatorException(RootFLManagerException):
+    pass
+
+
 class FLUIException(RootFLManagerException):
     pass
 

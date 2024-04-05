@@ -1,6 +1,6 @@
 import api.custom_requests as custom_requests
 from api.consts import SYSTEM_MANAGER_URL
-from api.custom_http import HttpMethod
+from api.custom_http import HttpMethods
 from utils.exceptions import LoginException
 
 _login_token = ""
@@ -9,7 +9,7 @@ _login_token = ""
 def _login_and_set_token() -> str:
     response = custom_requests.CustomRequest(
         custom_requests.RequestCore(
-            http_method=HttpMethod.POST,
+            http_method=HttpMethods.POST,
             base_url=SYSTEM_MANAGER_URL,
             api_endpoint="/api/auth/login",
             data={"username": "Admin", "password": "Admin"},

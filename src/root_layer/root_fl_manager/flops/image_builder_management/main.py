@@ -1,7 +1,7 @@
 import flops.fl_ui_management.notification as ui_notifier
 import flops.main
 from flops.image_builder_management.app import (
-    create_new_image_builder_app,
+    create_image_builder,
     deploy_builder_service,
     undeploy_builder_app,
 )
@@ -20,7 +20,7 @@ def delegate_image_build(
             "New FL Client image needs to be build. Start build delegation processes.",
             flops_process,
         )
-    builder_service_id = create_new_image_builder_app(flops_process, ml_repo, verbose)
+    builder_service_id = create_image_builder(flops_process, ml_repo, verbose)
     deploy_builder_service(builder_service_id, ml_repo, flops_process, verbose)
 
 

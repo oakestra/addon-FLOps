@@ -2,7 +2,7 @@ from http import HTTPStatus
 
 import flask
 import flask_openapi3
-from flops.main import handle_new_fl_service
+from flops.main import handle_new_flops_process
 from utils.exceptions import RootFLManagerException
 from utils.logging import logger
 from utils.types import ExternalApiResponse
@@ -24,8 +24,7 @@ def post_fl_service() -> ExternalApiResponse:
     bearer_token = flask.request.headers.get("Authorization")
     verbose = data["verbose"]
     try:
-        handle_new_fl_service(data, bearer_token, verbose)
-
+        handle_new_flops_process(data, bearer_token, verbose)
     except RootFLManagerException as e:
         logger.fatal(f"{e.msg}, {e.http_status}")
         e.try_to_notify_ui()

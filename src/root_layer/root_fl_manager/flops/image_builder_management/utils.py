@@ -19,7 +19,7 @@ def generate_builder_sla(
     flops_process: FlOpsProcess,
 ) -> Sla:
 
-    builder_name = f"bu{flops_process.id}"
+    builder_name = f"bu{flops_process.flops_id}"
 
     cmd = " ".join(
         (
@@ -27,13 +27,13 @@ def generate_builder_sla(
             "main.py",
             ml_repo.url,
             ROOT_FL_IMAGE_REGISTRY_URL,
-            flops_process.id,
+            flops_process.flops_id,
             # TODO need to figure out a way to provide
             # non docker-compose member exclusive DNS name as IP.
             # mqtt.main.ROOT_MQTT_BROKER_URL,
             "192.168.178.44",
             mqtt.main.ROOT_FL_MQTT_BROKER_PORT,
-            str(flops_process.fl_ui_ip),
+            str(flops_process.ui_ip),
         )
     )
 

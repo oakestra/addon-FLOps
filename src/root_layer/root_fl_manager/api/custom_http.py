@@ -2,7 +2,7 @@ import requests
 from utils.types import CustomEnum
 
 
-class HttpMethod(CustomEnum):
+class HttpMethods(CustomEnum):
     GET = "get"
     POST = "post"
     PUT = "put"

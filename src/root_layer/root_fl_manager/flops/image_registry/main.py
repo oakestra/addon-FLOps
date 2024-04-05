@@ -62,7 +62,6 @@ def fetch_latest_matching_image(ml_repo: MlRepo) -> Optional[str]:
     current_image_reqpositories = get_current_registry_image_repos()
     if ml_repo.sanitized_name not in current_image_reqpositories:
         return None
-
     current_image_tags = get_current_registry_repo_image_tags(ml_repo)
     latest_commit_hash = get_latest_commit_hash(ml_repo)
     return (

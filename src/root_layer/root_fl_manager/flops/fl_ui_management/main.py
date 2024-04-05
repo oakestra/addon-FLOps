@@ -1,76 +1,61 @@
+from dataclasses import dataclass, field
+
 from api.consts import SYSTEM_MANAGER_URL
-from api.custom_requests import CustomRequest, HttpMethod, RequestAuxiliaries, RequestCore
+from api.custom_requests import CustomRequest, HttpMethods, RequestAuxiliaries, RequestCore
+from database.main import DbCollections, get_flops_db
+from flops.fl_ui_management.utils import generate_fl_ui_sla, send_fl_ui_creation_request
 from flops.process import FlOpsProcess
+from flops.utils import generate_ip
 from mqtt.main import ROOT_FL_MQTT_BROKER_PORT, ROOT_FL_MQTT_BROKER_URL
 from utils.exceptions import FLUIException
-from utils.sla_generator import (
-    SlaCompute,
-    SlaCore,
-    SlaDetails,
-    SlaNames,
-    SlaResources,
-    generate_sla,
-)
-from utils.types import FlSla, ServiceId
+from utils.types import FlOpsBaseClass, ServiceId
 
 
-def create_fl_ui_service(
-    new_fl_service_sla: FlSla,
-    bearer_token: str,
-    flops_process: FlOpsProcess,
-) -> ServiceId:
+@dataclass
+class FLUserInterface(FlOpsBaseClass):
+    flops_process_id: str = field(init=False)
+    ip: str = field(init=False, default="")
+    fl_ui_id: str = field(init=False, default="")
 
-    url = ROOT_FL_MQTT_BROKER_URL
-    port = ROOT_FL_MQTT_BROKER_PORT
+    def __init__(self, flops_process: FlOpsProcess, auth_header: str):
+        self.flops_process_id = flops_process.flops_id
+        self.ip = generate_ip(flops_process.flops_id, self)
+        self.fl_ui_id = self._create(flops_process, auth_header)
+        self._deploy()
+        self._add_to_db()
 
-    fl_ui_service_SLA = generate_sla(
-        core=SlaCore(
-            customerID=new_fl_service_sla["customerID"],
-            names=SlaNames(
-                app_name=f"fl{flops_process.id}",
-                app_namespace="flui",
-                service_name=f"fl{flops_process.id}",
-                service_namespace="flui",
-            ),
-            compute=SlaCompute(
-                code="ghcr.io/malyuk-a/fl-ui:latest",
-                cmd=f"python main.py {flops_process.id} {url} {port}",
-            ),
-        ),
-        details=SlaDetails(
-            rr_ip=flops_process.fl_ui_ip,
-            resources=SlaResources(memory=200, vcpus=1, storage=0),
-        ),
-    )
-
-    new_fl_ui_app = CustomRequest(
-        RequestCore(
-            http_method=HttpMethod.POST,
-            base_url=SYSTEM_MANAGER_URL,
-            api_endpoint="/api/application/",
-            data=fl_ui_service_SLA,
-            custom_headers={"Authorization": bearer_token},
-        ),
-        RequestAuxiliaries(
-            what_should_happen=f"Create new FL UI service '{flops_process.id}'",
+    def _create(
+        self,
+        flops_process: FlOpsProcess,
+        bearer_token: str,
+    ) -> ServiceId:
+        fl_ui_SLA = generate_fl_ui_sla(
             flops_process=flops_process,
-            show_msg_on_success=True,
-            exception=FLUIException,
-        ),
-    ).execute()
-    return new_fl_ui_app[0]["microservices"][0]
+            port=ROOT_FL_MQTT_BROKER_PORT,
+            url=ROOT_FL_MQTT_BROKER_URL,
+            ui_ip=self.ip,
+        )
+        new_fl_ui_app = send_fl_ui_creation_request(
+            fl_ui_SLA=fl_ui_SLA,
+            bearer_token=bearer_token,
+            flops_process=flops_process,
+        )
+        return new_fl_ui_app[0]["microservices"][0]
 
+    def _deploy(self) -> None:
+        CustomRequest(
+            RequestCore(
+                http_method=HttpMethods.POST,
+                base_url=SYSTEM_MANAGER_URL,
+                api_endpoint=f"/api/service/{self.fl_ui_id}/instance",
+            ),
+            RequestAuxiliaries(
+                what_should_happen=f"Deploy FL UI service '{self.fl_ui_id}'",
+                exception=FLUIException,
+                show_msg_on_success=True,
+            ),
+        ).execute()
 
-def deploy_fl_ui_service(fl_ui_service_id: ServiceId) -> None:
-    CustomRequest(
-        RequestCore(
-            http_method=HttpMethod.POST,
-            base_url=SYSTEM_MANAGER_URL,
-            api_endpoint=f"/api/service/{fl_ui_service_id}/instance",
-        ),
-        RequestAuxiliaries(
-            what_should_happen=f"Deploy FL UI service '{fl_ui_service_id}'",
-            exception=FLUIException,
-            show_msg_on_success=True,
-        ),
-    ).execute()
+    def _add_to_db(self) -> None:
+        db_collection = get_flops_db().get_collection(DbCollections.USER_INTERFACES)
+        db_collection.insert_one(self.to_dict())

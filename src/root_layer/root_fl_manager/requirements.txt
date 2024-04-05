@@ -5,5 +5,5 @@ docker ~= 7.0.0
 gitpython ~= 3.1.42
 paho-mqtt == 2.0
 PyGithub == 2.2.0
-#pymongo ~= 4.6.3
+pymongo ~= 4.6.3
 icecream

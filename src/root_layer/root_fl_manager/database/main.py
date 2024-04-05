@@ -1,30 +1,33 @@
-# Note: Currently not needed, but just in case
+import os
 
-# import os
+import pymongo
+from utils.common import ROOT_FL_MANAGER_IP
+from utils.types import CustomEnum
 
-# import pymongo
-# from flops.process import FlOpsProcess
-# from icecream import ic
-# from utils.common import ROOT_FL_MANAGER_IP
-# from utils.logging import logger
+ROOT_FL_MONGO_DB_PORT = os.environ.get("ROOT_FL_MONGO_DB_PORT")
 
-# ROOT_FL_MONGO_DB_PORT = os.environ.get("ROOT_FL_MONGO_DB_PORT")
-# FLOPS_DB_NAME = "flops"
-# FLOPS_PROCESSES_COLLECTION_NAME = "processes"
+_flops_db = None
 
 
-# def handle_database() -> None:
-#     logger.debug("AAA")
-#     client = pymongo.MongoClient(ROOT_FL_MANAGER_IP, int(ROOT_FL_MONGO_DB_PORT))
-#     db = client[FLOPS_DB_NAME]
-#     collection = db[FLOPS_PROCESSES_COLLECTION_NAME]
+class DbCollections(CustomEnum):
+    PROCESSES = "processes"
+    ML_REPOS = "ml_repos"
+    USER_INTERFACES = "user_interfaces"
 
-#     ic(client)
-#     ic(db)
-#     ic(collection)
 
-#     logger.debug("BBB")
+class FLOpsDB:
+    def __init__(self):
+        self._client = pymongo.MongoClient(ROOT_FL_MANAGER_IP, int(ROOT_FL_MONGO_DB_PORT))
+        self._db = self._client["flops"]
+        self._collections_dict = {
+            collection_enum: self._db[str(collection_enum)] for collection_enum in DbCollections
+        }
+        global _flops_db
+        _flops_db = self
 
-#     test_process = FlOpsProcess()
+    def get_collection(self, collection_enum: DbCollections):
+        return self._collections_dict[collection_enum]
 
-#     logger.debug("ZZZ")
+
+def get_flops_db() -> FLOpsDB:
+    return _flops_db or FLOpsDB()
