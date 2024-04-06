@@ -1,4 +1,5 @@
 import json
+from dataclasses import dataclass, field
 from http import HTTPStatus
 from typing import NamedTuple
 
@@ -10,36 +11,14 @@ from utils.exceptions import RootFLManagerException
 from utils.logging import logger
 
 
+@dataclass
 class RequestCore:
-    def __init__(
-        self,
-        base_url: str,
-        api_endpoint: str = None,
-        query_params: str = None,
-        http_method: HttpMethods = HttpMethods.GET,
-        custom_headers: dict = None,
-        data: dict = None,
-    ):
-        self.base_url = base_url
-        self.api_endpoint = api_endpoint
-        self.query_params = query_params
-        self.http_method = http_method
-        self.custom_headers = custom_headers
-        self.data = data
-
-    def __str__(self):
-        return " ".join(
-            (
-                "RequestCore(",
-                f"base_url={self.base_url}",
-                f"api_endpoint={self.api_endpoint}",
-                f"query_params={self.query_params}",
-                f"http_method={self.http_method}",
-                f"http_method={self.http_method}",
-                f"data={self.data}",
-                ")",
-            )
-        )
+    base_url: str
+    api_endpoint: str = None
+    query_params: str = None
+    http_method: HttpMethods = HttpMethods.GET
+    custom_headers: dict = None
+    data: dict = None
 
 
 class RequestAuxiliaries(NamedTuple):
@@ -50,14 +29,17 @@ class RequestAuxiliaries(NamedTuple):
     is_oakestra_api: bool = True
 
 
+@dataclass
 class CustomRequest:
-    def __init__(self, core: RequestCore, aux: RequestAuxiliaries):
-        self.core = core
-        self.aux = aux
-        self.headers = None
-        self.url = None
-        self.args = None
-        self.response = None
+    core: RequestCore
+    aux: RequestAuxiliaries
+
+    headers: dict = field(init=False)
+    url: str = field(init=False)
+    args: dict = field(init=False)
+    response: requests.Response = field(init=False)
+
+    def __post_init__(self):
         self._prepare()
 
     def _prepare(self) -> None:

@@ -1,11 +1,11 @@
 from http import HTTPStatus
+from typing import Tuple
 
 import flask
 import flask_openapi3
 from flops.main import handle_new_flops_process
 from utils.exceptions import RootFLManagerException
 from utils.logging import logger
-from utils.types import ExternalApiResponse
 
 flops_blp = flask_openapi3.APIBlueprint(
     "flops",
@@ -15,16 +15,13 @@ flops_blp = flask_openapi3.APIBlueprint(
 
 
 @flops_blp.post("/")
-def post_fl_service() -> ExternalApiResponse:
+def post_fl_service() -> Tuple[dict, HTTPStatus]:
     # TODO add sla-schema checking, etc. similar to main repo
     # Note: Current Assumption: A new FL app needs to be created.
     # If the use cases come up that a FL service should be appended to an existing App
     # that can be easily realized.
-    data = flask.request.json
-    bearer_token = flask.request.headers.get("Authorization")
-    verbose = data["verbose"]
     try:
-        handle_new_flops_process(data, bearer_token, verbose)
+        handle_new_flops_process(new_flops_process_sla=flask.request.json)
     except RootFLManagerException as e:
         logger.fatal(f"{e.msg}, {e.http_status}")
         e.try_to_notify_ui()

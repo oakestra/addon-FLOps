@@ -13,7 +13,6 @@ from utils.types import ServiceId
 def create_image_builder(
     flops_process: FlOpsProcess,
     ml_repo: MlRepo,
-    verbose: bool = False,
 ) -> ServiceId:
     builder_sla = generate_builder_sla(ml_repo, flops_process)
     builder_name = builder_sla["applications"][0]["application_name"]
@@ -34,7 +33,7 @@ def create_image_builder(
         ),
     ).execute()
 
-    if verbose:
+    if flops_process.verbose:
         ui_notifier.notify_ui(
             "New Builder application created",
             flops_process,
@@ -55,7 +54,6 @@ def deploy_builder_service(
     builder_service_id: ServiceId,
     ml_repo: MlRepo,
     flops_process: FlOpsProcess,
-    verbose: bool = False,
 ) -> None:
     custom_requests.CustomRequest(
         core=custom_requests.RequestCore(
@@ -69,7 +67,7 @@ def deploy_builder_service(
             show_msg_on_success=True,
         ),
     ).execute()
-    if verbose:
+    if flops_process.verbose:
         ui_notifier.notify_ui(
             "New Builder application deployed & started",
             flops_process,

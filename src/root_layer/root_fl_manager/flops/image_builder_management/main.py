@@ -13,15 +13,14 @@ from utils.logging import logger
 def delegate_image_build(
     flops_process: FlOpsProcess,
     ml_repo: MlRepo,
-    verbose: bool = False,
 ) -> None:
-    if verbose:
+    if flops_process.verbose:
         ui_notifier.notify_ui(
             "New FL Client image needs to be build. Start build delegation processes.",
             flops_process,
         )
-    builder_service_id = create_image_builder(flops_process, ml_repo, verbose)
-    deploy_builder_service(builder_service_id, ml_repo, flops_process, verbose)
+    builder_service_id = create_image_builder(flops_process, ml_repo)
+    deploy_builder_service(builder_service_id, ml_repo, flops_process)
 
 
 def handle_builder_success(builder_success_msg: dict) -> None:

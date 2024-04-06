@@ -17,7 +17,6 @@ def _login_and_set_token() -> str:
         ),
         custom_requests.RequestAuxiliaries(
             what_should_happen="Login",
-            show_msg_on_success=True,
             exception=LoginException,
         ),
     ).execute()

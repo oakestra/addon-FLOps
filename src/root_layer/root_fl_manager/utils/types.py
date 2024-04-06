@@ -1,7 +1,5 @@
 import enum
 from dataclasses import asdict, dataclass
-from http import HTTPStatus
-from typing import Tuple
 
 
 class CustomEnum(enum.Enum):
@@ -25,5 +23,3 @@ FlOpsProcessSla = Sla
 Id = str
 ServiceId = Id
 ApplicationId = Id
-
-ExternalApiResponse = Tuple[dict, HTTPStatus]

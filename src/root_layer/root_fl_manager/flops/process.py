@@ -7,10 +7,7 @@ from utils.types import FlOpsBaseClass
 
 @dataclass
 class FlOpsProcess(FlOpsBaseClass):
-    """Represents all necessary FL and ML/DevOps components to power one entire FL user request.
-    The FLOpsProcess ID is interwined in all mentioned components for easy grouping/mapping/linking.
-    It is enough to  forward this ID to external components.
-    """
+    """Links all necessary FL and ML/DevOps components to power one entire FL user request."""
 
     customer_id: str
     verbose: bool = False

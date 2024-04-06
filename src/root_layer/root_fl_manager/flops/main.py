@@ -20,22 +20,18 @@ def handle_fl_operations(flops_process: FlOpsProcess, fl_client_image: str) -> N
     # TODO
 
 
-def handle_new_flops_process(
-    new_flops_process_sla: FlOpsProcessSla,
-    auth_header: str,
-    verbose: bool = False,
-) -> None:
+def handle_new_flops_process(new_flops_process_sla: FlOpsProcessSla) -> None:
     flops_process = FlOpsProcess(
         customer_id=new_flops_process_sla["customerID"],
-        verbose=new_flops_process_sla["verbose"],
+        verbose=new_flops_process_sla.get("verbose", False),
     )
-    FLUserInterface(flops_process, auth_header)
+    FLUserInterface(flops_process, auth_header=new_flops_process_sla["Authorization"])
 
     ml_repo = MlRepo(flops_process.flops_id, new_flops_process_sla["code"])
     latest_matching_image_name = fetch_latest_matching_image(ml_repo)
     if latest_matching_image_name is not None:
         info_msg = f"Latest FL Client ENV image already exists for provided repo: '{ml_repo.name}'"
-        if verbose:
+        if flops_process.verbose:
             info_msg += f" - image name : '{latest_matching_image_name}'"
         logger.info(info_msg)
         notify_ui(info_msg, flops_process.flops_id)
@@ -49,4 +45,5 @@ def handle_new_flops_process(
         ).start()
         return
 
-    delegate_image_build(flops_process, ml_repo, verbose)
+    # ImageBuilder(flops_process, ml_repo)
+    delegate_image_build(flops_process, ml_repo)
