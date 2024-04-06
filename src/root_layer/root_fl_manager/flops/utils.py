@@ -1,7 +1,7 @@
 import hashlib
 import json
 
-from utils.types import FlOpsBaseClass
+from utils.classes.base import FlOpsBaseClass
 
 
 def generate_ip(flops_id: str, object: FlOpsBaseClass) -> str:

@@ -1,8 +1,8 @@
 import os
 
 import pymongo
+from utils.classes.simple import CustomEnum
 from utils.common import ROOT_FL_MANAGER_IP
-from utils.types import CustomEnum
 
 ROOT_FL_MONGO_DB_PORT = os.environ.get("ROOT_FL_MONGO_DB_PORT")
 
@@ -13,6 +13,7 @@ class DbCollections(CustomEnum):
     PROCESSES = "processes"
     ML_REPOS = "ml_repos"
     USER_INTERFACES = "user_interfaces"
+    IMAGE_BUILDERS = "image_builders"
 
 
 class FLOpsDB:

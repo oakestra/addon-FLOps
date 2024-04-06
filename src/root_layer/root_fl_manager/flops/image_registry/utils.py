@@ -1,6 +1,6 @@
 from api.custom_requests import CustomRequest, RequestAuxiliaries, RequestCore
 from flops.image_builder_management.common import MlRepo
-from utils.exceptions import ImageRegistryException
+from utils.classes.exceptions import ImageRegistryException
 
 
 def get_latest_commit_hash(ml_repo: MlRepo) -> str:

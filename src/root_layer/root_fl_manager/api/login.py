@@ -1,7 +1,7 @@
 import api.custom_requests as custom_requests
 from api.consts import SYSTEM_MANAGER_URL
 from api.custom_http import HttpMethods
-from utils.exceptions import LoginException
+from utils.classes.exceptions import LoginException
 
 _login_token = ""
 

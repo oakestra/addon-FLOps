@@ -1,6 +1,6 @@
 import api.custom_requests as custom_requests
 import flops.fl_ui_management.notification as ui_notifier
-import utils.exceptions
+import utils.classes.exceptions as custom_exceptions
 from api.consts import SYSTEM_MANAGER_URL
 from api.custom_http import HttpMethods
 from flops.aggregator_management.utils import generate_aggregator_sla
@@ -26,8 +26,8 @@ def create_fl_aggregator(
             data=aggregator_sla,
         ),
         aux=custom_requests.RequestAuxiliaries(
-            what_should_happen=f"Create new aggregator '{flops_process.flops_id}'",
-            exception=utils.exceptions.ImageBuilderException,
+            what_should_happen=f"Create new aggregator '{flops_process.flops_process_id}'",
+            exception=custom_exceptions.ImageBuilderException,
             show_msg_on_success=True,
         ),
     ).execute()
@@ -42,7 +42,7 @@ def create_fl_aggregator(
         (app for app in response if app["application_name"] == aggregator_name), None
     )
     if new_aggregator_app is None:
-        raise utils.exceptions.ImageBuilderException(
+        raise custom_exceptions.ImageBuilderException(
             "Could not find new aggregator app after creating it", flops_process
         )
 
@@ -62,7 +62,7 @@ def deploy_fl_aggregator_service(
         ),
         aux=custom_requests.RequestAuxiliaries(
             what_should_happen=f"Deploy aggregator, id '{aggregator_service_id}'",
-            exception=utils.exceptions.FlAggregatorException,
+            exception=custom_exceptions.FlAggregatorException,
             show_msg_on_success=True,
         ),
     ).execute()

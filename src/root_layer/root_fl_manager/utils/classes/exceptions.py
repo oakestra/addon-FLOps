@@ -42,3 +42,19 @@ class ImageRegistryException(RootFLManagerException):
 
 class LoginException(RootFLManagerException):
     pass
+
+
+class AppCreationException(RootFLManagerException):
+    pass
+
+
+class AppDeletionException(RootFLManagerException):
+    pass
+
+
+class AppFetchException(RootFLManagerException):
+    pass
+
+
+class ServiceDeploymentException(RootFLManagerException):
+    pass

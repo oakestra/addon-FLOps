@@ -2,6 +2,7 @@ import mqtt.main
 from flops.image_builder_management.common import BUILDER_APP_NAMESPACE, MlRepo
 from flops.image_registry.common import ROOT_FL_IMAGE_REGISTRY_URL
 from flops.process import FlOpsProcess
+from icecream import ic
 from utils.common import FLOPS_USER_ACCOUNT
 from utils.sla_generator import (
     SlaCompute,
@@ -11,15 +12,15 @@ from utils.sla_generator import (
     SlaResources,
     generate_sla,
 )
-from utils.types import Sla
+from utils.types import SLA
 
 
 def generate_builder_sla(
     ml_repo: MlRepo,
     flops_process: FlOpsProcess,
-) -> Sla:
+) -> SLA:
 
-    builder_name = f"bu{flops_process.flops_id}"
+    builder_name = f"bu{flops_process.flops_process_id}"
 
     cmd = " ".join(
         (
@@ -27,7 +28,7 @@ def generate_builder_sla(
             "main.py",
             ml_repo.url,
             ROOT_FL_IMAGE_REGISTRY_URL,
-            flops_process.flops_id,
+            flops_process.flops_process_id,
             # TODO need to figure out a way to provide
             # non docker-compose member exclusive DNS name as IP.
             # mqtt.main.ROOT_MQTT_BROKER_URL,
@@ -37,7 +38,7 @@ def generate_builder_sla(
         )
     )
 
-    return generate_sla(
+    resulting_sla = generate_sla(
         core=SlaCore(
             customerID=FLOPS_USER_ACCOUNT,
             names=SlaNames(
@@ -61,3 +62,5 @@ def generate_builder_sla(
             ),
         ),
     )
+    ic(f"Created builder SLA based on '{ml_repo.url}'", resulting_sla)
+    return resulting_sla

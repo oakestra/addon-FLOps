@@ -4,7 +4,7 @@ from typing import Tuple
 import flask
 import flask_openapi3
 from flops.main import handle_new_flops_process
-from utils.exceptions import RootFLManagerException
+from utils.classes.exceptions import RootFLManagerException
 from utils.logging import logger
 
 flops_blp = flask_openapi3.APIBlueprint(
@@ -21,7 +21,8 @@ def post_fl_service() -> Tuple[dict, HTTPStatus]:
     # If the use cases come up that a FL service should be appended to an existing App
     # that can be easily realized.
     try:
-        handle_new_flops_process(new_flops_process_sla=flask.request.json)
+        bearer_token = flask.request.headers.get("Authorization")
+        handle_new_flops_process(new_flops_process_sla=flask.request.json, auth_header=bearer_token)
     except RootFLManagerException as e:
         logger.fatal(f"{e.msg}, {e.http_status}")
         e.try_to_notify_ui()

@@ -1,4 +1,4 @@
-from utils.types import CustomEnum
+from utils.classes.simple import CustomEnum
 
 
 class Topics(CustomEnum):

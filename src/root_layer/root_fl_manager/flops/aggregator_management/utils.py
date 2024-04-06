@@ -8,16 +8,16 @@ from utils.sla_generator import (
     SlaResources,
     generate_sla,
 )
-from utils.types import Sla
+from utils.types import SLA
 
 AGGREGATOR_APP_NAMESPACE = "flaggr"
 
 
 def generate_aggregator_sla(
     flops_process: FlOpsProcess,
-) -> Sla:
+) -> SLA:
 
-    aggregator_name = f"ag{flops_process.flops_id}"
+    aggregator_name = f"ag{flops_process.flops_process_id}"
 
     cmd = " ".join(
         (

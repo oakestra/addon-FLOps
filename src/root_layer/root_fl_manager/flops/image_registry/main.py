@@ -8,7 +8,7 @@ from flops.image_registry.common import (
 )
 from flops.image_registry.utils import get_latest_commit_hash
 from flops.process import FlOpsProcess
-from utils.exceptions import ImageRegistryException
+from utils.classes.exceptions import ImageRegistryException
 
 
 def check_registry_reachable(flops_process: FlOpsProcess) -> bool:

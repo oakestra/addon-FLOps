@@ -4,7 +4,7 @@ import time
 
 import flops.image_builder_management.main as image_builder
 import paho.mqtt.client as paho_mqtt
-import utils.exceptions
+import utils.classes.exceptions as custom_exceptions
 from mqtt.enums import Topics
 from utils.logging import logger
 
@@ -34,7 +34,7 @@ def _on_new_message(client, userdata, message) -> None:
             case _:
                 logger.error(f"Message received for an unsupported topic '{topic}'")
 
-    except utils.exceptions.RootFLManagerException as e:
+    except custom_exceptions.RootFLManagerException as e:
         logger.fatal(f"{e.msg}")
         e.try_to_notify_ui()
         return
@@ -72,7 +72,7 @@ def _reconnect(client):
         reconnect_delay *= RECONNECT_RATE
         reconnect_delay = min(reconnect_delay, MAX_RECONNECT_DELAY)
         reconnect_count += 1
-    raise utils.exceptions.MQTTException("ROOT MQTT: Reconnect failed after %s attempts.")
+    raise custom_exceptions.MQTTException("ROOT MQTT: Reconnect failed after %s attempts.")
 
 
 def _init_mqtt() -> paho_mqtt.Client:

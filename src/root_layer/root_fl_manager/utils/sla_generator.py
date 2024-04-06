@@ -2,7 +2,7 @@ import ipaddress
 import shlex
 from typing import NamedTuple
 
-from utils.types import ApplicationId, Sla
+from utils.types import SLA, ApplicationId
 
 
 class SlaNames(NamedTuple):
@@ -40,7 +40,7 @@ class SlaDetails(NamedTuple):
 def generate_sla(
     core: SlaCore,
     details: SlaDetails,
-) -> Sla:
+) -> SLA:
     sla = {
         "sla_version": "v2.0",
         "customerID": core.customerID,

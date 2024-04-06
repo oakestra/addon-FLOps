@@ -1,24 +1,8 @@
-import enum
-from dataclasses import asdict, dataclass
+SLA = dict
+FlOpsProcessSla = SLA
+AppSLA = SLA
 
-
-class CustomEnum(enum.Enum):
-    def __str__(self) -> str:
-        return self.value
-
-
-@dataclass
-class FlOpsBaseClass:
-    def to_dict(self):
-        return asdict(self)
-
-    @classmethod
-    def from_dict(cls, data):
-        return cls(**data)
-
-
-Sla = dict
-FlOpsProcessSla = Sla
+Application = dict
 
 Id = str
 ServiceId = Id
