@@ -1,4 +1,4 @@
-from api.custom_requests import CustomRequest, RequestAuxiliaries, RequestCore
+from api.request_management.custom_requests import CustomRequest, RequestAuxiliaries, RequestCore
 from flops.classes.ml_repo import MlRepo
 from utils.classes.exceptions import ImageRegistryException
 

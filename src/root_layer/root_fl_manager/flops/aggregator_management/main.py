@@ -1,13 +1,12 @@
-import api.custom_requests as custom_requests
-import flops.fl_ui_management.notification as ui_notifier
+import api.request_management.custom_requests as custom_requests
 import utils.classes.exceptions as custom_exceptions
-from api.consts import SYSTEM_MANAGER_URL
-from api.custom_http import HttpMethods
+from api.request_management.custom_http import HttpMethods
+from api.utils.consts import SYSTEM_MANAGER_URL
 from flops.aggregator_management.utils import generate_aggregator_sla
+from flops.classes.process import FlOpsProcess
+from flops.utils import notify_ui
 from utils.logging import logger
 from utils.types import ServiceId
-
-from root_layer.root_fl_manager.flops.classes.process import FlOpsProcess
 
 
 def create_fl_aggregator(
@@ -34,7 +33,7 @@ def create_fl_aggregator(
     ).execute()
 
     if verbose:
-        ui_notifier.notify_ui(
+        notify_ui(
             "FL Aggregator created",
             flops_process,
         )
@@ -68,7 +67,7 @@ def deploy_fl_aggregator_service(
         ),
     ).execute()
     if verbose:
-        ui_notifier.notify_ui(
+        notify_ui(
             "New Aggregator application deployed & started",
             flops_process,
         )

@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 
-from api.utils import create_app, deploy_service, fetch_app, undeploy
+from api.app_management import create_app, fetch_app, undeploy_app
+from api.service_management import deploy_service
 from flops.classes.abstract.base import FlOpsBaseClass
-from flops.classes.process import FlOpsProcess
 from pydantic import Field
 from utils.sla.components import SlaComponentsWrapper
 from utils.sla.generator import generate_sla
@@ -49,7 +49,7 @@ class FlOpsDeployableClass(FlOpsBaseClass, ABC):
         self._add_to_db()
 
     def undeploy(self) -> None:
-        undeploy(
+        undeploy_app(
             application_id=self.app_id,
             flops_process_id=self.flops_process_id,
             matching_caller_object=self,

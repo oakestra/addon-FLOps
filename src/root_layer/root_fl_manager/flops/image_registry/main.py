@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from api.custom_requests import CustomRequest, RequestAuxiliaries, RequestCore
+from api.request_management.custom_requests import CustomRequest, RequestAuxiliaries, RequestCore
 from flops.classes.ml_repo import MlRepo
 from flops.classes.process import FlOpsProcess
 from flops.image_registry.common import (
@@ -13,11 +13,11 @@ from utils.classes.exceptions import ImageRegistryException
 
 def check_registry_reachable(flops_process: FlOpsProcess) -> bool:
     CustomRequest(
-        RequestCore(
+        core=RequestCore(
             base_url=ROOT_FL_IMAGE_REGISTRY_URL,
             api_endpoint="/api/application/",
         ),
-        RequestAuxiliaries(
+        aux=RequestAuxiliaries(
             what_should_happen="Registry is reachable",
             flops_process_id=flops_process,
             exception=ImageRegistryException,

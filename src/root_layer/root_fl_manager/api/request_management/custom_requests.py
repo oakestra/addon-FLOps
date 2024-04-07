@@ -4,15 +4,13 @@ from http import HTTPStatus
 from typing import NamedTuple
 
 import requests
-from api.custom_http import HttpMethods
-from api.login import get_login_token
-from flops.classes.process import FlOpsProcess
+from api.request_management.custom_http import HttpMethods
+from api.utils.login import get_login_token
 from utils.classes.exceptions import RootFLManagerException
 from utils.logging import logger
 
 
-@dataclass
-class RequestCore:
+class RequestCore(NamedTuple):
     base_url: str
     api_endpoint: str = None
     query_params: str = None
@@ -29,15 +27,21 @@ class RequestAuxiliaries(NamedTuple):
     is_oakestra_api: bool = True
 
 
+# Note: The use of Pydantic here leads to strange validation errors.
 @dataclass
 class CustomRequest:
     core: RequestCore
     aux: RequestAuxiliaries
 
-    headers: dict = field(init=False)
-    url: str = field(init=False)
-    args: dict = field(init=False)
-    response: requests.Response = field(init=False)
+    headers: dict = field(default=None, init=False)
+    url: str = field(default=None, init=False)
+    args: dict = field(default=None, init=False)
+    response: requests.Response = field(default=None, init=False)
+
+    # Note: Needed to avoid issues with pydantic.
+    # They arise due to the complex/unsupported requests.Response type.
+    class Config:
+        arbitrary_types_allowed = True
 
     def __post_init__(self):
         self._prepare()

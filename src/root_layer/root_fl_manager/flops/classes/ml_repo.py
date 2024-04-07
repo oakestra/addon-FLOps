@@ -1,5 +1,5 @@
 import github
-from api.consts import GITHUB_PREFIX
+from api.utils.consts import GITHUB_PREFIX
 from flops.classes.abstract.base import FlOpsBaseClass
 from pydantic import Field
 

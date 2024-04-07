@@ -6,7 +6,6 @@ from flops.classes.process import FlOpsProcess
 from flops.classes.ui import FLUserInterface
 from flops.image_registry.main import fetch_latest_matching_image
 from flops.utils import notify_ui
-from icecream import ic
 from utils.logging import logger
 from utils.types import FlOpsProcessSla
 
@@ -14,7 +13,7 @@ from utils.types import FlOpsProcessSla
 def handle_fl_operations(flops_process: FlOpsProcess, fl_client_image: str) -> None:
     msg = "Start handling FL processes"
     logger.info(msg)
-    notify_ui(msg, flops_process)
+    notify_ui(flops_process_id=flops_process.flops_process_id, msg=msg)
     # handle_aggregator(flops_process)
     # TODO
 
@@ -37,8 +36,7 @@ def handle_new_flops_process(new_flops_process_sla: FlOpsProcessSla, bearer_toke
         if flops_process.verbose:
             info_msg += f" - image name : '{latest_matching_image_name}'"
         logger.info(info_msg)
-        notify_ui(info_msg, flops_process.flops_process_id)
-
+        notify_ui(flops_process_id=flops_process.flops_process_id, msg=info_msg)
         threading.Thread(
             target=handle_fl_operations,
             args=(
@@ -50,14 +48,14 @@ def handle_new_flops_process(new_flops_process_sla: FlOpsProcessSla, bearer_toke
 
     if flops_process.verbose:
         notify_ui(
-            "New FL Client image needs to be build. Start build delegation processes.",
-            flops_process,
+            flops_process_id=flops_process.flops_process_id,
+            msg="New FL Client image needs to be build. Start build delegation processes.",
         )
 
     FLClientEnvImageBuilder(flops_process=flops_process, ml_repo=ml_repo, ui=fl_ui).deploy()
 
     if flops_process.verbose:
         notify_ui(
-            "New Builder application created & deployed",
-            flops_process,
+            flops_process_id=flops_process.flops_process_id,
+            msg="New Builder application created & deployed",
         )
