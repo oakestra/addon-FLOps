@@ -15,11 +15,6 @@ def create_app(
 ) -> Application:
     app_type = get_matching_type(matching_caller_object)
     # Note: The called endpoint returns all apps of the user not just the newest inserted one.
-
-    from icecream import ic
-
-    ic("reeeeeAAAAAAAA")
-
     response = custom_requests.CustomRequest(
         core=custom_requests.RequestCore(
             http_method=custom_http.HttpMethods.POST,
@@ -35,7 +30,6 @@ def create_app(
             exception=AppCreationException,
         ),
     ).execute()
-    ic("reeeeeBBBBBBBB")
     new_app = next(
         (
             response_app

@@ -1,19 +1,15 @@
+from dataclasses import dataclass
 from http import HTTPStatus
 
 from flops.utils import notify_ui
 
 
 # Note: Pydantic.BaseModel and Exception do not seem to work well if inherited together.
+@dataclass
 class RootFLManagerException(Exception):
-    def __init__(
-        self,
-        msg: str,
-        http_status: HTTPStatus = None,
-        flops_process_id: str = "",
-    ) -> None:
-        self.msg = msg
-        self.http_status = http_status
-        self.flops_process_id = flops_process_id
+    msg: str
+    http_status: HTTPStatus = None
+    flops_process_id: str = ""
 
     def try_to_notify_ui(self):
         if self.flops_process_id:
