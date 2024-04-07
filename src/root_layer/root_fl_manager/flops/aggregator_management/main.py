@@ -4,9 +4,10 @@ import utils.classes.exceptions as custom_exceptions
 from api.consts import SYSTEM_MANAGER_URL
 from api.custom_http import HttpMethods
 from flops.aggregator_management.utils import generate_aggregator_sla
-from flops.process import FlOpsProcess
 from utils.logging import logger
 from utils.types import ServiceId
+
+from root_layer.root_fl_manager.flops.classes.process import FlOpsProcess
 
 
 def create_fl_aggregator(

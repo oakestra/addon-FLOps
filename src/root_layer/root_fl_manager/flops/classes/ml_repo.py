@@ -1,6 +1,7 @@
 import github
 from api.consts import GITHUB_PREFIX
-from utils.classes.base import FlOpsBaseClass
+from flops.classes.abstract.base import FlOpsBaseClass
+from pydantic import Field
 
 BUILDER_APP_NAMESPACE = "flbuild"
 
@@ -8,9 +9,9 @@ BUILDER_APP_NAMESPACE = "flbuild"
 class MlRepo(FlOpsBaseClass):
     url: str
 
-    name: str = ""
-    sanitized_name: str = ""
-    latest_commit_hash: str = ""
+    name: str = Field("", init=False)
+    sanitized_name: str = Field("", init=False)
+    latest_commit_hash: str = Field("", init=False)
 
     def model_post_init(self, _):
         self.name = self.url.split(GITHUB_PREFIX)[-1]

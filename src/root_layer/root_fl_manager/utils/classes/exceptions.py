@@ -1,7 +1,7 @@
 from http import HTTPStatus
 
-from flops.fl_ui_management.notification import notify_ui
-from flops.process import FlOpsProcess
+from flops.classes.process import FlOpsProcess
+from flops.utils import notify_ui
 
 
 class RootFLManagerException(Exception):

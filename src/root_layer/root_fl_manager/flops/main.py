@@ -1,12 +1,11 @@
 import threading
 
-from flops.aggregator_management.main import handle_aggregator
-from flops.fl_ui_management.main import FLUserInterface
-from flops.fl_ui_management.notification import notify_ui
-from flops.image_builder_management.common import MlRepo
-from flops.image_builder_management.main import FLClientEnvImageBuilder
+from flops.classes.builder import FLClientEnvImageBuilder
+from flops.classes.ml_repo import MlRepo
+from flops.classes.process import FlOpsProcess
+from flops.classes.ui import FLUserInterface
 from flops.image_registry.main import fetch_latest_matching_image
-from flops.process import FlOpsProcess
+from flops.utils import notify_ui
 from icecream import ic
 from utils.logging import logger
 from utils.types import FlOpsProcessSla
@@ -25,16 +24,15 @@ def handle_new_flops_process(new_flops_process_sla: FlOpsProcessSla, bearer_toke
         customer_id=new_flops_process_sla["customerID"],
         verbose=new_flops_process_sla.get("verbose", False),
     )
-    FlOpsProcess()
-
+    ic("AA", flops_process)
+    return
     fl_ui = FLUserInterface(flops_process_id=flops_process.flops_process_id)
     fl_ui.deploy(flops_process, bearer_token)
+
     ml_repo = MlRepo(
         flops_process_id=flops_process.flops_process_id,
         url=new_flops_process_sla["code"],
     )
-    ic("DDDDDDDDDDDD", ml_repo)
-    return
     latest_matching_image_name = fetch_latest_matching_image(ml_repo)
     if latest_matching_image_name is not None:
         info_msg = f"Latest FL Client ENV image already exists for provided repo: '{ml_repo.name}'"
@@ -52,5 +50,14 @@ def handle_new_flops_process(new_flops_process_sla: FlOpsProcessSla, bearer_toke
         ).start()
         return
 
-    ic("EEEEEEEEEEEEE")
+    if flops_process.verbose:
+        notify_ui(
+            "New FL Client image needs to be build. Start build delegation processes.",
+            flops_process,
+        )
     FLClientEnvImageBuilder(flops_process, ml_repo, fl_ui)
+    if flops_process.verbose:
+        notify_ui(
+            "New Builder application created & deployed",
+            flops_process,
+        )

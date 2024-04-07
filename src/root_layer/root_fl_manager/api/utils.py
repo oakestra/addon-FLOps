@@ -1,13 +1,13 @@
 import api.custom_http as custom_http
 import api.custom_requests as custom_requests
-import utils.classes.base as custom_class
 import utils.classes.exceptions as custom_exceptions
 from api.consts import SYSTEM_MANAGER_URL
-from flops.process import FlOpsProcess
+from flops.classes.abstract.base import FlOpsBaseClass
+from flops.classes.process import FlOpsProcess
 from utils.types import SLA, Application, ServiceId
 
 
-def _get_matching_type(matching_caller_object: custom_class.FlOpsBaseClass) -> str:
+def _get_matching_type(matching_caller_object: FlOpsBaseClass) -> str:
     return (type(matching_caller_object).__name__ if matching_caller_object else "") + " "
 
 
@@ -15,7 +15,7 @@ def create_app(
     sla: SLA,
     flops_process: FlOpsProcess,
     bearer_token: str = None,
-    matching_caller_object: custom_class.FlOpsBaseClass = None,
+    matching_caller_object: FlOpsBaseClass = None,
 ) -> Application:
     app_type = _get_matching_type(matching_caller_object)
     flops_id = flops_process.flops_process_id
@@ -51,9 +51,7 @@ def create_app(
     return new_app
 
 
-def deploy_service(
-    service_id: ServiceId, matching_caller_object: custom_class.FlOpsBaseClass = None
-) -> None:
+def deploy_service(service_id: ServiceId, matching_caller_object: FlOpsBaseClass = None) -> None:
     service_type = _get_matching_type(matching_caller_object)
     custom_requests.CustomRequest(
         custom_requests.RequestCore(
@@ -72,7 +70,7 @@ def deploy_service(
 def fetch_app(
     flops_process_id: str,
     app_namespace: str,
-    matching_caller_object: custom_class.FlOpsBaseClass = None,
+    matching_caller_object: FlOpsBaseClass = None,
 ) -> Application:
     app_type = _get_matching_type(matching_caller_object)
     response = custom_requests.CustomRequest(
@@ -92,7 +90,7 @@ def fetch_app(
 def undeploy(
     application_id: str,
     flops_process_id: str,
-    matching_caller_object: custom_class.FlOpsBaseClass = None,
+    matching_caller_object: FlOpsBaseClass = None,
 ) -> None:
     app_type = _get_matching_type(matching_caller_object)
     custom_requests.CustomRequest(

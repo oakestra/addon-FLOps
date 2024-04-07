@@ -1,6 +1,8 @@
-from flops.process import FlOpsProcess
 from utils.common import FLOPS_USER_ACCOUNT
-from utils.sla_generator import (
+from utils.types import SLA
+
+from root_layer.root_fl_manager.flops.classes.process import FlOpsProcess
+from root_layer.root_fl_manager.utils.sla.components import (
     SlaCompute,
     SlaCore,
     SlaDetails,
@@ -8,7 +10,6 @@ from utils.sla_generator import (
     SlaResources,
     generate_sla,
 )
-from utils.types import SLA
 
 AGGREGATOR_APP_NAMESPACE = "flaggr"
 

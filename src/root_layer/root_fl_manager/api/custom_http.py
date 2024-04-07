@@ -1,5 +1,5 @@
 import requests
-from utils.classes.simple import CustomEnum
+from utils.classes.auxiliary import CustomEnum
 
 
 class HttpMethods(CustomEnum):

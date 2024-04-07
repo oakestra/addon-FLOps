@@ -6,7 +6,7 @@ from typing import NamedTuple
 import requests
 from api.custom_http import HttpMethods
 from api.login import get_login_token
-from flops.process import FlOpsProcess
+from flops.classes.process import FlOpsProcess
 from utils.classes.exceptions import RootFLManagerException
 from utils.logging import logger
 

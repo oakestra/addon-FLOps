@@ -1,10 +1,10 @@
 import mqtt.main
-from flops.fl_ui_management.main import FLUserInterface
-from flops.image_builder_management.common import BUILDER_APP_NAMESPACE, MlRepo
+from flops.classes.ml_repo import MlRepo
+from flops.classes.process import FlOpsProcess
+from flops.classes.ui import FLUserInterface
 from flops.image_registry.common import ROOT_FL_IMAGE_REGISTRY_URL
-from flops.process import FlOpsProcess
 from utils.common import FLOPS_USER_ACCOUNT
-from utils.sla_generator import (
+from utils.sla.components import (
     SlaCompute,
     SlaCore,
     SlaDetails,
@@ -13,6 +13,8 @@ from utils.sla_generator import (
     generate_sla,
 )
 from utils.types import SLA
+
+BUILDER_APP_NAMESPACE = "flbuild"
 
 
 def generate_builder_sla(

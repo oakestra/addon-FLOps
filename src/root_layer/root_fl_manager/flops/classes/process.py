@@ -1,4 +1,5 @@
-from utils.classes.base import FlOpsBaseClass
+from flops.classes.abstract.base import FlOpsBaseClass
+from pydantic import Field
 
 
 class FlOpsProcess(FlOpsBaseClass):
@@ -6,7 +7,8 @@ class FlOpsProcess(FlOpsBaseClass):
 
     customer_id: str
     verbose: bool = False
-    flops_process_id: str = ""
+
+    flops_process_id: str = Field("", init=False)
 
     def model_post_init(self, _):
         if not self.flops_process_id:

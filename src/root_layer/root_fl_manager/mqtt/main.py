@@ -2,7 +2,7 @@ import json
 import os
 import time
 
-import flops.image_builder_management.main as image_builder
+import flops.classes.builder as image_builder
 import paho.mqtt.client as paho_mqtt
 import utils.classes.exceptions as custom_exceptions
 from mqtt.enums import Topics
