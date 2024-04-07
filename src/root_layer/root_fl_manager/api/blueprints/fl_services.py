@@ -22,7 +22,10 @@ def post_fl_service() -> Tuple[dict, HTTPStatus]:
     # that can be easily realized.
     try:
         bearer_token = flask.request.headers.get("Authorization")
-        handle_new_flops_process(new_flops_process_sla=flask.request.json, auth_header=bearer_token)
+        handle_new_flops_process(
+            new_flops_process_sla=flask.request.json,
+            bearer_token=bearer_token,
+        )
     except RootFLManagerException as e:
         logger.fatal(f"{e.msg}, {e.http_status}")
         e.try_to_notify_ui()

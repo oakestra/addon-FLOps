@@ -1,5 +1,3 @@
-from dataclasses import dataclass, field
-
 import github
 from api.consts import GITHUB_PREFIX
 from utils.classes.base import FlOpsBaseClass
@@ -7,16 +5,14 @@ from utils.classes.base import FlOpsBaseClass
 BUILDER_APP_NAMESPACE = "flbuild"
 
 
-@dataclass
 class MlRepo(FlOpsBaseClass):
-    flops_process_id: str
     url: str
 
-    name: str = field(init=False)
-    sanitized_name: str = field(init=False)
-    latest_commit_hash: str = field(init=False)
+    name: str = ""
+    sanitized_name: str = ""
+    latest_commit_hash: str = ""
 
-    def __post_init__(self):
+    def model_post_init(self, _):
         self.name = self.url.split(GITHUB_PREFIX)[-1]
         # Note: The build FL image name will contain the github user + repo name for identification.
         # The github user name might be uppercase, but docker image names (infix/prefix) cannot be.

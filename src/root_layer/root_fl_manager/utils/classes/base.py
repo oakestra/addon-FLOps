@@ -1,14 +1,13 @@
+from abc import ABC
+
 import database.main as db
 from bson.objectid import ObjectId
 from pydantic import BaseModel
 from pymongo.collection import Collection
 
 
-class FlOpsBaseClass(BaseModel):
+class FlOpsBaseClass(BaseModel, ABC):
     flops_process_id: str
-
-    # def __init__(self, flops_process_id: str):
-    #     self.flops_process_id = flops_process_id
 
     @classmethod
     def get_collection(cls) -> Collection:

@@ -89,7 +89,7 @@ def fetch_app(
     return response
 
 
-def undeploy_app(
+def undeploy(
     application_id: str,
     flops_process_id: str,
     matching_caller_object: custom_class.FlOpsBaseClass = None,

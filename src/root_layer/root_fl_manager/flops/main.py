@@ -20,22 +20,21 @@ def handle_fl_operations(flops_process: FlOpsProcess, fl_client_image: str) -> N
     # TODO
 
 
-def handle_new_flops_process(new_flops_process_sla: FlOpsProcessSla, auth_header: str) -> None:
+def handle_new_flops_process(new_flops_process_sla: FlOpsProcessSla, bearer_token: str) -> None:
     flops_process = FlOpsProcess(
         customer_id=new_flops_process_sla["customerID"],
         verbose=new_flops_process_sla.get("verbose", False),
     )
-    ic("abc", flops_process)
-    test = FlOpsProcess.retrieve_from_db(flops_process.flops_process_id)
-    ic(test, type(test), flops_process == test)
-    return
+    FlOpsProcess()
 
-    fl_ui = FLUserInterface(flops_process, auth_header=auth_header)
-    test = FLUserInterface.retrieve_from_db(flops_process.flops_process_id)
-    ic(test, type(test))
+    fl_ui = FLUserInterface(flops_process_id=flops_process.flops_process_id)
+    fl_ui.deploy(flops_process, bearer_token)
+    ml_repo = MlRepo(
+        flops_process_id=flops_process.flops_process_id,
+        url=new_flops_process_sla["code"],
+    )
+    ic("DDDDDDDDDDDD", ml_repo)
     return
-    ml_repo = MlRepo(flops_process.flops_process_id, new_flops_process_sla["code"])
-    ic("DDDDDDDDDDDD")
     latest_matching_image_name = fetch_latest_matching_image(ml_repo)
     if latest_matching_image_name is not None:
         info_msg = f"Latest FL Client ENV image already exists for provided repo: '{ml_repo.name}'"

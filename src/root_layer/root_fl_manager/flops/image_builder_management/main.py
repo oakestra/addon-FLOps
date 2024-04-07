@@ -18,7 +18,7 @@ class FLClientEnvImageBuilder(FlOpsDeployableClass):
             )
         super().__init__(flops_process.flops_process_id)
         builder_sla = generate_builder_sla(ml_repo, flops_process, fl_ui)
-        self._create(flops_process, builder_sla)
+        self.deploy(flops_process, builder_sla)
         self.__post_init__(flops_process)
 
     def __post_init__(self, flops_process):
