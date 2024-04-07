@@ -25,8 +25,10 @@ def handle_new_flops_process(new_flops_process_sla: FlOpsProcessSla, auth_header
         customer_id=new_flops_process_sla["customerID"],
         verbose=new_flops_process_sla.get("verbose", False),
     )
+    ic("abc", flops_process)
     test = FlOpsProcess.retrieve_from_db(flops_process.flops_process_id)
-    ic(test, type(test))
+    ic(test, type(test), flops_process == test)
+    return
 
     fl_ui = FLUserInterface(flops_process, auth_header=auth_header)
     test = FLUserInterface.retrieve_from_db(flops_process.flops_process_id)
