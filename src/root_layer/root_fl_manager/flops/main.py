@@ -25,11 +25,15 @@ def handle_new_flops_process(new_flops_process_sla: FlOpsProcessSla, auth_header
         customer_id=new_flops_process_sla["customerID"],
         verbose=new_flops_process_sla.get("verbose", False),
     )
-    ic("BBBBBBBBBBBBB")
-    FLUserInterface(flops_process, auth_header=auth_header)
-    ic("CCCCCCCCCCCCC")
+    test = FlOpsProcess.retrieve_from_db(flops_process.flops_process_id)
+    ic(test, type(test))
+
+    fl_ui = FLUserInterface(flops_process, auth_header=auth_header)
+    test = FLUserInterface.retrieve_from_db(flops_process.flops_process_id)
+    ic(test, type(test))
     return
     ml_repo = MlRepo(flops_process.flops_process_id, new_flops_process_sla["code"])
+    ic("DDDDDDDDDDDD")
     latest_matching_image_name = fetch_latest_matching_image(ml_repo)
     if latest_matching_image_name is not None:
         info_msg = f"Latest FL Client ENV image already exists for provided repo: '{ml_repo.name}'"
@@ -47,4 +51,5 @@ def handle_new_flops_process(new_flops_process_sla: FlOpsProcessSla, auth_header
         ).start()
         return
 
-    FLClientEnvImageBuilder(flops_process, ml_repo)
+    ic("EEEEEEEEEEEEE")
+    FLClientEnvImageBuilder(flops_process, ml_repo, fl_ui)

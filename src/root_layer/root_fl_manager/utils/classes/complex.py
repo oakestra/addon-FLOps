@@ -2,7 +2,6 @@ from abc import ABC
 from dataclasses import dataclass, field
 
 from api.utils import create_app, deploy_service, fetch_app, undeploy_app
-from database.main import DbCollections
 from flops.process import FlOpsProcess
 from utils.classes.base import FlOpsBaseClass
 from utils.types import Application, AppSLA
@@ -10,11 +9,13 @@ from utils.types import Application, AppSLA
 
 @dataclass
 class FlOpsDeployableClass(FlOpsBaseClass, ABC):
+    flops_process_id: str
+
     app_id: str = field(init=False, default="")
     service_id: str = field(init=False, default="")
 
-    def __init__(self, db_collection_type: DbCollections, flops_process_id: str):
-        super().__init__(db_collection_type, flops_process_id)
+    def __init__(self, flops_process_id: str):
+        super().__init__(flops_process_id=flops_process_id)
 
     def __post_init__(self):
         deploy_service(service_id=self.service_id, matching_caller_object=self)

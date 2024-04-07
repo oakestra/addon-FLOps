@@ -1,8 +1,8 @@
 import mqtt.main
+from flops.fl_ui_management.main import FLUserInterface
 from flops.image_builder_management.common import BUILDER_APP_NAMESPACE, MlRepo
 from flops.image_registry.common import ROOT_FL_IMAGE_REGISTRY_URL
 from flops.process import FlOpsProcess
-from icecream import ic
 from utils.common import FLOPS_USER_ACCOUNT
 from utils.sla_generator import (
     SlaCompute,
@@ -18,9 +18,10 @@ from utils.types import SLA
 def generate_builder_sla(
     ml_repo: MlRepo,
     flops_process: FlOpsProcess,
+    fl_ui: FLUserInterface,
 ) -> SLA:
 
-    builder_name = f"bu{flops_process.flops_process_id}"
+    builder_name = f"bu{flops_process.get_shortened_id()}"
 
     cmd = " ".join(
         (
@@ -34,11 +35,11 @@ def generate_builder_sla(
             # mqtt.main.ROOT_MQTT_BROKER_URL,
             "192.168.178.44",
             mqtt.main.ROOT_FL_MQTT_BROKER_PORT,
-            str(flops_process.ui_ip),
+            fl_ui.ip,
         )
     )
 
-    resulting_sla = generate_sla(
+    return generate_sla(
         core=SlaCore(
             customerID=FLOPS_USER_ACCOUNT,
             names=SlaNames(
@@ -62,5 +63,3 @@ def generate_builder_sla(
             ),
         ),
     )
-    ic(f"Created builder SLA based on '{ml_repo.url}'", resulting_sla)
-    return resulting_sla

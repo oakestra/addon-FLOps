@@ -2,7 +2,6 @@ from dataclasses import dataclass, field
 
 import github
 from api.consts import GITHUB_PREFIX
-from database.main import DbCollections
 from utils.classes.base import FlOpsBaseClass
 
 BUILDER_APP_NAMESPACE = "flbuild"
@@ -18,7 +17,6 @@ class MlRepo(FlOpsBaseClass):
     latest_commit_hash: str = field(init=False)
 
     def __post_init__(self):
-        self.db_collection_type = DbCollections.ML_REPOS
         self.name = self.url.split(GITHUB_PREFIX)[-1]
         # Note: The build FL image name will contain the github user + repo name for identification.
         # The github user name might be uppercase, but docker image names (infix/prefix) cannot be.

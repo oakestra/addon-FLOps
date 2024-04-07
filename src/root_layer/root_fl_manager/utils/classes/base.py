@@ -1,40 +1,39 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 from dataclasses import asdict, dataclass, field
-from typing import ClassVar
 
+import database.main as db
 from bson.objectid import ObjectId
-from database.main import DbCollections, get_flops_db
+from pymongo.collection import Collection
 
 
 @dataclass
 class FlOpsBaseClass(ABC):
     # Note: These vars need to be set in each child class.
-    db_collection_type: ClassVar[DbCollections]
     flops_process_id: str = field(init=False)
 
-    def __init__(self, db_collection_type: DbCollections, flops_process_id: str):
-        self.db_collection_type = db_collection_type
+    def __init__(self, flops_process_id: str):
         self.flops_process_id = flops_process_id
 
     def to_dict(self):
         return asdict(self)
 
+    @abstractmethod
     @classmethod
-    def from_dict(cls, data):
+    def from_dict(cls, data) -> "FlOpsBaseClass":
         return cls(**data)
 
-    def _add_to_db(self):  # TODO
-        return (
-            get_flops_db()
-            .get_collection(self.db_collection_type)
-            .insert_one(self.to_dict())
-            .inserted_id
+    @classmethod
+    def get_collection(cls) -> Collection:
+        return db.get_flops_db().get_collection(cls.__name__)
+
+    def _add_to_db(self) -> ObjectId:
+        return self.__class__.get_collection().insert_one(self.to_dict()).inserted_id
+
+    def _replace_in_db(self, db_collection_object_id: ObjectId) -> None:
+        self.__class__.get_collection().replace_one(
+            {"_id": db_collection_object_id}, self.to_dict()
         )
 
-    def _replace_in_db(
-        self,
-        db_collection_object_id,
-    ) -> None:  # TODO
-        get_flops_db().get_collection(self.db_collection_type).replace_one(
-            {"_id": ObjectId(db_collection_object_id)}, self.to_dict()
-        )
+    @classmethod
+    def retrieve_from_db(cls, flops_process_id: str) -> "FlOpsBaseClass":
+        return cls.from_dict(cls.get_collection().find_one({"flops_process_id": flops_process_id}))
