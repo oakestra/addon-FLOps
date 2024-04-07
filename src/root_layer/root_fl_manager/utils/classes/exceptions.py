@@ -1,6 +1,5 @@
 from http import HTTPStatus
 
-from flops.classes.process import FlOpsProcess
 from flops.utils import notify_ui
 
 
@@ -9,15 +8,15 @@ class RootFLManagerException(Exception):
         self,
         msg: str,
         http_status: HTTPStatus = None,
-        flops_process: FlOpsProcess = None,
+        flops_process_id: str = "",
     ):
         self.msg = msg
         self.http_status = http_status
-        self.flops_process = flops_process
+        self.flops_process_id = flops_process_id
 
     def try_to_notify_ui(self):
-        if self.flops_process:
-            notify_ui(self.msg, self.flops_process)
+        if self.flops_process_id:
+            notify_ui(self.msg, self.flops_process_id)
 
 
 class ImageBuilderException(RootFLManagerException):

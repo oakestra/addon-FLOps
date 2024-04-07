@@ -25,7 +25,8 @@ class FlOpsDeployableClass(FlOpsBaseClass, ABC):
     app_id: str = Field("", init=False)
     service_id: str = Field("", init=False)
 
-    sla_components: SlaComponentsWrapper = Field(None, init=False, exclude=True)
+    # Note: Only used during "runtime". It is not stored or displayed due to verbosity & redundancy.
+    sla_components: SlaComponentsWrapper = Field(None, init=False, exclude=True, repr=False)
 
     def model_post_init(self, _) -> None:
         self._configure_sla_components()
@@ -35,15 +36,11 @@ class FlOpsDeployableClass(FlOpsBaseClass, ABC):
         """Sets self.sla_components that are needed for deployments"""
         pass
 
-    def deploy(
-        self,
-        flops_process: FlOpsProcess,
-        bearer_token: str = None,
-    ) -> None:
+    def deploy(self, bearer_token: str = None) -> None:
         new_app = create_app(
             sla=generate_sla(self.sla_components),
             bearer_token=bearer_token,
-            flops_process=flops_process,
+            flops_process_id=self.flops_process_id,
             matching_caller_object=self,
         )
         self.app_id = new_app["applicationID"]

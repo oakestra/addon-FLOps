@@ -3,7 +3,6 @@ import api.custom_requests as custom_requests
 import utils.classes.exceptions as custom_exceptions
 from api.consts import SYSTEM_MANAGER_URL
 from flops.classes.abstract.base import FlOpsBaseClass
-from flops.classes.process import FlOpsProcess
 from utils.types import SLA, Application, ServiceId
 
 
@@ -13,12 +12,11 @@ def _get_matching_type(matching_caller_object: FlOpsBaseClass) -> str:
 
 def create_app(
     sla: SLA,
-    flops_process: FlOpsProcess,
+    flops_process_id: str,
     bearer_token: str = None,
     matching_caller_object: FlOpsBaseClass = None,
 ) -> Application:
     app_type = _get_matching_type(matching_caller_object)
-    flops_id = flops_process.flops_process_id
     # Note: The called endpoint returns all apps of the user not just the newest inserted one.
     response = custom_requests.CustomRequest(
         custom_requests.RequestCore(
@@ -29,8 +27,8 @@ def create_app(
             custom_headers={"Authorization": bearer_token} if bearer_token else None,
         ),
         custom_requests.RequestAuxiliaries(
-            what_should_happen=f"Create new {app_type }application '{flops_id}'",
-            flops_process=flops_process,
+            what_should_happen=f"Create new {app_type }application '{flops_process_id}'",
+            flops_process_id=flops_process_id,
             show_msg_on_success=True,
             exception=custom_exceptions.AppCreationException,
         ),
@@ -46,7 +44,7 @@ def create_app(
     )
     if new_app is None:
         raise custom_exceptions.AppCreationException(
-            f"Could not find new {app_type } app after creating it", flops_process
+            f"Could not find new {app_type } app after creating it", flops_process_id
         )
     return new_app
 

@@ -14,17 +14,19 @@ from utils.sla.components import (
 
 
 class FLUserInterface(FlOpsDeployableClass):
-    # Note: Use the entire Process object instead but only store its id.
-    flops_process: FlOpsProcess = Field(None, exclude=True)
+    # Note: Use the entire Process object instead but only store & display its id.
+    flops_process: FlOpsProcess = Field(None, exclude=True, repr=False)
     flops_process_id: str = Field("", init=False)
 
     ip: str = Field("", init=False)
 
     def model_post_init(self, _):
+        if self.gets_loaded_from_db:
+            return
+
         self.flops_process_id = self.flops_process.flops_process_id
-        if not self.ip:
-            self.ip = generate_ip(self.flops_process_id, self)
-        super().model_post_init(_)
+        self.ip = generate_ip(self.flops_process_id, self)
+        self._configure_sla_components()
 
     def _configure_sla_components(self) -> None:
         self.sla_components = SlaComponentsWrapper(

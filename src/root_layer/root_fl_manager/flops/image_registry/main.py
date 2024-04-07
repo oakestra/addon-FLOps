@@ -19,7 +19,7 @@ def check_registry_reachable(flops_process: FlOpsProcess) -> bool:
         ),
         RequestAuxiliaries(
             what_should_happen="Registry is reachable",
-            flops_process=flops_process,
+            flops_process_id=flops_process,
             exception=ImageRegistryException,
             show_msg_on_success=True,
         ),

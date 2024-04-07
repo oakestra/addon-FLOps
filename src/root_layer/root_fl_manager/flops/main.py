@@ -24,10 +24,8 @@ def handle_new_flops_process(new_flops_process_sla: FlOpsProcessSla, bearer_toke
         customer_id=new_flops_process_sla["customerID"],
         verbose=new_flops_process_sla.get("verbose", False),
     )
-    ic("AA", flops_process)
-    return
-    fl_ui = FLUserInterface(flops_process_id=flops_process.flops_process_id)
-    fl_ui.deploy(flops_process, bearer_token)
+    fl_ui = FLUserInterface(flops_process=flops_process)
+    fl_ui.deploy(bearer_token)
 
     ml_repo = MlRepo(
         flops_process_id=flops_process.flops_process_id,
@@ -55,7 +53,9 @@ def handle_new_flops_process(new_flops_process_sla: FlOpsProcessSla, bearer_toke
             "New FL Client image needs to be build. Start build delegation processes.",
             flops_process,
         )
-    FLClientEnvImageBuilder(flops_process, ml_repo, fl_ui)
+
+    FLClientEnvImageBuilder(flops_process=flops_process, ml_repo=ml_repo, ui=fl_ui).deploy()
+
     if flops_process.verbose:
         notify_ui(
             "New Builder application created & deployed",

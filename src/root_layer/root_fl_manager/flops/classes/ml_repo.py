@@ -3,8 +3,6 @@ from api.consts import GITHUB_PREFIX
 from flops.classes.abstract.base import FlOpsBaseClass
 from pydantic import Field
 
-BUILDER_APP_NAMESPACE = "flbuild"
-
 
 class MlRepo(FlOpsBaseClass):
     url: str
