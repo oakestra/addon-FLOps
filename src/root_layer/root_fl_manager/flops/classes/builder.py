@@ -1,6 +1,6 @@
 import flops.main as main_flops
 import mqtt.main
-from flops.classes.abstract.oakestratable import FlOpsOakestraClass
+from flops.classes.abstract.oakestratable import FlOpsOakestraBaseClass
 from flops.classes.ml_repo import MlRepo
 from flops.classes.project import FlOpsProject
 from flops.classes.ui import FLUserInterface
@@ -19,7 +19,7 @@ from utils.sla.components import (
 )
 
 
-class FLClientEnvImageBuilder(FlOpsOakestraClass):
+class FLClientEnvImageBuilder(FlOpsOakestraBaseClass):
     flops_project: FlOpsProject = Field(None, exclude=True, repr=False)
     ui: FLUserInterface = Field(None, exclude=True, repr=False)
     ml_repo: MlRepo = Field(None, exclude=True, repr=False)

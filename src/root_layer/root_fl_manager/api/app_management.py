@@ -3,7 +3,7 @@ import api.request_management.custom_requests as custom_requests
 from api.utils.auxiliary import get_matching_type
 from api.utils.consts import SYSTEM_MANAGER_URL
 from flops.classes.abstract.base import FlOpsBaseClass
-from utils.classes.exceptions import AppCreationException, AppDeletionException, AppFetchException
+from utils.classes.exceptions import AppCreationException, AppFetchException
 from utils.types import SLA, Application
 
 
@@ -64,23 +64,3 @@ def fetch_app(
         ),
     ).execute()
     return response
-
-
-def undeploy_app(
-    application_id: str,
-    flops_project_id: str,
-    matching_caller_object: FlOpsBaseClass = None,
-) -> None:
-    app_type = get_matching_type(matching_caller_object)
-    custom_requests.CustomRequest(
-        core=custom_requests.RequestCore(
-            http_method=custom_http.HttpMethods.DELETE,
-            base_url=SYSTEM_MANAGER_URL,
-            api_endpoint=f"/api/application/{application_id}",
-        ),
-        aux=custom_requests.RequestAuxiliaries(
-            what_should_happen=f"Delete {app_type} app for FLOps'{flops_project_id}'",
-            exception=AppDeletionException,
-            show_msg_on_success=True,
-        ),
-    ).execute()

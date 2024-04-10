@@ -26,12 +26,16 @@ def handle_fl_operations(flops_project: FlOpsProject, fl_client_image: str) -> N
 
 
 def handle_new_flops_project(new_flops_project_sla: FlOpsProjectSla, bearer_token: str) -> None:
+    from icecream import ic
+
+    ic("Zaaaaaaaaa")
     flops_project = FlOpsProject(
         customer_id=new_flops_project_sla["customerID"],
         verbose=new_flops_project_sla.get("verbose", False),
     )
-    return
+    ic("Zbbbbbbbbb")
     fl_ui = FLUserInterface(flops_project=flops_project, bearer_token=bearer_token)
+    ic("ZzzzzzzzzzzzzzzzzzzzZ")
     return
     ml_repo = MlRepo(
         flops_project_id=flops_project.flops_project_id,

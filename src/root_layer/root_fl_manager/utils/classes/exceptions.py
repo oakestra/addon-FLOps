@@ -48,9 +48,13 @@ class AppFetchException(RootFLManagerException):
     pass
 
 
-class ProjectServiceAppend(RootFLManagerException):
+class FLOpsProjectServiceAppend(RootFLManagerException):
     pass
 
 
 class ServiceDeploymentException(RootFLManagerException):
+    pass
+
+
+class ServiceUnDeploymentException(RootFLManagerException):
     pass

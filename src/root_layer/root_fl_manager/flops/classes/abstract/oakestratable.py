@@ -1,15 +1,16 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod
+from typing import ClassVar
 
-from api.app_management import create_app, fetch_app, undeploy_app
-from api.service_management import append_service_to_flops_project, deploy_service
+from api.app_management import create_app, fetch_app
 from flops.classes.abstract.base import FlOpsBaseClass
+from icecream import ic
 from pydantic import Field
 from utils.sla.components import SlaComponentsWrapper
 from utils.sla.generator import generate_sla
 from utils.types import Application
 
 
-class FlOpsOakestraClass(FlOpsBaseClass, ABC):
+class FlOpsOakestraBaseClass(FlOpsBaseClass):
     """A class used for components that can be created or deployed as applications or services."""
 
     # Note:
@@ -24,9 +25,7 @@ class FlOpsOakestraClass(FlOpsBaseClass, ABC):
     #
     # TODO add a "post init" (custom) validator to check
     # if all properties are properly set and not empty/""
-    app_id: str = Field("", init=False)
-    service_id: str = Field("", init=False)
-
+    namespace: ClassVar[str]
     # Note: Only used during "runtime". It is not stored or displayed due to verbosity & redundancy.
     sla_components: SlaComponentsWrapper = Field(None, init=False, exclude=True, repr=False)
 
@@ -34,50 +33,52 @@ class FlOpsOakestraClass(FlOpsBaseClass, ABC):
         if self.gets_loaded_from_db:
             return
 
+        ic(0)
         self._configure_sla_components()
-        self.create(standalone=False)
-        self.deploy()
+        ic(1, self.sla_components)
+        self.create()
+        ic(2)
         self._add_to_db()
+        ic(3)
 
     @abstractmethod
     def _configure_sla_components(self) -> None:
         """Sets self.sla_components that are needed for deployments"""
         pass
 
-    def create(self, standalone: False) -> "FlOpsOakestraClass":
-        """Creates this FLOps component.
-        If 'standalone' then create a new separate application.
-        Else append/create a new service to the existing FLOps project application.
-        """
-        if standalone:
-            new_app = create_app(
-                sla=generate_sla(self.sla_components),
-                bearer_token=getattr(self, "bearer_token", None),
-                flops_project_id=self.flops_project_id,
-                matching_caller_object=self,
-            )
-            self.app_id = new_app["applicationID"]
-            if new_app["microservices"]:
-                self.service_id = new_app["microservices"][-1]
-        else:
-            self.service_id = append_service_to_flops_project(
-                sla=generate_sla(self.sla_components),
-                bearer_token=getattr(self, "bearer_token", None),
-                flops_project_id=self.flops_project_id,
-                matching_caller_object=self,
-            )
-        return self
+    def create(self) -> None:
+        ic(4)
+        sla = generate_sla(self.sla_components)
+        ic(sla)
+        ic("4aa")
 
-    def deploy(self) -> "FlOpsOakestraClass":
-        deploy_service(service_id=self.service_id, matching_caller_object=self)
-        return self
-
-    def undeploy(self) -> None:
-        undeploy_app(
-            application_id=self.app_id,
+        new_app = create_app(
+            # sla=generate_sla(self.sla_components),
+            sla=sla,
+            bearer_token=getattr(self, "bearer_token", None),
             flops_project_id=self.flops_project_id,
             matching_caller_object=self,
         )
+        ic(5, self.flops_project_id, new_app)
+        if self.flops_project_id:
+            self.app_id = new_app["applicationID"]
+            ic(55, self.app_id)
+        else:
+            self.flops_project_id = new_app["applicationID"]
+        if new_app["microservices"]:
+            self.service_id = new_app["microservices"][-1]
+            ic(555, self.service_id)
+
+        ic(6)
+
+    def delete(self) -> None:
+        pass
+        # TODO
+        # delete_app(
+        #     application_id=self.app_id,
+        #     flops_project_id=self.flops_project_id,
+        #     matching_caller_object=self,
+        # )
 
     def fetch_from_oakestra(self, namespace: str) -> Application:
         return fetch_app(
