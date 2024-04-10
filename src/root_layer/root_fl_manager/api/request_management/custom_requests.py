@@ -22,7 +22,7 @@ class RequestCore(NamedTuple):
 class RequestAuxiliaries(NamedTuple):
     what_should_happen: str
     exception: RootFLManagerException
-    flops_process_id: str = ""
+    flops_project_id: str = ""
     show_msg_on_success: bool = False
     is_oakestra_api: bool = True
 
@@ -101,5 +101,5 @@ class CustomRequest:
         raise self.aux.exception(
             msg=error_msg,
             http_status=self.response.status if self.response else None,
-            flops_process=self.aux.flops_process_id,
+            flops_project_id=self.aux.flops_project_id,
         )

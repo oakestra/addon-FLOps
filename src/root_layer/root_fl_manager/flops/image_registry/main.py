@@ -2,7 +2,7 @@ from typing import List, Optional
 
 from api.request_management.custom_requests import CustomRequest, RequestAuxiliaries, RequestCore
 from flops.classes.ml_repo import MlRepo
-from flops.classes.process import FlOpsProcess
+from flops.classes.project import FlOpsProject
 from flops.image_registry.common import (
     ROOT_FL_IMAGE_REGISTRY_IP_WITH_PORT,
     ROOT_FL_IMAGE_REGISTRY_URL,
@@ -11,7 +11,7 @@ from flops.image_registry.utils import get_latest_commit_hash
 from utils.classes.exceptions import ImageRegistryException
 
 
-def check_registry_reachable(flops_process: FlOpsProcess) -> bool:
+def check_registry_reachable(flops_project: FlOpsProject) -> bool:
     CustomRequest(
         core=RequestCore(
             base_url=ROOT_FL_IMAGE_REGISTRY_URL,
@@ -19,7 +19,7 @@ def check_registry_reachable(flops_process: FlOpsProcess) -> bool:
         ),
         aux=RequestAuxiliaries(
             what_should_happen="Registry is reachable",
-            flops_process_id=flops_process,
+            flops_project_id=flops_project,
             exception=ImageRegistryException,
             show_msg_on_success=True,
         ),

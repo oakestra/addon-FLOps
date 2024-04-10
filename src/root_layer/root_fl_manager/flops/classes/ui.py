@@ -1,6 +1,6 @@
 import mqtt.main as main_mqtt
-from flops.classes.abstract.deyployable import FlOpsDeployableClass
-from flops.classes.process import FlOpsProcess
+from flops.classes.abstract.oakestratable import FlOpsOakestraClass
+from flops.classes.project import FlOpsProject
 from flops.utils import generate_ip
 from pydantic import Field
 from utils.sla.components import (
@@ -13,10 +13,12 @@ from utils.sla.components import (
 )
 
 
-class FLUserInterface(FlOpsDeployableClass):
-    # Note: Use the entire Process object instead but only store & display its id.
-    flops_process: FlOpsProcess = Field(None, exclude=True, repr=False)
-    flops_process_id: str = Field("", init=False)
+class FLUserInterface(FlOpsOakestraClass):
+    # Note: Use the entire Project object instead but only store & display its id.
+    flops_project: FlOpsProject = Field(None, exclude=True, repr=False)
+    flops_project_id: str = Field("", init=False)
+
+    bearer_token: str = Field(exclude=True, repr=False)
 
     ip: str = Field("", init=False)
 
@@ -24,18 +26,18 @@ class FLUserInterface(FlOpsDeployableClass):
         if self.gets_loaded_from_db:
             return
 
-        self.flops_process_id = self.flops_process.flops_process_id
-        self.ip = generate_ip(self.flops_process_id, self)
-        self._configure_sla_components()
+        self.flops_project_id = self.flops_project.flops_project_id
+        self.ip = generate_ip(self.flops_project_id, self)
+        super().model_post_init(_)
 
     def _configure_sla_components(self) -> None:
         self.sla_components = SlaComponentsWrapper(
             core=SlaCore(
-                customerID=self.flops_process.customer_id,
+                customerID=self.flops_project.customer_id,
                 names=SlaNames(
-                    app_name=f"fl{self.flops_process.get_shortened_id()}",
+                    app_name=f"fl{self.flops_project.get_shortened_id()}",
                     app_namespace="flui",
-                    service_name=f"fl{self.flops_process.get_shortened_id()}",
+                    service_name=f"fl{self.flops_project.get_shortened_id()}",
                     service_namespace="flui",
                 ),
                 compute=SlaCompute(
@@ -44,7 +46,7 @@ class FLUserInterface(FlOpsDeployableClass):
                         (
                             "python",
                             "main.py",
-                            self.flops_process_id,
+                            self.flops_project_id,
                             main_mqtt.ROOT_FL_MQTT_BROKER_URL,
                             main_mqtt.ROOT_FL_MQTT_BROKER_PORT,
                         )

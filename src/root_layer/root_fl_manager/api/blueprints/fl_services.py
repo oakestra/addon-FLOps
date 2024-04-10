@@ -3,7 +3,7 @@ from typing import Tuple
 
 import flask
 import flask_openapi3
-from flops.main import handle_new_flops_process
+from flops.main import handle_new_flops_project
 from utils.classes.exceptions import RootFLManagerException
 from utils.logging import logger
 
@@ -22,8 +22,8 @@ def post_fl_service() -> Tuple[dict, HTTPStatus]:
     # that can be easily realized.
     try:
         bearer_token = flask.request.headers.get("Authorization")
-        handle_new_flops_process(
-            new_flops_process_sla=flask.request.json,
+        handle_new_flops_project(
+            new_flops_project_sla=flask.request.json,
             bearer_token=bearer_token,
         )
     except RootFLManagerException as e:
@@ -35,4 +35,4 @@ def post_fl_service() -> Tuple[dict, HTTPStatus]:
         logger.fatal(err_msg)
         return {"message": err_msg}, HTTPStatus.INTERNAL_SERVER_ERROR
 
-    return {"message": "New FLOps processes started successfully"}, HTTPStatus.OK
+    return {"message": "New FLOps project started successfully"}, HTTPStatus.OK

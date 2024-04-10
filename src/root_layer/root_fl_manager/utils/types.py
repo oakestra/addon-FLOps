@@ -1,5 +1,5 @@
 SLA = dict
-FlOpsProcessSla = SLA
+FlOpsProjectSla = SLA
 AppSLA = SLA
 
 Application = dict

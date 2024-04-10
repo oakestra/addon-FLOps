@@ -1,4 +1,4 @@
-from flops.classes.process import FlOpsProcess
+from flops.classes.project import FlOpsProject
 from utils.common import FLOPS_USER_ACCOUNT
 from utils.sla.components import (
     SlaCompute,
@@ -14,10 +14,10 @@ AGGREGATOR_APP_NAMESPACE = "flaggr"
 
 
 def generate_aggregator_sla(
-    flops_process: FlOpsProcess,
+    flops_project: FlOpsProject,
 ) -> SLA:
 
-    aggregator_name = f"ag{flops_process.flops_process_id}"
+    aggregator_name = f"ag{flops_project.flops_project_id}"
 
     cmd = " ".join(
         (

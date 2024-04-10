@@ -1,8 +1,8 @@
 import flops.main as main_flops
 import mqtt.main
-from flops.classes.abstract.deyployable import FlOpsDeployableClass
+from flops.classes.abstract.oakestratable import FlOpsOakestraClass
 from flops.classes.ml_repo import MlRepo
-from flops.classes.process import FlOpsProcess
+from flops.classes.project import FlOpsProject
 from flops.classes.ui import FLUserInterface
 from flops.image_registry.common import ROOT_FL_IMAGE_REGISTRY_URL
 from flops.utils import notify_ui
@@ -19,32 +19,32 @@ from utils.sla.components import (
 )
 
 
-class FLClientEnvImageBuilder(FlOpsDeployableClass):
-    flops_process: FlOpsProcess = Field(None, exclude=True, repr=False)
+class FLClientEnvImageBuilder(FlOpsOakestraClass):
+    flops_project: FlOpsProject = Field(None, exclude=True, repr=False)
     ui: FLUserInterface = Field(None, exclude=True, repr=False)
     ml_repo: MlRepo = Field(None, exclude=True, repr=False)
 
     ip: str = Field("", init=False)
 
-    flops_process_id: str = Field("", init=False)
+    flops_project_id: str = Field("", init=False)
 
     def model_post_init(self, _):
         if self.gets_loaded_from_db:
             return
 
-        self.flops_process_id = self.flops_process.flops_process_id
-        self._configure_sla_components()
+        self.flops_project_id = self.flops_project.flops_project_id
+        super().model_post_init(_)
 
     def _configure_sla_components(self) -> None:
         BUILDER_APP_NAMESPACE = "flbuild"
-        builder_name = f"bu{self.flops_process.get_shortened_id()}"
+        builder_name = f"bu{self.flops_project.get_shortened_id()}"
         cmd = " ".join(
             (
                 "python3",
                 "main.py",
                 self.ml_repo.url,
                 ROOT_FL_IMAGE_REGISTRY_URL,
-                self.flops_process_id,
+                self.flops_project_id,
                 # TODO need to figure out a way to provide
                 # non docker-compose member exclusive DNS name as IP.
                 # mqtt.main.ROOT_MQTT_BROKER_URL,
@@ -82,18 +82,18 @@ class FLClientEnvImageBuilder(FlOpsDeployableClass):
     @classmethod
     def handle_success(cls, builder_success_msg: dict) -> None:
         logger.debug(builder_success_msg)
-        flops_process_id = builder_success_msg["flops_process_id"]
-        cls.retrieve_from_db(flops_process_id=flops_process_id).undeploy()
+        flops_project_id = builder_success_msg["flops_project_id"]
+        cls.retrieve_from_db(flops_project_id=flops_project_id).undeploy()
         main_flops.handle_fl_operations(
-            flops_process=FlOpsProcess.retrieve_from_db(flops_process_id=flops_process_id),
+            flops_project=FlOpsProject.retrieve_from_db(flops_project_id=flops_project_id),
             fl_client_image=builder_success_msg["image_name_with_tag"],
         )
 
     @classmethod
     def handle_failed(cls, builder_failed_msg: dict) -> None:
         logger.debug(builder_failed_msg)
-        flops_process_id = builder_failed_msg["flops_process_id"]
-        cls.retrieve_from_db(flops_process_id=flops_process_id).undeploy()
+        flops_project_id = builder_failed_msg["flops_project_id"]
+        cls.retrieve_from_db(flops_project_id=flops_project_id).undeploy()
         msg = "Builder failed. Terminating this FLOps."
         logger.critical(msg)
-        notify_ui(flops_process_id=flops_process_id, msg=msg)
+        notify_ui(flops_project_id=flops_project_id, msg=msg)

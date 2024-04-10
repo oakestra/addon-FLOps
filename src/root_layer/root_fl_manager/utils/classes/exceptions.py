@@ -9,11 +9,11 @@ from flops.utils import notify_ui
 class RootFLManagerException(Exception):
     msg: str
     http_status: HTTPStatus = None
-    flops_process_id: str = ""
+    flops_project_id: str = ""
 
     def try_to_notify_ui(self):
-        if self.flops_process_id:
-            notify_ui(msg=self.msg, flops_process_id=self.flops_process_id)
+        if self.flops_project_id:
+            notify_ui(msg=self.msg, flops_project_id=self.flops_project_id)
 
 
 class ImageBuilderException(RootFLManagerException):
@@ -45,6 +45,10 @@ class AppDeletionException(RootFLManagerException):
 
 
 class AppFetchException(RootFLManagerException):
+    pass
+
+
+class ProjectServiceAppend(RootFLManagerException):
     pass
 
 
