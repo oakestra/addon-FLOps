@@ -1,11 +1,11 @@
-from api.service_management import append_service_to_flops_project, deploy, undeploy
+from api.service_management import append_service_to_flops_project_app, deploy, undeploy
 from flops.classes.abstract.oakestratable import FlOpsOakestraBaseClass
 from pydantic import Field
 from utils.sla.generator import generate_sla
 
 
-class FlOpsProjectComponent(FlOpsOakestraBaseClass):
-    """A class for FLOps components.
+class InternalProjectComponent(FlOpsOakestraBaseClass):
+    """A class for internal FLOps components.
     Such a component can be created & deployed only as a service.
     This service will be appended to an already existing FLOps project application.
     """
@@ -20,7 +20,7 @@ class FlOpsProjectComponent(FlOpsOakestraBaseClass):
         self.deploy()
 
     def create(self) -> None:
-        self.service_id = append_service_to_flops_project(
+        self.service_id = append_service_to_flops_project_app(
             sla=generate_sla(self.sla_components),
             bearer_token=getattr(self, "bearer_token", None),
             flops_project_id=self.flops_project_id,
@@ -32,7 +32,7 @@ class FlOpsProjectComponent(FlOpsOakestraBaseClass):
 
     def undeploy(self) -> None:
         undeploy(
-            application_id=self.app_id,
+            service_id=self.service_id,
             flops_project_id=self.flops_project_id,
             matching_caller_object=self,
         )

@@ -1,6 +1,6 @@
 import threading
 
-from flops.classes.builder import FLClientEnvImageBuilder
+from flops.classes.builder.management import init_builder
 from flops.classes.ml_repo import MlRepo
 from flops.classes.project import FlOpsProject
 from flops.classes.ui import FLUserInterface
@@ -11,7 +11,7 @@ from utils.types import FlOpsProjectSla
 
 
 def handle_fl_operations(flops_project: FlOpsProject, fl_client_image: str) -> None:
-    msg = "Start handling FL project"
+    msg = "Start handling FL processes"
     logger.info(msg)
     notify_ui(flops_project_id=flops_project.flops_project_id, msg=msg)
 
@@ -26,17 +26,11 @@ def handle_fl_operations(flops_project: FlOpsProject, fl_client_image: str) -> N
 
 
 def handle_new_flops_project(new_flops_project_sla: FlOpsProjectSla, bearer_token: str) -> None:
-    from icecream import ic
-
-    ic("Zaaaaaaaaa")
     flops_project = FlOpsProject(
         customer_id=new_flops_project_sla["customerID"],
         verbose=new_flops_project_sla.get("verbose", False),
     )
-    ic("Zbbbbbbbbb")
     fl_ui = FLUserInterface(flops_project=flops_project, bearer_token=bearer_token)
-    ic("ZzzzzzzzzzzzzzzzzzzzZ")
-    return
     ml_repo = MlRepo(
         flops_project_id=flops_project.flops_project_id,
         url=new_flops_project_sla["code"],
@@ -57,16 +51,4 @@ def handle_new_flops_project(new_flops_project_sla: FlOpsProjectSla, bearer_toke
         ).start()
         return
 
-    if flops_project.verbose:
-        notify_ui(
-            flops_project_id=flops_project.flops_project_id,
-            msg="New FL Client image needs to be build. Start build delegation processes.",
-        )
-
-    FLClientEnvImageBuilder(flops_project=flops_project, ml_repo=ml_repo, ui=fl_ui)
-
-    if flops_project.verbose:
-        notify_ui(
-            flops_project_id=flops_project.flops_project_id,
-            msg="New Builder application created & deployed",
-        )
+    init_builder(flops_project=flops_project, ml_repo=ml_repo, fl_ui=fl_ui)

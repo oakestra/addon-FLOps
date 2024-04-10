@@ -48,7 +48,7 @@ def get_current_registry_repo_image_tags(ml_repo: MlRepo) -> List[str]:
     response = CustomRequest(
         core=RequestCore(
             base_url=ROOT_FL_IMAGE_REGISTRY_URL,
-            api_endpoint=f"/v2/{ml_repo.sanitized_name}/tags/list",
+            api_endpoint=f"/v2/{ml_repo.get_sanitized_name()}/tags/list",
         ),
         aux=RequestAuxiliaries(
             what_should_happen="Get image tags",
@@ -60,7 +60,7 @@ def get_current_registry_repo_image_tags(ml_repo: MlRepo) -> List[str]:
 
 def fetch_latest_matching_image(ml_repo: MlRepo) -> Optional[str]:
     current_image_reqpositories = get_current_registry_image_repos()
-    if ml_repo.sanitized_name not in current_image_reqpositories:
+    if ml_repo.get_sanitized_name() not in current_image_reqpositories:
         return None
     current_image_tags = get_current_registry_repo_image_tags(ml_repo)
     latest_commit_hash = get_latest_commit_hash(ml_repo)

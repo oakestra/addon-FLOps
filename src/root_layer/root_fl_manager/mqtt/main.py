@@ -1,7 +1,7 @@
 import json
 import os
 
-import flops.classes.builder as builder_class_file
+import flops.classes.builder.management as builder_management
 import paho.mqtt.client as paho_mqtt
 import utils.classes.exceptions as custom_exceptions
 from mqtt.utils import Topics, reconnect
@@ -22,10 +22,10 @@ def _on_new_message(client, userdata, message) -> None:
         topic = message.topic
         match topic:
             case Topics.IMAGE_BUILDER_SUCCESS.value:
-                builder_class_file.FLClientEnvImageBuilder.handle_success(builder_success_msg=data)
+                builder_management.handle_builder_success(builder_success_msg=data)
 
             case Topics.IMAGE_BUILDER_FAILED.value:
-                builder_class_file.FLClientEnvImageBuilder.handle_failed(builder_failed_msg=data)
+                builder_management.handle_builder_failed(builder_failed_msg=data)
 
             case Topics.FL_UI_FAILED.value:
                 logger.critical(data)

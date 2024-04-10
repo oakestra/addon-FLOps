@@ -30,10 +30,7 @@ def append_service_to_flops_project_app(
             exception=FLOpsProjectServiceAppend,
         ),
     ).execute()
-    from icecream import ic
-
-    ic("RRRRRRRRR", response)
-    # return new_app
+    return response["job_id"]
 
 
 def deploy(service_id: ServiceId, matching_caller_object: FlOpsBaseClass = None) -> None:
