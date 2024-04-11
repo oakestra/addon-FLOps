@@ -1,9 +1,0 @@
-import os
-
-ROOT_FL_MANAGER_PORT = os.environ.get("ROOT_FL_MANAGER_PORT")
-
-SYSTEM_MANAGER_IP = os.environ.get("SYSTEM_MANAGER_IP")
-SYSTEM_MANAGER_PORT = os.environ.get("SYSTEM_MANAGER_PORT")
-SYSTEM_MANAGER_URL = f"http://{SYSTEM_MANAGER_IP}:{SYSTEM_MANAGER_PORT}"
-
-GITHUB_PREFIX = "https://github.com/"

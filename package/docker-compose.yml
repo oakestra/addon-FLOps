@@ -1,0 +1,83 @@
+version: "3.3"
+
+name: flops_management
+
+services:
+
+  flops_manager:
+    image: flops_manager
+    build: .
+    hostname: flops_manager
+    container_name: flops_manager
+    environment:
+      - FLOPS_MANAGER_PORT=5072
+      - FLOPS_IMAGE_REGISTRY_PORT=5073
+      - SYSTEM_MANAGER_IP=system_manager
+      - SYSTEM_MANAGER_PORT=10000
+      - FLOPS_MQTT_BROKER_PORT=9027
+      - FLOPS_MQTT_BROKER_URL=flops_mqtt
+      - FLOPS_DB_PORT=10027
+      - CAROOT=/etc/ssl
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ssl:/etc/ssl
+    expose:
+      - "5072"
+    ports:
+      - "5072:5072"
+    networks:
+      - root_orchestrator_default
+  
+  flops_image_registry:
+    image: registry:2.8.3
+    container_name: flops_image_registry
+    environment:
+      - REGISTRY_HTTP_ADDR=0.0.0.0:5073
+      - REGISTRY_HTTP_TLS_CERTIFICATE=/etc/ssl/registry.pem
+      - REGISTRY_HTTP_TLS_KEY=/etc/ssl/registry-key.pem
+    volumes:
+      - registry_data:/var/lib/registry
+      - ssl:/etc/ssl
+    expose:
+      - "5073"
+    ports:
+      - "5073:5073"
+    depends_on: [flops_manager]
+    networks:
+      - root_orchestrator_default
+
+  flops_mqtt:
+    image: eclipse-mosquitto:2
+    hostname: flops_mqtt
+    container_name: flops_mqtt
+    restart: unless-stopped
+    ports:
+      - "9027:9027"
+    volumes:
+      - ./flops_manager/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - /mosquitto/data
+      - /mosquitto/log
+
+  flops_db:
+    image: mongo:3.6
+    container_name: flops_db
+    hostname: flops_db
+    ports:
+      - "10027:10027"
+    volumes:
+      - 'flops_db:/mongodb'
+    command: mongod --port 10027
+
+volumes:
+  registry_data:
+  ssl:
+  flops_db:
+    driver: local
+
+# To be able for the root-orchestrator (RO) compose services to reach the flops services
+# an easy solution is to place the flops services into the same docker network.
+# Otherwise the flops services cannot be reached by the RO services.
+# https://stackoverflow.com/a/42114724
+networks:
+  root_orchestrator_default:
+    external: true
