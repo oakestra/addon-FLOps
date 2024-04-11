@@ -2,12 +2,19 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-import flops_manager.api.request_management.custom_http as custom_http
-import flops_manager.api.request_management.custom_requests as custom_requests
-import flops_manager.utils.exceptions as custom_exceptions
+from flops_manager.api.request_management.custom_http import HttpMethods
+from flops_manager.api.request_management.custom_requests import (
+    CustomRequest,
+    RequestAuxiliaries,
+    RequestCore,
+)
 from flops_manager.api.utils.auxiliary import get_matching_type
 from flops_manager.api.utils.consts import SYSTEM_MANAGER_URL
-from flops_manager.utils.exceptions import FLOpsProjectServiceAppend, ServiceUnDeploymentException
+from flops_manager.utils.exceptions import (
+    FLOpsProjectServiceAppend,
+    ServiceDeploymentException,
+    ServiceUnDeploymentException,
+)
 from flops_manager.utils.types import SLA, ServiceId
 
 if TYPE_CHECKING:
@@ -21,15 +28,15 @@ def append_service_to_flops_project_app(
     matching_caller_object: FlOpsBaseClass = None,
 ) -> ServiceId:
     service_type = get_matching_type(matching_caller_object)
-    response = custom_requests.CustomRequest(
-        core=custom_requests.RequestCore(
-            http_method=custom_http.HttpMethods.POST,
+    response = CustomRequest(
+        core=RequestCore(
+            http_method=HttpMethods.POST,
             base_url=SYSTEM_MANAGER_URL,
             api_endpoint="/api/service/",
             data=sla,
             custom_headers={"Authorization": bearer_token} if bearer_token else None,
         ),
-        aux=custom_requests.RequestAuxiliaries(
+        aux=RequestAuxiliaries(
             what_should_happen=f"Append new {service_type }service {flops_project_id}",
             flops_project_id=flops_project_id,
             show_msg_on_success=True,
@@ -41,15 +48,15 @@ def append_service_to_flops_project_app(
 
 def deploy(service_id: ServiceId, matching_caller_object: FlOpsBaseClass = None) -> None:
     service_type = get_matching_type(matching_caller_object)
-    custom_requests.CustomRequest(
-        core=custom_requests.RequestCore(
-            http_method=custom_http.HttpMethods.POST,
+    CustomRequest(
+        core=RequestCore(
+            http_method=HttpMethods.POST,
             base_url=SYSTEM_MANAGER_URL,
             api_endpoint=f"/api/service/{service_id}/instance",
         ),
-        aux=custom_requests.RequestAuxiliaries(
+        aux=RequestAuxiliaries(
             what_should_happen=f"Deploy {service_type }service '{service_id}'",
-            exception=custom_exceptions.ServiceDeploymentException,
+            exception=ServiceDeploymentException,
             show_msg_on_success=True,
         ),
     ).execute()
@@ -61,13 +68,13 @@ def undeploy(
     matching_caller_object: FlOpsBaseClass = None,
 ) -> None:
     service_type = get_matching_type(matching_caller_object)
-    custom_requests.CustomRequest(
-        core=custom_requests.RequestCore(
-            http_method=custom_http.HttpMethods.DELETE,
+    CustomRequest(
+        core=RequestCore(
+            http_method=HttpMethods.DELETE,
             base_url=SYSTEM_MANAGER_URL,
             api_endpoint=f"/api/service/{service_id}",
         ),
-        aux=custom_requests.RequestAuxiliaries(
+        aux=RequestAuxiliaries(
             what_should_happen=f"Undeploy {service_type} service for FLOps'{flops_project_id}'",
             exception=ServiceUnDeploymentException,
             show_msg_on_success=True,

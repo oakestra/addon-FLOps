@@ -1,4 +1,4 @@
-import flops_manager.api.service_management as service_management
+from flops_manager.api.service_management import deploy, undeploy
 from flops_manager.classes.oakestratables.base import FlOpsOakestraBaseClass
 from pydantic import Field
 
@@ -16,10 +16,10 @@ class DeployableClass(FlOpsOakestraBaseClass):
         self.deploy()
 
     def deploy(self) -> None:
-        service_management.deploy(service_id=self.service_id, matching_caller_object=self)
+        deploy(service_id=self.service_id, matching_caller_object=self)
 
     def undeploy(self) -> None:
-        service_management.undeploy(
+        undeploy(
             application_id=self.app_id,
             flops_project_id=self.flops_project_id,
             matching_caller_object=self,
