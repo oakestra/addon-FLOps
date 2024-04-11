@@ -13,24 +13,22 @@ from utils.sla.components import (
 )
 
 
-# def prepare_builder_sla_components(builder: FlOpsBaseClass) -> SlaComponentsWrapper:
-def prepare_builder_sla_components(builder) -> SlaComponentsWrapper:
-    flops_project = builder.flops_project
-    ml_repo = builder.ml_repo
-    ui = builder.ui
+# def prepare_aggregator_sla_components(aggregator: FlOpsBaseClass) -> SlaComponentsWrapper:
+def prepare_aggregator_sla_components(aggregator) -> SlaComponentsWrapper:
+    flops_project = aggregator.flops_project
+    ui = aggregator.ui
     cmd = " ".join(
         (
             "python3",
             "main.py",
-            ml_repo.url,
-            ROOT_FL_IMAGE_REGISTRY_URL,
-            flops_project.flops_project_id,
-            # TODO need to figure out a way to provide
-            # non docker-compose member exclusive DNS name as IP.
-            # mqtt.main.ROOT_MQTT_BROKER_URL,
-            "192.168.178.44",
-            mqtt.main.ROOT_FL_MQTT_BROKER_PORT,
-            ui.ip,
+            # ROOT_FL_IMAGE_REGISTRY_URL,
+            # flops_project.flops_project_id,
+            # # TODO need to figure out a way to provide
+            # # non docker-compose member exclusive DNS name as IP.
+            # # mqtt.main.ROOT_MQTT_BROKER_URL,
+            # "192.168.178.44",
+            # mqtt.main.ROOT_FL_MQTT_BROKER_PORT,
+            # ui.ip,
         )
     )
 
@@ -41,20 +39,20 @@ def prepare_builder_sla_components(builder) -> SlaComponentsWrapper:
             names=SlaNames(
                 app_name=flops_project.project_app_name,
                 app_namespace=flops_project.namespace,
-                service_name=f"bu{flops_project.get_shortened_id()}",
-                service_namespace=builder.namespace,
+                service_name=f"ag{flops_project.get_shortened_id()}",
+                service_namespace=aggregator.namespace,
             ),
             compute=SlaCompute(
-                code="ghcr.io/oakestra/plugins/flops/fl-client-env-builder:latest",
+                code="ghcr.io/malyuk-a/fl-aggregator:latest",
                 one_shot_service=True,
                 cmd=cmd,
             ),
         ),
         details=SlaDetails(
             resources=SlaResources(
-                memory=2000,
+                memory=100,
                 vcpus=1,
-                storage=15000,
+                storage=0,
             ),
         ),
     )

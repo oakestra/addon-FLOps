@@ -1,20 +1,19 @@
 from flops.classes.abstract.internal_component import InternalProjectComponent
-from flops.classes.builder.sla import prepare_builder_sla_components
-from flops.classes.ml_repo import MlRepo
+from flops.classes.aggregator.sla import prepare_aggregator_sla_components
 from flops.classes.project import FlOpsProject
 from flops.classes.ui import FLUserInterface
 from pydantic import Field
 
 
-class FLClientEnvImageBuilder(InternalProjectComponent):
+class FLAggregator(InternalProjectComponent):
     flops_project: FlOpsProject = Field(None, exclude=True, repr=False)
-    # TODO maybe place ui into flops_project instead of the individual components? - need a setter for this
     ui: FLUserInterface = Field(None, exclude=True, repr=False)
-    ml_repo: MlRepo = Field(None, exclude=True, repr=False)
+
+    ip: str = Field("", init=False)
 
     flops_project_id: str = Field("", init=False)
 
-    namespace = "flbuild"
+    namespace = "flaggreg"
 
     def model_post_init(self, _):
         if self.gets_loaded_from_db:
@@ -24,4 +23,4 @@ class FLClientEnvImageBuilder(InternalProjectComponent):
         super().model_post_init(_)
 
     def _configure_sla_components(self) -> None:
-        self.sla_components = prepare_builder_sla_components(self)
+        self.sla_components = prepare_aggregator_sla_components(self)

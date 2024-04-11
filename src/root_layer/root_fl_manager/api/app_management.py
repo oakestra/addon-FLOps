@@ -1,9 +1,9 @@
 import api.request_management.custom_http as custom_http
 import api.request_management.custom_requests as custom_requests
+import utils.classes.exceptions as flops_exceptions
 from api.utils.auxiliary import get_matching_type
 from api.utils.consts import SYSTEM_MANAGER_URL
 from flops.classes.abstract.base import FlOpsBaseClass
-from utils.classes.exceptions import AppCreationException, AppFetchException
 from utils.types import SLA, Application
 
 
@@ -27,7 +27,7 @@ def create_app(
             what_should_happen=f"Create new {app_type }application {flops_project_id}",
             flops_project_id=flops_project_id,
             show_msg_on_success=True,
-            exception=AppCreationException,
+            exception=flops_exceptions.AppCreationException,
         ),
     ).execute()
     new_app = next(
@@ -40,7 +40,7 @@ def create_app(
         None,
     )
     if new_app is None:
-        raise AppCreationException(
+        raise flops_exceptions.AppCreationException(
             f"Could not find new {app_type } app after creating it", flops_project_id
         )
     return new_app
@@ -59,7 +59,7 @@ def fetch_app(
         ),
         aux=custom_requests.RequestAuxiliaries(
             what_should_happen=f"Fetch {app_type} app bu'{flops_project_id}'",
-            exception=AppFetchException,
+            exception=flops_exceptions.AppFetchException,
             show_msg_on_success=True,
         ),
     ).execute()

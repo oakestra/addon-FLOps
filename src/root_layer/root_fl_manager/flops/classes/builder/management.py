@@ -19,7 +19,7 @@ def init_builder(flops_project: FlOpsProject, ml_repo: MlRepo, fl_ui: FLUserInte
     if flops_project.verbose:
         notify_ui(
             flops_project_id=flops_project.flops_project_id,
-            msg="New Builder application created & deployed",
+            msg="New Builder service created & deployed",
         )
 
 

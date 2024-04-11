@@ -1,5 +1,6 @@
 import threading
 
+# from flops.classes.aggregator.management import init_aggregator
 from flops.classes.builder.management import init_builder
 from flops.classes.ml_repo import MlRepo
 from flops.classes.project import FlOpsProject
@@ -14,14 +15,7 @@ def handle_fl_operations(flops_project: FlOpsProject, fl_client_image: str) -> N
     msg = "Start handling FL processes"
     logger.info(msg)
     notify_ui(flops_project_id=flops_project.flops_project_id, msg=msg)
-
-    # FLClientEnvImageBuilder(flops_project=flops_project, ml_repo=ml_repo, ui=fl_ui)
-    # if flops_project.verbose:
-    #     notify_ui(
-    #         flops_project_id=flops_project.flops_project_id,
-    #         msg="New FL Aggregator service created & deployed",
-    #     )
-    # handle_aggregator(flops_project)
+    # init_aggregator(flops_project=flops_project)
     # TODO
 
 
@@ -31,6 +25,7 @@ def handle_new_flops_project(new_flops_project_sla: FlOpsProjectSla, bearer_toke
         verbose=new_flops_project_sla.get("verbose", False),
     )
     fl_ui = FLUserInterface(flops_project=flops_project, bearer_token=bearer_token)
+    return
     ml_repo = MlRepo(
         flops_project_id=flops_project.flops_project_id,
         url=new_flops_project_sla["code"],

@@ -1,7 +1,7 @@
+import flops.utils as flops_utils
 import mqtt.main as main_mqtt
 from flops.classes.abstract.customer_component import CustomerFacingComponent
 from flops.classes.project import FlOpsProject
-from flops.utils import generate_ip
 from pydantic import Field
 from utils.sla.components import (
     SlaComponentsWrapper,
@@ -28,7 +28,7 @@ class FLUserInterface(CustomerFacingComponent):
 
         self.flops_project_id = self.flops_project.flops_project_id
 
-        self.ip = generate_ip(self.flops_project_id, self)
+        self.ip = flops_utils.generate_ip(self.flops_project_id, self)
         super().model_post_init(_)
 
     def _configure_sla_components(self) -> None:
