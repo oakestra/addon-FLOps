@@ -1,7 +1,7 @@
 import ipaddress
 from typing import NamedTuple
 
-from utils.types import ApplicationId
+from flops_manager.utils.types import ApplicationId
 
 
 class SlaNames(NamedTuple):

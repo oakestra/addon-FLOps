@@ -1,7 +1,7 @@
 import os
 
 import pymongo
-from flops_manager.utils.common import FLOPS_MANAGER_IP
+from flops_manager.utils.constants import FLOPS_MANAGER_IP
 
 FLOPS_DB_PORT = os.environ.get("FLOPS_DB_PORT")
 

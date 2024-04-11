@@ -3,8 +3,8 @@ from typing import Tuple
 
 import flask
 import flask_openapi3
-from flops_manager.flops.main import handle_new_flops_project
-from flops_manager.utils.classes.exceptions import RootFLManagerException
+from flops_manager.manage_flops import handle_new_flops_project
+from flops_manager.utils.exceptions import RootFLManagerException
 from flops_manager.utils.logging import logger
 
 flops_blp = flask_openapi3.APIBlueprint(

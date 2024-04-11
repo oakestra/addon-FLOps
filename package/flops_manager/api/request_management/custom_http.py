@@ -1,5 +1,5 @@
 import requests
-from flops_manager.utils.classes.auxiliary import CustomEnum
+from flops_manager.utils.types import CustomEnum
 
 
 class HttpMethods(CustomEnum):

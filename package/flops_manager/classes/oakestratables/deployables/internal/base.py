@@ -3,7 +3,7 @@ from flops_manager.api.service_management import (
     deploy,
     undeploy,
 )
-from flops_manager.flops.classes.abstract.oakestratable import FlOpsOakestraBaseClass
+from flops_manager.classes.oakestratables.base import FlOpsOakestraBaseClass
 from flops_manager.utils.sla.generator import generate_sla
 from pydantic import Field
 

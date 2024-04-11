@@ -1,5 +1,5 @@
-from flops_manager.flops.classes.abstract.oakestratable import FlOpsOakestraBaseClass
-from flops_manager.utils.common import FLOPS_USER_ACCOUNT
+from flops_manager.classes.oakestratables.base import FlOpsOakestraBaseClass
+from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
 from flops_manager.utils.sla.components import SlaComponentsWrapper, SlaCore, SlaDetails, SlaNames
 from pydantic import Field
 

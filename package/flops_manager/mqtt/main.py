@@ -1,8 +1,8 @@
 import json
 import os
 
-import flops_manager.flops.classes.builder.management as builder_management
-import flops_manager.utils.classes.exceptions as custom_exceptions
+import flops_manager.classes.oakestratables.deployables.internal.builder.management as builder
+import flops_manager.utils.exceptions as custom_exceptions
 import paho.mqtt.client as paho_mqtt
 from flops_manager.mqtt.utils import Topics, reconnect
 from flops_manager.utils.logging import logger
@@ -22,10 +22,10 @@ def _on_new_message(client, userdata, message) -> None:
         topic = message.topic
         match topic:
             case Topics.IMAGE_BUILDER_SUCCESS.value:
-                builder_management.handle_builder_success(builder_success_msg=data)
+                builder.handle_builder_success(builder_success_msg=data)
 
             case Topics.IMAGE_BUILDER_FAILED.value:
-                builder_management.handle_builder_failed(builder_failed_msg=data)
+                builder.handle_builder_failed(builder_failed_msg=data)
 
             case Topics.FLOPS_UI_FAILED.value:
                 logger.critical(data)

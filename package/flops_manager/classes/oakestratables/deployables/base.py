@@ -1,5 +1,5 @@
 import flops_manager.api.service_management as service_management
-from flops_manager.flops.classes.abstract.oakestratable import FlOpsOakestraBaseClass
+from flops_manager.classes.oakestratables.base import FlOpsOakestraBaseClass
 from pydantic import Field
 
 

@@ -1,12 +1,15 @@
 import threading
 
+from flops_manager.classes.ml_repo import MlRepo
+
 # from flops.classes.aggregator.management import init_aggregator
-from flops_manager.flops.classes.builder.management import init_builder
-from flops_manager.flops.classes.ml_repo import MlRepo
-from flops_manager.flops.classes.project import FlOpsProject
-from flops_manager.flops.classes.ui import UserInterface
-from flops_manager.flops.image_registry.main import fetch_latest_matching_image
-from flops_manager.flops.utils import notify_ui
+from flops_manager.classes.oakestratables.deployables.internal.builder.management import (
+    init_builder,
+)
+from flops_manager.classes.oakestratables.deployables.public.ui import UserInterface
+from flops_manager.classes.oakestratables.project import FlOpsProject
+from flops_manager.image_registry.main import fetch_latest_matching_image
+from flops_manager.utils.common import notify_ui
 from flops_manager.utils.logging import logger
 from flops_manager.utils.types import FlOpsProjectSla
 
@@ -24,6 +27,7 @@ def handle_new_flops_project(new_flops_project_sla: FlOpsProjectSla, bearer_toke
         customer_id=new_flops_project_sla["customerID"],
         verbose=new_flops_project_sla.get("verbose", False),
     )
+    return
     ui = UserInterface(flops_project=flops_project, bearer_token=bearer_token)
     return
     ml_repo = MlRepo(

@@ -1,4 +1,4 @@
-from flops_manager.flops.classes.abstract.deployable import DeployableClass
+from flops_manager.classes.oakestratables.deployables.base import DeployableClass
 from pydantic import Field
 
 

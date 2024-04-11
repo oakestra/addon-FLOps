@@ -1,10 +1,16 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 import flops_manager.api.request_management.custom_http as custom_http
 import flops_manager.api.request_management.custom_requests as custom_requests
-import flops_manager.utils.classes.exceptions as flops_exceptions
+import flops_manager.utils.exceptions as flops_exceptions
 from flops_manager.api.utils.auxiliary import get_matching_type
 from flops_manager.api.utils.consts import SYSTEM_MANAGER_URL
-from flops_manager.flops.classes.abstract.base import FlOpsBaseClass
 from flops_manager.utils.types import SLA, Application
+
+if TYPE_CHECKING:
+    from flops_manager.classes.base import FlOpsBaseClass
 
 
 def create_app(

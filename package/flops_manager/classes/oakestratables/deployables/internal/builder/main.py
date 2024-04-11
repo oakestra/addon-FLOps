@@ -1,9 +1,17 @@
-from flops_manager.flops.classes.abstract.internal_component import InternalProjectComponent
-from flops_manager.flops.classes.builder.sla import prepare_builder_sla_components
-from flops_manager.flops.classes.ml_repo import MlRepo
-from flops_manager.flops.classes.project import FlOpsProject
-from flops_manager.flops.classes.ui import UserInterface
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+from flops_manager.classes.oakestratables.deployables.internal.base import InternalProjectComponent
+from flops_manager.classes.oakestratables.deployables.internal.builder.sla import (
+    prepare_builder_sla_components,
+)
+from flops_manager.classes.oakestratables.deployables.public.ui import UserInterface
+from flops_manager.classes.oakestratables.project import FlOpsProject
 from pydantic import Field
+
+if TYPE_CHECKING:
+    from flops_manager.classes.ml_repo import MlRepo
 
 
 class FLClientEnvImageBuilder(InternalProjectComponent):

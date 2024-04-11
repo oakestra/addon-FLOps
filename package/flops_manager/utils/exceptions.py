@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from http import HTTPStatus
 
-from flops_manager.flops.utils import notify_ui
+import flops_manager.utils.common as common_utils
 
 
 # Note: Pydantic.BaseModel and Exception do not seem to work well if inherited together.
@@ -13,7 +13,7 @@ class RootFLManagerException(Exception):
 
     def try_to_notify_ui(self):
         if self.flops_project_id:
-            notify_ui(msg=self.msg, flops_project_id=self.flops_project_id)
+            common_utils.notify_ui(msg=self.msg, flops_project_id=self.flops_project_id)
 
 
 class ImageBuilderException(RootFLManagerException):

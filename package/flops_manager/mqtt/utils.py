@@ -1,8 +1,8 @@
 import time
 
-import flops_manager.utils.classes.exceptions as custom_exceptions
-from flops_manager.utils.classes.auxiliary import CustomEnum
+import flops_manager.utils.exceptions as custom_exceptions
 from flops_manager.utils.logging import logger
+from flops_manager.utils.types import CustomEnum
 
 
 class Topics(CustomEnum):

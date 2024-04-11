@@ -1,6 +1,6 @@
 import github
 from flops_manager.api.utils.consts import GITHUB_PREFIX
-from flops_manager.flops.classes.abstract.base import FlOpsBaseClass
+from flops_manager.classes.base import FlOpsBaseClass
 from pydantic import Field
 
 

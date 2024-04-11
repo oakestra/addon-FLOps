@@ -1,7 +1,7 @@
 import flops_manager.api.request_management.custom_requests as custom_requests
 from flops_manager.api.request_management.custom_http import HttpMethods
 from flops_manager.api.utils.consts import SYSTEM_MANAGER_URL
-from flops_manager.utils.classes.exceptions import LoginException
+from flops_manager.utils.exceptions import LoginException
 
 _login_token = ""
 

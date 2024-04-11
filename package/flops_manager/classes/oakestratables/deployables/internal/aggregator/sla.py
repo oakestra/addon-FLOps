@@ -1,8 +1,7 @@
 # import flops_manager.mqtt.main
 
 # from flops.classes.abstract.base import FlOpsBaseClass
-# from flops_manager.flops.image_registry.common import FLOPS_IMAGE_REGISTRY_URL
-from flops_manager.utils.common import FLOPS_USER_ACCOUNT
+from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
 from flops_manager.utils.sla.components import (
     SlaComponentsWrapper,
     SlaCompute,

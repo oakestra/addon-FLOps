@@ -1,12 +1,16 @@
+from __future__ import annotations
+
 from abc import abstractmethod
-from typing import ClassVar
+from typing import TYPE_CHECKING, ClassVar
 
 from flops_manager.api.app_management import create_app, fetch_app
-from flops_manager.flops.classes.abstract.base import FlOpsBaseClass
-from flops_manager.utils.sla.components import SlaComponentsWrapper
+from flops_manager.classes.base import FlOpsBaseClass
 from flops_manager.utils.sla.generator import generate_sla
 from flops_manager.utils.types import Application
 from pydantic import Field
+
+if TYPE_CHECKING:
+    from flops_manager.utils.sla.components import SlaComponentsWrapper
 
 
 class FlOpsOakestraBaseClass(FlOpsBaseClass):

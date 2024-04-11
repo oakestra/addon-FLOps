@@ -1,10 +1,18 @@
-import flops_manager.flops.main as main_flops
-from flops_manager.flops.classes.builder.main import FLClientEnvImageBuilder
-from flops_manager.flops.classes.ml_repo import MlRepo
-from flops_manager.flops.classes.project import FlOpsProject
-from flops_manager.flops.classes.ui import UserInterface
-from flops_manager.flops.utils import notify_ui
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+import flops_manager.manage_flops as main_flops
+from flops_manager.classes.oakestratables.deployables.internal.builder.main import (
+    FLClientEnvImageBuilder,
+)
+from flops_manager.classes.oakestratables.project import FlOpsProject
+from flops_manager.utils.common import notify_ui
 from flops_manager.utils.logging import logger
+
+if TYPE_CHECKING:
+    from flops_manager.classes.ml_repo import MlRepo
+    from flops_manager.classes.oakestratables.deployables.internal.base import UserInterface
 
 
 def init_builder(flops_project: FlOpsProject, ml_repo: MlRepo, ui: UserInterface) -> None:

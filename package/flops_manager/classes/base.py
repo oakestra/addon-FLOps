@@ -1,7 +1,7 @@
 from abc import ABC
 
-import database.main as db
 from bson.objectid import ObjectId
+from database.main import get_flops_db
 from pydantic import BaseModel, Field
 from pymongo.collection import Collection
 
@@ -13,7 +13,7 @@ class FlOpsBaseClass(BaseModel, ABC):
 
     @classmethod
     def get_collection(cls) -> Collection:
-        return db.get_flops_db().get_collection(cls.__name__)
+        return get_flops_db().get_collection(cls.__name__)
 
     def _add_to_db(self) -> ObjectId:
         return self.__class__.get_collection().insert_one(self.model_dump()).inserted_id

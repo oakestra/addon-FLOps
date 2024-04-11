@@ -6,7 +6,7 @@ from typing import NamedTuple
 import requests
 from flops_manager.api.request_management.custom_http import HttpMethods
 from flops_manager.api.utils.login import get_login_token
-from flops_manager.utils.classes.exceptions import RootFLManagerException
+from flops_manager.utils.exceptions import RootFLManagerException
 from flops_manager.utils.logging import logger
 
 

@@ -1,7 +1,9 @@
-from flops_manager.flops.classes.abstract.internal_component import InternalProjectComponent
-from flops_manager.flops.classes.aggregator.sla import prepare_aggregator_sla_components
-from flops_manager.flops.classes.project import FlOpsProject
-from flops_manager.flops.classes.ui import UserInterface
+from flops_manager.classes.oakestratables.deployables.internal.aggregator.sla import (
+    prepare_aggregator_sla_components,
+)
+from flops_manager.classes.oakestratables.deployables.internal.base import InternalProjectComponent
+from flops_manager.classes.oakestratables.deployables.public.ui import UserInterface
+from flops_manager.classes.oakestratables.project import FlOpsProject
 from pydantic import Field
 
 

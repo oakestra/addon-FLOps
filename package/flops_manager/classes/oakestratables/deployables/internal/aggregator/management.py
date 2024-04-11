@@ -1,9 +1,8 @@
-# import flops_manager.flops.main as main_flops
-from flops_manager.flops.classes.aggregator.main import FLAggregator
+from flops_manager.classes.oakestratables.deployables.internal.aggregator.main import FLAggregator
 
 # from flops.classes.project import FlOpsProject
 # from flops.classes.ui import FLUserInterface
-from flops_manager.flops.utils import notify_ui
+from flops_manager.utils.common import notify_ui
 
 # from flops_manager.utils.logging import logger
 

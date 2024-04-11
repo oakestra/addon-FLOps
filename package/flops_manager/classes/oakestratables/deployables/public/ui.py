@@ -1,8 +1,11 @@
-import flops_manager.flops.utils as flops_utils
-import flops_manager.mqtt.main as main_mqtt
-from flops_manager.flops.classes.abstract.customer_component import CustomerFacingComponent
-from flops_manager.flops.classes.project import FlOpsProject
-from flops_manager.utils.common import FLOPS_SERVICE_CMD_PREFIX
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+from flops_manager.classes.oakestratables.deployables.public.base import CustomerFacingComponent
+from flops_manager.mqtt.main import FLOPS_MQTT_BROKER_PORT, FLOPS_MQTT_BROKER_URL
+from flops_manager.utils.common import generate_ip
+from flops_manager.utils.constants import FLOPS_SERVICE_CMD_PREFIX
 from flops_manager.utils.sla.components import (
     SlaComponentsWrapper,
     SlaCompute,
@@ -12,6 +15,9 @@ from flops_manager.utils.sla.components import (
     SlaResources,
 )
 from pydantic import Field
+
+if TYPE_CHECKING:
+    from flops_manager.classes.oakestratables.project import FlOpsProject
 
 
 class UserInterface(CustomerFacingComponent):
@@ -29,7 +35,7 @@ class UserInterface(CustomerFacingComponent):
 
         self.flops_project_id = self.flops_project.flops_project_id
 
-        self.ip = flops_utils.generate_ip(self.flops_project_id, self)
+        self.ip = generate_ip(self.flops_project_id, self)
         super().model_post_init(_)
 
     def _configure_sla_components(self) -> None:
@@ -51,8 +57,8 @@ class UserInterface(CustomerFacingComponent):
                         (
                             FLOPS_SERVICE_CMD_PREFIX,
                             self.flops_project_id,
-                            main_mqtt.FLOPS_MQTT_BROKER_URL,
-                            main_mqtt.FLOPS_MQTT_BROKER_PORT,
+                            FLOPS_MQTT_BROKER_URL,
+                            FLOPS_MQTT_BROKER_PORT,
                         )
                     ),
                 ),
