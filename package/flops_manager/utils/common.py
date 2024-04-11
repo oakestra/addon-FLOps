@@ -5,7 +5,7 @@ import shlex
 import subprocess
 from typing import TYPE_CHECKING
 
-import flops_manager.mqtt.main as main_mqtt
+from flops_manager.mqtt.main import get_mqtt_client
 from flops_manager.utils.logging import logger
 
 if TYPE_CHECKING:
@@ -36,7 +36,7 @@ def notify_ui(
     # Because RFLM is not deployed as a OAK service -> it lacks OAK networking capabilities
     # One way I see to realize RFLM <-> FLUI communication is via RFLM's MQTT !!
     logger.debug(f"Sending message '{msg}' to FL UI for FLOps: '{flops_project_id}'")
-    main_mqtt.get_mqtt_client().publish(
+    get_mqtt_client().publish(
         topic=f"flui/{flops_project_id}",
         payload=msg,
         qos=2,

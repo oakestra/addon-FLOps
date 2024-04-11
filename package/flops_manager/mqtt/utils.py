@@ -1,6 +1,6 @@
 import time
 
-import flops_manager.utils.exceptions as custom_exceptions
+import flops_manager.utils.exceptions as flops_exceptions
 from flops_manager.utils.logging import logger
 from flops_manager.utils.types import CustomEnum
 
@@ -31,4 +31,4 @@ def reconnect(client):
         reconnect_delay *= RECONNECT_RATE
         reconnect_delay = min(reconnect_delay, MAX_RECONNECT_DELAY)
         reconnect_count += 1
-    raise custom_exceptions.MQTTException("ROOT MQTT: Reconnect failed after %s attempts.")
+    raise flops_exceptions.MQTTException("ROOT MQTT: Reconnect failed after %s attempts.")
