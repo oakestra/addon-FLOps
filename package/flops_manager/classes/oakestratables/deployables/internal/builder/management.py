@@ -2,11 +2,11 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-import flops_manager.manage_flops as main_flops
 from flops_manager.classes.oakestratables.deployables.internal.builder.main import (
     FLClientEnvImageBuilder,
 )
 from flops_manager.classes.oakestratables.project import FlOpsProject
+from flops_manager.manage_fl import handle_fl_operations
 from flops_manager.utils.common import notify_ui
 from flops_manager.utils.logging import logger
 
@@ -35,7 +35,7 @@ def handle_builder_success(builder_success_msg: dict) -> None:
     logger.debug(builder_success_msg)
     flops_project_id = builder_success_msg["flops_project_id"]
     FLClientEnvImageBuilder.retrieve_from_db(flops_project_id=flops_project_id).undeploy()
-    main_flops.handle_fl_operations(
+    handle_fl_operations(
         flops_project=FlOpsProject.retrieve_from_db(flops_project_id=flops_project_id),
         fl_client_image=builder_success_msg["image_name_with_tag"],
     )
