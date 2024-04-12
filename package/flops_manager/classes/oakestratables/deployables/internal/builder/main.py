@@ -10,7 +10,6 @@ from pydantic import Field
 
 class FLClientEnvImageBuilder(InternalProjectComponent):
     flops_project: FlOpsProject = Field(None, exclude=True, repr=False)
-    # TODO maybe place ui into flops_project instead of the individual components? - need a setter for this
     ui: UserInterface = Field(None, exclude=True, repr=False)
     ml_repo: MlRepo = Field(None, exclude=True, repr=False)
 

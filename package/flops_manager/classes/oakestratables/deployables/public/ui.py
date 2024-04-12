@@ -46,7 +46,7 @@ class UserInterface(CustomerFacingComponent):
                     service_namespace=self.namespace,
                 ),
                 compute=SlaCompute(
-                    code="ghcr.io/malyuk-a/fl-ui:latest",
+                    code="ghcr.io/malyuk-a/flops-ui:latest",
                     cmd=" ".join(
                         (
                             FLOPS_SERVICE_CMD_PREFIX,
