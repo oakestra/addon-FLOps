@@ -1,12 +1,8 @@
-from __future__ import annotations
-
 import hashlib
 import shlex
 import subprocess
-from typing import TYPE_CHECKING
 
-if TYPE_CHECKING:
-    from flops_manager.classes.base import FlOpsBaseClass
+from flops_manager.classes.base import FlOpsBaseClass
 
 
 def run_in_bash(bash_cmd: str) -> subprocess.CompletedProcess[bytes]:

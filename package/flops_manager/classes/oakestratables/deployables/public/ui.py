@@ -1,8 +1,5 @@
-from __future__ import annotations
-
-from typing import TYPE_CHECKING
-
 from flops_manager.classes.oakestratables.deployables.public.base import CustomerFacingComponent
+from flops_manager.classes.oakestratables.project import FlOpsProject
 from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_PORT, FLOPS_MQTT_BROKER_URL
 from flops_manager.utils.common import generate_ip
 from flops_manager.utils.constants import FLOPS_SERVICE_CMD_PREFIX
@@ -15,9 +12,6 @@ from flops_manager.utils.sla.components import (
     SlaResources,
 )
 from pydantic import Field
-
-if TYPE_CHECKING:
-    from flops_manager.classes.oakestratables.project import FlOpsProject
 
 
 class UserInterface(CustomerFacingComponent):

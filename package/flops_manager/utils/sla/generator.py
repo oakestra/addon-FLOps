@@ -1,12 +1,7 @@
-from __future__ import annotations
-
 import shlex
-from typing import TYPE_CHECKING
 
+from flops_manager.utils.sla.components import SlaComponentsWrapper
 from flops_manager.utils.types import AppSLA
-
-if TYPE_CHECKING:
-    from flops_manager.utils.sla.components import SlaComponentsWrapper
 
 
 def generate_sla(components: SlaComponentsWrapper) -> AppSLA:

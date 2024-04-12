@@ -1,16 +1,10 @@
-from __future__ import annotations
-
-from typing import TYPE_CHECKING
-
 from flops_manager.api.request_management.custom_requests import (
     CustomRequest,
     RequestAuxiliaries,
     RequestCore,
 )
+from flops_manager.classes.ml_repo import MlRepo
 from flops_manager.utils.exceptions.types import FlOpsExceptionTypes
-
-if TYPE_CHECKING:
-    from flops_manager.classes.ml_repo import MlRepo
 
 
 def get_latest_commit_hash(ml_repo: MlRepo) -> str:

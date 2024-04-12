@@ -1,7 +1,3 @@
-from __future__ import annotations
-
-from typing import TYPE_CHECKING
-
 from flops_manager.api.request_management.custom_http import HttpMethods
 from flops_manager.api.request_management.custom_requests import (
     CustomRequest,
@@ -10,12 +6,10 @@ from flops_manager.api.request_management.custom_requests import (
 )
 from flops_manager.api.utils.auxiliary import get_matching_type
 from flops_manager.api.utils.consts import SYSTEM_MANAGER_URL
+from flops_manager.classes.base import FlOpsBaseClass
 from flops_manager.utils.exceptions.main import FLOpsManagerException
 from flops_manager.utils.exceptions.types import FlOpsExceptionTypes
 from flops_manager.utils.types import SLA, Application
-
-if TYPE_CHECKING:
-    from flops_manager.classes.base import FlOpsBaseClass
 
 
 def create_app(
@@ -72,7 +66,7 @@ def fetch_app(
         ),
         aux=RequestAuxiliaries(
             what_should_happen=f"Fetch {app_type} app bu'{flops_project_id}'",
-            flops_exception_type=AppFetchException,
+            flops_exception_type=FlOpsExceptionTypes.APP_FETCH,
             show_msg_on_success=True,
         ),
     ).execute()
