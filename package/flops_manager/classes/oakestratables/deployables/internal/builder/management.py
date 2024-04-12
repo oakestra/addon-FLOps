@@ -1,18 +1,12 @@
-from __future__ import annotations
-
-from typing import TYPE_CHECKING
-
+from flops_manager.classes.ml_repo import MlRepo
 from flops_manager.classes.oakestratables.deployables.internal.builder.main import (
     FLClientEnvImageBuilder,
 )
+from flops_manager.classes.oakestratables.deployables.public.ui import UserInterface
 from flops_manager.classes.oakestratables.project import FlOpsProject
 from flops_manager.manage_fl import handle_fl_operations
 from flops_manager.mqtt.sender import notify_ui
 from flops_manager.utils.logging import logger
-
-if TYPE_CHECKING:
-    from flops_manager.classes.ml_repo import MlRepo
-    from flops_manager.classes.oakestratables.deployables.internal.base import UserInterface
 
 
 def init_builder(flops_project: FlOpsProject, ml_repo: MlRepo, ui: UserInterface) -> None:
