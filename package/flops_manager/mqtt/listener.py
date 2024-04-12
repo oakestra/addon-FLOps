@@ -2,10 +2,13 @@
 
 import json
 
-import flops_manager.classes.oakestratables.deployables.internal.builder.management as builder
-import flops_manager.utils.exceptions as custom_exceptions
+from flops_manager.classes.oakestratables.deployables.internal.builder.management import (
+    handle_builder_failed,
+    handle_builder_success,
+)
 from flops_manager.mqtt.constants import Topics
 from flops_manager.mqtt.main import get_mqtt_client
+from flops_manager.utils.exceptions.main import FLOpsManagerException
 from flops_manager.utils.logging import logger
 
 
@@ -17,10 +20,10 @@ def _on_new_message(client, userdata, message) -> None:
         topic = message.topic
         match topic:
             case Topics.IMAGE_BUILDER_SUCCESS.value:
-                builder.handle_builder_success(builder_success_msg=data)
+                handle_builder_success(builder_success_msg=data)
 
             case Topics.IMAGE_BUILDER_FAILED.value:
-                builder.handle_builder_failed(builder_failed_msg=data)
+                handle_builder_failed(builder_failed_msg=data)
 
             case Topics.FLOPS_UI_FAILED.value:
                 logger.critical(data)
@@ -28,7 +31,7 @@ def _on_new_message(client, userdata, message) -> None:
             case _:
                 logger.error(f"Message received for an unsupported topic '{topic}'")
 
-    except custom_exceptions.RootFLManagerException as e:
+    except FLOpsManagerException as e:
         logger.fatal(f"{e.msg}")
         e.try_to_notify_ui()
         return
