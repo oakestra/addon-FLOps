@@ -10,7 +10,8 @@ from flops_manager.api.request_management.custom_requests import (
 )
 from flops_manager.api.utils.auxiliary import get_matching_type
 from flops_manager.api.utils.consts import SYSTEM_MANAGER_URL
-from flops_manager.utils.exceptions import AppCreationException, AppFetchException
+from flops_manager.utils.exceptions.main import FLOpsManagerException
+from flops_manager.utils.exceptions.types import FlOpsExceptionTypes
 from flops_manager.utils.types import SLA, Application
 
 if TYPE_CHECKING:
@@ -37,7 +38,7 @@ def create_app(
             what_should_happen=f"Create new {app_type }application {flops_project_id}",
             flops_project_id=flops_project_id,
             show_msg_on_success=True,
-            exception=AppCreationException,
+            flops_exception_type=FlOpsExceptionTypes.APP_CREATE,
         ),
     ).execute()
     new_app = next(
@@ -50,8 +51,10 @@ def create_app(
         None,
     )
     if new_app is None:
-        raise AppCreationException(
-            f"Could not find new {app_type } app after creating it", flops_project_id
+        raise FLOpsManagerException(
+            flops_exception_type=FlOpsExceptionTypes.APP_CREATE,
+            mgs=f"Could not find new {app_type } app after creating it",
+            flops_project_id=flops_project_id,
         )
     return new_app
 
@@ -69,7 +72,7 @@ def fetch_app(
         ),
         aux=RequestAuxiliaries(
             what_should_happen=f"Fetch {app_type} app bu'{flops_project_id}'",
-            exception=AppFetchException,
+            flops_exception_type=AppFetchException,
             show_msg_on_success=True,
         ),
     ).execute()

@@ -10,7 +10,7 @@ from flops_manager.classes.oakestratables.deployables.public.ui import UserInter
 from flops_manager.classes.oakestratables.project import FlOpsProject
 from flops_manager.image_registry.main import fetch_latest_matching_image
 from flops_manager.manage_fl import handle_fl_operations
-from flops_manager.utils.common import notify_ui
+from flops_manager.mqtt.sender import notify_ui
 from flops_manager.utils.logging import logger
 from flops_manager.utils.types import FlOpsProjectSla
 

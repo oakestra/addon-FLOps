@@ -7,7 +7,7 @@ from flops_manager.api.request_management.custom_requests import (
     RequestAuxiliaries,
     RequestCore,
 )
-from flops_manager.utils.exceptions import ImageRegistryException
+from flops_manager.utils.exceptions.types import FlOpsExceptionTypes
 
 if TYPE_CHECKING:
     from flops_manager.classes.ml_repo import MlRepo
@@ -21,7 +21,7 @@ def get_latest_commit_hash(ml_repo: MlRepo) -> str:
         ),
         aux=RequestAuxiliaries(
             what_should_happen="Fetch commits from github",
-            exception=ImageRegistryException,
+            flops_exception_type=FlOpsExceptionTypes.IMAGE_REGISTRY,
             is_oakestra_api=False,
         ),
     ).execute()

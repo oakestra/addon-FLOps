@@ -1,7 +1,7 @@
 import flops_manager.api.request_management.custom_requests as custom_requests
 from flops_manager.api.request_management.custom_http import HttpMethods
 from flops_manager.api.utils.consts import SYSTEM_MANAGER_URL
-from flops_manager.utils.exceptions import LoginException
+from flops_manager.utils.exceptions.types import FlOpsExceptionTypes
 
 _login_token = ""
 
@@ -17,7 +17,7 @@ def _login_and_set_token() -> str:
         ),
         aux=custom_requests.RequestAuxiliaries(
             what_should_happen="Login",
-            exception=LoginException,
+            flops_exception_type=FlOpsExceptionTypes.LOGIN,
         ),
     ).execute()
 

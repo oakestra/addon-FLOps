@@ -7,7 +7,7 @@ from flops_manager.classes.oakestratables.deployables.internal.builder.main impo
 )
 from flops_manager.classes.oakestratables.project import FlOpsProject
 from flops_manager.manage_fl import handle_fl_operations
-from flops_manager.utils.common import notify_ui
+from flops_manager.mqtt.sender import notify_ui
 from flops_manager.utils.logging import logger
 
 if TYPE_CHECKING:

@@ -10,11 +10,7 @@ from flops_manager.api.request_management.custom_requests import (
 )
 from flops_manager.api.utils.auxiliary import get_matching_type
 from flops_manager.api.utils.consts import SYSTEM_MANAGER_URL
-from flops_manager.utils.exceptions import (
-    FLOpsProjectServiceAppend,
-    ServiceDeploymentException,
-    ServiceUnDeploymentException,
-)
+from flops_manager.utils.exceptions.types import FlOpsExceptionTypes
 from flops_manager.utils.types import SLA, ServiceId
 
 if TYPE_CHECKING:
@@ -40,7 +36,7 @@ def append_service_to_flops_project_app(
             what_should_happen=f"Append new {service_type }service {flops_project_id}",
             flops_project_id=flops_project_id,
             show_msg_on_success=True,
-            exception=FLOpsProjectServiceAppend,
+            flops_exception_type=FlOpsExceptionTypes.INTERNAL_PROJECT_SERVICE_APPEND,
         ),
     ).execute()
     return response["job_id"]
@@ -56,7 +52,7 @@ def deploy(service_id: ServiceId, matching_caller_object: FlOpsBaseClass = None)
         ),
         aux=RequestAuxiliaries(
             what_should_happen=f"Deploy {service_type }service '{service_id}'",
-            exception=ServiceDeploymentException,
+            flops_exception_type=FlOpsExceptionTypes.SERVICE_DEPLOYMENT,
             show_msg_on_success=True,
         ),
     ).execute()
@@ -76,7 +72,7 @@ def undeploy(
         ),
         aux=RequestAuxiliaries(
             what_should_happen=f"Undeploy {service_type} service for FLOps'{flops_project_id}'",
-            exception=ServiceUnDeploymentException,
+            flops_exception_type=FlOpsExceptionTypes.SERVICE_UNDEPLOYMENT,
             show_msg_on_success=True,
         ),
     ).execute()

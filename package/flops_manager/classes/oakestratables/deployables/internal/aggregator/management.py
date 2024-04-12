@@ -2,7 +2,7 @@ from flops_manager.classes.oakestratables.deployables.internal.aggregator.main i
 
 # from flops.classes.project import FlOpsProject
 # from flops.classes.ui import FLUserInterface
-from flops_manager.utils.common import notify_ui
+from flops_manager.mqtt.sender import notify_ui
 
 # from flops_manager.utils.logging import logger
 

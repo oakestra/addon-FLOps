@@ -6,7 +6,8 @@ from typing import NamedTuple
 import requests
 from flops_manager.api.request_management.custom_http import HttpMethods
 from flops_manager.api.utils.login import get_login_token
-from flops_manager.utils.exceptions import RootFLManagerException
+from flops_manager.utils.exceptions.main import FLOpsManagerException
+from flops_manager.utils.exceptions.types import FlOpsExceptionTypes
 from flops_manager.utils.logging import logger
 
 
@@ -21,7 +22,7 @@ class RequestCore(NamedTuple):
 
 class RequestAuxiliaries(NamedTuple):
     what_should_happen: str
-    exception: RootFLManagerException
+    flops_exception_type: FlOpsExceptionTypes
     flops_project_id: str = ""
     show_msg_on_success: bool = False
     is_oakestra_api: bool = True
@@ -98,8 +99,9 @@ class CustomRequest:
 
         error_msg += self._create_failure_msg()
 
-        raise self.aux.exception(
-            msg=error_msg,
+        raise FLOpsManagerException(
+            flops_exception_type=self.aux.flops_exception_type,
+            text=error_msg,
             http_status=self.response.status if self.response else None,
             flops_project_id=self.aux.flops_project_id,
         )

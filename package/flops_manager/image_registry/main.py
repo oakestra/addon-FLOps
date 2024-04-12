@@ -12,7 +12,7 @@ from flops_manager.image_registry.common import (
     FLOPS_IMAGE_REGISTRY_URL,
 )
 from flops_manager.image_registry.utils import get_latest_commit_hash
-from flops_manager.utils.exceptions import ImageRegistryException
+from flops_manager.utils.exceptions.types import FlOpsExceptionTypes
 
 if TYPE_CHECKING:
     from flops_manager.classes.ml_repo import MlRepo
@@ -28,7 +28,7 @@ def check_registry_reachable(flops_project: FlOpsProject) -> bool:
         aux=RequestAuxiliaries(
             what_should_happen="Registry is reachable",
             flops_project_id=flops_project,
-            exception=ImageRegistryException,
+            flops_exception_type=FlOpsExceptionTypes.IMAGE_REGISTRY,
             show_msg_on_success=True,
         ),
     ).execute()
@@ -46,7 +46,7 @@ def get_current_registry_image_repos() -> List[str]:
         ),
         aux=RequestAuxiliaries(
             what_should_happen="Get current registry repositories",
-            exception=ImageRegistryException,
+            flops_exception_type=FlOpsExceptionTypes.IMAGE_REGISTRY,
         ),
     ).execute()
     return response["repositories"]
@@ -60,7 +60,7 @@ def get_current_registry_repo_image_tags(ml_repo: MlRepo) -> List[str]:
         ),
         aux=RequestAuxiliaries(
             what_should_happen="Get image tags",
-            exception=ImageRegistryException,
+            flops_exception_type=FlOpsExceptionTypes.IMAGE_REGISTRY,
         ),
     ).execute()
     return response["tags"]
