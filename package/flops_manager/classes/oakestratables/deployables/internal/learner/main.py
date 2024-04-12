@@ -1,9 +1,5 @@
-from flops_manager.classes.ml_repo import MlRepo
 from flops_manager.classes.oakestratables.deployables.internal.base import InternalProjectComponent
-from flops_manager.classes.oakestratables.deployables.public.ui import UserInterface
 from flops_manager.classes.oakestratables.project import FlOpsProject
-from flops_manager.image_registry.common import FLOPS_IMAGE_REGISTRY_URL
-from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_PORT
 from flops_manager.mqtt.sender import notify_ui
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
 from flops_manager.utils.sla.components import (
@@ -17,14 +13,14 @@ from flops_manager.utils.sla.components import (
 from pydantic import Field
 
 
-class FLLearnerImageBuilder(InternalProjectComponent):
+class FLLearner(InternalProjectComponent):
+    fl_learner_image: str
+
     flops_project: FlOpsProject = Field(None, exclude=True, repr=False)
-    ui: UserInterface = Field(None, exclude=True, repr=False)
-    ml_repo: MlRepo = Field(None, exclude=True, repr=False)
 
     flops_project_id: str = Field("", init=False)
 
-    namespace = "flbuild"
+    namespace = "flearner"
 
     def model_post_init(self, _):
         if self.gets_loaded_from_db:
@@ -33,7 +29,7 @@ class FLLearnerImageBuilder(InternalProjectComponent):
         if self.flops_project.verbose:
             notify_ui(
                 flops_project_id=self.flops_project_id,
-                msg="New FL Learner image needs to be build. Start build delegation processes.",
+                msg="Preparing new FL Learner.",
             )
 
         self.flops_project_id = self.flops_project.flops_project_id
@@ -42,25 +38,13 @@ class FLLearnerImageBuilder(InternalProjectComponent):
         if self.flops_project.verbose:
             notify_ui(
                 flops_project_id=self.flops_project_id,
-                msg="New Builder service created & deployed",
+                msg="New Learner service created & deployed",
             )
 
     def _configure_sla_components(self) -> None:
-        cmd = " ".join(
-            (
-                "python3",
-                "main.py",
-                self.ml_repo.url,
-                FLOPS_IMAGE_REGISTRY_URL,
-                self.flops_project_id,
-                # TODO need to figure out a way to provide
-                # non docker-compose member exclusive DNS name as IP.
-                # mqtt.main.ROOT_MQTT_BROKER_URL,
-                "192.168.178.44",
-                FLOPS_MQTT_BROKER_PORT,
-                self.ui.ip,
-            )
-        )
+        # cmd ="python main.py"
+        cmd = "sleep infinity"
+
         self.sla_components = SlaComponentsWrapper(
             core=SlaCore(
                 app_id=self.flops_project_id,
@@ -68,21 +52,23 @@ class FLLearnerImageBuilder(InternalProjectComponent):
                 names=SlaNames(
                     app_name=self.flops_project.project_app_name,
                     app_namespace=self.flops_project.namespace,
-                    service_name=f"bu{self.flops_project.get_shortened_id()}",
-                    service_namespace=self.namespace,
+                    # service_name=f"fl{self.flops_project.get_shortened_id()}",
+                    # service_namespace=self.namespace,
+                    service_name="alex",
+                    service_namespace="alex",
                 ),
                 compute=SlaCompute(
-                    # TODO rename image to "fl-learner-image-builder"
-                    code="ghcr.io/oakestra/plugins/flops/fl-client-env-builder:latest",
+                    # code=self.fl_learner_image,
+                    code="docker.io/alpine:latest",
                     one_shot_service=True,
                     cmd=cmd,
                 ),
             ),
             details=SlaDetails(
                 resources=SlaResources(
-                    memory=2000,
+                    memory=100,
                     vcpus=1,
-                    storage=15000,
+                    storage=0,
                 ),
             ),
         )

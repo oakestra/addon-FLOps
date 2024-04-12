@@ -1,8 +1,8 @@
 import threading
 
 from flops_manager.classes.ml_repo import MlRepo
-from flops_manager.classes.oakestratables.deployables.internal.builder.management import (
-    init_builder,
+from flops_manager.classes.oakestratables.deployables.internal.builder.main import (
+    FLLearnerImageBuilder,
 )
 from flops_manager.classes.oakestratables.deployables.public.ui import UserInterface
 from flops_manager.classes.oakestratables.project import FlOpsProject
@@ -25,7 +25,7 @@ def handle_new_flops_project(new_flops_project_sla: FlOpsProjectSla, bearer_toke
     )
     latest_matching_image_name = fetch_latest_matching_image(ml_repo)
     if latest_matching_image_name is not None:
-        info_msg = f"Latest FL Client ENV image already exists for provided repo: '{ml_repo.name}'"
+        info_msg = f"Latest FL Learner image already exists for provided repo: '{ml_repo.name}'"
         if flops_project.verbose:
             info_msg += f" - image name : '{latest_matching_image_name}'"
         logger.info(info_msg)
@@ -39,4 +39,4 @@ def handle_new_flops_project(new_flops_project_sla: FlOpsProjectSla, bearer_toke
         ).start()
         return
 
-    init_builder(flops_project=flops_project, ml_repo=ml_repo, ui=ui)
+    FLLearnerImageBuilder(flops_project=flops_project, ml_repo=ml_repo, ui=ui)

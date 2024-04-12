@@ -24,8 +24,13 @@ class InternalProjectComponent(FlOpsOakestraBaseClass):
         self.deploy()
 
     def create(self) -> None:
+        from icecream import ic
+
+        sla = generate_sla(self.sla_components)
+        ic("Reeeeeee", sla)
+
         self.service_id = append_service_to_flops_project_app(
-            sla=generate_sla(self.sla_components),
+            sla=sla,
             bearer_token=getattr(self, "bearer_token", None),
             flops_project_id=self.flops_project_id,
             matching_caller_object=self,

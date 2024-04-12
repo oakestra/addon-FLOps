@@ -2,7 +2,7 @@
 
 import json
 
-from flops_manager.classes.oakestratables.deployables.internal.builder.management import (
+from flops_manager.classes.oakestratables.deployables.internal.builder.termination import (
     handle_builder_failed,
     handle_builder_success,
 )

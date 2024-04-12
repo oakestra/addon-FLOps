@@ -13,6 +13,7 @@ RUN wget https://github.com/FiloSottile/mkcert/releases/download/v1.4.4/mkcert-v
 # If you are developing this package and need to regularly re-build this image, every little change will lead to a total dependency rebuild.
 # To accelerate this process the requirements get extracted and installed before copying the package files.
 # This makes efficient docker layer caching possible and regular rebuilds will be able to reuse the lengthy dependcy installation layers.
+# TODO: Remove this once development is over, because it might be the case that the resulting image has twice the depencendies, thus twice the size!
 COPY pyproject.toml pyproject.toml
 RUN python -m piptools compile -o requirements.txt pyproject.toml &&\
     pip install -r requirements.txt
