@@ -11,7 +11,7 @@ def notify_ui(
     # One way I see to realize RFLM <-> FLUI communication is via RFLM's MQTT !!
     logger.debug(f"Sending message '{msg}' to FL UI for FLOps: '{flops_project_id}'")
     get_mqtt_client().publish(
-        topic=f"flui/{flops_project_id}",
+        topic=f"flopsui/{flops_project_id}",
         payload=msg,
         qos=2,
         retain=True,

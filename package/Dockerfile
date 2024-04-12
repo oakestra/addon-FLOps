@@ -17,6 +17,7 @@ COPY pyproject.toml pyproject.toml
 RUN python -m piptools compile -o requirements.txt pyproject.toml &&\
     pip install -r requirements.txt
 
+WORKDIR /flops_manager
 COPY flops_manager /flops_manager
 RUN poetry install
 
@@ -32,7 +33,5 @@ ENV FLOPS_MQTT_BROKER_PORT=9027
 ENV FLOPS_MQTT_BROKER_URL=flops_mqtt
 
 ENV CAROOT=/etc/ssl
-
-WORKDIR /flops_manager
 
 CMD ["poetry", "run", "python", "main.py"]
