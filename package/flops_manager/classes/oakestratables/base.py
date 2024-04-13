@@ -37,7 +37,7 @@ class FlOpsOakestraBaseClass(FlOpsBaseClass, ABC):
 
         self._configure_sla_components()
         created_app = self.create()
-        self._set_properties_based_on_created_app(created_app)
+        self._set_properties_based_on_created_result(created_app)
         self._add_to_db()
 
     @abstractmethod
@@ -51,7 +51,7 @@ class FlOpsOakestraBaseClass(FlOpsBaseClass, ABC):
             matching_caller_object=self,
         )
 
-    def _set_properties_based_on_created_app(self, created_app: Application) -> None:
+    def _set_properties_based_on_created_result(self, created_app: Application) -> None:
         self.app_id = created_app["applicationID"]
         self.app_name = created_app["application_name"]
         if created_app["microservices"]:

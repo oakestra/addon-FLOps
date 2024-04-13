@@ -17,6 +17,7 @@ class FLOpsProjectService(DeployableProjectBasedClass, ABC):
         self._configure_sla_components()
         self.create()
         self._add_to_db()
+        self.deploy()
 
     def create(self) -> None:
         self.service_id = append_service_to_flops_project_app(

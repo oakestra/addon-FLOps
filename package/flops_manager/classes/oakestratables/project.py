@@ -25,7 +25,7 @@ class FlOpsProject(FlOpsOakestraProjectBasedClass):
         flops_db_id = self._add_to_db()
         self._configure_sla_components(flops_db_id)
         created_app = self.create()
-        self._set_properties_based_on_created_app(created_app)
+        self._set_properties_based_on_created_result(created_app)
         self.flops_project_id = created_app["applicationID"]
         self._replace_in_db(flops_db_id)
 

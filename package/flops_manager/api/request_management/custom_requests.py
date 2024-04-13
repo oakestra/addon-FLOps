@@ -98,7 +98,6 @@ class CustomRequest:
             error_msg = f"exception: {e}: "
 
         error_msg += self._create_failure_msg()
-
         raise FLOpsManagerException(
             flops_exception_type=self.aux.flops_exception_type,
             text=error_msg,

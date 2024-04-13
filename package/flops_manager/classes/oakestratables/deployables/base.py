@@ -24,6 +24,6 @@ class DeployableClass(FlOpsOakestraBaseClass, ABC):
 
     def undeploy(self) -> None:
         undeploy(
-            application_id=self.app_id,
+            service_id=self.service_id,
             matching_caller_object=self,
         )

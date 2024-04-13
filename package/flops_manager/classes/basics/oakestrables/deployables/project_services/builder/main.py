@@ -1,7 +1,4 @@
-from package.flops_manager.classes.project_based.ml_repo import MlRepo
 from flops_manager.classes.oakestratables.deployables.project_services.base import ProjectService
-from package.flops_manager.classes.oakestratables.deployables.ui import UserInterface
-from package.flops_manager.classes.project_based.oakestrables.project import FlOpsProject
 from flops_manager.image_registry.common import FLOPS_IMAGE_REGISTRY_URL
 from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_PORT
 from flops_manager.mqtt.sender import notify_ui
@@ -15,6 +12,10 @@ from flops_manager.utils.sla.components import (
     SlaResources,
 )
 from pydantic import Field
+
+from package.flops_manager.classes.oakestratables.deployables.ui import UserInterface
+from package.flops_manager.classes.project_based.ml_repo import MlRepo
+from package.flops_manager.classes.project_based.oakestrables.project import FlOpsProject
 
 
 class FLLearnerImageBuilder(ProjectService):
@@ -66,7 +67,7 @@ class FLLearnerImageBuilder(ProjectService):
                 app_id=self.flops_project_id,
                 customerID=FLOPS_USER_ACCOUNT,
                 names=SlaNames(
-                    app_name=self.flops_project.project_app_name,
+                    app_name=self.flops_project.app_name,
                     app_namespace=self.flops_project.namespace,
                     service_name=f"bu{self.flops_project.get_shortened_id()}",
                     service_namespace=self.namespace,

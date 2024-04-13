@@ -52,7 +52,7 @@ class FLLearner(FLOpsProjectService):
                 app_id=self.flops_project_id,
                 customerID=FLOPS_USER_ACCOUNT,
                 names=SlaNames(
-                    app_name=self.flops_project.project_app_name,
+                    app_name=self.flops_project.app_name,
                     app_namespace=self.flops_project.namespace,
                     # service_name=f"fl{self.flops_project.get_shortened_id()}",
                     # service_namespace=self.namespace,

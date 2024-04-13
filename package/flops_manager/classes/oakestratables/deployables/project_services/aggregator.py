@@ -29,16 +29,14 @@ class FLAggregator(FLOpsProjectService):
         if self.gets_loaded_from_db:
             return
 
+        self.flops_project_id = self.flops_project.flops_project_id
         if self.flops_project.verbose:
             notify_ui(
                 flops_project_id=self.flops_project_id,
                 msg="Preparing new FL Aggregator.",
             )
-
-        self.flops_project_id = self.flops_project.flops_project_id
         self.ip = generate_ip(self.flops_project_id, self)
         super().model_post_init(_)
-
         if self.flops_project.verbose:
             notify_ui(
                 flops_project_id=self.flops_project_id,
@@ -51,7 +49,7 @@ class FLAggregator(FLOpsProjectService):
                 app_id=self.flops_project_id,
                 customerID=FLOPS_USER_ACCOUNT,
                 names=SlaNames(
-                    app_name=self.flops_project.project_app_name,
+                    app_name=self.flops_project.app_name,
                     app_namespace=self.flops_project.namespace,
                     service_name=f"ag{self.flops_project.get_shortened_id()}",
                     service_namespace=self.namespace,
