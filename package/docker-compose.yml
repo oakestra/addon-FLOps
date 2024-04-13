@@ -28,23 +28,23 @@ services:
     networks:
       - root_orchestrator_default
   
-  flops_image_registry:
-    image: registry:2.8.3
-    container_name: flops_image_registry
-    environment:
-      - REGISTRY_HTTP_ADDR=0.0.0.0:5073
-      - REGISTRY_HTTP_TLS_CERTIFICATE=/etc/ssl/registry.pem
-      - REGISTRY_HTTP_TLS_KEY=/etc/ssl/registry-key.pem
-    volumes:
-      - registry_data:/var/lib/registry
-      - ssl:/etc/ssl
-    expose:
-      - "5073"
-    ports:
-      - "5073:5073"
-    depends_on: [flops_manager]
-    networks:
-      - root_orchestrator_default
+  # flops_image_registry:
+  #   image: registry:2.8.3
+  #   container_name: flops_image_registry
+  #   environment:
+  #     - REGISTRY_HTTP_ADDR=0.0.0.0:5073
+  #     - REGISTRY_HTTP_TLS_CERTIFICATE=/etc/ssl/registry.pem
+  #     - REGISTRY_HTTP_TLS_KEY=/etc/ssl/registry-key.pem
+  #   volumes:
+  #     - registry_data:/var/lib/registry
+  #     - ssl:/etc/ssl
+  #   expose:
+  #     - "5073"
+  #   ports:
+  #     - "5073:5073"
+  #   depends_on: [flops_manager]
+  #   networks:
+  #     - root_orchestrator_default
 
   flops_mqtt:
     image: eclipse-mosquitto:2
