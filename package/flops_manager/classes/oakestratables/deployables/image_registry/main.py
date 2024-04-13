@@ -14,7 +14,7 @@ from pydantic import Field
 class FLOpsImageRegistry(DeployableClass):
     """'Singleton' of a docker registry container that will be shared by every FLOps project."""
 
-    ip: str = Field("", init=False)
+    ip: str = Field("", init=False, alias="RR_ip")
     url: str = Field("", init=False)
 
     namespace = "flopsir"
@@ -22,13 +22,17 @@ class FLOpsImageRegistry(DeployableClass):
 
     def model_post_init(self, _):
         if self.gets_loaded_from_db:
+            self._set_url()
             return
 
         # TODO think about a nice solution here
         # self.ip = generate_ip(self.flops_project_id, self)
         self.ip = "10.30.27.27"
-        self.url = f"https://{self.ip}:{self.port}"
+        self._set_url()
         super().model_post_init(_)
+
+    def _set_url(self) -> None:
+        self.url = f"https://{self.ip}:{self.port}"
 
     def _configure_sla_components(self) -> None:
         self.sla_components = SlaComponentsWrapper(

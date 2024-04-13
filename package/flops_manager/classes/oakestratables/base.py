@@ -28,7 +28,7 @@ class FlOpsOakestraBaseClass(FlOpsBaseClass, ABC):
     # Note: Only used during "runtime". It is not stored or displayed due to verbosity & redundancy.
     sla_components: SlaComponentsWrapper = Field(None, init=False, exclude=True, repr=False)
 
-    app_id: str = Field("", init=False)
+    app_id: str = Field("", init=False, alias="applicationID")
     app_name: str = Field("", init=False)
 
     def model_post_init(self, _) -> None:

@@ -8,7 +8,7 @@ from pydantic import Field
 class DeployableClass(FlOpsOakestraBaseClass, ABC):
     """Adds functionality of services like (Un)Deployment."""
 
-    service_id: str = Field("", init=False)
+    service_id: str = Field("", init=False, alias="microserviceID")
 
     bearer_token: str = Field("", exclude=True, repr=False)
 
