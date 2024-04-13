@@ -59,7 +59,8 @@ class FLLearner(InternalProjectComponent):
                 ),
                 compute=SlaCompute(
                     # code=self.fl_learner_image,
-                    code="docker.io/alpine:latest",
+                    code="docker.io/library/nginx:latest",
+                    # code="192.168.178.44:5073/Malyuk-A/mlflower-test-a:f63f795f6a7b4094a5a9a0210af45fd121532507",
                     one_shot_service=True,
                     cmd=cmd,
                 ),
