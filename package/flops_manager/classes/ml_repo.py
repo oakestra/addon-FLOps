@@ -1,6 +1,12 @@
 import github
+from flops_manager.api.request_management.custom_requests import (
+    CustomRequest,
+    RequestAuxiliaries,
+    RequestCore,
+)
 from flops_manager.api.utils.consts import GITHUB_PREFIX
 from flops_manager.classes.project_based import FlOpsProjectBasedClass
+from flops_manager.utils.exceptions.types import FlOpsExceptionTypes
 from pydantic import Field
 
 
@@ -29,3 +35,17 @@ class MlRepo(FlOpsProjectBasedClass):
         parts[0] = parts[0].lower()
         self.sanitized_name = "/".join(parts)
         return self.sanitized_name
+
+    def get_latest_commit_hash(self) -> str:
+        response = CustomRequest(
+            core=RequestCore(
+                base_url="https://api.github.com",
+                api_endpoint=f"/repos/{self.get_sanitized_name()}/commits/main",
+            ),
+            aux=RequestAuxiliaries(
+                what_should_happen="Fetch commits from github",
+                flops_exception_type=FlOpsExceptionTypes.IMAGE_REGISTRY,
+                is_oakestra_api=False,
+            ),
+        ).execute()
+        return response["sha"]

@@ -11,16 +11,16 @@ services:
     container_name: flops_manager
     environment:
       - FLOPS_MANAGER_PORT=5072
-      - FLOPS_IMAGE_REGISTRY_PORT=5073
+      #- FLOPS_IMAGE_REGISTRY_PORT=5073
       - SYSTEM_MANAGER_IP=system_manager
       - SYSTEM_MANAGER_PORT=10000
       - FLOPS_MQTT_BROKER_PORT=9027
       - FLOPS_MQTT_BROKER_URL=flops_mqtt
       - FLOPS_DB_PORT=10027
-      - CAROOT=/etc/ssl
+      #- CAROOT=/etc/ssl
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ssl:/etc/ssl
+      #- ssl:/etc/ssl
     expose:
       - "5072"
     ports:

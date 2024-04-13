@@ -1,10 +1,12 @@
 from flops_manager.classes.ml_repo import MlRepo
+from flops_manager.classes.oakestratables.deployables.image_registry.aux import (
+    get_flops_image_registry,
+)
 from flops_manager.classes.oakestratables.deployables.project_services.base import (
     FLOpsProjectService,
 )
 from flops_manager.classes.oakestratables.deployables.ui import UserInterface
 from flops_manager.classes.oakestratables.project import FlOpsProject
-from flops_manager.image_registry.common import FLOPS_IMAGE_REGISTRY_URL
 from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_PORT
 from flops_manager.mqtt.sender import notify_ui
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
@@ -54,7 +56,7 @@ class FLLearnerImageBuilder(FLOpsProjectService):
                 "python3",
                 "main.py",
                 self.ml_repo.url,
-                FLOPS_IMAGE_REGISTRY_URL,
+                get_flops_image_registry().url,
                 self.flops_project_id,
                 # TODO need to figure out a way to provide
                 # non docker-compose member exclusive DNS name as IP.

@@ -15,15 +15,19 @@ class FLOpsImageRegistry(DeployableClass):
     """'Singleton' of a docker registry container that will be shared by every FLOps project."""
 
     ip: str = Field("", init=False)
+    url: str = Field("", init=False)
 
     namespace = "flopsir"
+    port: str = "5073"
 
     def model_post_init(self, _):
         if self.gets_loaded_from_db:
             return
 
+        # TODO think about a nice solution here
         # self.ip = generate_ip(self.flops_project_id, self)
         self.ip = "10.30.27.27"
+        self.url = f"https://{self.ip}:{self.port}"
         super().model_post_init(_)
 
     def _configure_sla_components(self) -> None:
@@ -43,6 +47,7 @@ class FLOpsImageRegistry(DeployableClass):
             ),
             details=SlaDetails(
                 rr_ip=self.ip,
+                port=self.port,
                 resources=SlaResources(memory=200, vcpus=1, storage=1000),
             ),
         )

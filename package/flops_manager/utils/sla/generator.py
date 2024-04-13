@@ -40,6 +40,7 @@ def generate_sla(components: SlaComponentsWrapper) -> AppSLA:
                 "storage": resources.storage,
                 "code": compute.code,
                 **({"addresses": {"rr_ip": details.rr_ip}} if details.rr_ip else {}),
+                **({"port": details.port} if details.port else {}),
             }
         )
 

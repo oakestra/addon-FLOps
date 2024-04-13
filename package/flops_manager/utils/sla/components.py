@@ -34,6 +34,7 @@ class SlaDetails(NamedTuple):
     resources: SlaResources = SlaResources()
     app_desc: str = ""
     rr_ip: ipaddress.IPv4Address = None
+    port: str = None
 
 
 class SlaComponentsWrapper(NamedTuple):

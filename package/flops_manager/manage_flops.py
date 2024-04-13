@@ -1,12 +1,14 @@
 import threading
 
 from flops_manager.classes.ml_repo import MlRepo
+from flops_manager.classes.oakestratables.deployables.image_registry.utils import (
+    fetch_latest_matching_image,
+)
 from flops_manager.classes.oakestratables.deployables.project_services.builder.main import (
     FLLearnerImageBuilder,
 )
 from flops_manager.classes.oakestratables.deployables.ui import UserInterface
 from flops_manager.classes.oakestratables.project import FlOpsProject
-from flops_manager.image_registry.main import fetch_latest_matching_image
 from flops_manager.manage_fl import handle_fl_operations
 from flops_manager.mqtt.sender import notify_ui
 from flops_manager.utils.logging import logger

@@ -6,19 +6,17 @@ from flops_manager.api.request_management.custom_requests import (
     RequestCore,
 )
 from flops_manager.classes.ml_repo import MlRepo
-from flops_manager.classes.oakestratables.project import FlOpsProject
-from flops_manager.image_registry.common import (
-    FLOPS_IMAGE_REGISTRY_IP_WITH_PORT,
-    FLOPS_IMAGE_REGISTRY_URL,
+from flops_manager.classes.oakestratables.deployables.image_registry.aux import (
+    get_flops_image_registry,
 )
-from flops_manager.image_registry.utils import get_latest_commit_hash
+from flops_manager.classes.oakestratables.project import FlOpsProject
 from flops_manager.utils.exceptions.types import FlOpsExceptionTypes
 
 
 def check_registry_reachable(flops_project: FlOpsProject) -> bool:
     CustomRequest(
         core=RequestCore(
-            base_url=FLOPS_IMAGE_REGISTRY_URL,
+            base_url=get_flops_image_registry().url,
             api_endpoint="/api/application/",
         ),
         aux=RequestAuxiliaries(
@@ -37,7 +35,7 @@ def check_registry_reachable(flops_project: FlOpsProject) -> bool:
 def get_current_registry_image_repos() -> List[str]:
     response = CustomRequest(
         core=RequestCore(
-            base_url=FLOPS_IMAGE_REGISTRY_URL,
+            base_url=get_flops_image_registry().url,
             api_endpoint="/v2/_catalog",
         ),
         aux=RequestAuxiliaries(
@@ -51,7 +49,7 @@ def get_current_registry_image_repos() -> List[str]:
 def get_current_registry_repo_image_tags(ml_repo: MlRepo) -> List[str]:
     response = CustomRequest(
         core=RequestCore(
-            base_url=FLOPS_IMAGE_REGISTRY_URL,
+            base_url=get_flops_image_registry().url,
             api_endpoint=f"/v2/{ml_repo.get_sanitized_name()}/tags/list",
         ),
         aux=RequestAuxiliaries(
@@ -67,9 +65,10 @@ def fetch_latest_matching_image(ml_repo: MlRepo) -> Optional[str]:
     if ml_repo.get_sanitized_name() not in current_image_reqpositories:
         return None
     current_image_tags = get_current_registry_repo_image_tags(ml_repo)
-    latest_commit_hash = get_latest_commit_hash(ml_repo)
+    latest_commit_hash = ml_repo.get_latest_commit_hash()
+    image_registry = get_flops_image_registry()
     return (
-        f"{FLOPS_IMAGE_REGISTRY_IP_WITH_PORT}/{ml_repo.name}:{latest_commit_hash}"
+        f"{image_registry.ip}:{image_registry.port}/{ml_repo.name}:{latest_commit_hash}"
         if latest_commit_hash in current_image_tags
         else None
     )
