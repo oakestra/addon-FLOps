@@ -23,7 +23,7 @@ class RequestCore(NamedTuple):
 class RequestAuxiliaries(NamedTuple):
     what_should_happen: str
     flops_exception_type: FlOpsExceptionTypes
-    flops_project_id: str = ""
+    flops_project_id: str = None
     show_msg_on_success: bool = False
     is_oakestra_api: bool = True
 

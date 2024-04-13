@@ -1,10 +1,10 @@
-from flops_manager.classes.oakestratables.base import FlOpsOakestraBaseClass
+from flops_manager.classes.oakestratables.project_based import FlOpsOakestraProjectBasedClass
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
 from flops_manager.utils.sla.components import SlaComponentsWrapper, SlaCore, SlaDetails, SlaNames
 from pydantic import Field
 
 
-class FlOpsProject(FlOpsOakestraBaseClass):
+class FlOpsProject(FlOpsOakestraProjectBasedClass):
     """Links all necessary FL and ML/DevOps components to power one entire FL user request."""
 
     customer_id: str
@@ -15,7 +15,6 @@ class FlOpsProject(FlOpsOakestraBaseClass):
         init=False,
         description="Is the same as its application ID in Oakestra",
     )
-    project_app_name: str = Field("", init=False)
 
     namespace = "flopspro"
 
@@ -24,9 +23,10 @@ class FlOpsProject(FlOpsOakestraBaseClass):
             return
 
         flops_db_id = self._add_to_db()
-        self.project_app_name = f"pr{self.get_shortened_id(str(flops_db_id))}"
         self._configure_sla_components(flops_db_id)
-        self.create()
+        created_app = self.create()
+        self._set_properties_based_on_created_app(created_app)
+        self.flops_project_id = created_app["applicationID"]
         self._replace_in_db(flops_db_id)
 
     def _configure_sla_components(self, flops_db_id: str) -> None:
@@ -34,7 +34,7 @@ class FlOpsProject(FlOpsOakestraBaseClass):
             core=SlaCore(
                 customerID=FLOPS_USER_ACCOUNT,
                 names=SlaNames(
-                    app_name=self.project_app_name,
+                    app_name=f"pr{self.get_shortened_id(str(flops_db_id))}",
                     app_namespace=self.namespace,
                 ),
             ),

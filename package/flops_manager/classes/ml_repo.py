@@ -1,10 +1,10 @@
 import github
 from flops_manager.api.utils.consts import GITHUB_PREFIX
-from flops_manager.classes.base import FlOpsBaseClass
+from flops_manager.classes.project_based import FlOpsProjectBasedClass
 from pydantic import Field
 
 
-class MlRepo(FlOpsBaseClass):
+class MlRepo(FlOpsProjectBasedClass):
     url: str
 
     name: str = Field("", init=False)

@@ -7,8 +7,6 @@ from pymongo.collection import Collection
 
 
 class FlOpsBaseClass(BaseModel, ABC):
-    flops_project_id: str
-
     gets_loaded_from_db: bool = Field(False, init=False, exclude=True, repr=False)
 
     @classmethod
@@ -24,7 +22,7 @@ class FlOpsBaseClass(BaseModel, ABC):
         )
 
     @classmethod
-    def retrieve_from_db(cls, flops_project_id: str) -> "FlOpsBaseClass":
-        found_db_object = cls.get_collection().find_one({"flops_project_id": flops_project_id})
+    def retrieve_from_db(cls, db_object_id: ObjectId) -> "FlOpsBaseClass":
+        found_db_object = cls.get_collection().find_one({"_id": db_object_id})
         found_db_object["gets_loaded_from_db"] = True
         return cls.model_validate(found_db_object)

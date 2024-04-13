@@ -28,12 +28,16 @@ class FlOpsOakestraBaseClass(FlOpsBaseClass):
     # Note: Only used during "runtime". It is not stored or displayed due to verbosity & redundancy.
     sla_components: SlaComponentsWrapper = Field(None, init=False, exclude=True, repr=False)
 
+    app_id: str = Field("", init=False)
+    app_name: str = Field("", init=False)
+
     def model_post_init(self, _) -> None:
         if self.gets_loaded_from_db:
             return
 
         self._configure_sla_components()
-        self.create()
+        created_app = self.create()
+        self._set_properties_based_on_created_app(created_app)
         self._add_to_db()
 
     @abstractmethod
@@ -41,35 +45,20 @@ class FlOpsOakestraBaseClass(FlOpsBaseClass):
         """Sets self.sla_components that are needed for deployments"""
         pass
 
-    def create(self) -> None:
-        sla = generate_sla(self.sla_components)
-
-        new_app = create_app(
-            # sla=generate_sla(self.sla_components),
-            sla=sla,
-            bearer_token=getattr(self, "bearer_token", None),
-            flops_project_id=self.flops_project_id,
+    def create(self) -> Application:
+        return create_app(
+            sla=generate_sla(self.sla_components),
             matching_caller_object=self,
         )
-        if self.flops_project_id:
-            self.app_id = new_app["applicationID"]
-        else:
-            self.flops_project_id = new_app["applicationID"]
-        if new_app["microservices"]:
-            self.service_id = new_app["microservices"][-1]
 
-    def delete(self) -> None:
-        pass
-        # TODO
-        # delete_app(
-        #     application_id=self.app_id,
-        #     flops_project_id=self.flops_project_id,
-        #     matching_caller_object=self,
-        # )
+    def _set_properties_based_on_created_app(self, created_app: Application) -> None:
+        self.app_id = created_app["applicationID"]
+        self.app_name = created_app["application_name"]
+        if created_app["microservices"]:
+            self.service_id = created_app["microservices"][-1]
 
-    def fetch_from_oakestra(self, namespace: str) -> Application:
+    def fetch_from_oakestra(self) -> Application:
         return fetch_app(
-            app_namespace=namespace,
-            flops_project_id=self.flops_project_id,
+            app_id=self.app_id,
             matching_caller_object=self,
         )

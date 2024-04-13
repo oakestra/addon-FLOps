@@ -10,7 +10,7 @@ class FLOpsManagerException(Exception):
     flops_exception_type: FlOpsExceptionTypes
     text: str
     http_status: HTTPStatus = None
-    flops_project_id: str = ""
+    flops_project_id: str = None
 
     message: str = field(init=False)
 

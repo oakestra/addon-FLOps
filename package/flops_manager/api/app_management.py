@@ -14,7 +14,7 @@ from flops_manager.utils.types import SLA, Application
 
 def create_app(
     sla: SLA,
-    flops_project_id: str,
+    flops_project_id: str = None,
     bearer_token: str = None,
     matching_caller_object: FlOpsBaseClass = None,
 ) -> Application:
@@ -54,18 +54,17 @@ def create_app(
 
 
 def fetch_app(
-    flops_project_id: str,
-    app_namespace: str,
+    app_id: str,
     matching_caller_object: FlOpsBaseClass = None,
 ) -> Application:
     app_type = get_matching_type(matching_caller_object)
     response = CustomRequest(
         core=RequestCore(
             base_url=SYSTEM_MANAGER_URL,
-            api_endpoint=f"/api/application/{app_namespace}/bu{flops_project_id}",
+            api_endpoint=f"/api/application/{app_id}",
         ),
         aux=RequestAuxiliaries(
-            what_should_happen=f"Fetch {app_type} app bu'{flops_project_id}'",
+            what_should_happen=f"Fetch {app_type} app '{app_id}'",
             flops_exception_type=FlOpsExceptionTypes.APP_FETCH,
             show_msg_on_success=True,
         ),

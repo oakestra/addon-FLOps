@@ -11,6 +11,7 @@ from flops_manager.manage_fl import handle_fl_operations
 from flops_manager.mqtt.sender import notify_ui
 from flops_manager.utils.logging import logger
 from flops_manager.utils.types import FlOpsProjectSla
+from icecream import ic
 
 
 def handle_new_flops_project(new_flops_project_sla: FlOpsProjectSla, bearer_token: str) -> None:
@@ -18,7 +19,10 @@ def handle_new_flops_project(new_flops_project_sla: FlOpsProjectSla, bearer_toke
         customer_id=new_flops_project_sla["customerID"],
         verbose=new_flops_project_sla.get("verbose", False),
     )
+    ic("AAA")
     ui = UserInterface(flops_project=flops_project, bearer_token=bearer_token)
+    ic("BBB", ui)
+    return
     ml_repo = MlRepo(
         flops_project_id=flops_project.flops_project_id,
         url=new_flops_project_sla["code"],
