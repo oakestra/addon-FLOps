@@ -10,6 +10,9 @@ def run_in_bash(bash_cmd: str) -> subprocess.CompletedProcess[bytes]:
 
 def generate_ip(flops_id: str, object: FlOpsBaseClass) -> str:
     # Note: These numerical gymnastics are intended to avoid IP collisions.
+    # TODO/Future work: this logic needs to be more bullet proof.
+    # I.e. we need to ask the OAK components for available IPs instead of conjuring one ourselves.
+
     unique_int = int(flops_id, 16) % 65536
 
     type_based_hash_offset = hash(type(object))
