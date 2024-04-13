@@ -1,8 +1,9 @@
-from flops_manager.classes.oakestratables.deployables.internal.base import InternalProjectComponent
+from flops_manager.classes.oakestratables.deployables.project_services.base import (
+    FLOpsProjectService,
+)
 from flops_manager.classes.oakestratables.project import FlOpsProject
 from flops_manager.mqtt.sender import notify_ui
-from flops_manager.utils.common import generate_ip
-from flops_manager.utils.constants import FLOPS_SERVICE_CMD_PREFIX, FLOPS_USER_ACCOUNT
+from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
 from flops_manager.utils.sla.components import (
     SlaComponentsWrapper,
     SlaCompute,
@@ -14,14 +15,14 @@ from flops_manager.utils.sla.components import (
 from pydantic import Field
 
 
-class FLAggregator(InternalProjectComponent):
+class FLLearner(FLOpsProjectService):
+    fl_learner_image: str
+
     flops_project: FlOpsProject = Field(None, exclude=True, repr=False)
 
     flops_project_id: str = Field("", init=False)
 
-    ip: str = Field("", init=False)
-
-    namespace = "flaggreg"
+    namespace = "flearner"
 
     def model_post_init(self, _):
         if self.gets_loaded_from_db:
@@ -30,20 +31,22 @@ class FLAggregator(InternalProjectComponent):
         if self.flops_project.verbose:
             notify_ui(
                 flops_project_id=self.flops_project_id,
-                msg="Preparing new FL Aggregator.",
+                msg="Preparing new FL Learner.",
             )
 
         self.flops_project_id = self.flops_project.flops_project_id
-        self.ip = generate_ip(self.flops_project_id, self)
         super().model_post_init(_)
 
         if self.flops_project.verbose:
             notify_ui(
                 flops_project_id=self.flops_project_id,
-                msg="New Aggregator service created & deployed",
+                msg="New Learner service created & deployed",
             )
 
     def _configure_sla_components(self) -> None:
+        # cmd ="python main.py"
+        cmd = "sleep infinity"
+
         self.sla_components = SlaComponentsWrapper(
             core=SlaCore(
                 app_id=self.flops_project_id,
@@ -51,17 +54,20 @@ class FLAggregator(InternalProjectComponent):
                 names=SlaNames(
                     app_name=self.flops_project.project_app_name,
                     app_namespace=self.flops_project.namespace,
-                    service_name=f"ag{self.flops_project.get_shortened_id()}",
-                    service_namespace=self.namespace,
+                    # service_name=f"fl{self.flops_project.get_shortened_id()}",
+                    # service_namespace=self.namespace,
+                    service_name="alex",
+                    service_namespace="alex",
                 ),
                 compute=SlaCompute(
-                    code="ghcr.io/malyuk-a/fl-aggregator:latest",
+                    # code=self.fl_learner_image,
+                    code="docker.io/library/nginx:latest",
+                    # code="192.168.178.44:5073/Malyuk-A/mlflower-test-a:f63f795f6a7b4094a5a9a0210af45fd121532507",
                     one_shot_service=True,
-                    cmd=FLOPS_SERVICE_CMD_PREFIX,
+                    cmd=cmd,
                 ),
             ),
             details=SlaDetails(
-                rr_ip=self.ip,
                 resources=SlaResources(
                     memory=100,
                     vcpus=1,

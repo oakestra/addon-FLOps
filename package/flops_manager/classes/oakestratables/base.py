@@ -1,4 +1,4 @@
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 from typing import ClassVar
 
 from flops_manager.api.app_management import create_app, fetch_app
@@ -9,7 +9,7 @@ from flops_manager.utils.types import Application
 from pydantic import Field
 
 
-class FlOpsOakestraBaseClass(FlOpsBaseClass):
+class FlOpsOakestraBaseClass(FlOpsBaseClass, ABC):
     """A class used for components that can be created or deployed as applications or services."""
 
     # Note:

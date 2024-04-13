@@ -1,4 +1,4 @@
-from flops_manager.classes.oakestratables.deployables.internal.builder.main import (
+from flops_manager.classes.oakestratables.deployables.project_services.builder.main import (
     FLLearnerImageBuilder,
 )
 from flops_manager.classes.oakestratables.project import FlOpsProject

@@ -54,7 +54,6 @@ def deploy(service_id: ServiceId, matching_caller_object: FlOpsBaseClass = None)
 
 def undeploy(
     service_id: str,
-    flops_project_id: str,
     matching_caller_object: FlOpsBaseClass = None,
 ) -> None:
     service_type = get_matching_type(matching_caller_object)
@@ -65,7 +64,7 @@ def undeploy(
             api_endpoint=f"/api/service/{service_id}",
         ),
         aux=RequestAuxiliaries(
-            what_should_happen=f"Undeploy {service_type} service for FLOps'{flops_project_id}'",
+            what_should_happen=f"Undeploy {service_type} service for FLOps",
             flops_exception_type=FlOpsExceptionTypes.SERVICE_UNDEPLOYMENT,
             show_msg_on_success=True,
         ),

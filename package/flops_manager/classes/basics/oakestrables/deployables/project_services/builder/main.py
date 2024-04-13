@@ -1,7 +1,7 @@
-from flops_manager.classes.ml_repo import MlRepo
-from flops_manager.classes.oakestratables.deployables.internal.base import InternalProjectComponent
-from flops_manager.classes.oakestratables.deployables.public.ui import UserInterface
-from flops_manager.classes.oakestratables.project import FlOpsProject
+from package.flops_manager.classes.project_based.ml_repo import MlRepo
+from flops_manager.classes.oakestratables.deployables.project_services.base import ProjectService
+from package.flops_manager.classes.oakestratables.deployables.ui import UserInterface
+from package.flops_manager.classes.project_based.oakestrables.project import FlOpsProject
 from flops_manager.image_registry.common import FLOPS_IMAGE_REGISTRY_URL
 from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_PORT
 from flops_manager.mqtt.sender import notify_ui
@@ -17,7 +17,7 @@ from flops_manager.utils.sla.components import (
 from pydantic import Field
 
 
-class FLLearnerImageBuilder(InternalProjectComponent):
+class FLLearnerImageBuilder(ProjectService):
     flops_project: FlOpsProject = Field(None, exclude=True, repr=False)
     ui: UserInterface = Field(None, exclude=True, repr=False)
     ml_repo: MlRepo = Field(None, exclude=True, repr=False)

@@ -1,4 +1,6 @@
-from flops_manager.classes.oakestratables.deployables.public.base import CustomerFacingComponent
+from flops_manager.classes.oakestratables.deployables.project_based import (
+    DeployableProjectBasedClass,
+)
 from flops_manager.classes.oakestratables.project import FlOpsProject
 from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_PORT, FLOPS_MQTT_BROKER_URL
 from flops_manager.utils.common import generate_ip
@@ -14,7 +16,7 @@ from flops_manager.utils.sla.components import (
 from pydantic import Field
 
 
-class UserInterface(CustomerFacingComponent):
+class UserInterface(DeployableProjectBasedClass):
     # Note: Use the entire Project object instead but only store & display its id.
     flops_project: FlOpsProject = Field(None, exclude=True, repr=False)
     flops_project_id: str = Field("", init=False)
