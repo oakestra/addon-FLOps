@@ -6,7 +6,7 @@ from flops_manager.classes.base import FlOpsBaseClass
 from flops_manager.utils.sla.components import SlaComponentsWrapper
 from flops_manager.utils.sla.generator import generate_sla
 from flops_manager.utils.types import Application
-from pydantic import Field
+from pydantic import AliasChoices, Field
 
 
 class FlOpsOakestraBaseClass(FlOpsBaseClass, ABC):
@@ -28,7 +28,7 @@ class FlOpsOakestraBaseClass(FlOpsBaseClass, ABC):
     # Note: Only used during "runtime". It is not stored or displayed due to verbosity & redundancy.
     sla_components: SlaComponentsWrapper = Field(None, init=False, exclude=True, repr=False)
 
-    app_id: str = Field("", init=False, alias="applicationID")
+    app_id: str = Field("", init=False, alias=AliasChoices("app_id", "applicationID"))
     app_name: str = Field("", init=False)
 
     def model_post_init(self, _) -> None:

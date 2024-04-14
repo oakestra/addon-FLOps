@@ -8,13 +8,13 @@ from flops_manager.utils.sla.components import (
     SlaNames,
     SlaResources,
 )
-from pydantic import Field
+from pydantic import AliasChoices, Field
 
 
 class FLOpsImageRegistry(DeployableClass):
     """'Singleton' of a docker registry container that will be shared by every FLOps project."""
 
-    ip: str = Field("", init=False, alias="RR_ip")
+    ip: str = Field("", init=False, alias=AliasChoices("ip", "RR_ip"))
     url: str = Field("", init=False)
 
     namespace = "flopsir"
@@ -32,7 +32,7 @@ class FLOpsImageRegistry(DeployableClass):
         super().model_post_init(_)
 
     def _set_url(self) -> None:
-        self.url = f"https://{self.ip}:{self.port}"
+        self.url = f"http://{self.ip}:{self.port}"
 
     def _configure_sla_components(self) -> None:
         self.sla_components = SlaComponentsWrapper(

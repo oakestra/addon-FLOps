@@ -8,15 +8,17 @@ from flops_manager.api.request_management.custom_requests import (
 from flops_manager.api.utils.consts import SYSTEM_MANAGER_URL
 from flops_manager.classes.oakestratables.deployables.image_registry.main import FLOpsImageRegistry
 from flops_manager.utils.exceptions.types import FlOpsExceptionTypes
+from flops_manager.utils.types import Application
 
 _flops_image_builder = None
 
-TODO methode aufteilen - parsing is ready,
-+ fall pruefen wenn die app noch nicht da ist - da muss ich die custom requests minimal anpassen + new flag to allow non 200 responses
-sobald das fertig ist kann ich endlich pruefen ob die arbeit worth war und client klappt!!
+# TODO methode aufteilen - parsing is ready,
+# + fall pruefen wenn die app noch nicht da ist - da muss ich die custom requests minimal anpassen + new flag to allow non 200 responses
+# sobald das fertig ist kann ich endlich pruefen ob die arbeit worth war und client klappt!!
 
-def _check_if_registry_already_exists_in_oak() -> Optional[FLOpsImageRegistry]:
-    app = CustomRequest(
+
+def _fetch_registry_app() -> Application:
+    return CustomRequest(
         core=RequestCore(
             base_url=SYSTEM_MANAGER_URL,
             api_endpoint="".join(
@@ -33,6 +35,13 @@ def _check_if_registry_already_exists_in_oak() -> Optional[FLOpsImageRegistry]:
             flops_exception_type=FlOpsExceptionTypes.IMAGE_REGISTRY,
         ),
     ).execute()
+
+
+def _check_if_registry_already_exists_in_oak() -> Optional[FLOpsImageRegistry]:
+    app = _fetch_registry_app()
+    if not app:
+        return None
+
     service = CustomRequest(
         core=RequestCore(
             base_url=SYSTEM_MANAGER_URL,

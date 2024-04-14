@@ -5,10 +5,16 @@ from flops_manager.classes.oakestratables.deployables.project_based import (
     DeployableProjectBasedClass,
 )
 from flops_manager.utils.sla.generator import generate_sla
+from pydantic import Field
 
 
 class FLOpsProjectService(DeployableProjectBasedClass, ABC):
     """Such a service will be appended to an already existing FLOps project application."""
+
+    # These values are always pointing to the parent FLOps Project Application.
+    # Which can be deducted by the Project ID alone.
+    app_id: str = Field("", init=False, exclude=True, repr=False)
+    app_name: str = Field("", init=False, exclude=True, repr=False)
 
     def model_post_init(self, _) -> None:
         if self.gets_loaded_from_db:

@@ -1,3 +1,6 @@
+from flops_manager.classes.oakestratables.deployables.project_services.aggregator import (
+    FLAggregator,
+)
 from flops_manager.classes.oakestratables.deployables.project_services.base import (
     FLOpsProjectService,
 )
@@ -19,8 +22,8 @@ class FLLearner(FLOpsProjectService):
     fl_learner_image: str
 
     flops_project: FlOpsProject = Field(None, exclude=True, repr=False)
-
     flops_project_id: str = Field("", init=False)
+    fl_aggregator: FLAggregator = Field(exclude=True, repr=False)
 
     namespace = "flearner"
 
@@ -44,8 +47,7 @@ class FLLearner(FLOpsProjectService):
             )
 
     def _configure_sla_components(self) -> None:
-        # cmd ="python main.py"
-        cmd = "sleep infinity"
+        cmd = f"python main.py {self.fl_aggregator.ip}"
 
         self.sla_components = SlaComponentsWrapper(
             core=SlaCore(
@@ -54,15 +56,13 @@ class FLLearner(FLOpsProjectService):
                 names=SlaNames(
                     app_name=self.flops_project.app_name,
                     app_namespace=self.flops_project.namespace,
-                    # service_name=f"fl{self.flops_project.get_shortened_id()}",
-                    # service_namespace=self.namespace,
-                    service_name="alex",
-                    service_namespace="alex",
+                    service_name=f"fl{self.flops_project.get_shortened_id()}",
+                    service_namespace=self.namespace,
+                    # service_name="alex",
+                    # service_namespace="alex",
                 ),
                 compute=SlaCompute(
-                    # code=self.fl_learner_image,
-                    code="docker.io/library/nginx:latest",
-                    # code="192.168.178.44:5073/Malyuk-A/mlflower-test-a:f63f795f6a7b4094a5a9a0210af45fd121532507",
+                    code=self.fl_learner_image,
                     one_shot_service=True,
                     cmd=cmd,
                 ),

@@ -8,6 +8,7 @@ from flops_manager.classes.oakestratables.deployables.project_services.builder.t
 )
 from flops_manager.mqtt.constants import Topics
 from flops_manager.mqtt.main import get_mqtt_client
+from flops_manager.mqtt.sender import notify_ui
 from flops_manager.utils.exceptions.main import FLOpsManagerException
 from flops_manager.utils.logging import logger
 
@@ -33,7 +34,7 @@ def _on_new_message(client, userdata, message) -> None:
 
     except FLOpsManagerException as e:
         logger.fatal(f"{e.msg}")
-        e.try_to_notify_ui()
+        notify_ui(flops_project_id=e.flops_project_id, msg=e.message)
         return
     except Exception as e:
         err_msg = f"Unexpected error occured: {e}"

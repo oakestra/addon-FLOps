@@ -12,7 +12,11 @@ def handle_fl_operations(flops_project: FlOpsProject, fl_learner_image: str) -> 
     logger.info(msg)
     notify_ui(flops_project_id=flops_project.flops_project_id, msg=msg)
 
-    FLAggregator(flops_project=flops_project)
-    FLLearner(flops_project=flops_project, fl_learner_image=fl_learner_image)
+    fl_aggregator = FLAggregator(flops_project=flops_project)
+    FLLearner(
+        flops_project=flops_project,
+        fl_learner_image=fl_learner_image,
+        fl_aggregator=fl_aggregator,
+    )
 
     # TODO
