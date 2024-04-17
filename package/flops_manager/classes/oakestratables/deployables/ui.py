@@ -30,8 +30,8 @@ class UserInterface(DeployableProjectBasedClass):
             return
 
         self.flops_project_id = self.flops_project.flops_project_id
-
         self.ip = generate_ip(self.flops_project_id, self)
+
         super().model_post_init(_)
 
     def _configure_sla_components(self) -> None:

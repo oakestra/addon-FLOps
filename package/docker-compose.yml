@@ -28,6 +28,18 @@ services:
     networks:
       - root_orchestrator_default
   
+  flops_image_registry:
+    image: ghcr.io/malyuk-a/flops-image-registry:latest
+    container_name: flops_image_registry
+    volumes:
+      - registry_data:/var/lib/registry
+    expose:
+      - "5073"
+    ports:
+      - "5073:5073"
+    networks:
+      - root_orchestrator_default
+
   # flops_image_registry:
   #   image: registry:2.8.3
   #   container_name: flops_image_registry

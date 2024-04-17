@@ -3,16 +3,12 @@
 import threading
 
 from flops_manager.api.main import handle_api
-from flops_manager.classes.oakestratables.deployables.image_registry.aux import (
-    init_or_fetch_flops_image_registry,
-)
 from flops_manager.database.main import FLOpsDB
 from flops_manager.mqtt.listener import init_mqtt_listener
 
 
 def main():
     FLOpsDB()
-    init_or_fetch_flops_image_registry()
     threading.Thread(target=handle_api).start()
     init_mqtt_listener()
 
