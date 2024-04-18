@@ -10,18 +10,14 @@ from flops_manager.image_registry_management.main import fetch_latest_matching_i
 from flops_manager.manage_fl import handle_fl_operations
 from flops_manager.mqtt.sender import notify_ui
 from flops_manager.utils.logging import logger
-from flops_manager.utils.types import FlOpsProjectSla
 
 
-def handle_new_flops_project(new_flops_project_sla: FlOpsProjectSla, bearer_token: str) -> None:
-    flops_project = FlOpsProject(
-        customer_id=new_flops_project_sla["customerID"],
-        verbose=new_flops_project_sla.get("verbose", False),
-    )
+def handle_new_flops_project(request_data: dict, bearer_token: str) -> None:
+    flops_project = FlOpsProject.model_validate(request_data)
     ui = UserInterface(flops_project=flops_project, bearer_token=bearer_token)
     ml_repo = MlRepo(
         flops_project_id=flops_project.flops_project_id,
-        url=new_flops_project_sla["code"],
+        url=flops_project.ml_repo_url,
     )
     latest_matching_image_name = fetch_latest_matching_image(ml_repo)
     if latest_matching_image_name is not None:

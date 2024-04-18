@@ -44,6 +44,17 @@ class FLAggregator(FLOpsProjectService):
             )
 
     def _configure_sla_components(self) -> None:
+        conf = self.flops_project.training_configuration
+        cmd = " ".join(
+            (
+                FLOPS_SERVICE_CMD_PREFIX,
+                str(conf.training_rounds),
+                str(conf.min_fit_clients),
+                str(conf.min_evaluate_clients),
+                str(conf.min_available_client),
+            )
+        )
+
         self.sla_components = SlaComponentsWrapper(
             core=SlaCore(
                 app_id=self.flops_project_id,
@@ -57,7 +68,7 @@ class FLAggregator(FLOpsProjectService):
                 compute=SlaCompute(
                     code="ghcr.io/malyuk-a/fl-aggregator:latest",
                     one_shot_service=True,
-                    cmd=FLOPS_SERVICE_CMD_PREFIX,
+                    cmd=cmd,
                 ),
             ),
             details=SlaDetails(

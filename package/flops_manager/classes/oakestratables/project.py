@@ -1,15 +1,36 @@
 from flops_manager.classes.oakestratables.project_based import FlOpsOakestraProjectBasedClass
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
 from flops_manager.utils.sla.components import SlaComponentsWrapper, SlaCore, SlaDetails, SlaNames
-from pydantic import Field
+from pydantic import AliasChoices, BaseModel, Field
+
+# TODO/Future Work: Add additional Pydantic checking:
+# e.g.: training_rounds > 1
+#       min_..._clients > 1, etc.
+
+
+# Note: Using BaseModel instead of NamedTuple here allows for nicer serialized data in the DB.
+class _TrainingConfiguration(BaseModel):
+    training_rounds: int = 3
+    min_fit_clients: int = 1
+    min_evaluate_clients: int = 1
+    min_available_client: int = 1
+
+
+class _ResourceContraints(BaseModel):
+    # TODO: Fine-tune these values. + incorporate them in the final Project component SLAs.
+    memory: int = 100
+    vcpus: int = 1
+    storage: int = 0
 
 
 class FlOpsProject(FlOpsOakestraProjectBasedClass):
     """Links all necessary FL and ML/DevOps components to power one entire FL user request."""
 
-    customer_id: str
+    customer_id: str = Field(alias=AliasChoices("customer_id", "customerID"))
     verbose: bool = False
-
+    training_configuration: _TrainingConfiguration = _TrainingConfiguration()
+    resource_constraints: _ResourceContraints = _ResourceContraints()
+    ml_repo_url: str
     flops_project_id: str = Field(
         "",
         init=False,

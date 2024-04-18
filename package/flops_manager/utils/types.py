@@ -7,7 +7,6 @@ class CustomEnum(enum.Enum):
 
 
 SLA = dict
-FlOpsProjectSla = SLA
 AppSLA = SLA
 
 Application = dict

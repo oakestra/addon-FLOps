@@ -17,15 +17,10 @@ flops_blp = flask_openapi3.APIBlueprint(
 
 @flops_blp.post("/")
 def post_fl_service() -> Tuple[dict, HTTPStatus]:
-    # TODO add sla-schema checking, etc. similar to main repo
-    # Note: Current Assumption: A new FL app needs to be created.
-    # If the use cases come up that a FL service should be appended to an existing App
-    # that can be easily realized.
     try:
-        bearer_token = flask.request.headers.get("Authorization")
         handle_new_flops_project(
-            new_flops_project_sla=flask.request.json,
-            bearer_token=bearer_token,
+            request_data=flask.request.json,
+            bearer_token=flask.request.headers.get("Authorization"),
         )
     except FLOpsManagerException as e:
         logger.fatal(f"{e.msg}, {e.http_status}")
