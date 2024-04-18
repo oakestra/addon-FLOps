@@ -39,11 +39,6 @@ class CustomRequest:
     args: dict = field(default=None, init=False)
     response: requests.Response = field(default=None, init=False)
 
-    # Note: Needed to avoid issues with pydantic.
-    # They arise due to the complex/unsupported requests.Response type.
-    class Config:
-        arbitrary_types_allowed = True
-
     def __post_init__(self):
         self._prepare()
 
