@@ -2,6 +2,7 @@ from flops_manager.utils.types import CustomEnum
 
 
 class FlOpsExceptionTypes(CustomEnum):
+    UNSPECIFIED = "Unspecified FLOps Manager Error"
     IMAGE_BUILDER = "Image Builder"
     FL_AGGREGATOR = "FL Aggregator"
     MQTT = "MQTT"

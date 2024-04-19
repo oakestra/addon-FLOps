@@ -16,7 +16,7 @@ from flops_manager.utils.sla.components import (
 from pydantic import Field
 
 
-class UserInterface(DeployableProjectBasedClass):
+class FLOpsUserInterface(DeployableProjectBasedClass):
     # Note: Use the entire Project object instead but only store & display its id.
     flops_project: FlOpsProject = Field(None, exclude=True, repr=False)
     flops_project_id: str = Field("", init=False)

@@ -2,6 +2,7 @@ from flops_manager.classes.oakestratables.deployables.project_services.base impo
     FLOpsProjectService,
 )
 from flops_manager.classes.oakestratables.project import FlOpsProject
+from flops_manager.image_registry_management.common import FLOPS_IMAGE_REGISTRY_URL
 from flops_manager.mqtt.sender import notify_ui
 from flops_manager.utils.common import generate_ip
 from flops_manager.utils.constants import FLOPS_SERVICE_CMD_PREFIX, FLOPS_USER_ACCOUNT
@@ -18,8 +19,9 @@ from pydantic import Field
 
 class FLAggregator(FLOpsProjectService):
     flops_project: FlOpsProject = Field(None, exclude=True, repr=False)
-
     flops_project_id: str = Field("", init=False)
+
+    flops_ui_ip: str = Field(exclude=True, repr=False)
 
     ip: str = Field("", init=False)
 
@@ -44,14 +46,17 @@ class FLAggregator(FLOpsProjectService):
             )
 
     def _configure_sla_components(self) -> None:
-        conf = self.flops_project.training_configuration
+        training_conf = self.flops_project.training_configuration
         cmd = " ".join(
             (
                 FLOPS_SERVICE_CMD_PREFIX,
-                str(conf.training_rounds),
-                str(conf.min_available_clients),
-                str(conf.min_fit_clients),
-                str(conf.min_evaluate_clients),
+                self.flops_project_id,
+                FLOPS_IMAGE_REGISTRY_URL,
+                self.flops_ui_ip,
+                str(training_conf.training_rounds),
+                str(training_conf.min_available_clients),
+                str(training_conf.min_fit_clients),
+                str(training_conf.min_evaluate_clients),
             )
         )
 

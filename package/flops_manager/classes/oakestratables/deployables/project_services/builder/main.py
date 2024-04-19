@@ -2,7 +2,7 @@ from flops_manager.classes.ml_repo import MlRepo
 from flops_manager.classes.oakestratables.deployables.project_services.base import (
     FLOpsProjectService,
 )
-from flops_manager.classes.oakestratables.deployables.ui import UserInterface
+from flops_manager.classes.oakestratables.deployables.ui import FLOpsUserInterface
 from flops_manager.classes.oakestratables.project import FlOpsProject
 from flops_manager.image_registry_management.common import FLOPS_IMAGE_REGISTRY_URL
 from flops_manager.mqtt.sender import notify_ui
@@ -20,7 +20,7 @@ from pydantic import Field
 
 class FLLearnerImageBuilder(FLOpsProjectService):
     flops_project: FlOpsProject = Field(None, exclude=True, repr=False)
-    ui: UserInterface = Field(None, exclude=True, repr=False)
+    ui: FLOpsUserInterface = Field(None, exclude=True, repr=False)
     ml_repo: MlRepo = Field(None, exclude=True, repr=False)
 
     flops_project_id: str = Field("", init=False)
