@@ -49,9 +49,9 @@ class FLAggregator(FLOpsProjectService):
             (
                 FLOPS_SERVICE_CMD_PREFIX,
                 str(conf.training_rounds),
+                str(conf.min_available_clients),
                 str(conf.min_fit_clients),
                 str(conf.min_evaluate_clients),
-                str(conf.min_available_client),
             )
         )
 

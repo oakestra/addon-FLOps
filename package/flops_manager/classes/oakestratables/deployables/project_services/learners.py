@@ -1,3 +1,4 @@
+from flops_manager.api.service_management import deploy
 from flops_manager.classes.oakestratables.deployables.project_services.aggregator import (
     FLAggregator,
 )
@@ -18,8 +19,10 @@ from flops_manager.utils.sla.components import (
 from pydantic import Field
 
 
-class FLLearner(FLOpsProjectService):
+class FLLearners(FLOpsProjectService):
     fl_learner_image: str
+
+    total_number_of_learners: int = Field(1, init=False)
 
     flops_project: FlOpsProject = Field(None, exclude=True, repr=False)
     flops_project_id: str = Field("", init=False)
@@ -34,17 +37,24 @@ class FLLearner(FLOpsProjectService):
         if self.flops_project.verbose:
             notify_ui(
                 flops_project_id=self.flops_project_id,
-                msg="Preparing new FL Learner.",
+                msg="Preparing new FL Learners.",
             )
 
+        self.total_number_of_learners = (
+            self.flops_project.training_configuration.min_available_clients
+        )
         self.flops_project_id = self.flops_project.flops_project_id
         super().model_post_init(_)
 
         if self.flops_project.verbose:
             notify_ui(
                 flops_project_id=self.flops_project_id,
-                msg="New Learner service created & deployed",
+                msg="New FL Learners service created & deployed",
             )
+
+    def deploy(self) -> None:
+        for _ in range(self.total_number_of_learners):
+            deploy(service_id=self.service_id, matching_caller_object=self)
 
     def _configure_sla_components(self) -> None:
         cmd = f"python main.py {self.fl_aggregator.ip}"
@@ -58,8 +68,6 @@ class FLLearner(FLOpsProjectService):
                     app_namespace=self.flops_project.namespace,
                     service_name=f"fl{self.flops_project.get_shortened_id()}",
                     service_namespace=self.namespace,
-                    # service_name="alex",
-                    # service_namespace="alex",
                 ),
                 compute=SlaCompute(
                     code=self.fl_learner_image,

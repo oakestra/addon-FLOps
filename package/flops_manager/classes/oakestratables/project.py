@@ -11,9 +11,9 @@ from pydantic import AliasChoices, BaseModel, Field
 # Note: Using BaseModel instead of NamedTuple here allows for nicer serialized data in the DB.
 class _TrainingConfiguration(BaseModel):
     training_rounds: int = 3
+    min_available_clients: int = 1
     min_fit_clients: int = 1
     min_evaluate_clients: int = 1
-    min_available_client: int = 1
 
 
 class _ResourceContraints(BaseModel):
