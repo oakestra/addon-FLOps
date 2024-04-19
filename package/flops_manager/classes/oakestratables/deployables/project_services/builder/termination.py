@@ -4,7 +4,7 @@ from flops_manager.classes.oakestratables.deployables.project_services.builder.m
 from flops_manager.classes.oakestratables.project import FlOpsProject
 from flops_manager.manage_fl import handle_fl_operations
 from flops_manager.mqtt.sender import notify_ui
-from flops_manager.utils.logging import logger
+from flops_utils.logging import logger
 
 
 def handle_builder_success(builder_success_msg: dict) -> None:

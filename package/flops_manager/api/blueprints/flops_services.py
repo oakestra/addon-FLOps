@@ -6,7 +6,7 @@ import flask_openapi3
 from flops_manager.manage_flops import handle_new_flops_project
 from flops_manager.mqtt.sender import notify_ui
 from flops_manager.utils.exceptions.main import FLOpsManagerException
-from flops_manager.utils.logging import logger
+from flops_utils.logging import logger
 
 flops_blp = flask_openapi3.APIBlueprint(
     "flops",

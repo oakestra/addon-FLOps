@@ -1,5 +1,5 @@
 from flops_manager.mqtt.main import get_mqtt_client
-from flops_manager.utils.logging import logger
+from flops_utils.logging import logger
 
 
 def notify_ui(

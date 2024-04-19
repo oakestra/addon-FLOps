@@ -4,7 +4,7 @@ from flops_manager.classes.oakestratables.deployables.project_services.aggregato
 from flops_manager.classes.oakestratables.deployables.project_services.learners import FLLearners
 from flops_manager.classes.oakestratables.project import FlOpsProject
 from flops_manager.mqtt.sender import notify_ui
-from flops_manager.utils.logging import logger
+from flops_utils.logging import logger
 
 
 def handle_fl_operations(flops_project: FlOpsProject, fl_learner_image: str) -> None:

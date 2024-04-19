@@ -9,7 +9,7 @@ from flops_manager.classes.oakestratables.project import FlOpsProject
 from flops_manager.image_registry_management.main import fetch_latest_matching_image
 from flops_manager.manage_fl import handle_fl_operations
 from flops_manager.mqtt.sender import notify_ui
-from flops_manager.utils.logging import logger
+from flops_utils.logging import logger
 
 
 def handle_new_flops_project(request_data: dict, bearer_token: str) -> None:

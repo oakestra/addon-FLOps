@@ -5,7 +5,6 @@ from flops_manager.classes.oakestratables.deployables.project_services.base impo
 from flops_manager.classes.oakestratables.deployables.ui import UserInterface
 from flops_manager.classes.oakestratables.project import FlOpsProject
 from flops_manager.image_registry_management.common import FLOPS_IMAGE_REGISTRY_URL
-from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_PORT
 from flops_manager.mqtt.sender import notify_ui
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
 from flops_manager.utils.sla.components import (
@@ -60,7 +59,6 @@ class FLLearnerImageBuilder(FLOpsProjectService):
                 # non docker-compose member exclusive DNS name as IP.
                 # mqtt.main.ROOT_MQTT_BROKER_URL,
                 "192.168.178.44",
-                FLOPS_MQTT_BROKER_PORT,
                 self.ui.ip,
             )
         )
