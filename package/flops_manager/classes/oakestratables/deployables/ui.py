@@ -2,7 +2,7 @@ from flops_manager.classes.oakestratables.deployables.project_based import (
     DeployableProjectBasedClass,
 )
 from flops_manager.classes.oakestratables.project import FlOpsProject
-from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_PORT, FLOPS_MQTT_BROKER_URL
+from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_IP, FLOPS_MQTT_BROKER_PORT
 from flops_manager.utils.common import generate_ip
 from flops_manager.utils.constants import FLOPS_SERVICE_CMD_PREFIX
 from flops_manager.utils.sla.components import (
@@ -53,7 +53,7 @@ class FLOpsUserInterface(DeployableProjectBasedClass):
                         (
                             FLOPS_SERVICE_CMD_PREFIX,
                             self.flops_project_id,
-                            FLOPS_MQTT_BROKER_URL,
+                            FLOPS_MQTT_BROKER_IP,
                             FLOPS_MQTT_BROKER_PORT,
                         )
                     ),

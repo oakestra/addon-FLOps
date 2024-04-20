@@ -3,7 +3,10 @@ import os
 from flops_manager.utils.types import CustomEnum
 
 # TODO os.environ.get("FLOPS_MQTT_BROKER_URL")
-FLOPS_MQTT_BROKER_URL = "192.168.178.44"
+# TODO need to figure out a way to provide
+# non docker-compose member exclusive DNS name as IP.
+# mqtt.main.ROOT_MQTT_BROKER_URL,
+FLOPS_MQTT_BROKER_IP = "192.168.178.44"
 FLOPS_MQTT_BROKER_PORT = os.environ.get("FLOPS_MQTT_BROKER_PORT")
 
 

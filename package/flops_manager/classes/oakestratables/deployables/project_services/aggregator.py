@@ -2,7 +2,7 @@ from flops_manager.classes.oakestratables.deployables.project_services.base impo
     FLOpsProjectService,
 )
 from flops_manager.classes.oakestratables.project import FlOpsProject
-from flops_manager.image_registry_management.common import FLOPS_IMAGE_REGISTRY_URL
+from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_IP
 from flops_manager.mqtt.sender import notify_ui
 from flops_manager.utils.common import generate_ip
 from flops_manager.utils.constants import FLOPS_SERVICE_CMD_PREFIX, FLOPS_USER_ACCOUNT
@@ -51,7 +51,7 @@ class FLAggregator(FLOpsProjectService):
             (
                 FLOPS_SERVICE_CMD_PREFIX,
                 self.flops_project_id,
-                FLOPS_IMAGE_REGISTRY_URL,
+                FLOPS_MQTT_BROKER_IP,
                 self.flops_ui_ip,
                 str(training_conf.training_rounds),
                 str(training_conf.min_available_clients),

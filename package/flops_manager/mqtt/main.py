@@ -1,7 +1,7 @@
 import time
 
 import paho.mqtt.client as paho_mqtt
-from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_PORT, FLOPS_MQTT_BROKER_URL
+from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_IP, FLOPS_MQTT_BROKER_PORT
 from flops_utils.logging import logger
 
 _mqtt_client = None
@@ -49,7 +49,7 @@ def _init_mqtt() -> paho_mqtt.Client:
 
     _mqtt_client.on_disconnect = on_disconnect
 
-    _mqtt_client.connect(FLOPS_MQTT_BROKER_URL, int(FLOPS_MQTT_BROKER_PORT))
+    _mqtt_client.connect(FLOPS_MQTT_BROKER_IP, int(FLOPS_MQTT_BROKER_PORT))
     return _mqtt_client
 
 
