@@ -18,4 +18,9 @@ def handle_api():
     for blp in blps.blueprints:
         app.register_api(blp)
 
-    serve(app, host="0.0.0.0", port=FLOPS_MANAGER_PORT)
+    # Note (AFAIK): 'waitress' comes with its own logger.
+    # We are already using the flops logger.
+    # Thus we have duplicated logger outputs (not just for API things but generally).
+    # To avoid this the waitress ones gets muted.
+    # If something should be logged that concerns the API it will be logged via the flops logger.
+    serve(app, host="0.0.0.0", port=FLOPS_MANAGER_PORT, _quiet=True)
