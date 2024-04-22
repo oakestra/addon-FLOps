@@ -22,6 +22,10 @@ class FlOpsBaseClass(BaseModel, ABC):
         )
 
     @classmethod
+    def delete_from_db(cls, db_object_id: ObjectId) -> None:
+        cls.get_collection().delete_one({"_id": db_object_id})
+
+    @classmethod
     def retrieve_from_db(cls, db_object_id: ObjectId) -> "FlOpsBaseClass":
         found_db_object = cls.get_collection().find_one({"_id": db_object_id})
         found_db_object["gets_loaded_from_db"] = True

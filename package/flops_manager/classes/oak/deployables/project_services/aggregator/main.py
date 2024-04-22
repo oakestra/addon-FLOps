@@ -1,13 +1,9 @@
-from flops_manager.api.service_management import deploy
-from flops_manager.classes.oakestratables.deployables.project_services.aggregator import (
-    FLAggregator,
-)
-from flops_manager.classes.oakestratables.deployables.project_services.base import (
-    FLOpsProjectService,
-)
-from flops_manager.classes.oakestratables.project import FlOpsProject
+from flops_manager.classes.oak.deployables.project_services.base import FLOpsProjectService
+from flops_manager.classes.oak.project import FlOpsProject
+from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_IP
 from flops_manager.mqtt.sender import notify_ui
-from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
+from flops_manager.utils.common import generate_ip
+from flops_manager.utils.constants import FLOPS_SERVICE_CMD_PREFIX, FLOPS_USER_ACCOUNT
 from flops_manager.utils.sla.components import (
     SlaComponentsWrapper,
     SlaCompute,
@@ -19,45 +15,48 @@ from flops_manager.utils.sla.components import (
 from pydantic import Field
 
 
-class FLLearners(FLOpsProjectService):
-    fl_learner_image: str
-
-    total_number_of_learners: int = Field(1, init=False)
-
+class FLAggregator(FLOpsProjectService):
     flops_project: FlOpsProject = Field(None, exclude=True, repr=False)
     flops_project_id: str = Field("", init=False)
-    fl_aggregator: FLAggregator = Field(exclude=True, repr=False)
 
-    namespace = "flearner"
+    flops_ui_ip: str = Field("", exclude=True, repr=False)
+
+    ip: str = Field("", init=False)
+
+    namespace = "flaggreg"
 
     def model_post_init(self, _):
         if self.gets_loaded_from_db:
             return
 
-        if self.flops_project.verbose:
-            notify_ui(
-                flops_project_id=self.flops_project_id,
-                msg="Preparing new FL Learners.",
-            )
-
-        self.total_number_of_learners = (
-            self.flops_project.training_configuration.min_available_clients
-        )
         self.flops_project_id = self.flops_project.flops_project_id
-        super().model_post_init(_)
-
         if self.flops_project.verbose:
             notify_ui(
                 flops_project_id=self.flops_project_id,
-                msg="New FL Learners service created & deployed",
+                msg="Preparing new FL Aggregator.",
             )
-
-    def deploy(self) -> None:
-        for _ in range(self.total_number_of_learners):
-            deploy(service_id=self.service_id, matching_caller_object=self)
+        self.ip = generate_ip(self.flops_project_id, self)
+        super().model_post_init(_)
+        if self.flops_project.verbose:
+            notify_ui(
+                flops_project_id=self.flops_project_id,
+                msg="New Aggregator service created & deployed",
+            )
 
     def _configure_sla_components(self) -> None:
-        cmd = f"python main.py {self.fl_aggregator.ip}"
+        training_conf = self.flops_project.training_configuration
+        cmd = " ".join(
+            (
+                FLOPS_SERVICE_CMD_PREFIX,
+                self.flops_project_id,
+                FLOPS_MQTT_BROKER_IP,
+                self.flops_ui_ip,
+                str(training_conf.training_rounds),
+                str(training_conf.min_available_clients),
+                str(training_conf.min_fit_clients),
+                str(training_conf.min_evaluate_clients),
+            )
+        )
 
         self.sla_components = SlaComponentsWrapper(
             core=SlaCore(
@@ -66,16 +65,17 @@ class FLLearners(FLOpsProjectService):
                 names=SlaNames(
                     app_name=self.flops_project.app_name,
                     app_namespace=self.flops_project.namespace,
-                    service_name=f"fl{self.flops_project.get_shortened_id()}",
+                    service_name=f"ag{self.flops_project.get_shortened_id()}",
                     service_namespace=self.namespace,
                 ),
                 compute=SlaCompute(
-                    code=self.fl_learner_image,
+                    code="ghcr.io/malyuk-a/fl-aggregator:latest",
                     one_shot_service=True,
                     cmd=cmd,
                 ),
             ),
             details=SlaDetails(
+                rr_ip=self.ip,
                 resources=SlaResources(
                     memory=100,
                     vcpus=1,

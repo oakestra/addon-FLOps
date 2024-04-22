@@ -1,11 +1,11 @@
 import threading
 
 from flops_manager.classes.ml_repo import MlRepo
-from flops_manager.classes.oakestratables.deployables.project_services.builder.main import (
+from flops_manager.classes.oak.deployables.project_services.builder.main import (
     FLLearnerImageBuilder,
 )
-from flops_manager.classes.oakestratables.deployables.ui import FLOpsUserInterface
-from flops_manager.classes.oakestratables.project import FlOpsProject
+from flops_manager.classes.oak.deployables.ui import FLOpsUserInterface
+from flops_manager.classes.oak.project import FlOpsProject
 from flops_manager.image_registry_management.main import fetch_latest_matching_image
 from flops_manager.manage_fl import handle_fl_operations
 from flops_manager.mqtt.sender import notify_ui

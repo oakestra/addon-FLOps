@@ -1,7 +1,5 @@
-from flops_manager.classes.oakestratables.deployables.project_based import (
-    DeployableProjectBasedClass,
-)
-from flops_manager.classes.oakestratables.project import FlOpsProject
+from flops_manager.classes.oak.deployables.project_based import DeployableProjectBasedClass
+from flops_manager.classes.oak.project import FlOpsProject
 from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_IP, FLOPS_MQTT_BROKER_PORT
 from flops_manager.utils.common import generate_ip
 from flops_manager.utils.constants import FLOPS_SERVICE_CMD_PREFIX

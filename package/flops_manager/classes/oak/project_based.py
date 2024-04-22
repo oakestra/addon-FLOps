@@ -1,7 +1,7 @@
 from abc import ABC
 
 from flops_manager.api.app_management import create_app
-from flops_manager.classes.oakestratables.base import FlOpsOakestraBaseClass
+from flops_manager.classes.oak.base import FlOpsOakestraBaseClass
 from flops_manager.classes.project_based import FlOpsProjectBasedClass
 from flops_manager.utils.sla.generator import generate_sla
 from flops_manager.utils.types import Application

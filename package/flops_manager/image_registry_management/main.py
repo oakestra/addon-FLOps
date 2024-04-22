@@ -6,7 +6,7 @@ from flops_manager.api.request_management.custom_requests import (
     RequestCore,
 )
 from flops_manager.classes.ml_repo import MlRepo
-from flops_manager.classes.oakestratables.project import FlOpsProject
+from flops_manager.classes.oak.project import FlOpsProject
 from flops_manager.image_registry_management.common import (
     FLOPS_IMAGE_REGISTRY_IP,
     FLOPS_IMAGE_REGISTRY_PORT,

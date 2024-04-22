@@ -2,7 +2,11 @@
 
 import json
 
-from flops_manager.classes.oakestratables.deployables.project_services.builder.termination import (
+from flops_manager.classes.oak.deployables.project_services.aggregator.termination import (
+    handle_aggregator_failed,
+    handle_aggregator_success,
+)
+from flops_manager.classes.oak.deployables.project_services.builder.termination import (
     handle_builder_failed,
     handle_builder_success,
 )
@@ -20,25 +24,29 @@ def _on_new_message(client, userdata, message) -> None:
         logger.debug(f"Received message: {decoded_message}")
         topic = message.topic
         match topic:
-            case Topics.IMAGE_BUILDER_SUCCESS.value:
-                handle_builder_success(builder_success_msg=data)
-
-            case Topics.IMAGE_BUILDER_FAILED.value:
-                handle_builder_failed(builder_failed_msg=data)
 
             case Topics.FLOPS_UI_FAILED.value:
                 logger.critical(data)
+
+            case Topics.IMAGE_BUILDER_SUCCESS.value:
+                handle_builder_success(builder_success_msg=data)
+            case Topics.IMAGE_BUILDER_FAILED.value:
+                handle_builder_failed(builder_failed_msg=data)
+
+            case Topics.AGGREGATOR_SUCCESS.value:
+                handle_aggregator_success(aggregator_success_msg=data)
+            case Topics.AGGREGATOR_FAILED.value:
+                handle_aggregator_failed(aggregator_failed_msg=data)
 
             case _:
                 logger.error(f"Message received for an unsupported topic '{topic}'")
 
     except FLOpsManagerException as e:
-        logger.fatal(f"{e.msg}")
+        logger.exception(f"{e.message}")
         notify_ui(flops_project_id=e.flops_project_id, msg=e.message)
         return
-    except Exception as e:
-        err_msg = f"Unexpected error occured: {e}"
-        logger.fatal(err_msg)
+    except Exception:
+        logger.exception("Unexpected exception occurred")
         return
 
 

@@ -1,4 +1,4 @@
-from flops_manager.classes.oakestratables.project_based import FlOpsOakestraProjectBasedClass
+from flops_manager.classes.oak.project_based import FlOpsOakestraProjectBasedClass
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
 from flops_manager.utils.sla.components import SlaComponentsWrapper, SlaCore, SlaDetails, SlaNames
 from pydantic import AliasChoices, BaseModel, Field

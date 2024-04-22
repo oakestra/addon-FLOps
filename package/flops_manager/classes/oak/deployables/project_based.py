@@ -1,8 +1,8 @@
 from abc import ABC
 
 from flops_manager.api.service_management import undeploy
-from flops_manager.classes.oakestratables.deployables.base import DeployableClass
-from flops_manager.classes.oakestratables.project_based import FlOpsOakestraProjectBasedClass
+from flops_manager.classes.oak.deployables.base import DeployableClass
+from flops_manager.classes.oak.project_based import FlOpsOakestraProjectBasedClass
 
 
 class DeployableProjectBasedClass(DeployableClass, FlOpsOakestraProjectBasedClass, ABC):
@@ -13,3 +13,4 @@ class DeployableProjectBasedClass(DeployableClass, FlOpsOakestraProjectBasedClas
             matching_caller_object=self,
             flops_project_id=self.flops_project_id,
         )
+        self.remove_from_db()

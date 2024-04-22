@@ -1,9 +1,7 @@
 from flops_manager.classes.ml_repo import MlRepo
-from flops_manager.classes.oakestratables.deployables.project_services.base import (
-    FLOpsProjectService,
-)
-from flops_manager.classes.oakestratables.deployables.ui import FLOpsUserInterface
-from flops_manager.classes.oakestratables.project import FlOpsProject
+from flops_manager.classes.oak.deployables.project_services.base import FLOpsProjectService
+from flops_manager.classes.oak.deployables.ui import FLOpsUserInterface
+from flops_manager.classes.oak.project import FlOpsProject
 from flops_manager.image_registry_management.common import FLOPS_IMAGE_REGISTRY_URL
 from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_IP
 from flops_manager.mqtt.sender import notify_ui

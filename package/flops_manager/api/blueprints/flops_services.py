@@ -23,12 +23,12 @@ def post_fl_service() -> Tuple[dict, HTTPStatus]:
             bearer_token=flask.request.headers.get("Authorization"),
         )
     except FLOpsManagerException as e:
-        logger.fatal(f"{e.msg}, {e.http_status}")
+        logger.exception(f"{e.msg}, {e.http_status}")
         notify_ui(msg=e.message, flops_project_id=e.flops_project_id)
         return {"message": e.msg}, e.http_status or HTTPStatus.INTERNAL_SERVER_ERROR
     except Exception as e:
-        err_msg = f"Unexpected error occured: {e}"
-        logger.fatal(err_msg)
-        return {"message": err_msg}, HTTPStatus.INTERNAL_SERVER_ERROR
+        err_msg = "Unexpected exception occurred"
+        logger.exception(err_msg)
+        return {"message": f"{err_msg}:{e}"}, HTTPStatus.INTERNAL_SERVER_ERROR
 
     return {"message": "New FLOps project started successfully"}, HTTPStatus.OK

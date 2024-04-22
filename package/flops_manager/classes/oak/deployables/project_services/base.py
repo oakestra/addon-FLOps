@@ -1,9 +1,7 @@
 from abc import ABC
 
 from flops_manager.api.service_management import append_service_to_flops_project_app
-from flops_manager.classes.oakestratables.deployables.project_based import (
-    DeployableProjectBasedClass,
-)
+from flops_manager.classes.oak.deployables.project_based import DeployableProjectBasedClass
 from flops_manager.utils.sla.generator import generate_sla
 from pydantic import Field
 

@@ -1,9 +1,7 @@
-from flops_manager.classes.oakestratables.deployables.project_services.aggregator import (
-    FLAggregator,
-)
-from flops_manager.classes.oakestratables.deployables.project_services.learners import FLLearners
-from flops_manager.classes.oakestratables.deployables.ui import FLOpsUserInterface
-from flops_manager.classes.oakestratables.project import FlOpsProject
+from flops_manager.classes.oak.deployables.project_services.aggregator.main import FLAggregator
+from flops_manager.classes.oak.deployables.project_services.learners import FLLearners
+from flops_manager.classes.oak.deployables.ui import FLOpsUserInterface
+from flops_manager.classes.oak.project import FlOpsProject
 from flops_manager.mqtt.sender import notify_ui
 from flops_utils.logging import logger
 

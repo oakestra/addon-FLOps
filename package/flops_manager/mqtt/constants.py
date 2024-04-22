@@ -11,6 +11,8 @@ FLOPS_MQTT_BROKER_PORT = os.environ.get("FLOPS_MQTT_BROKER_PORT")
 
 
 class Topics(CustomEnum):
+    FLOPS_UI_FAILED = "flops_manager/flops_ui/failed"
     IMAGE_BUILDER_SUCCESS = "flops_manager/image_builder/success"
     IMAGE_BUILDER_FAILED = "flops_manager/image_builder/failed"
-    FLOPS_UI_FAILED = "flops_manager/flops_ui/failed"
+    AGGREGATOR_SUCCESS = "flops_manager/aggregator/success"
+    AGGREGATOR_FAILED = "flops_manager/aggregator/failed"
