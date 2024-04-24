@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "flops_utils"
+version = "0.2.3"
+description = "A library containing commong utilities for FLOps"
+authors = ["Alexander Malyuk <malyuk.alexander1999@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+paho-mqtt = "2.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+packages = ["flops_utils/*"]
+
+
+[tool.black]
+line-length = 100

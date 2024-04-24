@@ -6,7 +6,7 @@ services:
 
   flops_manager:
     image: flops_manager
-    build: .
+    build: ../flops_manager_package/ 
     hostname: flops_manager
     container_name: flops_manager
     environment:
@@ -27,7 +27,8 @@ services:
       - root_orchestrator_default
   
   flops_image_registry:
-    image: ghcr.io/malyuk-a/flops-image-registry:latest
+    image: image_registry
+    build: image_registry/
     container_name: flops_image_registry
     volumes:
       - registry_data:/var/lib/registry
@@ -46,7 +47,7 @@ services:
     ports:
       - "9027:9027"
     volumes:
-      - ./flops_manager/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ../flops_manager_package/flops_manager/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
       - /mosquitto/data
       - /mosquitto/log
 
@@ -60,11 +61,25 @@ services:
       - 'flops_db:/mongodb'
     command: mongod --port 10027
 
+  mlflow_tracking_server:
+    image: mlflow_tracking_server
+    build:
+      dockerfile: mlflow_tracking_server.Dockerfile
+    container_name: mlflow_tracking_server
+    hostname: mlflow_tracking_server
+    ports:
+      - "7027:7027"
+    # TODO fix - currently error occurs: 
+    #  WARNING mlflow.store.db.utils: SQLAlchemy engine could not be created.
+    #  (sqlite3.OperationalError) unable to open database file
+    # volumes:
+    #   - 'mlflow_backend_store:/mlflow_backend_store.db'
+
 volumes:
   registry_data:
-  ssl:
   flops_db:
     driver: local
+  #mlflow_backend_store:
 
 # To be able for the root-orchestrator (RO) compose services to reach the flops services
 # an easy solution is to place the flops services into the same docker network.
