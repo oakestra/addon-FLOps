@@ -1,7 +1,7 @@
 from flops_manager.classes.oak.deployables.project_services.aggregator.main import FLAggregator
 from flops_manager.classes.oak.deployables.project_services.learners import FLLearners
 from flops_manager.mqtt.sender import notify_ui
-from flops_utils.logging import logger
+from flops_utils.logging import colorful_logger as logger
 
 
 def handle_aggregator_success(aggregator_success_msg: dict) -> None:

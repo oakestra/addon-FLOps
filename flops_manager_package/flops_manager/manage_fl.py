@@ -3,7 +3,7 @@ from flops_manager.classes.oak.deployables.project_services.learners import FLLe
 from flops_manager.classes.oak.deployables.ui import FLOpsUserInterface
 from flops_manager.classes.oak.project import FlOpsProject
 from flops_manager.mqtt.sender import notify_ui
-from flops_utils.logging import logger
+from flops_utils.logging import colorful_logger as logger
 
 
 def handle_fl_operations(flops_project: FlOpsProject, fl_learner_image: str) -> None:

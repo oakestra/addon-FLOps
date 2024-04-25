@@ -2,7 +2,7 @@ import time
 
 import paho.mqtt.client as paho_mqtt
 from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_IP, FLOPS_MQTT_BROKER_PORT
-from flops_utils.logging import logger
+from flops_utils.logging import colorful_logger as logger
 
 _mqtt_client = None
 

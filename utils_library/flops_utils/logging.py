@@ -15,16 +15,21 @@ class CustomFormatter(logging.Formatter):
     light_blue = "\x1b[38;5;45m"
     reset = "\x1b[0m"
 
-    def __init__(self, fmt):
+    def __init__(self, fmt, with_color: bool = False):
         super().__init__()
         self.fmt = fmt
-        self.FORMATS = {
-            logging.DEBUG: self.grey + self.fmt + self.reset,
-            logging.INFO: self.light_blue + self.fmt + self.reset,
-            logging.WARNING: self.yellow + self.fmt + self.reset,
-            logging.ERROR: self.red + self.fmt + self.reset,
-            logging.CRITICAL: self.bold_red + self.fmt + self.reset,
-        }
+        base_fmt = self.fmt + self.reset
+
+        if with_color:
+            self.FORMATS = {
+                logging.DEBUG: self.grey + base_fmt,
+                logging.INFO: self.light_blue + base_fmt,
+                logging.WARNING: self.yellow + base_fmt,
+                logging.ERROR: self.red + base_fmt,
+                logging.CRITICAL: self.bold_red + base_fmt,
+            }
+        else:
+            self.FORMATS = {level: base_fmt for level in logging._levelToName.values()}
 
     def format(self, record):
         log_fmt = self.FORMATS.get(record.levelno)
@@ -32,16 +37,15 @@ class CustomFormatter(logging.Formatter):
         return formatter.format(record)
 
 
-_LOGGER_NAME = "logger"
+def configure_logger(name, level, with_color=False):
+    logger = logging.getLogger(name)
+    logger.setLevel(level)
+    stream_handler = logging.StreamHandler()
+    formatter = CustomFormatter("%(message)s", with_color=with_color)
+    stream_handler.setFormatter(formatter)
+    logger.addHandler(stream_handler)
+    return logger
 
-_FORMAT = "%(message)s"
 
-logger = logging.getLogger(_LOGGER_NAME)
-logger.setLevel(logging.DEBUG)
-
-_formatter = CustomFormatter(_FORMAT)
-
-_stream_handler = logging.StreamHandler()
-_stream_handler.setFormatter(_formatter)
-
-logger.addHandler(_stream_handler)
+logger = configure_logger("logger", logging.DEBUG)
+colorful_logger = configure_logger("colorful_logger", logging.DEBUG, with_color=True)

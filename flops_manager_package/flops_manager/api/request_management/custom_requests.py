@@ -8,7 +8,7 @@ from flops_manager.api.request_management.custom_http import HttpMethods
 from flops_manager.api.utils.login import get_login_token
 from flops_manager.utils.exceptions.main import FLOpsManagerException
 from flops_manager.utils.exceptions.types import FlOpsExceptionTypes
-from flops_utils.logging import logger
+from flops_utils.logging import colorful_logger as logger
 
 
 class RequestCore(NamedTuple):
@@ -93,6 +93,10 @@ class CustomRequest:
             error_msg = f"exception: {e}: "
 
         error_msg += self._create_failure_msg()
+
+        from icecream import ic
+
+        ic("AAA", error_msg, response)
 
         raise FLOpsManagerException(
             flops_exception_type=self.aux.flops_exception_type,

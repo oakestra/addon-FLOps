@@ -14,7 +14,7 @@ from flops_manager.mqtt.constants import Topics
 from flops_manager.mqtt.main import get_mqtt_client
 from flops_manager.mqtt.sender import notify_ui
 from flops_manager.utils.exceptions.main import FLOpsManagerException
-from flops_utils.logging import logger
+from flops_utils.logging import colorful_logger as logger
 
 
 def _on_new_message(client, userdata, message) -> None:
