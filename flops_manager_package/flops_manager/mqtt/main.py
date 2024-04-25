@@ -44,7 +44,7 @@ def _init_mqtt() -> paho_mqtt.Client:
 
     def on_disconnect(client, userdata, rc):
         if rc != 0:
-            logger.error("ROOT MQTT: Unexpected MQTT disconnection. Attempting to reconnect.")
+            logger.error("FLOPS MQTT: Unexpected MQTT disconnection. Attempting to reconnect.")
             _reconnect(client)
 
     _mqtt_client.on_disconnect = on_disconnect

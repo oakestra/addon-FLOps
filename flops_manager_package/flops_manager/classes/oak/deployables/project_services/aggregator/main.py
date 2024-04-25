@@ -1,5 +1,6 @@
 from flops_manager.classes.oak.deployables.project_services.base import FLOpsProjectService
 from flops_manager.classes.oak.project import FlOpsProject
+from flops_manager.mlflow.tracking_server import get_mlflow_tracking_server_url
 from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_IP
 from flops_manager.mqtt.sender import notify_ui
 from flops_manager.utils.common import generate_ip
@@ -51,6 +52,7 @@ class FLAggregator(FLOpsProjectService):
                 self.flops_project_id,
                 FLOPS_MQTT_BROKER_IP,
                 self.flops_ui_ip,
+                get_mlflow_tracking_server_url(),
                 str(training_conf.training_rounds),
                 str(training_conf.min_available_clients),
                 str(training_conf.min_fit_clients),
