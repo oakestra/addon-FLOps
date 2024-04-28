@@ -17,7 +17,7 @@ from flops_manager.utils.sla.components import (
 from pydantic import Field
 
 
-class FLLearnerImageBuilder(FLOpsProjectService):
+class FLOpsImageBuilder(FLOpsProjectService):
     flops_project: FlOpsProject = Field(None, exclude=True, repr=False)
     ui: FLOpsUserInterface = Field(None, exclude=True, repr=False)
     ml_repo: MlRepo = Field(None, exclude=True, repr=False)
@@ -35,7 +35,7 @@ class FLLearnerImageBuilder(FLOpsProjectService):
         if self.flops_project.verbose:
             notify_ui(
                 flops_project_id=self.flops_project_id,
-                msg="New FL Learner image needs to be build. Start build delegation processes.",
+                msg="New FLOps images need to be build. Start build delegation processes.",
             )
 
         super().model_post_init(_)
@@ -69,8 +69,7 @@ class FLLearnerImageBuilder(FLOpsProjectService):
                     service_namespace=self.namespace,
                 ),
                 compute=SlaCompute(
-                    # TODO rename image to "fl-learner-image-builder"
-                    code="ghcr.io/oakestra/plugins/flops/fl-client-env-builder:latest",
+                    code="ghcr.io/malyuk-a/flops-image-builder:latest",
                     one_shot_service=True,
                     cmd=cmd,
                 ),

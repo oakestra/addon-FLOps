@@ -94,10 +94,6 @@ class CustomRequest:
 
         error_msg += self._create_failure_msg()
 
-        from icecream import ic
-
-        ic("AAA", error_msg, response)
-
         raise FLOpsManagerException(
             flops_exception_type=self.aux.flops_exception_type,
             text=error_msg,

@@ -12,7 +12,10 @@ from flops_manager.image_registry_management.common import (
     FLOPS_IMAGE_REGISTRY_PORT,
     FLOPS_IMAGE_REGISTRY_URL,
 )
+from flops_manager.utils.exceptions.main import FLOpsManagerException
 from flops_manager.utils.exceptions.types import FlOpsExceptionTypes
+from flops_manager.utils.types import FLOpsImageType
+from icecream import ic
 
 
 def check_registry_reachable(flops_project: FlOpsProject) -> bool:
@@ -48,11 +51,11 @@ def get_current_registry_image_repos() -> List[str]:
     return response["repositories"]
 
 
-def get_current_registry_repo_image_tags(ml_repo: MlRepo) -> List[str]:
+def _get_current_registry_repo_image_tag(image_repo_name: str) -> List[str]:
     response = CustomRequest(
         core=RequestCore(
             base_url=FLOPS_IMAGE_REGISTRY_URL,
-            api_endpoint=f"/v2/{ml_repo.get_sanitized_name()}/tags/list",
+            api_endpoint=f"/v2/{image_repo_name}/tags/list",
         ),
         aux=RequestAuxiliaries(
             what_should_happen="Get image tags",
@@ -62,12 +65,45 @@ def get_current_registry_repo_image_tags(ml_repo: MlRepo) -> List[str]:
     return response["tags"]
 
 
-def fetch_latest_matching_image(ml_repo: MlRepo) -> Optional[str]:
-    current_image_reqpositories = get_current_registry_image_repos()
-    if ml_repo.get_sanitized_name() not in current_image_reqpositories:
-        return None
+def get_current_registry_repo_image_tag(ml_repo: MlRepo) -> str:
+    matching_learner_image_tags = (
+        _get_current_registry_repo_image_tag(ml_repo.get_image_name(FLOpsImageType.LEARNER)),
+    )
+    matching_aggregator_image_tags = (
+        _get_current_registry_repo_image_tag(ml_repo.get_image_name(FLOpsImageType.AGGREGATOR)),
+    )
 
-    current_image_tags = get_current_registry_repo_image_tags(ml_repo)
+    if matching_learner_image_tags == matching_aggregator_image_tags:
+        # Note: The tags are based on the latest ML repo commit hash.
+        # Thus the image tags for the Learner and Aggregator are the same.
+        return matching_learner_image_tags
+
+    raise FLOpsManagerException(
+        flops_exception_type=FlOpsExceptionTypes.IMAGE_REGISTRY,
+        mgs=" ".join(
+            (
+                "Found image tags do not match!",
+                f"Learner tags = '{matching_learner_image_tags}'",
+                f"Aggregator tags = '{matching_aggregator_image_tags}'",
+            )
+        ),
+        flops_project_id=ml_repo.flops_project_id,
+    )
+
+
+def check_if_latest_matching_images_exists(ml_repo: MlRepo) -> bool:
+    current_image_repositories = get_current_registry_image_repos()
+
+    if not all(
+        image in current_image_repositories
+        for image in [
+            ml_repo.get_image_name(FLOpsImageType.LEARNER),
+            ml_repo.get_image_name(FLOpsImageType.AGGREGATOR),
+        ]
+    ):
+        return False
+
+    current_image_tag = get_current_registry_repo_image_tag(ml_repo)
     latest_commit_hash = ml_repo.get_latest_commit_hash()
 
     full_image_reference = "".join(

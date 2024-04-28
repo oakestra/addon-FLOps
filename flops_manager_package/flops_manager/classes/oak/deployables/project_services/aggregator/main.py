@@ -4,7 +4,7 @@ from flops_manager.mlflow.tracking_server import get_mlflow_tracking_server_url
 from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_IP
 from flops_manager.mqtt.sender import notify_ui
 from flops_manager.utils.common import generate_ip
-from flops_manager.utils.constants import FLOPS_SERVICE_CMD_PREFIX, FLOPS_USER_ACCOUNT
+from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
 from flops_manager.utils.sla.components import (
     SlaComponentsWrapper,
     SlaCompute,
@@ -17,6 +17,8 @@ from pydantic import Field
 
 
 class FLAggregator(FLOpsProjectService):
+    fl_aggregator_image: str
+
     flops_project: FlOpsProject = Field(None, exclude=True, repr=False)
     flops_project_id: str = Field("", init=False)
 
@@ -48,7 +50,8 @@ class FLAggregator(FLOpsProjectService):
         training_conf = self.flops_project.training_configuration
         cmd = " ".join(
             (
-                FLOPS_SERVICE_CMD_PREFIX,
+                "python",
+                "main",
                 self.flops_project_id,
                 FLOPS_MQTT_BROKER_IP,
                 self.flops_ui_ip,
@@ -71,7 +74,7 @@ class FLAggregator(FLOpsProjectService):
                     service_namespace=self.namespace,
                 ),
                 compute=SlaCompute(
-                    code="ghcr.io/malyuk-a/fl-aggregator:latest",
+                    code=self.fl_aggregator_image,
                     one_shot_service=True,
                     cmd=cmd,
                 ),

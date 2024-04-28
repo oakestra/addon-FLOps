@@ -7,6 +7,7 @@ from flops_manager.api.request_management.custom_requests import (
 from flops_manager.api.utils.consts import GITHUB_PREFIX
 from flops_manager.classes.project_based import FlOpsProjectBasedClass
 from flops_manager.utils.exceptions.types import FlOpsExceptionTypes
+from flops_manager.utils.types import FLOpsImageType
 from pydantic import Field
 
 
@@ -15,7 +16,7 @@ class MlRepo(FlOpsProjectBasedClass):
 
     name: str = Field("", init=False)
     latest_commit_hash: str = Field("", init=False)
-    sanitized_name: str = Field("", init=False, exclude=True)
+    _sanitized_name: str = Field("", init=False, exclude=True)
 
     def model_post_init(self, _):
         self.name = self.url.split(GITHUB_PREFIX)[-1]
@@ -25,16 +26,19 @@ class MlRepo(FlOpsProjectBasedClass):
     def get_github_repo(self) -> github.Repository.Repository:
         return github.Github().get_repo(self.name)
 
-    def get_sanitized_name(self) -> str:
+    def _get_sanitized_name(self) -> str:
         """The build FL image name will contain the github user + repo name for identification.
         The github user name might be uppercase, but docker image names (infix/prefix) cannot be."""
-        if self.sanitized_name:
-            return self.sanitized_name
+        if self._sanitized_name:
+            return self._sanitized_name
 
         parts = self.name.split("/")
         parts[0] = parts[0].lower()
-        self.sanitized_name = "/".join(parts)
-        return self.sanitized_name
+        self._sanitized_name = "/".join(parts)
+        return self._sanitized_name
+
+    def get_image_name(self, flops_image_type: FLOpsImageType) -> str:
+        return f"{self._get_sanitized_name()}/{flops_image_type}"
 
     def get_latest_commit_hash(self) -> str:
         response = CustomRequest(
