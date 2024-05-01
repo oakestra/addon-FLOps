@@ -1,4 +1,5 @@
 from flops_manager.classes.oak.project_based import FlOpsOakestraProjectBasedClass
+from flops_manager.ml_repo_management import MLRepoInfo, get_latest_commit_hash
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
 from flops_manager.utils.sla.components import SlaComponentsWrapper, SlaCore, SlaDetails, SlaNames
 from pydantic import AliasChoices, BaseModel, Field
@@ -28,21 +29,27 @@ class FlOpsProject(FlOpsOakestraProjectBasedClass):
 
     customer_id: str = Field(alias=AliasChoices("customer_id", "customerID"))
     verbose: bool = False
+
+    # Note: The ml_repo_url is only used as an input param and then discarded.
+    ml_repo_url: str = Field(repr=False, exclude=True)
+    ml_repo_info: MLRepoInfo = Field(None, init=False)
+
     training_configuration: _TrainingConfiguration = _TrainingConfiguration()
     resource_constraints: _ResourceContraints = _ResourceContraints()
-    ml_repo_url: str
+
     flops_project_id: str = Field(
         "",
         init=False,
         description="Is the same as its application ID in Oakestra",
     )
 
-    namespace = "flopspro"
+    namespace = "flopsproject"
 
     def model_post_init(self, _):
         if self.gets_loaded_from_db:
             return
 
+        self.ml_repo_info = MLRepoInfo(url=self.ml_repo_url)
         flops_db_id = self._add_to_db()
         self._configure_sla_components(flops_db_id)
         created_app = self.create()
@@ -55,7 +62,7 @@ class FlOpsProject(FlOpsOakestraProjectBasedClass):
             core=SlaCore(
                 customerID=FLOPS_USER_ACCOUNT,
                 names=SlaNames(
-                    app_name=f"pr{self.get_shortened_id(str(flops_db_id))}",
+                    app_name=f"flopsproject{self.get_shortened_id(str(flops_db_id))}",
                     app_namespace=self.namespace,
                 ),
             ),

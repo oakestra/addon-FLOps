@@ -1,4 +1,0 @@
-FLOPS_IMAGE_REGISTRY_PORT = "5073"
-# TODO find a way to make this dynamic and practical instead of a hardcode !
-FLOPS_IMAGE_REGISTRY_IP = "192.168.178.44"
-FLOPS_IMAGE_REGISTRY_URL = f"http://{FLOPS_IMAGE_REGISTRY_IP}:{FLOPS_IMAGE_REGISTRY_PORT}"

@@ -6,11 +6,6 @@ class CustomEnum(enum.Enum):
         return self.value
 
 
-class FLOpsImageType(CustomEnum):
-    LEARNER = "learner"
-    AGGREGATOR = "aggregator"
-
-
 SLA = dict
 AppSLA = SLA
 

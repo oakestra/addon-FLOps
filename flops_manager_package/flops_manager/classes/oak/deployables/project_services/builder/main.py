@@ -1,10 +1,9 @@
-from flops_manager.classes.ml_repo import MlRepo
 from flops_manager.classes.oak.deployables.project_services.base import FLOpsProjectService
 from flops_manager.classes.oak.deployables.ui import FLOpsUserInterface
 from flops_manager.classes.oak.project import FlOpsProject
-from flops_manager.image_registry_management.common import FLOPS_IMAGE_REGISTRY_URL
 from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_IP
 from flops_manager.mqtt.sender import notify_ui
+from flops_manager.registry_management import FLOPS_IMAGE_REGISTRY_URL
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
 from flops_manager.utils.sla.components import (
     SlaComponentsWrapper,
@@ -20,7 +19,7 @@ from pydantic import Field
 class FLOpsImageBuilder(FLOpsProjectService):
     flops_project: FlOpsProject = Field(None, exclude=True, repr=False)
     ui: FLOpsUserInterface = Field(None, exclude=True, repr=False)
-    ml_repo: MlRepo = Field(None, exclude=True, repr=False)
+    # ml_repo: MlRepo = Field(None, exclude=True, repr=False)
 
     flops_project_id: str = Field("", init=False)
 

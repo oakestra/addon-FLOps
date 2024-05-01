@@ -33,7 +33,7 @@ class FLOpsUserInterface(DeployableProjectBasedClass):
         super().model_post_init(_)
 
     def _configure_sla_components(self) -> None:
-        name = f"ui{self.flops_project.get_shortened_id()}"
+        name = f"flopsui{self.flops_project.get_shortened_id()}"
         self.sla_components = SlaComponentsWrapper(
             core=SlaCore(
                 customerID=self.flops_project.customer_id,

@@ -2,6 +2,7 @@ from flops_manager.api.service_management import deploy
 from flops_manager.classes.oak.deployables.project_services.aggregator.main import FLAggregator
 from flops_manager.classes.oak.deployables.project_services.base import FLOpsProjectService
 from flops_manager.classes.oak.project import FlOpsProject
+from flops_manager.image_management import FLOpsImageTypes, get_flops_image_name
 from flops_manager.mqtt.sender import notify_ui
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
 from flops_manager.utils.sla.components import (
@@ -16,13 +17,13 @@ from pydantic import Field
 
 
 class FLLearners(FLOpsProjectService):
-    fl_learner_image: str
-
     total_number_of_learners: int = Field(1, init=False)
 
     flops_project: FlOpsProject = Field(None, exclude=True, repr=False)
     flops_project_id: str = Field("", init=False)
     fl_aggregator: FLAggregator = Field(None, exclude=True, repr=False)
+
+    fl_learner_image: str = Field("", init=False)
 
     namespace = "flearner"
 
@@ -40,6 +41,10 @@ class FLLearners(FLOpsProjectService):
             self.flops_project.training_configuration.min_available_clients
         )
         self.flops_project_id = self.flops_project.flops_project_id
+        self.fl_learner_image = get_flops_image_name(
+            ml_repo_info=self.flops_project.ml_repo_info,
+            flops_image_type=FLOpsImageTypes.LEARNER,
+        )
         super().model_post_init(_)
 
         if self.flops_project.verbose:

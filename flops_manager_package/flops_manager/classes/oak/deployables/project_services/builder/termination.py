@@ -1,6 +1,6 @@
 from flops_manager.classes.oak.deployables.project_services.builder.main import FLOpsImageBuilder
 from flops_manager.classes.oak.project import FlOpsProject
-from flops_manager.manage_fl import handle_fl_operations
+from flops_manager.fl_management import handle_fl_operations
 from flops_manager.mqtt.sender import notify_ui
 from flops_utils.logging import colorful_logger as logger
 

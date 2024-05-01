@@ -1,5 +1,6 @@
 from flops_manager.classes.oak.deployables.project_services.base import FLOpsProjectService
 from flops_manager.classes.oak.project import FlOpsProject
+from flops_manager.image_management import FLOpsImageTypes, get_flops_image_name
 from flops_manager.mlflow.tracking_server import get_mlflow_tracking_server_url
 from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_IP
 from flops_manager.mqtt.sender import notify_ui
@@ -17,14 +18,14 @@ from pydantic import Field
 
 
 class FLAggregator(FLOpsProjectService):
-    fl_aggregator_image: str
-
     flops_project: FlOpsProject = Field(None, exclude=True, repr=False)
     flops_project_id: str = Field("", init=False)
 
     flops_ui_ip: str = Field("", exclude=True, repr=False)
 
     ip: str = Field("", init=False)
+
+    fl_aggregator_image: str = Field("", init=False)
 
     namespace = "flaggreg"
 
@@ -39,6 +40,11 @@ class FLAggregator(FLOpsProjectService):
                 msg="Preparing new FL Aggregator.",
             )
         self.ip = generate_ip(self.flops_project_id, self)
+        self.fl_aggregator_image = get_flops_image_name(
+            ml_repo_info=self.flops_project.ml_repo_info,
+            flops_image_type=FLOpsImageTypes.AGGREGATOR,
+        )
+
         super().model_post_init(_)
         if self.flops_project.verbose:
             notify_ui(
