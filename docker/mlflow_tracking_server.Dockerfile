@@ -8,5 +8,6 @@ RUN pip install mlflow==2.12.1 &&\
     apt-get update && apt-get install sqlite3 && apt-get clean && sqlite3 mlflow_backend_store.db
 ENV TRACKING_SERVER_PORT=7027
 
-CMD bash -c 'mlflow server --backend-store-uri sqlite:////mlflow_backend_store.db --host 0.0.0.0 --port ${TRACKING_SERVER_PORT}'
+
+CMD bash -c 'mlflow server --backend-store-uri sqlite:////mlflow_backend_store.db --host 0.0.0.0 --port ${TRACKING_SERVER_PORT} --serve-artifacts --artifacts-destination ftp://flops:flops@192.168.178.44/flops_artifacts'
 # TODO add ~ --default-artifact-root s3://${AWS_BUCKET}/artifacts

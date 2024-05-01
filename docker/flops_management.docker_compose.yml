@@ -75,11 +75,40 @@ services:
     # volumes:
     #   - 'mlflow_backend_store:/mlflow_backend_store.db'
 
+  vsftpd_server:
+    # Note: There is only the "latest" tag (Red Flag -> Maybe change to another image)
+    image: fauria/vsftpd 
+    container_name: vsftpd_server
+    restart: unless-stopped
+    ports:
+      - "20-21:20-21" 
+      - "21100-21110:21100-21110"
+    volumes:
+      - vsftpd_home:/home/vsftpd
+      - vsftpd_logs:/var/log/vsftpd
+    environment:
+      - MODE=passive
+      - FTP_USER=flops
+      # Note: Future work - Find out a nicer & more secure way of doing this.
+      - FTP_PASS=flops
+      # Might need adjusting
+      # - PASV_ADDRESS
+      # This will be used as the lower bound of the passive mode port range.
+      - PASV_MIN_PORT=21100
+      # This will be used as the upper bound of the passive mode port range.
+      - PASV_MAX_PORT=21110
+      # Output vsftpd log through STDOUT, so that it can be accessed through the container logs.
+      - LOG_STDOUT=true
+
+
 volumes:
   registry_data:
   flops_db:
     driver: local
   #mlflow_backend_store:
+  vsftpd_home:
+  vsftpd_logs:
+
 
 # To be able for the root-orchestrator (RO) compose services to reach the flops services
 # an easy solution is to place the flops services into the same docker network.
