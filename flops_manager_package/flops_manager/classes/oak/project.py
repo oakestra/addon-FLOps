@@ -24,14 +24,14 @@ class _ResourceContraints(BaseModel):
     storage: int = 0
 
 
-class FlOpsProject(FlOpsOakestraProjectBasedClass):
+class FLOpsProject(FlOpsOakestraProjectBasedClass):
     """Links all necessary FL and ML/DevOps components to power one entire FL user request."""
 
     customer_id: str = Field(alias=AliasChoices("customer_id", "customerID"))
     verbose: bool = False
 
     # Note: The ml_repo_url is only used as an input param and then discarded.
-    ml_repo_url: str = Field(repr=False, exclude=True)
+    ml_repo_url: str = Field("", repr=False, exclude=True)
     ml_repo_info: MLRepoInfo = Field(None, init=False)
 
     training_configuration: _TrainingConfiguration = _TrainingConfiguration()
@@ -62,7 +62,7 @@ class FlOpsProject(FlOpsOakestraProjectBasedClass):
             core=SlaCore(
                 customerID=FLOPS_USER_ACCOUNT,
                 names=SlaNames(
-                    app_name=f"flopsproject{self.get_shortened_id(str(flops_db_id))}",
+                    app_name=f"project{self.get_shortened_id(str(flops_db_id))}",
                     app_namespace=self.namespace,
                 ),
             ),

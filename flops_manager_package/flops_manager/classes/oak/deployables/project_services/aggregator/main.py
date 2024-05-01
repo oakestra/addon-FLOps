@@ -1,5 +1,5 @@
 from flops_manager.classes.oak.deployables.project_services.base import FLOpsProjectService
-from flops_manager.classes.oak.project import FlOpsProject
+from flops_manager.classes.oak.project import FLOpsProject
 from flops_manager.image_management import FLOpsImageTypes, get_flops_image_name
 from flops_manager.mlflow.tracking_server import get_mlflow_tracking_server_url
 from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_IP
@@ -18,7 +18,7 @@ from pydantic import Field
 
 
 class FLAggregator(FLOpsProjectService):
-    flops_project: FlOpsProject = Field(None, exclude=True, repr=False)
+    flops_project: FLOpsProject = Field(None, exclude=True, repr=False)
     flops_project_id: str = Field("", init=False)
 
     flops_ui_ip: str = Field("", exclude=True, repr=False)
@@ -27,7 +27,7 @@ class FLAggregator(FLOpsProjectService):
 
     fl_aggregator_image: str = Field("", init=False)
 
-    namespace = "flaggreg"
+    namespace = "aggr"
 
     def model_post_init(self, _):
         if self.gets_loaded_from_db:
@@ -57,7 +57,7 @@ class FLAggregator(FLOpsProjectService):
         cmd = " ".join(
             (
                 "python",
-                "main",
+                "main.py",
                 self.flops_project_id,
                 FLOPS_MQTT_BROKER_IP,
                 self.flops_ui_ip,
@@ -76,7 +76,7 @@ class FLAggregator(FLOpsProjectService):
                 names=SlaNames(
                     app_name=self.flops_project.app_name,
                     app_namespace=self.flops_project.namespace,
-                    service_name=f"ag{self.flops_project.get_shortened_id()}",
+                    service_name=f"aggr{self.flops_project.get_shortened_id()}",
                     service_namespace=self.namespace,
                 ),
                 compute=SlaCompute(

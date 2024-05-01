@@ -1,7 +1,7 @@
 from flops_manager.api.service_management import deploy
 from flops_manager.classes.oak.deployables.project_services.aggregator.main import FLAggregator
 from flops_manager.classes.oak.deployables.project_services.base import FLOpsProjectService
-from flops_manager.classes.oak.project import FlOpsProject
+from flops_manager.classes.oak.project import FLOpsProject
 from flops_manager.image_management import FLOpsImageTypes, get_flops_image_name
 from flops_manager.mqtt.sender import notify_ui
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
@@ -19,7 +19,7 @@ from pydantic import Field
 class FLLearners(FLOpsProjectService):
     total_number_of_learners: int = Field(1, init=False)
 
-    flops_project: FlOpsProject = Field(None, exclude=True, repr=False)
+    flops_project: FLOpsProject = Field(None, exclude=True, repr=False)
     flops_project_id: str = Field("", init=False)
     fl_aggregator: FLAggregator = Field(None, exclude=True, repr=False)
 
@@ -67,7 +67,7 @@ class FLLearners(FLOpsProjectService):
                 names=SlaNames(
                     app_name=self.flops_project.app_name,
                     app_namespace=self.flops_project.namespace,
-                    service_name=f"fl{self.flops_project.get_shortened_id()}",
+                    service_name=f"flearner{self.flops_project.get_shortened_id()}",
                     service_namespace=self.namespace,
                 ),
                 compute=SlaCompute(
