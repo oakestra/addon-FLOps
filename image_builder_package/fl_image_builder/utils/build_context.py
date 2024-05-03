@@ -1,12 +1,14 @@
 from dataclasses import dataclass, field
 
 import git
+from flops_utils.types import MLModelFlavor
 
 _build_context = None
 
 
 @dataclass
 class BuildContext:
+    ml_model_flavor: MLModelFlavor
     repo_url: str
     image_registry_url: str
     flops_project_id: str

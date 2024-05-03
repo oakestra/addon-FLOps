@@ -1,7 +1,8 @@
 from flops_manager.classes.oak.project_based import FlOpsOakestraProjectBasedClass
-from flops_manager.ml_repo_management import MLRepoInfo, get_latest_commit_hash
+from flops_manager.ml_repo_management import MLRepoInfo
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
 from flops_manager.utils.sla.components import SlaComponentsWrapper, SlaCore, SlaDetails, SlaNames
+from flops_utils.types import MLModelFlavor
 from pydantic import AliasChoices, BaseModel, Field
 
 # TODO/Future Work: Add additional Pydantic checking:
@@ -33,6 +34,8 @@ class FLOpsProject(FlOpsOakestraProjectBasedClass):
     # Note: The ml_repo_url is only used as an input param and then discarded.
     ml_repo_url: str = Field("", repr=False, exclude=True)
     ml_repo_info: MLRepoInfo = Field(None, init=False)
+
+    ml_model_flavor: MLModelFlavor
 
     training_configuration: _TrainingConfiguration = _TrainingConfiguration()
     resource_constraints: _ResourceContraints = _ResourceContraints()

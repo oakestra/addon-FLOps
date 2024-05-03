@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "flops_utils"
-version = "0.2.6"
+version = "0.2.7"
 description = "A library containing commong utilities for FLOps"
 authors = ["Alexander Malyuk <malyuk.alexander1999@gmail.com>"]
 readme = "README.md"

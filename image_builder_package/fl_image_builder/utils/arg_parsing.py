@@ -1,11 +1,15 @@
 import argparse
 
+from flops_utils.types import MLModelFlavor
 from utils.build_context import BuildContext
 
 
 def parse_args() -> None:
-    parser = argparse.ArgumentParser(description="Process GitHub repository and service ID.")
+    parser = argparse.ArgumentParser(
+        description="Process GitHub repository and service ID."
+    )
 
+    parser.add_argument("ml_model_flavor", type=MLModelFlavor)
     parser.add_argument("repo_url", type=str, help="The URL of the GitHub repository.")
     parser.add_argument(
         "image_registry_url",
@@ -30,6 +34,7 @@ def parse_args() -> None:
     args = parser.parse_args()
 
     BuildContext(
+        ml_model_flavor=args.ml_model_flavor,
         repo_url=args.repo_url,
         image_registry_url=args.image_registry_url,
         flops_project_id=args.flops_project_id,

@@ -27,3 +27,9 @@ RUN pip install -r requirements.txt
 # https://flower.dev/docs/framework/ref-telemetry.html
 ENV FLWR_TELEMETRY_ENABLED=0
 
+# Note: If you place this ARG at the very top, before the FROM it will not work.
+# The reason is that this ARG is part of another "context".
+# There is a "context" switch after every FROM statement.
+# See multistage docker builds for more.
+ARG ML_MODEL_FLAVOR
+ENV ML_MODEL_FLAVOR=${ML_MODEL_FLAVOR}

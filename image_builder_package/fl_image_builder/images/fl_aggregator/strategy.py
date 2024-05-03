@@ -2,7 +2,6 @@ from typing import Dict, List, Optional, Tuple, Union
 
 import flwr as fl
 import mlflow
-import mlflow.keras
 import numpy as np
 from flwr.common import (
     EvaluateRes,
@@ -19,6 +18,7 @@ from flwr.server.strategy.aggregate import weighted_loss_avg
 # Note: This is part of the "to-be" injected client ML repo.
 from model_manager import ModelManager
 from prometheus_client import Gauge
+from utils.ml_model_flavor_wrapper import mlflow_model_flavor
 
 
 class OakFedAvg(fl.server.strategy.FedAvg):
@@ -85,7 +85,9 @@ class OakFedAvg(fl.server.strategy.FedAvg):
                 parameters_aggregated
             )
             self.model_manager.set_model_parameters(aggregated_ndarrays)
-            mlflow.keras.log_model(self.model_manager.get_model(), "alex_model_testing")
+            mlflow_model_flavor.log_model(
+                self.model_manager.get_model(), "alex_model_testing"
+            )
 
         return parameters_aggregated, metrics_aggregated
 

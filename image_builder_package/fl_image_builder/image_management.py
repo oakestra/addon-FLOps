@@ -50,13 +50,14 @@ def build_image(
         build_start_msg += " (This can take a while)"
         notify_ui(f"ML repo successfully cloned & verified.\n{build_start_msg}")
     logger.info(build_start_msg)
-
     try:
         # TODO read further about buildah options/flags - might improve the build further.
         build_cmd = f"buildah build --isolation=chroot -t {image_name_with_tag}"
-        if not is_base_image:
-            build_cmd += " --build-arg BASE_IMAGE=fl_base"
-
+        build_cmd += (
+            f" --build-arg ML_MODEL_FLAVOR={get_build_context().ml_model_flavor.value}"
+            if is_base_image
+            else " --build-arg BASE_IMAGE=fl_base"
+        )
         result = subprocess.run(
             shlex.split(build_cmd),
             check=False,

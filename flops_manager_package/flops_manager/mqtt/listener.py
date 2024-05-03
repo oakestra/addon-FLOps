@@ -21,8 +21,8 @@ def _on_new_message(client, userdata, message) -> None:
     try:
         decoded_message = message.payload.decode()
         data = json.loads(decoded_message)
-        logger.debug(f"Received message: {decoded_message}")
         topic = message.topic
+        logger.debug(f"Received message: '{decoded_message}' for topic '{topic}'")
         match topic:
 
             case Topics.FLOPS_UI_FAILED.value:

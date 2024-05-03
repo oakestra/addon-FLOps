@@ -1,2 +1,2 @@
 flwr_datasets == 0.1.0
-flops-utils == 0.2.6
+flops-utils == 0.2.7

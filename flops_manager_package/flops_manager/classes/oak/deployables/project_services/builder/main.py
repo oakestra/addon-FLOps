@@ -49,6 +49,7 @@ class FLOpsImageBuilder(FLOpsProjectService):
             (
                 "python3",
                 "main.py",
+                self.flops_project.ml_model_flavor,
                 self.flops_project.ml_repo_info.url,
                 FLOPS_IMAGE_REGISTRY_URL,
                 self.flops_project_id,

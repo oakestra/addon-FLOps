@@ -24,3 +24,36 @@ A [CNCF Distribution Registry](https://distribution.github.io/distribution/) tha
 
 ## MLflow MLOps 
 TODO/WIP
+
+
+#############
+
+
+TODO  update readme
+
+# FLOps Project Components
+<img src="https://github.com/oakestra/plugin-FLOps-project-components/assets/65814168/40cccf6c-25fc-437d-bae4-7f799b7f326c" alt="Description of image" width="50%" height="auto">
+
+A FLOps Project is a logical unit that groups together all related FLOps components that are necessary to fulfill a concrete user FLOps request.
+A Project enabled its components to find and communicate with each other.
+
+E.g. A user wants to run FLOps on his provided ML repo. All following processes that get triggered due to these initial requests are part of one FLOps project.
+Another call will lead to a different FLOps project.
+
+Thus supporting multiple FLOps projects and components running at the same time - i.e. serving multiple user FL requests at the same time.</br>
+
+## FL (Learner) Image Builder
+- Is instantiated if the requested FL Learner Image is not found in the FLOps Image Registry.
+- Builds the FL Learner Image to be able to create FL Learners (also called FL Clients) and pushes the resulting image to the FLOps image registry.
+- This FL Learner image is based on the user-provided ML repo/code which gets wrapped into an FL-compatible image including all necessary dependencies for proper training.
+
+## FLOps UI
+- Enables the user/developer to easily inspect the current progress of his FLOps processes/project.
+- Depending on the use case a non-developer user will not be able to see other components but the UI to abstract away technical details and complexities.
+- Every FLOps component has the capability to send a message to the UI (via internal Oakestra service networking), including the FLOps manager (which uses MQTT, because the manager is not deployed as a service).
+
+## FLOps Aggregator
+- The FL Server that aggregates the Learner updates.
+
+## FL Learner
+- The FL Client that trains the model and sends its updates ot the aggregator.

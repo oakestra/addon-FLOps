@@ -1,7 +1,7 @@
 ARG BASE_IMAGE
 FROM ${BASE_IMAGE}
 
-# paho-mqtt 2.0 doesn't seem to be available via conda yet.
+#paho-mqtt 2.0 doesn't seem to be available via conda yet.
 RUN pip install \
     paho-mqtt==2.0 \
     icecream &&\
