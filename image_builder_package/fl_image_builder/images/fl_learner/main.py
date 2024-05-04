@@ -3,9 +3,7 @@ from typing import Any
 
 import flwr
 from flops_utils.logging import logger
-
-# Note: This is part of the "to-be" injected client ML repo.
-from model_manager import ModelManager
+from flops_utils.ml_repo_files_wrapper import ModelManager
 from utils.arg_parsing import parse_args
 
 

@@ -1,5 +1,5 @@
-# Used to abstract away concrete uses of flavors.
-# Based on the provided flavor from the FLOps SLA the specific mlflow model flavor will be used.
+# Used to abstract away concrete uses of MLflow model flavors.
+# Based on the provided flavor from the FLOps SLA the specific MLflow model flavor will be used.
 
 import os
 

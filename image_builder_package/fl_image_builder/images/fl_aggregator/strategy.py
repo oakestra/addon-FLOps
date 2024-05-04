@@ -3,6 +3,8 @@ from typing import Dict, List, Optional, Tuple, Union
 import flwr as fl
 import mlflow
 import numpy as np
+from flops_utils.ml_model_flavor_wrapper import mlflow_model_flavor
+from flops_utils.ml_repo_files_wrapper import ModelManager
 from flwr.common import (
     EvaluateRes,
     FitIns,
@@ -14,11 +16,7 @@ from flwr.common import (
 from flwr.server.client_manager import ClientManager
 from flwr.server.client_proxy import ClientProxy
 from flwr.server.strategy.aggregate import weighted_loss_avg
-
-# Note: This is part of the "to-be" injected client ML repo.
-from model_manager import ModelManager
 from prometheus_client import Gauge
-from utils.ml_model_flavor_wrapper import mlflow_model_flavor
 
 
 class OakFedAvg(fl.server.strategy.FedAvg):
