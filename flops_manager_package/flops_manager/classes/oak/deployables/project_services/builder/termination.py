@@ -8,7 +8,15 @@ from flops_utils.logging import colorful_logger as logger
 def handle_builder_success(builder_success_msg: dict) -> None:
     logger.debug(builder_success_msg)
     flops_project_id = builder_success_msg["flops_project_id"]
-    FLOpsImageBuilder.retrieve_from_db(flops_project_id=flops_project_id).undeploy()
+    # FLOpsImageBuilder.retrieve_from_db(flops_project_id=flops_project_id).undeploy()
+    from icecream import ic
+
+    ic(0, flops_project_id)
+    builder = FLOpsImageBuilder.retrieve_from_db(flops_project_id=flops_project_id)
+    ic(1, builder)
+    builder.undeploy()
+    ic(2)
+
     handle_fl_operations(
         flops_project=FLOpsProject.retrieve_from_db(flops_project_id=flops_project_id)
     )

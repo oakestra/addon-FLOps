@@ -3,14 +3,14 @@ from typing import Any
 
 import flwr
 from flops_utils.logging import logger
-from flops_utils.ml_repo_files_wrapper import ModelManager
+from flops_utils.ml_repo_files_wrapper import get_model_manager
 from utils.arg_parsing import parse_args
 
 
 class Learner(flwr.client.NumPyClient):
 
     def __init__(self):
-        self.model_manager = ModelManager()
+        self.model_manager = get_model_manager()
         # Only for developing/testing
         self.model_manager.prepare_data()
 
@@ -27,7 +27,9 @@ class Learner(flwr.client.NumPyClient):
 
     def evaluate(self, parameters, config):
         self.set_parameters(parameters)
-        loss, accuracy, number_of_evaluation_examples = self.model_manager.evaluate_model()
+        loss, accuracy, number_of_evaluation_examples = (
+            self.model_manager.evaluate_model()
+        )
         return loss, number_of_evaluation_examples, {"accuracy": accuracy}
 
 
@@ -43,11 +45,13 @@ def _start_fl_learner() -> None:
     # this approach has the benefit of pulling/instantiating the learners concurrently/quicker.
     for attempt in range(max_retries):
         try:
-            flwr.client.start_numpy_client(server_address=f"{aggregator_ip}:8080", client=Learner())
+            flwr.client.start_numpy_client(
+                server_address=f"{aggregator_ip}:8080", client=Learner()
+            )
             return
         except Exception as e:
             if attempt < max_retries:
-                logger.warning(
+                logger.exception(
                     " ".join(
                         (
                             "Unable to connect to aggregator.",

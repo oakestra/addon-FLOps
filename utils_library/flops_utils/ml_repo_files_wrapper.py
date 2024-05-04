@@ -7,10 +7,12 @@ import sys
 
 from flops_utils.logging import logger
 
-try:
-    from model_manager import ModelManager  # type: ignore
 
-    ModelManager = ModelManager
-except ImportError:
-    logger.exception("A ML repo file was not found.")
-    sys.exit(1)
+def get_model_manager():
+    try:
+        from model_manager import ModelManager  # type: ignore
+
+        return ModelManager()
+    except ImportError:
+        logger.exception("A ML repo file was not found.")
+        sys.exit(1)
