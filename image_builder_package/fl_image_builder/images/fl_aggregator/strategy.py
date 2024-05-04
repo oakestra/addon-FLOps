@@ -5,29 +5,24 @@ import mlflow
 import numpy as np
 from flops_utils.ml_model_flavor_wrapper import mlflow_model_flavor
 from flops_utils.ml_repo_files_wrapper import ModelManager
-from flwr.common import EvaluateRes, FitIns, FitRes, Parameters, Scalar, parameters_to_ndarrays
+from flwr.common import (
+    EvaluateRes,
+    FitIns,
+    FitRes,
+    Parameters,
+    Scalar,
+    parameters_to_ndarrays,
+)
 from flwr.server.client_manager import ClientManager
 from flwr.server.client_proxy import ClientProxy
 from flwr.server.strategy.aggregate import weighted_loss_avg
-from prometheus_client import Gauge
 
 
 class OakFedAvg(fl.server.strategy.FedAvg):
-    def __init__(
-        self,
-        mlflow_experiment_id: int,
-        accuracy_gauge: Gauge = None,
-        loss_gauge: Gauge = None,
-        *args,
-        **kwargs,
-    ):
+    def __init__(self, mlflow_experiment_id: int, *args, **kwargs):
         self.mlflow_experiment_id = mlflow_experiment_id
         self.model_manager = ModelManager()
-
         super().__init__(*args, **kwargs)
-
-        self.accuracy_gauge = accuracy_gauge
-        self.loss_gauge = loss_gauge
 
     def _log_project_params(self):
         interesting_params = [
@@ -36,8 +31,6 @@ class OakFedAvg(fl.server.strategy.FedAvg):
             "min_fit_clients",
             "fraction_evaluate",
             "fraction_fit",
-            # "global_parameters",
-            # "initial_parameters",
         ]
 
         mlflow.log_params(
@@ -85,12 +78,9 @@ class OakFedAvg(fl.server.strategy.FedAvg):
         if not results:
             return None, {}
 
-        # Calculate weighted average for loss using the provided function
         loss_aggregated = weighted_loss_avg(
             [(evaluate_res.num_examples, evaluate_res.loss) for _, evaluate_res in results]
         )
-
-        # Calculate weighted average for accuracy
         accuracies = [
             evaluate_res.metrics["accuracy"] * evaluate_res.num_examples
             for _, evaluate_res in results
@@ -98,12 +88,7 @@ class OakFedAvg(fl.server.strategy.FedAvg):
         examples = [evaluate_res.num_examples for _, evaluate_res in results]
         accuracy_aggregated = sum(accuracies) / sum(examples) if sum(examples) != 0 else 0
 
-        # Update the Prometheus gauges with the latest aggregated accuracy and loss values
-        self.accuracy_gauge.set(accuracy_aggregated)
-        self.loss_gauge.set(loss_aggregated)
-
         metrics_aggregated = {"loss": loss_aggregated, "accuracy": accuracy_aggregated}
-
         mlflow.log_metrics(metrics_aggregated)
         mlflow.end_run()
         return loss_aggregated, metrics_aggregated
