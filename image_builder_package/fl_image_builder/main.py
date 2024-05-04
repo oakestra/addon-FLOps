@@ -21,9 +21,7 @@ def main() -> None:
 
         notify_about_successful_build()
     except Exception as e:
-        notify_about_failed_build_and_terminate(
-            f"Something unexpected went wrong; '{e}'"
-        )
+        notify_about_failed_build_and_terminate(f"Something unexpected went wrong; '{e}'")
 
 
 if __name__ == "__main__":

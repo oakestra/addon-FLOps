@@ -5,9 +5,7 @@ from utils.build_context import BuildContext
 
 
 def parse_args() -> None:
-    parser = argparse.ArgumentParser(
-        description="Process GitHub repository and service ID."
-    )
+    parser = argparse.ArgumentParser(description="Process GitHub repository and service ID.")
 
     parser.add_argument("ml_model_flavor", type=MLModelFlavor)
     parser.add_argument("repo_url", type=str, help="The URL of the GitHub repository.")
