@@ -18,6 +18,11 @@ def get_ml_model_flavor():
             import mlflow.pytorch
 
             return mlflow.pytorch
+
+        case MLModelFlavor.SKLEARN:
+            import mlflow.sklearn
+
+            return mlflow.sklearn
         case _:
             logger.exception("Provided MLModelFlavor is not supported yet.")
             sys.exit(1)

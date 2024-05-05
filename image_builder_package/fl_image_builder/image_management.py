@@ -6,14 +6,20 @@ import subprocess
 from flops_utils.logging import colorful_logger as logger
 from notification_management import notify_about_failed_build_and_terminate, notify_ui
 from utils.build_context import get_build_context
-from utils.common import FL_AGGREGATOR_IMAGE_PATH, FL_BASE_IMAGE_PATH, FL_LEARNER_IMAGE_PATH
+from utils.common import (
+    FL_AGGREGATOR_IMAGE_PATH,
+    FL_BASE_IMAGE_PATH,
+    FL_LEARNER_IMAGE_PATH,
+)
 
 
 def prepare_new_image_names() -> None:
     full_registry_url = get_build_context().image_registry_url
     cloned_repo = get_build_context().cloned_repo
 
-    image_registry_url = full_registry_url.removeprefix("http://").removeprefix("https://")
+    image_registry_url = full_registry_url.removeprefix("http://").removeprefix(
+        "https://"
+    )
     latest_commit_hash = cloned_repo.head.commit.hexsha
 
     repo_url = cloned_repo.remotes.origin.url
@@ -22,7 +28,9 @@ def prepare_new_image_names() -> None:
     username = user_repo_name.split("/")[0].lower()
     repo_name = user_repo_name.split("/")[1]
 
-    get_build_context().set_new_image_name_prefix(f"{image_registry_url}/{username}/{repo_name}")
+    get_build_context().set_new_image_name_prefix(
+        f"{image_registry_url}/{username}/{repo_name}"
+    )
     get_build_context().set_new_image_tag(latest_commit_hash)
 
 
