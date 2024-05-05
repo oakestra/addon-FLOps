@@ -11,7 +11,6 @@ class Learner(flwr.client.NumPyClient):
 
     def __init__(self):
         self.model_manager = get_model_manager()
-        # Only for developing/testing
         self.model_manager.prepare_data()
 
     def get_parameters(self, config=None) -> Any:
