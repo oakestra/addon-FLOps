@@ -9,6 +9,11 @@
 # Buggy images: 24.3.0-0, 24.1.2-0 (maybe more)
 FROM ghcr.io/malyuk-a/miniconda3:23.10.0-1
 
+RUN apt-get update && apt-get install -y \
+    # Optinal development dependencies:
+    vim tree &&\
+    rm -rf /var/lib/apt/lists/*
+
 COPY . /fl_base
 WORKDIR /fl_base
 RUN rm Dockerfile requirements.txt

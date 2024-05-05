@@ -4,7 +4,12 @@
 FROM python:3.13.0a4-slim-bookworm
 WORKDIR /image_builder
 
-RUN apt-get update && apt-get install -y git wget buildah && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y \
+    # Mandatory dependencies:
+    git wget buildah \
+    # Optinal development dependencies:
+    vim tree &&\
+    rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
 RUN pip install -r requirements.txt
