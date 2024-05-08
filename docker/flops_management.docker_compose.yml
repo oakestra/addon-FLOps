@@ -61,6 +61,17 @@ services:
       - 'flops_db:/mongodb'
     command: mongod --port 10027
 
+  mlflow_backend_store:
+    image: mysql:8.4.0
+    container_name: mlflow_backend_store
+    hostname: mlflow_backend_store
+    environment:
+      MYSQL_ROOT_PASSWORD: oakestra
+    ports:
+      - "3306:3306" 
+    volumes:
+      - mlflow_backend_store_data:/var/lib/mysql
+    
   mlflow_tracking_server:
     image: mlflow_tracking_server
     build:
@@ -69,11 +80,6 @@ services:
     hostname: mlflow_tracking_server
     ports:
       - "7027:7027"
-    # TODO fix - currently error occurs: 
-    #  WARNING mlflow.store.db.utils: SQLAlchemy engine could not be created.
-    #  (sqlite3.OperationalError) unable to open database file
-    # volumes:
-    #   - 'mlflow_backend_store:/mlflow_backend_store.db'
 
   vsftpd_server:
     # Note: There is only the "latest" tag (Red Flag -> Maybe change to another image)
@@ -105,7 +111,7 @@ volumes:
   registry_data:
   flops_db:
     driver: local
-  #mlflow_backend_store:
+  mlflow_backend_store_data:
   vsftpd_home:
   vsftpd_logs:
 
