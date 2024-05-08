@@ -1,5 +1,4 @@
 from flops_manager.classes.oak.deployables.project_services.base import FLOpsProjectService
-from flops_manager.classes.oak.project import FLOpsProject
 from flops_manager.image_management import FLOpsImageTypes, get_flops_image_name
 from flops_manager.mlflow.tracking_server import get_mlflow_tracking_server_url
 from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_IP
@@ -18,9 +17,6 @@ from pydantic import Field
 
 
 class FLAggregator(FLOpsProjectService):
-    flops_project: FLOpsProject = Field(None, exclude=True, repr=False)
-    flops_project_id: str = Field("", init=False)
-
     flops_ui_ip: str = Field("", exclude=True, repr=False)
 
     ip: str = Field("", init=False)

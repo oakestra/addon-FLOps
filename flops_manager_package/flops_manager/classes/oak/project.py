@@ -1,4 +1,4 @@
-from flops_manager.classes.oak.project_based import FlOpsOakestraProjectBasedClass
+from flops_manager.classes.oak.base import FlOpsOakestraBaseClass
 from flops_manager.ml_repo_management import MLRepoInfo
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
 from flops_manager.utils.sla.components import SlaComponentsWrapper, SlaCore, SlaDetails, SlaNames
@@ -25,7 +25,7 @@ class _ResourceContraints(BaseModel):
     storage: int = 0
 
 
-class FLOpsProject(FlOpsOakestraProjectBasedClass):
+class FLOpsProject(FlOpsOakestraBaseClass):
     """Links all necessary FL and ML/DevOps components to power one entire FL user request."""
 
     customer_id: str = Field(alias=AliasChoices("customer_id", "customerID"))

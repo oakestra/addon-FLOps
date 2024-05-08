@@ -1,12 +1,12 @@
 from abc import ABC
 
 from flops_manager.api.service_management import append_service_to_flops_project_app
-from flops_manager.classes.oak.deployables.project_based import DeployableProjectBasedClass
+from flops_manager.classes.oak.deployables.base import DeployableClass
 from flops_manager.utils.sla.generator import generate_sla
 from pydantic import Field
 
 
-class FLOpsProjectService(DeployableProjectBasedClass, ABC):
+class FLOpsProjectService(DeployableClass, ABC):
     """Such a service will be appended to an already existing FLOps project application."""
 
     # These values are always pointing to the parent FLOps Project Application.

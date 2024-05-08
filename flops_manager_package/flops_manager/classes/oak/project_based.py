@@ -1,18 +1,13 @@
 from abc import ABC
 
-from flops_manager.api.app_management import create_app
 from flops_manager.classes.oak.base import FlOpsOakestraBaseClass
-from flops_manager.classes.project_based import FlOpsProjectBasedClass
-from flops_manager.utils.sla.generator import generate_sla
-from flops_manager.utils.types import Application
+from flops_manager.classes.oak.project import FLOpsProject
+from pydantic import Field
 
 
-class FlOpsOakestraProjectBasedClass(FlOpsOakestraBaseClass, FlOpsProjectBasedClass, ABC):
+class FlOpsOakestraProjectBasedClass(FlOpsOakestraBaseClass, ABC):
+    """A base class used for components that are based on a FLOps Project"""
 
-    def create(self) -> Application:
-        return create_app(
-            sla=generate_sla(self.sla_components),
-            bearer_token=getattr(self, "bearer_token", None),
-            flops_project_id=self.flops_project_id,
-            matching_caller_object=self,
-        )
+    # Note: Use the entire Project object instead but only store & display its id.
+    flops_project: FLOpsProject = Field(None, exclude=True, repr=False)
+    flops_project_id: str = Field("", init=False)

@@ -48,6 +48,8 @@ class FlOpsOakestraBaseClass(FlOpsBaseClass, ABC):
     def create(self) -> Application:
         return create_app(
             sla=generate_sla(self.sla_components),
+            bearer_token=getattr(self, "bearer_token", None),
+            flops_project_id=self.flops_project_id,
             matching_caller_object=self,
         )
 

@@ -1,11 +1,11 @@
 from abc import ABC
 
 from flops_manager.api.service_management import deploy, undeploy
-from flops_manager.classes.oak.base import FlOpsOakestraBaseClass
+from flops_manager.classes.oak.project_based import FlOpsOakestraProjectBasedClass
 from pydantic import AliasChoices, Field
 
 
-class DeployableClass(FlOpsOakestraBaseClass, ABC):
+class DeployableClass(FlOpsOakestraProjectBasedClass, ABC):
     """Adds functionality of services like (Un)Deployment."""
 
     service_id: str = Field("", init=False, alias=AliasChoices("service_id", "microserviceID"))
@@ -26,4 +26,6 @@ class DeployableClass(FlOpsOakestraBaseClass, ABC):
         undeploy(
             service_id=self.service_id,
             matching_caller_object=self,
+            flops_project_id=self.flops_project_id,
         )
+        self.remove_from_db()

@@ -1,5 +1,4 @@
-from flops_manager.classes.oak.deployables.project_based import DeployableProjectBasedClass
-from flops_manager.classes.oak.project import FLOpsProject
+from flops_manager.classes.oak.deployables.base import DeployableClass
 from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_IP, FLOPS_MQTT_BROKER_PORT
 from flops_manager.utils.common import generate_ip
 from flops_manager.utils.constants import FLOPS_SERVICE_CMD_PREFIX
@@ -14,11 +13,7 @@ from flops_manager.utils.sla.components import (
 from pydantic import Field
 
 
-class FLOpsUserInterface(DeployableProjectBasedClass):
-    # Note: Use the entire Project object instead but only store & display its id.
-    flops_project: FLOpsProject = Field(None, exclude=True, repr=False)
-    flops_project_id: str = Field("", init=False)
-
+class FLOpsUserInterface(DeployableClass):
     ip: str = Field("", init=False)
 
     namespace = "flopsui"

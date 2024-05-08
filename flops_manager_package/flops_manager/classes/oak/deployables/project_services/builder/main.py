@@ -1,6 +1,5 @@
 from flops_manager.classes.oak.deployables.project_services.base import FLOpsProjectService
 from flops_manager.classes.oak.deployables.ui import FLOpsUserInterface
-from flops_manager.classes.oak.project import FLOpsProject
 from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_IP
 from flops_manager.mqtt.sender import notify_ui
 from flops_manager.registry_management import FLOPS_IMAGE_REGISTRY_URL
@@ -17,10 +16,7 @@ from pydantic import Field
 
 
 class FLOpsImageBuilder(FLOpsProjectService):
-    flops_project: FLOpsProject = Field(None, exclude=True, repr=False)
     ui: FLOpsUserInterface = Field(None, exclude=True, repr=False)
-
-    flops_project_id: str = Field("", init=False)
 
     namespace = "builder"
 
