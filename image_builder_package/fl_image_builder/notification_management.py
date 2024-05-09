@@ -1,7 +1,7 @@
 import sys
 
 from flops_utils.logging import logger
-from flops_utils.notifications import notify_flops_manager, notify_flops_ui
+from flops_utils.notifications import notify_flops_manager, notify_project_observer
 from utils.build_context import get_build_context
 
 
@@ -23,7 +23,9 @@ def notify_ui(msg: str) -> None:
     if build_context.develop:
         logger.info(f"DEVEL: {msg}")
         return
-    notify_flops_ui(flops_ui_ip=build_context.flops_ui_ip, msg=msg)
+    notify_project_observer(
+        project_observer_ip=build_context.project_observer_ip, msg=msg
+    )
 
 
 def notify_about_successful_build() -> None:

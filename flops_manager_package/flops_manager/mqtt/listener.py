@@ -12,7 +12,7 @@ from flops_manager.classes.deployables.project_services.builder.termination impo
 )
 from flops_manager.mqtt.constants import Topics
 from flops_manager.mqtt.main import get_mqtt_client
-from flops_manager.mqtt.sender import notify_ui
+from flops_manager.mqtt.sender import notify_project_observer
 from flops_manager.utils.exceptions.main import FLOpsManagerException
 from flops_utils.logging import colorful_logger as logger
 
@@ -25,7 +25,7 @@ def _on_new_message(client, userdata, message) -> None:
         logger.debug(f"Received message: '{decoded_message}' for topic '{topic}'")
         match topic:
 
-            case Topics.FLOPS_UI_FAILED.value:
+            case Topics.PROJECT_OBSERVER_FAILED.value:
                 logger.critical(data)
 
             case Topics.IMAGE_BUILDER_SUCCESS.value:
@@ -43,7 +43,7 @@ def _on_new_message(client, userdata, message) -> None:
 
     except FLOpsManagerException as e:
         logger.exception(f"{e.message}")
-        notify_ui(flops_project_id=e.flops_project_id, msg=e.message)
+        notify_project_observer(flops_project_id=e.flops_project_id, msg=e.message)
         return
     except Exception:
         logger.exception("Unexpected exception occurred")

@@ -1,6 +1,6 @@
 import argparse
 
-from flops_ui.ui_context import UIContext
+from project_observer.ui_context import UIContext
 
 
 def parse_args() -> None:

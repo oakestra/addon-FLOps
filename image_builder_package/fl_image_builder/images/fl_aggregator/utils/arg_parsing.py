@@ -12,7 +12,7 @@ def parse_args() -> AggregatorContext:
         type=str,
         help="The MQTT IP to be able to notify the FLOps manager about the image build.",
     )
-    parser.add_argument("flops_ui_ip", type=str)
+    parser.add_argument("project_observer_ip", type=str)
     parser.add_argument("mlflow_tracking_server_url", type=str)
 
     parser.add_argument("training_rounds", type=int)
@@ -25,7 +25,7 @@ def parse_args() -> AggregatorContext:
     return AggregatorContext(
         flops_project_id=args.flops_project_id,
         mqtt_ip=args.mqtt_ip,
-        flops_ui_ip=args.flops_ui_ip,
+        project_observer_ip=args.project_observer_ip,
         mlflow_tracking_server_url=args.mlflow_tracking_server_url,
         training_rounds=args.training_rounds,
         min_available_clients=args.min_available_clients,

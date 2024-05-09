@@ -2,7 +2,7 @@ from flops_manager.mqtt.main import get_mqtt_client
 from flops_utils.logging import colorful_logger as logger
 
 
-def notify_ui(
+def notify_project_observer(
     msg: str,
     flops_project_id: str = None,
 ) -> None:

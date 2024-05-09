@@ -1,6 +1,6 @@
 import sys
 
-from flops_utils.notifications import notify_flops_manager, notify_flops_ui
+from flops_utils.notifications import notify_flops_manager, notify_project_observer
 from utils.aggregator_context import AggregatorContext
 
 
@@ -22,8 +22,8 @@ def notify_about_successful_completion(aggregator_context: AggregatorContext) ->
         aggregator_context=aggregator_context,
         topic="flops_manager/aggregator/success",
     )
-    notify_flops_ui(
-        flops_ui_ip=aggregator_context.flops_ui_ip,
+    notify_project_observer(
+        project_observer_ip=aggregator_context.project_observer_ip,
         msg="Aggregator tasks completed successfully.",
     )
 
@@ -37,8 +37,8 @@ def notify_about_failure_and_terminate(
         topic="flops_manager/aggregator/failed",
         error_msg=error_msg,
     )
-    notify_flops_ui(
-        flops_ui_ip=aggregator_context.flops_ui_ip,
+    notify_project_observer(
+        project_observer_ip=aggregator_context.project_observer_ip,
         msg=error_msg,
     )
     sys.exit(1)

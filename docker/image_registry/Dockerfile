@@ -1,5 +1,4 @@
 FROM python:3.10-slim
-LABEL org.opencontainers.image.source https://github.com/oakestra/plugins-FLOps-UI
 
 RUN apt-get update && apt-get install -y wget &&\
     rm -rf /var/lib/apt/lists/* &&\

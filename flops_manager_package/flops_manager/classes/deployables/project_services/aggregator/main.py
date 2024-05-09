@@ -2,7 +2,7 @@ from flops_manager.classes.deployables.project_services.base import FLOpsProject
 from flops_manager.image_management import FLOpsImageTypes, get_flops_image_name
 from flops_manager.mlflow.tracking_server import get_mlflow_tracking_server_url
 from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_IP
-from flops_manager.mqtt.sender import notify_ui
+from flops_manager.mqtt.sender import notify_project_observer
 from flops_manager.utils.common import generate_ip, get_shortened_id
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
 from flops_manager.utils.sla.components import (
@@ -17,7 +17,7 @@ from pydantic import Field
 
 
 class FLAggregator(FLOpsProjectService):
-    flops_ui_ip: str = Field("", exclude=True, repr=False)
+    project_observer_ip: str = Field("", exclude=True, repr=False)
 
     ip: str = Field("", init=False)
 
@@ -31,7 +31,7 @@ class FLAggregator(FLOpsProjectService):
 
         self.flops_project_id = self.flops_project.flops_project_id
         if self.flops_project.verbose:
-            notify_ui(
+            notify_project_observer(
                 flops_project_id=self.flops_project_id,
                 msg="Preparing new FL Aggregator.",
             )
@@ -43,7 +43,7 @@ class FLAggregator(FLOpsProjectService):
 
         super().model_post_init(_)
         if self.flops_project.verbose:
-            notify_ui(
+            notify_project_observer(
                 flops_project_id=self.flops_project_id,
                 msg="New Aggregator service created & deployed",
             )
@@ -56,7 +56,7 @@ class FLAggregator(FLOpsProjectService):
                 "main.py",
                 self.flops_project_id,
                 FLOPS_MQTT_BROKER_IP,
-                self.flops_ui_ip,
+                self.project_observer_ip,
                 get_mlflow_tracking_server_url(),
                 str(training_conf.training_rounds),
                 str(training_conf.min_available_clients),

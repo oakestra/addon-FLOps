@@ -4,7 +4,7 @@ from typing import Tuple
 import flask
 import flask_openapi3
 from flops_manager.flops_management import handle_new_flops_project
-from flops_manager.mqtt.sender import notify_ui
+from flops_manager.mqtt.sender import notify_project_observer
 from flops_manager.utils.exceptions.main import FLOpsManagerException
 from flops_utils.logging import colorful_logger as logger
 
@@ -24,7 +24,7 @@ def post_fl_service() -> Tuple[dict, HTTPStatus]:
         )
     except FLOpsManagerException as e:
         logger.exception(f"{e.msg}, {e.http_status}")
-        notify_ui(msg=e.message, flops_project_id=e.flops_project_id)
+        notify_project_observer(msg=e.message, flops_project_id=e.flops_project_id)
         return {"message": e.msg}, e.http_status or HTTPStatus.INTERNAL_SERVER_ERROR
     except Exception as e:
         err_msg = "Unexpected exception occurred"

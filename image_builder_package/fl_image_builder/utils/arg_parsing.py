@@ -5,7 +5,9 @@ from utils.build_context import BuildContext
 
 
 def parse_args() -> None:
-    parser = argparse.ArgumentParser(description="Process GitHub repository and service ID.")
+    parser = argparse.ArgumentParser(
+        description="Process GitHub repository and service ID."
+    )
 
     parser.add_argument("ml_model_flavor", type=MLModelFlavor)
     parser.add_argument("repo_url", type=str, help="The URL of the GitHub repository.")
@@ -20,7 +22,7 @@ def parse_args() -> None:
         type=str,
         help="The MQTT IP to be able to notify the FLOps manager about the image build.",
     )
-    parser.add_argument("flops_ui_ip", type=str)
+    parser.add_argument("project_observer_ip", type=str)
 
     parser.add_argument(
         "--develop",
@@ -37,6 +39,6 @@ def parse_args() -> None:
         image_registry_url=args.image_registry_url,
         flops_project_id=args.flops_project_id,
         mqtt_ip=args.mqtt_ip,
-        flops_ui_ip=args.flops_ui_ip,
+        project_observer_ip=args.project_observer_ip,
         develop=args.develop,
     )

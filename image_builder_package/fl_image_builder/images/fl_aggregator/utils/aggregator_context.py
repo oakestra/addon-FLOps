@@ -7,7 +7,7 @@ from pydantic import BaseModel
 class AggregatorContext(BaseModel):
     flops_project_id: str
     mqtt_ip: str
-    flops_ui_ip: str
+    project_observer_ip: str
     mlflow_tracking_server_url: str
 
     training_rounds: int = 3

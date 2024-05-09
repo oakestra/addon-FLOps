@@ -2,7 +2,7 @@ from flops_manager.api.service_management import deploy
 from flops_manager.classes.deployables.project_services.aggregator.main import FLAggregator
 from flops_manager.classes.deployables.project_services.base import FLOpsProjectService
 from flops_manager.image_management import FLOpsImageTypes, get_flops_image_name
-from flops_manager.mqtt.sender import notify_ui
+from flops_manager.mqtt.sender import notify_project_observer
 from flops_manager.utils.common import get_shortened_id
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
 from flops_manager.utils.sla.components import (
@@ -30,7 +30,7 @@ class FLLearners(FLOpsProjectService):
             return
 
         if self.flops_project.verbose:
-            notify_ui(
+            notify_project_observer(
                 flops_project_id=self.flops_project_id,
                 msg="Preparing new FL Learners.",
             )
@@ -46,7 +46,7 @@ class FLLearners(FLOpsProjectService):
         super().model_post_init(_)
 
         if self.flops_project.verbose:
-            notify_ui(
+            notify_project_observer(
                 flops_project_id=self.flops_project_id,
                 msg="New FL Learners service created & deployed",
             )

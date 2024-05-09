@@ -48,7 +48,7 @@ class FLOpsProjectObserver(FLOpsService):
                 ),
                 compute=SlaCompute(
                     # TODO rename to project_observer
-                    code="ghcr.io/malyuk-a/flops-ui:latest",
+                    code="ghcr.io/malyuk-a/flops-project-observer:latest",
                     cmd=" ".join(
                         (
                             FLOPS_SERVICE_CMD_PREFIX,

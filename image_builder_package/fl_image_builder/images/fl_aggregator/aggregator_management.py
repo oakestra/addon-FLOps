@@ -1,6 +1,6 @@
 import flwr as fl
 import mlflow
-from flops_utils.notifications import notify_flops_ui
+from flops_utils.notifications import notify_project_observer
 from notification_management import (
     notify_about_failure_and_terminate,
     notify_about_successful_completion,
@@ -16,8 +16,8 @@ Visit the page below to observe your (active) FLOps Project.
 
 
 def start_fl_server(aggregator_context: AggregatorContext, strategy, rounds):
-    notify_flops_ui(
-        flops_ui_ip=aggregator_context.flops_ui_ip,
+    notify_project_observer(
+        project_observer_ip=aggregator_context.project_observer_ip,
         msg=f"{FL_START_INFO_TEXT}\n '{aggregator_context.mlflow_tracking_server_url}'",
     )
     fl.server.start_server(

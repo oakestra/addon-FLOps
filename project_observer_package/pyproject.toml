@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "flops_ui"
+name = "project_observer"
 version = "1.0.0"
 description = "The User Interface for the FLOps plugin of Oakestra"
 authors = ["Alexander Malyuk <malyuk.alexander1999@gmail.com>"]
@@ -16,7 +16,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-oak = "flops_ui.main:main"
+oak = "project_observer.main:main"
 
 [tool.black]
 line-length = 100

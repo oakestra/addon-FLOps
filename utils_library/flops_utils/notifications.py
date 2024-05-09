@@ -6,13 +6,13 @@ import paho.mqtt.client as paho_mqtt
 from flops_utils.logging import logger
 
 
-def notify_flops_ui(flops_ui_ip: str, msg: str) -> None:
-    logger.debug(f"Sending message to FLOps UI: {msg}")
+def notify_project_observer(project_observer_ip: str, msg: str) -> None:
+    logger.debug(f"Sending message to the project observer: {msg}")
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client_socket.connect((flops_ui_ip, 2727))
+    client_socket.connect((project_observer_ip, 2727))
     client_socket.send(msg.encode())
     client_socket.close()
-    logger.debug(f"Send message to FLOps UI: {msg}")
+    logger.debug(f"Send message to the project observer: {msg}")
     sys.stdout.flush()
 
 

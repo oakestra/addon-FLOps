@@ -3,8 +3,8 @@ import sys
 import time
 
 import paho.mqtt.client as paho_mqtt
-from flops_ui.ui_context import get_ui_context
 from flops_utils.logging import logger
+from project_observer.ui_context import get_ui_context
 
 _mqtt_client = None
 
@@ -77,7 +77,7 @@ def notify_flops_manager(error_msg: str = None) -> None:
         }
     )
     get_mqtt_client().publish(
-        topic="flops_manager/flops_ui/failed",
+        topic="flops_manager/project_observer/failed",
         payload=payload,
         qos=2,
         retain=False,

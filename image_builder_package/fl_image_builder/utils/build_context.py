@@ -13,7 +13,7 @@ class BuildContext:
     image_registry_url: str
     flops_project_id: str
     mqtt_ip: str
-    flops_ui_ip: str
+    project_observer_ip: str
     develop: bool = False
 
     cloned_repo: git.repo.base.Repo = field(default=None, init=False)

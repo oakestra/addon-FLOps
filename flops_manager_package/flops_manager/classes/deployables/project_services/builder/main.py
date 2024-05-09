@@ -1,7 +1,7 @@
 from flops_manager.classes.deployables.project_services.base import FLOpsProjectService
 from flops_manager.classes.services.project_observer import FLOpsProjectObserver
 from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_IP
-from flops_manager.mqtt.sender import notify_ui
+from flops_manager.mqtt.sender import notify_project_observer
 from flops_manager.registry_management import FLOPS_IMAGE_REGISTRY_URL
 from flops_manager.utils.common import get_shortened_id
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
@@ -17,7 +17,7 @@ from pydantic import Field
 
 
 class FLOpsImageBuilder(FLOpsProjectService):
-    ui: FLOpsProjectObserver = Field(None, exclude=True, repr=False)
+    project_observer: FLOpsProjectObserver = Field(None, exclude=True, repr=False)
 
     namespace = "builder"
 
@@ -28,7 +28,7 @@ class FLOpsImageBuilder(FLOpsProjectService):
         self.flops_project_id = self.flops_project.flops_project_id
 
         if self.flops_project.verbose:
-            notify_ui(
+            notify_project_observer(
                 flops_project_id=self.flops_project_id,
                 msg="New FLOps images need to be build. Start build delegation processes.",
             )
@@ -36,7 +36,7 @@ class FLOpsImageBuilder(FLOpsProjectService):
         super().model_post_init(_)
 
         if self.flops_project.verbose:
-            notify_ui(
+            notify_project_observer(
                 flops_project_id=self.flops_project_id,
                 msg="New Builder service created & deployed",
             )
@@ -51,7 +51,7 @@ class FLOpsImageBuilder(FLOpsProjectService):
                 FLOPS_IMAGE_REGISTRY_URL,
                 self.flops_project_id,
                 FLOPS_MQTT_BROKER_IP,
-                self.ui.ip,
+                self.project_observer.ip,
             )
         )
         self.sla_components = SlaComponentsWrapper(
