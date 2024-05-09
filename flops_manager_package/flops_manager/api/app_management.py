@@ -6,17 +6,17 @@ from flops_manager.api.request_management.custom_requests import (
 )
 from flops_manager.api.utils.auxiliary import get_matching_type
 from flops_manager.api.utils.consts import SYSTEM_MANAGER_URL
-from flops_manager.classes.base import FlOpsBaseClass
 from flops_manager.utils.exceptions.main import FLOpsManagerException
 from flops_manager.utils.exceptions.types import FlOpsExceptionTypes
 from flops_manager.utils.types import SLA, Application
+from pydantic import BaseModel
 
 
 def create_app(
     sla: SLA,
     flops_project_id: str = None,
     bearer_token: str = None,
-    matching_caller_object: FlOpsBaseClass = None,
+    matching_caller_object: BaseModel = None,
 ) -> Application:
     app_type = get_matching_type(matching_caller_object)
     # Note: The called endpoint returns all apps of the user not just the newest inserted one.
@@ -55,7 +55,7 @@ def create_app(
 
 def fetch_app(
     app_id: str,
-    matching_caller_object: FlOpsBaseClass = None,
+    matching_caller_object: BaseModel = None,
 ) -> Application:
     app_type = get_matching_type(matching_caller_object)
     response = CustomRequest(

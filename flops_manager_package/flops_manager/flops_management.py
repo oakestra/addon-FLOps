@@ -12,6 +12,12 @@ from flops_utils.logging import colorful_logger as logger
 
 def handle_new_flops_project(request_data: dict, bearer_token: str) -> None:
     flops_project = FLOpsProject.model_validate(request_data)
+    test = retrieve_from_db(FLOpsProject, flops_project.flops_project_id)
+    from icecream import ic
+
+    ic(test)
+
+    # return
     ui = FLOpsUserInterface(flops_project=flops_project, bearer_token=bearer_token)
 
     if check_if_latest_matching_images_exist(flops_project.ml_repo_info):

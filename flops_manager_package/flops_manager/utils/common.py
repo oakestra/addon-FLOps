@@ -1,14 +1,14 @@
 import shlex
 import subprocess
 
-from flops_manager.classes.base import FlOpsBaseClass
+from pydantic import BaseModel
 
 
 def run_in_bash(bash_cmd: str) -> subprocess.CompletedProcess[bytes]:
     return subprocess.run(shlex.split(bash_cmd), capture_output=True, check=True)
 
 
-def generate_ip(flops_id: str, object: FlOpsBaseClass) -> str:
+def generate_ip(flops_id: str, object: BaseModel) -> str:
     # Note: These numerical gymnastics are intended to avoid IP collisions.
     # TODO/Future work: this logic needs to be more bullet proof.
     # I.e. we need to ask the OAK components for available IPs instead of conjuring one ourselves.
