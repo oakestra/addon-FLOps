@@ -11,9 +11,9 @@ from flops_manager.utils.types import SLA, ServiceId
 from pydantic import BaseModel
 
 
-def append_service_to_flops_project_app(
+def append_service_to_app(
     sla: SLA,
-    flops_project_id: str,
+    app_id: str,
     bearer_token: str = None,
     matching_caller_object: BaseModel = None,
 ) -> ServiceId:
@@ -27,17 +27,19 @@ def append_service_to_flops_project_app(
             custom_headers={"Authorization": bearer_token} if bearer_token else None,
         ),
         aux=RequestAuxiliaries(
-            what_should_happen=f"Append new {service_type }service {flops_project_id}",
-            flops_project_id=flops_project_id,
+            what_should_happen=f"Append new {service_type }service to {app_id}",
+            # flops_project_id=flops_project_id,
             show_msg_on_success=True,
             flops_exception_type=FlOpsExceptionTypes.INTERNAL_PROJECT_SERVICE_APPEND,
         ),
     ).execute()
+
     return response["job_id"]
 
 
 def deploy(service_id: ServiceId, matching_caller_object: BaseModel = None) -> None:
     service_type = get_matching_type(matching_caller_object)
+
     CustomRequest(
         core=RequestCore(
             http_method=HttpMethods.POST,

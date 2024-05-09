@@ -1,5 +1,5 @@
 from flops_manager.classes.deployables.project_services.base import FLOpsProjectService
-from flops_manager.classes.deployables.ui import FLOpsUserInterface
+from flops_manager.classes.services.project_observer import FLOpsProjectObserver
 from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_IP
 from flops_manager.mqtt.sender import notify_ui
 from flops_manager.registry_management import FLOPS_IMAGE_REGISTRY_URL
@@ -17,7 +17,7 @@ from pydantic import Field
 
 
 class FLOpsImageBuilder(FLOpsProjectService):
-    ui: FLOpsUserInterface = Field(None, exclude=True, repr=False)
+    ui: FLOpsProjectObserver = Field(None, exclude=True, repr=False)
 
     namespace = "builder"
 
@@ -41,7 +41,7 @@ class FLOpsImageBuilder(FLOpsProjectService):
                 msg="New Builder service created & deployed",
             )
 
-    def build_sla_components(self) -> None:
+    def configure_sla_components(self) -> None:
         cmd = " ".join(
             (
                 "python3",

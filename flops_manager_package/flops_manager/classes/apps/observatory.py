@@ -1,4 +1,4 @@
-from flops_manager.classes.application import FLOpsApp
+from flops_manager.classes.apps.app_base import FLOpsApp
 from flops_manager.utils.sla.components import SlaComponentsWrapper, SlaCore, SlaDetails, SlaNames
 from pydantic import AliasChoices, Field
 
@@ -9,10 +9,10 @@ class FLOpsObservatory(FLOpsApp):
 
     customer_id: str = Field(alias=AliasChoices("customer_id", "customerID"))
 
-    namespace = "flopsobservatory"
+    namespace = "observatory"
 
-    def build_sla_components(self) -> SlaComponentsWrapper:
-        return SlaComponentsWrapper(
+    def configure_sla_components(self) -> None:
+        self.sla_components = SlaComponentsWrapper(
             core=SlaCore(
                 customerID=self.customer_id,
                 names=SlaNames(

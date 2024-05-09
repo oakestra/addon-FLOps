@@ -1,4 +1,6 @@
-from flops_manager.classes.deployables.base import DeployableClass
+from flops_manager.classes.apps.observatory import FLOpsObservatory
+from flops_manager.classes.apps.project import FLOpsProject
+from flops_manager.classes.services.service_base import FLOpsService
 from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_IP, FLOPS_MQTT_BROKER_PORT
 from flops_manager.utils.common import generate_ip, get_shortened_id
 from flops_manager.utils.constants import FLOPS_SERVICE_CMD_PREFIX
@@ -13,10 +15,15 @@ from flops_manager.utils.sla.components import (
 from pydantic import Field
 
 
-class FLOpsUserInterface(DeployableClass):
+class FLOpsProjectObserver(FLOpsService):
+    parent_app: FLOpsObservatory
+
+    flops_project: FLOpsProject = Field(None, exclude=True, repr=False)
+    flops_project_id: str = Field("", init=False)
+
     ip: str = Field("", init=False)
 
-    namespace = "flopsui"
+    namespace = "observ"
 
     def model_post_init(self, _):
         if self.gets_loaded_from_db:
@@ -27,20 +34,20 @@ class FLOpsUserInterface(DeployableClass):
 
         super().model_post_init(_)
 
-    def build_sla_components(self) -> None:
-        name = f"flopsui{get_shortened_id(self.flops_project.flops_project_id)}"
+    def configure_sla_components(self) -> None:
+        service_name = f"observ{get_shortened_id(self.flops_project.flops_project_id)}"
         self.sla_components = SlaComponentsWrapper(
             core=SlaCore(
                 customerID=self.flops_project.customer_id,
+                app_id=self.parent_app.app_id,
                 names=SlaNames(
-                    # TODO adjust to be able to add this service to an existing customer app
-                    # not just as a standalone app
-                    app_name=name,
-                    app_namespace=self.namespace,
-                    service_name=name,
+                    app_name=self.parent_app.app_name,
+                    app_namespace=self.parent_app.namespace,
+                    service_name=service_name,
                     service_namespace=self.namespace,
                 ),
                 compute=SlaCompute(
+                    # TODO rename to project_observer
                     code="ghcr.io/malyuk-a/flops-ui:latest",
                     cmd=" ".join(
                         (

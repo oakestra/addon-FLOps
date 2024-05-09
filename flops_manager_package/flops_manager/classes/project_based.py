@@ -1,7 +1,7 @@
 from abc import ABC
 
+from flops_manager.classes.apps.project import FLOpsProject
 from flops_manager.classes.base import FlOpsOakestraBaseClass
-from flops_manager.classes.project import FLOpsProject
 from pydantic import Field
 
 

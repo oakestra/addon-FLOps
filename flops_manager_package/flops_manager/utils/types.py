@@ -10,6 +10,7 @@ SLA = dict
 AppSLA = SLA
 
 Application = dict
+Service = dict
 
 Id = str
 ServiceId = Id

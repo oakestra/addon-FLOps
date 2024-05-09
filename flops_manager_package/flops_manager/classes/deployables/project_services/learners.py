@@ -51,11 +51,11 @@ class FLLearners(FLOpsProjectService):
                 msg="New FL Learners service created & deployed",
             )
 
-    def deploy(self) -> None:
+    def deploy_service(self) -> None:
         for _ in range(self.total_number_of_learners):
             deploy(service_id=self.service_id, matching_caller_object=self)
 
-    def build_sla_components(self) -> None:
+    def configure_sla_components(self) -> None:
         cmd = f"python main.py {self.fl_aggregator.ip}"
 
         self.sla_components = SlaComponentsWrapper(

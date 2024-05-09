@@ -1,4 +1,4 @@
-from flops_manager.classes.application import FLOpsApp
+from flops_manager.classes.apps.app_base import FLOpsApp
 from flops_manager.database.common import add_to_db, replace_in_db
 from flops_manager.ml_repo_management import get_latest_commit_hash
 from flops_manager.utils.common import get_shortened_id
@@ -31,7 +31,7 @@ class _ResourceContraints(BaseModel):
 class FLOpsProject(FLOpsApp):
     """Links all necessary FL and ML/DevOps components to power one entire FL user request."""
 
-    namespace = "flopsproject"
+    namespace = "proj"
 
     customer_id: str = Field(alias=AliasChoices("customer_id", "customerID"))
     verbose: bool = False
@@ -46,7 +46,7 @@ class FLOpsProject(FLOpsApp):
     flops_project_id: str = Field(
         "",
         init=False,
-        description="Is the same as its application ID in Oakestra",
+        description="Is the same as its application ID in the orchestrator",
     )
 
     def model_post_init(self, _):
@@ -55,23 +55,23 @@ class FLOpsProject(FLOpsApp):
 
         self.ml_repo_latest_commit_hash = get_latest_commit_hash(self.ml_repo_url)
         flops_db_id = add_to_db(self)
-        sla_components = self.build_sla_components(flops_db_id)
-        created_app = self.create_app_in_orchestrator(sla_components)
-        self._set_properies_based_on_created_app(created_app)
+        self.configure_sla_components(flops_db_id)
+        created_app = self.create_in_orchestrator()
+        self._set_properties_based_on_created_result(created_app)
         replace_in_db(self, flops_db_id)
 
-    def build_sla_components(self, flops_db_id: str) -> SlaComponentsWrapper:
-        return SlaComponentsWrapper(
+    def configure_sla_components(self, flops_db_id: str) -> None:
+        self.sla_components = SlaComponentsWrapper(
             core=SlaCore(
                 customerID=FLOPS_USER_ACCOUNT,
                 names=SlaNames(
-                    app_name=f"project{get_shortened_id(str(flops_db_id))}",
+                    app_name=f"proj{get_shortened_id(str(flops_db_id))}",
                     app_namespace=self.namespace,
                 ),
             ),
             details=SlaDetails(app_desc="Internal application for managing FLOps services"),
         )
 
-    def _set_properies_based_on_created_app(self, created_app: Application) -> None:
+    def _set_properties_based_on_created_result(self, created_app: Application) -> None:
         self.flops_project_id = created_app["applicationID"]
-        super()._set_properies_based_on_created_app(created_app)
+        super()._set_properties_based_on_created_result(created_app)
