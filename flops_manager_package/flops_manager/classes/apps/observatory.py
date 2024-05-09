@@ -7,9 +7,8 @@ class FLOpsObservatory(FLOpsApp):
     """A user-facing app that hosts services for observing the current FLOps project(s)
     as well as legacy ones."""
 
-    customer_id: str = Field(alias=AliasChoices("customer_id", "customerID"))
-
     namespace = "observatory"
+    customer_id: str = Field(alias=AliasChoices("customer_id", "customerID"))
 
     def configure_sla_components(self) -> None:
         self.sla_components = SlaComponentsWrapper(

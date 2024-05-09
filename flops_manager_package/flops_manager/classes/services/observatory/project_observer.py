@@ -16,14 +16,14 @@ from pydantic import Field
 
 
 class FLOpsProjectObserver(FLOpsService):
-    parent_app: FLOpsObservatory
+    namespace = "observ"
+
+    parent_app: FLOpsObservatory = Field(None, exclude=True, repr=False)
 
     flops_project: FLOpsProject = Field(None, exclude=True, repr=False)
     flops_project_id: str = Field("", init=False)
 
     ip: str = Field("", init=False)
-
-    namespace = "observ"
 
     def model_post_init(self, _):
         if self.gets_loaded_from_db:
@@ -47,7 +47,6 @@ class FLOpsProjectObserver(FLOpsService):
                     service_namespace=self.namespace,
                 ),
                 compute=SlaCompute(
-                    # TODO rename to project_observer
                     code="ghcr.io/malyuk-a/flops-project-observer:latest",
                     cmd=" ".join(
                         (

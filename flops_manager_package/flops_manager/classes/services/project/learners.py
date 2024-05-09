@@ -1,6 +1,6 @@
 from flops_manager.api.service_management import deploy
-from flops_manager.classes.deployables.project_services.aggregator.main import FLAggregator
-from flops_manager.classes.deployables.project_services.base import FLOpsProjectService
+from flops_manager.classes.services.project.aggregator.main import FLAggregator
+from flops_manager.classes.services.project.project_service import FLOpsProjectService
 from flops_manager.image_management import FLOpsImageTypes, get_flops_image_name
 from flops_manager.mqtt.sender import notify_project_observer
 from flops_manager.utils.common import get_shortened_id
@@ -40,7 +40,8 @@ class FLLearners(FLOpsProjectService):
         )
         self.flops_project_id = self.flops_project.flops_project_id
         self.fl_learner_image = get_flops_image_name(
-            ml_repo_info=self.flops_project.ml_repo_info,
+            ml_repo_url=self.parent_app.ml_repo_url,
+            ml_repo_latest_commit_hash=self.parent_app.ml_repo_latest_commit_hash,
             flops_image_type=FLOpsImageTypes.LEARNER,
         )
         super().model_post_init(_)
@@ -51,7 +52,7 @@ class FLLearners(FLOpsProjectService):
                 msg="New FL Learners service created & deployed",
             )
 
-    def deploy_service(self) -> None:
+    def deploy(self) -> None:
         for _ in range(self.total_number_of_learners):
             deploy(service_id=self.service_id, matching_caller_object=self)
 

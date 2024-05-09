@@ -29,5 +29,5 @@ class FlOpsOakestraBaseClass(BaseModel, ABC):
     def create_in_orchestrator(self):
         pass
 
-    def _set_properties_based_on_created_result(self, *args) -> None:
+    def _set_properties_based_on_created_result(self, *_) -> None:
         pass

@@ -11,7 +11,7 @@ from pydantic import AliasChoices, Field
 class FLOpsService(FlOpsOakestraBaseClass, ABC):
     """Represents a service in the orchestrator which will be added to a FLOpsApp."""
 
-    parent_app: FLOpsApp
+    parent_app: FLOpsApp = Field(None, exclude=True, repr=False)
 
     service_id: str = Field("", init=False, alias=AliasChoices("service_id", "microserviceID"))
     bearer_token: str = Field("", exclude=True, repr=False)
@@ -21,7 +21,7 @@ class FLOpsService(FlOpsOakestraBaseClass, ABC):
             return
 
         super().model_post_init(_)
-        self.deploy_service()
+        self.deploy()
 
     def create_in_orchestrator(self) -> None:
         self.service_id = append_service_to_app(
@@ -31,13 +31,13 @@ class FLOpsService(FlOpsOakestraBaseClass, ABC):
             matching_caller_object=self,
         )
 
-    def deploy_service(self) -> None:
+    def deploy(self) -> None:
         deploy(service_id=self.service_id, matching_caller_object=self)
 
-    def undeploy_service(self) -> None:
+    def undeploy(self) -> None:
         undeploy(
             service_id=self.service_id,
             matching_caller_object=self,
-            flops_project_id=self.flops_project_id,
+            # flops_project_id=self.flops_project_id,
         )
         remove_from_db_by_project_id(FLOpsService, self.flops_project_id)

@@ -1,5 +1,4 @@
-from flops_manager.classes.deployables.project_services.base import FLOpsProjectService
-from flops_manager.classes.services.project_observer import FLOpsProjectObserver
+from flops_manager.classes.services.project.project_service import FLOpsProjectService
 from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_IP
 from flops_manager.mqtt.sender import notify_project_observer
 from flops_manager.registry_management import FLOPS_IMAGE_REGISTRY_URL
@@ -17,17 +16,14 @@ from pydantic import Field
 
 
 class FLOpsImageBuilder(FLOpsProjectService):
-    project_observer: FLOpsProjectObserver = Field(None, exclude=True, repr=False)
-
     namespace = "builder"
+    project_observer_ip: str = Field(None, exclude=True, repr=False)
 
     def model_post_init(self, _):
         if self.gets_loaded_from_db:
             return
 
-        self.flops_project_id = self.flops_project.flops_project_id
-
-        if self.flops_project.verbose:
+        if self.parent_app.verbose:
             notify_project_observer(
                 flops_project_id=self.flops_project_id,
                 msg="New FLOps images need to be build. Start build delegation processes.",
@@ -35,7 +31,7 @@ class FLOpsImageBuilder(FLOpsProjectService):
 
         super().model_post_init(_)
 
-        if self.flops_project.verbose:
+        if self.parent_app.verbose:
             notify_project_observer(
                 flops_project_id=self.flops_project_id,
                 msg="New Builder service created & deployed",
@@ -46,12 +42,12 @@ class FLOpsImageBuilder(FLOpsProjectService):
             (
                 "python3",
                 "main.py",
-                self.flops_project.ml_model_flavor,
-                self.flops_project.ml_repo_info.url,
+                self.parent_app.ml_model_flavor,
+                self.parent_app.ml_repo_url,
                 FLOPS_IMAGE_REGISTRY_URL,
                 self.flops_project_id,
                 FLOPS_MQTT_BROKER_IP,
-                self.project_observer.ip,
+                self.project_observer_ip,
             )
         )
         self.sla_components = SlaComponentsWrapper(
@@ -59,9 +55,9 @@ class FLOpsImageBuilder(FLOpsProjectService):
                 app_id=self.flops_project_id,
                 customerID=FLOPS_USER_ACCOUNT,
                 names=SlaNames(
-                    app_name=self.flops_project.app_name,
-                    app_namespace=self.flops_project.namespace,
-                    service_name=f"builder{get_shortened_id(self.flops_project)}",
+                    app_name=self.parent_app.app_name,
+                    app_namespace=self.parent_app.namespace,
+                    service_name=f"builder{get_shortened_id(self.parent_app.app_id)}",
                     service_namespace=self.namespace,
                 ),
                 compute=SlaCompute(

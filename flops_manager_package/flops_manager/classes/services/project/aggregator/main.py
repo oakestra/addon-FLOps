@@ -1,4 +1,4 @@
-from flops_manager.classes.deployables.project_services.base import FLOpsProjectService
+from flops_manager.classes.services.project.project_service import FLOpsProjectService
 from flops_manager.image_management import FLOpsImageTypes, get_flops_image_name
 from flops_manager.mlflow.tracking_server import get_mlflow_tracking_server_url
 from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_IP
@@ -37,7 +37,8 @@ class FLAggregator(FLOpsProjectService):
             )
         self.ip = generate_ip(self.flops_project_id, self)
         self.fl_aggregator_image = get_flops_image_name(
-            ml_repo_info=self.flops_project.ml_repo_info,
+            ml_repo_url=self.parent_app.ml_repo_url,
+            ml_repo_latest_commit_hash=self.parent_app.ml_repo_latest_commit_hash,
             flops_image_type=FLOpsImageTypes.AGGREGATOR,
         )
 

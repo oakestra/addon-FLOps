@@ -1,5 +1,5 @@
 from flops_manager.classes.apps.project import FLOpsProject
-from flops_manager.classes.deployables.project_services.builder.main import FLOpsImageBuilder
+from flops_manager.classes.services.project.builder.main import FLOpsImageBuilder
 from flops_manager.database.common import retrieve_from_db_by_project_id
 from flops_manager.fl_management import handle_fl_operations
 from flops_manager.mqtt.sender import notify_project_observer
