@@ -1,4 +1,5 @@
 from flops_manager.classes.oak.base import FlOpsOakestraBaseClass
+from flops_manager.database.common import add_to_db, replace_in_db
 from flops_manager.ml_repo_management import MLRepoInfo
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
 from flops_manager.utils.sla.components import SlaComponentsWrapper, SlaCore, SlaDetails, SlaNames
@@ -53,12 +54,12 @@ class FLOpsProject(FlOpsOakestraBaseClass):
             return
 
         self.ml_repo_info = MLRepoInfo(url=self.ml_repo_url)
-        flops_db_id = self._add_to_db()
+        flops_db_id = add_to_db(self)
         self._configure_sla_components(flops_db_id)
         created_app = self.create()
         self._set_properties_based_on_created_result(created_app)
         self.flops_project_id = created_app["applicationID"]
-        self._replace_in_db(flops_db_id)
+        replace_in_db(self, flops_db_id)
 
     def _configure_sla_components(self, flops_db_id: str) -> None:
         self.sla_components = SlaComponentsWrapper(

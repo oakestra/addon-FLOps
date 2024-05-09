@@ -3,6 +3,7 @@ import threading
 from flops_manager.classes.oak.deployables.project_services.builder.main import FLOpsImageBuilder
 from flops_manager.classes.oak.deployables.ui import FLOpsUserInterface
 from flops_manager.classes.oak.project import FLOpsProject
+from flops_manager.database.common import retrieve_from_db
 from flops_manager.fl_management import handle_fl_operations
 from flops_manager.image_management import check_if_latest_matching_images_exist
 from flops_manager.mqtt.sender import notify_ui

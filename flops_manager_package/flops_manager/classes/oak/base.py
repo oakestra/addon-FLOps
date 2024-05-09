@@ -2,14 +2,15 @@ from abc import ABC, abstractmethod
 from typing import ClassVar
 
 from flops_manager.api.app_management import create_app, fetch_app
-from flops_manager.classes.base import FlOpsBaseClass
+from flops_manager.classes.project_based import FlOpsProjectBasedClass
+from flops_manager.database.common import add_to_db
 from flops_manager.utils.sla.components import SlaComponentsWrapper
 from flops_manager.utils.sla.generator import generate_sla
 from flops_manager.utils.types import Application
 from pydantic import AliasChoices, Field
 
 
-class FlOpsOakestraBaseClass(FlOpsBaseClass, ABC):
+class FlOpsOakestraBaseClass(FlOpsProjectBasedClass, ABC):
     """A class used for components that can be created or deployed as applications or services."""
 
     # Note:
@@ -38,7 +39,7 @@ class FlOpsOakestraBaseClass(FlOpsBaseClass, ABC):
         self._configure_sla_components()
         created_app = self.create()
         self._set_properties_based_on_created_result(created_app)
-        self._add_to_db()
+        add_to_db(self)
 
     @abstractmethod
     def _configure_sla_components(self) -> None:

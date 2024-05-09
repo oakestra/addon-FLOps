@@ -2,6 +2,7 @@ from abc import ABC
 
 from flops_manager.api.service_management import deploy, undeploy
 from flops_manager.classes.oak.project_based import FlOpsOakestraProjectBasedClass
+from flops_manager.database.common import remove_from_db
 from pydantic import AliasChoices, Field
 
 
@@ -28,4 +29,4 @@ class DeployableClass(FlOpsOakestraProjectBasedClass, ABC):
             matching_caller_object=self,
             flops_project_id=self.flops_project_id,
         )
-        self.remove_from_db()
+        remove_from_db(DeployableClass, self.flops_project_id)

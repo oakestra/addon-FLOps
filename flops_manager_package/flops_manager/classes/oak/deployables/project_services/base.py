@@ -2,6 +2,7 @@ from abc import ABC
 
 from flops_manager.api.service_management import append_service_to_flops_project_app
 from flops_manager.classes.oak.deployables.base import DeployableClass
+from flops_manager.database.common import add_to_db
 from flops_manager.utils.sla.generator import generate_sla
 from pydantic import Field
 
@@ -20,7 +21,7 @@ class FLOpsProjectService(DeployableClass, ABC):
 
         self._configure_sla_components()
         self.create()
-        self._add_to_db()
+        add_to_db(self)
         self.deploy()
 
     def create(self) -> None:
