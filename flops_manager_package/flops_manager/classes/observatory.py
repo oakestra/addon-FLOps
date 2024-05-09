@@ -11,14 +11,14 @@ class FLOpsObservatory(FLOpsApp):
 
     namespace = "flopsobservatory"
 
-    def _configure_sla_components(self) -> None:
-        self.sla_components = SlaComponentsWrapper(
+    def build_sla_components(self) -> SlaComponentsWrapper:
+        return SlaComponentsWrapper(
             core=SlaCore(
                 customerID=self.customer_id,
                 names=SlaNames(
                     # TODO investigate if this can lead to name collisions
                     # keep in mind: 1 observ for 1 user - so we could be fine
-                    app_name="flopsobservatory",
+                    app_name=self.namespace,
                     app_namespace=self.namespace,
                 ),
             ),

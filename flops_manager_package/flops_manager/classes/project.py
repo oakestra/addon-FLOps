@@ -1,9 +1,10 @@
-from flops_manager.classes.base import FlOpsOakestraBaseClass
+from flops_manager.classes.application import FLOpsApp
 from flops_manager.database.common import add_to_db, replace_in_db
 from flops_manager.ml_repo_management import get_latest_commit_hash
 from flops_manager.utils.common import get_shortened_id
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
 from flops_manager.utils.sla.components import SlaComponentsWrapper, SlaCore, SlaDetails, SlaNames
+from flops_manager.utils.types import Application
 from flops_utils.types import MLModelFlavor
 from pydantic import AliasChoices, BaseModel, Field
 
@@ -27,20 +28,20 @@ class _ResourceContraints(BaseModel):
     storage: int = 0
 
 
-class FLOpsProject(FlOpsOakestraBaseClass):
+class FLOpsProject(FLOpsApp):
     """Links all necessary FL and ML/DevOps components to power one entire FL user request."""
+
+    namespace = "flopsproject"
 
     customer_id: str = Field(alias=AliasChoices("customer_id", "customerID"))
     verbose: bool = False
-
-    # Note: The ml_repo_url is only used as an input param and then discarded.
-    ml_repo_url: str = Field("", repr=False, exclude=True)
-    ml_repo_latest_commit_hash: str = Field("", init=False)
-
     ml_model_flavor: MLModelFlavor
 
     training_configuration: _TrainingConfiguration = _TrainingConfiguration()
     resource_constraints: _ResourceContraints = _ResourceContraints()
+
+    ml_repo_url: str
+    ml_repo_latest_commit_hash: str = Field("", init=False)
 
     flops_project_id: str = Field(
         "",
@@ -48,22 +49,19 @@ class FLOpsProject(FlOpsOakestraBaseClass):
         description="Is the same as its application ID in Oakestra",
     )
 
-    namespace = "flopsproject"
-
     def model_post_init(self, _):
         if self.gets_loaded_from_db:
             return
 
         self.ml_repo_latest_commit_hash = get_latest_commit_hash(self.ml_repo_url)
         flops_db_id = add_to_db(self)
-        self._configure_sla_components(flops_db_id)
-        created_app = self.create()
-        self._set_properties_based_on_created_result(created_app)
-        self.flops_project_id = created_app["applicationID"]
+        sla_components = self.build_sla_components(flops_db_id)
+        created_app = self.create_app_in_orchestrator(sla_components)
+        self._set_properies_based_on_created_app(created_app)
         replace_in_db(self, flops_db_id)
 
-    def _configure_sla_components(self, flops_db_id: str) -> None:
-        self.sla_components = SlaComponentsWrapper(
+    def build_sla_components(self, flops_db_id: str) -> SlaComponentsWrapper:
+        return SlaComponentsWrapper(
             core=SlaCore(
                 customerID=FLOPS_USER_ACCOUNT,
                 names=SlaNames(
@@ -73,3 +71,7 @@ class FLOpsProject(FlOpsOakestraBaseClass):
             ),
             details=SlaDetails(app_desc="Internal application for managing FLOps services"),
         )
+
+    def _set_properies_based_on_created_app(self, created_app: Application) -> None:
+        self.flops_project_id = created_app["applicationID"]
+        super()._set_properies_based_on_created_app(created_app)

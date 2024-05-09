@@ -19,7 +19,7 @@ class FLOpsProjectService(DeployableClass, ABC):
         if self.gets_loaded_from_db:
             return
 
-        self._configure_sla_components()
+        self.build_sla_components()
         self.create()
         add_to_db(self)
         self.deploy()

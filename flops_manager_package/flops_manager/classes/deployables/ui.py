@@ -27,7 +27,7 @@ class FLOpsUserInterface(DeployableClass):
 
         super().model_post_init(_)
 
-    def _configure_sla_components(self) -> None:
+    def build_sla_components(self) -> None:
         name = f"flopsui{get_shortened_id(self.flops_project.flops_project_id)}"
         self.sla_components = SlaComponentsWrapper(
             core=SlaCore(

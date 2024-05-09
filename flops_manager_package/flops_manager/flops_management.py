@@ -4,7 +4,7 @@ from flops_manager.classes.deployables.project_services.builder.main import FLOp
 from flops_manager.classes.deployables.ui import FLOpsUserInterface
 from flops_manager.classes.observatory import FLOpsObservatory
 from flops_manager.classes.project import FLOpsProject
-from flops_manager.database.common import retrieve_from_db
+from flops_manager.database.common import retrieve_from_db_by_app_id, retrieve_from_db_by_project_id
 from flops_manager.fl_management import handle_fl_operations
 from flops_manager.image_management import check_if_latest_matching_images_exist
 from flops_manager.mqtt.sender import notify_ui
@@ -14,14 +14,12 @@ from icecream import ic
 
 def handle_new_flops_project(request_data: dict, bearer_token: str) -> None:
     observatory = FLOpsObservatory.model_validate(request_data)
-    ic(observatory)
-    # test = retrieve_from_db(FLOpsObservatory)
-    # ic(test)
-    return
-    flops_project = FLOpsProject.model_validate(request_data)
-    test = retrieve_from_db(FLOpsProject, flops_project.flops_project_id)
+    ic(retrieve_from_db_by_app_id(FLOpsObservatory, observatory.app_id))
 
-    ic(test)
+    flops_project = FLOpsProject.model_validate(request_data)
+    ic(flops_project)
+
+    ic(retrieve_from_db_by_project_id(FLOpsProject, flops_project.flops_project_id))
 
     return
     ui = FLOpsUserInterface(flops_project=flops_project, bearer_token=bearer_token)

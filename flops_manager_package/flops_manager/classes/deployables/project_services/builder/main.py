@@ -41,7 +41,7 @@ class FLOpsImageBuilder(FLOpsProjectService):
                 msg="New Builder service created & deployed",
             )
 
-    def _configure_sla_components(self) -> None:
+    def build_sla_components(self) -> None:
         cmd = " ".join(
             (
                 "python3",
