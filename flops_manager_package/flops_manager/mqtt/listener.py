@@ -2,11 +2,11 @@
 
 import json
 
-from flops_manager.classes.oak.deployables.project_services.aggregator.termination import (
+from flops_manager.classes.deployables.project_services.aggregator.termination import (
     handle_aggregator_failed,
     handle_aggregator_success,
 )
-from flops_manager.classes.oak.deployables.project_services.builder.termination import (
+from flops_manager.classes.deployables.project_services.builder.termination import (
     handle_builder_failed,
     handle_builder_success,
 )

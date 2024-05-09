@@ -1,6 +1,7 @@
-from flops_manager.classes.oak.base import FlOpsOakestraBaseClass
+from flops_manager.classes.base import FlOpsOakestraBaseClass
 from flops_manager.database.common import add_to_db, replace_in_db
-from flops_manager.ml_repo_management import MLRepoInfo
+from flops_manager.ml_repo_management import get_latest_commit_hash
+from flops_manager.utils.common import get_shortened_id
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
 from flops_manager.utils.sla.components import SlaComponentsWrapper, SlaCore, SlaDetails, SlaNames
 from flops_utils.types import MLModelFlavor
@@ -34,7 +35,7 @@ class FLOpsProject(FlOpsOakestraBaseClass):
 
     # Note: The ml_repo_url is only used as an input param and then discarded.
     ml_repo_url: str = Field("", repr=False, exclude=True)
-    ml_repo_info: MLRepoInfo = Field(None, init=False)
+    ml_repo_latest_commit_hash: str = Field("", init=False)
 
     ml_model_flavor: MLModelFlavor
 
@@ -53,7 +54,7 @@ class FLOpsProject(FlOpsOakestraBaseClass):
         if self.gets_loaded_from_db:
             return
 
-        self.ml_repo_info = MLRepoInfo(url=self.ml_repo_url)
+        self.ml_repo_latest_commit_hash = get_latest_commit_hash(self.ml_repo_url)
         flops_db_id = add_to_db(self)
         self._configure_sla_components(flops_db_id)
         created_app = self.create()
@@ -66,12 +67,9 @@ class FLOpsProject(FlOpsOakestraBaseClass):
             core=SlaCore(
                 customerID=FLOPS_USER_ACCOUNT,
                 names=SlaNames(
-                    app_name=f"project{self.get_shortened_id(str(flops_db_id))}",
+                    app_name=f"project{get_shortened_id(str(flops_db_id))}",
                     app_namespace=self.namespace,
                 ),
             ),
             details=SlaDetails(app_desc="Internal application for managing FLOps services"),
         )
-
-    def get_shortened_id(self, specific_id: str = "") -> str:
-        return (specific_id or self.flops_project_id)[:6]

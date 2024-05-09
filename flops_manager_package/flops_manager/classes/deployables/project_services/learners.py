@@ -1,8 +1,9 @@
 from flops_manager.api.service_management import deploy
-from flops_manager.classes.oak.deployables.project_services.aggregator.main import FLAggregator
-from flops_manager.classes.oak.deployables.project_services.base import FLOpsProjectService
+from flops_manager.classes.deployables.project_services.aggregator.main import FLAggregator
+from flops_manager.classes.deployables.project_services.base import FLOpsProjectService
 from flops_manager.image_management import FLOpsImageTypes, get_flops_image_name
 from flops_manager.mqtt.sender import notify_ui
+from flops_manager.utils.common import get_shortened_id
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
 from flops_manager.utils.sla.components import (
     SlaComponentsWrapper,
@@ -64,7 +65,7 @@ class FLLearners(FLOpsProjectService):
                 names=SlaNames(
                     app_name=self.flops_project.app_name,
                     app_namespace=self.flops_project.namespace,
-                    service_name=f"flearner{self.flops_project.get_shortened_id()}",
+                    service_name=f"flearner{get_shortened_id(self.flops_project.flops_project_id)}",
                     service_namespace=self.namespace,
                 ),
                 compute=SlaCompute(

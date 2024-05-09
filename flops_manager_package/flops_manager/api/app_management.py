@@ -53,7 +53,7 @@ def create_app(
     return new_app
 
 
-def fetch_app(
+def fetch_app_from_orchestrator(
     app_id: str,
     matching_caller_object: BaseModel = None,
 ) -> Application:

@@ -1,8 +1,9 @@
-from flops_manager.classes.oak.deployables.project_services.base import FLOpsProjectService
-from flops_manager.classes.oak.deployables.ui import FLOpsUserInterface
+from flops_manager.classes.deployables.project_services.base import FLOpsProjectService
+from flops_manager.classes.deployables.ui import FLOpsUserInterface
 from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_IP
 from flops_manager.mqtt.sender import notify_ui
 from flops_manager.registry_management import FLOPS_IMAGE_REGISTRY_URL
+from flops_manager.utils.common import get_shortened_id
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
 from flops_manager.utils.sla.components import (
     SlaComponentsWrapper,
@@ -60,7 +61,7 @@ class FLOpsImageBuilder(FLOpsProjectService):
                 names=SlaNames(
                     app_name=self.flops_project.app_name,
                     app_namespace=self.flops_project.namespace,
-                    service_name=f"builder{self.flops_project.get_shortened_id()}",
+                    service_name=f"builder{get_shortened_id(self.flops_project)}",
                     service_namespace=self.namespace,
                 ),
                 compute=SlaCompute(

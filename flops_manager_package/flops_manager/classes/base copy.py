@@ -1,16 +1,15 @@
 from abc import ABC, abstractmethod
 from typing import ClassVar
 
-from flops_manager.api.app_management import create_app, fetch_app
-from flops_manager.classes.project_based import FlOpsProjectBasedClass
+from flops_manager.api.app_management import create_app, fetch_app_from_orchestrator
 from flops_manager.database.common import add_to_db
 from flops_manager.utils.sla.components import SlaComponentsWrapper
 from flops_manager.utils.sla.generator import generate_sla
 from flops_manager.utils.types import Application
-from pydantic import AliasChoices, Field
+from pydantic import AliasChoices, BaseModel, Field
 
 
-class FlOpsOakestraBaseClass(FlOpsProjectBasedClass, ABC):
+class FlOpsOakestraBaseClass(BaseModel, ABC):
     """A class used for components that can be created or deployed as applications or services."""
 
     # Note:
@@ -26,6 +25,10 @@ class FlOpsOakestraBaseClass(FlOpsProjectBasedClass, ABC):
     # TODO add a "post init" (custom) validator to check
     # if all properties are properly set and not empty/""
     namespace: ClassVar[str]
+
+    flops_project_id: str
+    gets_loaded_from_db: bool = Field(False, init=False, exclude=True, repr=False)
+
     # Note: Only used during "runtime". It is not stored or displayed due to verbosity & redundancy.
     sla_components: SlaComponentsWrapper = Field(None, init=False, exclude=True, repr=False)
 
@@ -59,9 +62,3 @@ class FlOpsOakestraBaseClass(FlOpsProjectBasedClass, ABC):
         self.app_name = created_app["application_name"]
         if created_app["microservices"]:
             self.service_id = created_app["microservices"][-1]
-
-    def fetch_from_oakestra(self) -> Application:
-        return fetch_app(
-            app_id=self.app_id,
-            matching_caller_object=self,
-        )

@@ -1,7 +1,7 @@
 from abc import ABC
 
 from flops_manager.api.service_management import deploy, undeploy
-from flops_manager.classes.oak.project_based import FlOpsOakestraProjectBasedClass
+from flops_manager.classes.project_based import FlOpsOakestraProjectBasedClass
 from flops_manager.database.common import remove_from_db
 from pydantic import AliasChoices, Field
 

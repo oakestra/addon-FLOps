@@ -5,7 +5,7 @@ from flops_manager.api.request_management.custom_requests import (
     RequestAuxiliaries,
     RequestCore,
 )
-from flops_manager.classes.oak.project import FLOpsProject
+from flops_manager.classes.project import FLOpsProject
 from flops_manager.utils.exceptions.types import FlOpsExceptionTypes
 
 FLOPS_IMAGE_REGISTRY_PORT = "5073"

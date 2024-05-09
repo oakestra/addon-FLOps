@@ -1,14 +1,5 @@
 import github
 from flops_manager.api.utils.consts import GITHUB_PREFIX
-from pydantic import BaseModel, Field
-
-
-class MLRepoInfo(BaseModel):
-    url: str
-    latest_commit_hash: str = Field("", init=False)
-
-    def model_post_init(self, _):
-        self.latest_commit_hash = get_latest_commit_hash(self.url)
 
 
 def _get_ml_repo_name(ml_repo_url: str) -> str:

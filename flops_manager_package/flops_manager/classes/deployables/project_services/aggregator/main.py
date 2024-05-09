@@ -1,9 +1,9 @@
-from flops_manager.classes.oak.deployables.project_services.base import FLOpsProjectService
+from flops_manager.classes.deployables.project_services.base import FLOpsProjectService
 from flops_manager.image_management import FLOpsImageTypes, get_flops_image_name
 from flops_manager.mlflow.tracking_server import get_mlflow_tracking_server_url
 from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_IP
 from flops_manager.mqtt.sender import notify_ui
-from flops_manager.utils.common import generate_ip
+from flops_manager.utils.common import generate_ip, get_shortened_id
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
 from flops_manager.utils.sla.components import (
     SlaComponentsWrapper,
@@ -72,7 +72,7 @@ class FLAggregator(FLOpsProjectService):
                 names=SlaNames(
                     app_name=self.flops_project.app_name,
                     app_namespace=self.flops_project.namespace,
-                    service_name=f"aggr{self.flops_project.get_shortened_id()}",
+                    service_name=f"aggr{get_shortened_id(self.flops_project.flops_project_id)}",
                     service_namespace=self.namespace,
                 ),
                 compute=SlaCompute(

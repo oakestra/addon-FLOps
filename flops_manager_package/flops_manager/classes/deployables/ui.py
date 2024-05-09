@@ -1,6 +1,6 @@
-from flops_manager.classes.oak.deployables.base import DeployableClass
+from flops_manager.classes.deployables.base import DeployableClass
 from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_IP, FLOPS_MQTT_BROKER_PORT
-from flops_manager.utils.common import generate_ip
+from flops_manager.utils.common import generate_ip, get_shortened_id
 from flops_manager.utils.constants import FLOPS_SERVICE_CMD_PREFIX
 from flops_manager.utils.sla.components import (
     SlaComponentsWrapper,
@@ -28,7 +28,7 @@ class FLOpsUserInterface(DeployableClass):
         super().model_post_init(_)
 
     def _configure_sla_components(self) -> None:
-        name = f"flopsui{self.flops_project.get_shortened_id()}"
+        name = f"flopsui{get_shortened_id(self.flops_project.flops_project_id)}"
         self.sla_components = SlaComponentsWrapper(
             core=SlaCore(
                 customerID=self.flops_project.customer_id,

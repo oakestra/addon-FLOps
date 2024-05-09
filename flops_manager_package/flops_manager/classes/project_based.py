@@ -1,8 +1,13 @@
 from abc import ABC
 
-from pydantic import BaseModel, Field
+from flops_manager.classes.base import FlOpsOakestraBaseClass
+from flops_manager.classes.project import FLOpsProject
+from pydantic import Field
 
 
-class FlOpsProjectBasedClass(BaseModel, ABC):
-    flops_project_id: str
-    gets_loaded_from_db: bool = Field(False, init=False, exclude=True, repr=False)
+class FlOpsOakestraProjectBasedClass(FlOpsOakestraBaseClass, ABC):
+    """A base class used for components that are based on a FLOps Project"""
+
+    # Note: Use the entire Project object instead but only store & display its id.
+    flops_project: FLOpsProject = Field(None, exclude=True, repr=False)
+    flops_project_id: str = Field("", init=False)
