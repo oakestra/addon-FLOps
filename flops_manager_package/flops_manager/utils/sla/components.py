@@ -39,4 +39,4 @@ class SlaDetails(NamedTuple):
 
 class SlaComponentsWrapper(NamedTuple):
     core: SlaCore
-    details: SlaDetails
+    details: SlaDetails = SlaDetails()

@@ -1,7 +1,7 @@
 from flops_manager.classes.apps.observatory import FLOpsObservatory
 from flops_manager.classes.services.service_base import FLOpsService
 from flops_manager.mlflow.storages.backend_stores import get_user_backend_store_uri
-from flops_manager.utils.common import generate_ip, get_shortened_id
+from flops_manager.utils.common import generate_ip, get_shortened_unique_id
 from flops_manager.utils.sla.components import (
     SlaComponentsWrapper,
     SlaCompute,
@@ -10,7 +10,7 @@ from flops_manager.utils.sla.components import (
     SlaNames,
     SlaResources,
 )
-from pydantic import Field
+from pydantic import AliasChoices, Field
 
 TRACKING_SERVER_PORT = 7027
 
@@ -19,6 +19,7 @@ class TrackingServer(FLOpsService):
     namespace = "tracking"
 
     parent_app: FLOpsObservatory = Field(None, exclude=True, repr=False)
+    customer_id: str = Field(alias=AliasChoices("customer_id", "customerID"))
 
     ip: str = Field("", init=False)
 
@@ -33,7 +34,7 @@ class TrackingServer(FLOpsService):
         return f"http://{self.ip}:{TRACKING_SERVER_PORT}"
 
     def _configure_sla_components(self) -> None:
-        service_name = f"tracking{get_shortened_id(self.parent_app.customer_id)}"
+        service_name = f"tracking{get_shortened_unique_id(self.parent_app.customer_id)}"
         self.sla_components = SlaComponentsWrapper(
             core=SlaCore(
                 customerID=self.parent_app.customer_id,

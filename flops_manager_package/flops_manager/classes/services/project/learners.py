@@ -2,7 +2,7 @@ from flops_manager.api.service_management import deploy
 from flops_manager.classes.services.project.project_service import FLOpsProjectService
 from flops_manager.image_management import FLOpsImageTypes, get_flops_image_name
 from flops_manager.mqtt.sender import notify_project_observer
-from flops_manager.utils.common import get_shortened_id
+from flops_manager.utils.common import get_shortened_unique_id
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
 from flops_manager.utils.sla.components import (
     SlaComponentsWrapper,
@@ -52,7 +52,7 @@ class FLLearners(FLOpsProjectService):
 
     def _configure_sla_components(self) -> None:
         cmd = f"python main.py {self.fl_aggregator_ip}"
-
+        service_name = f"flearner{get_shortened_unique_id(self.parent_app.flops_project_id)}"
         self.sla_components = SlaComponentsWrapper(
             core=SlaCore(
                 app_id=self.flops_project_id,
@@ -60,7 +60,7 @@ class FLLearners(FLOpsProjectService):
                 names=SlaNames(
                     app_name=self.parent_app.app_name,
                     app_namespace=self.parent_app.namespace,
-                    service_name=f"flearner{get_shortened_id(self.parent_app.flops_project_id)}",
+                    service_name=service_name,
                     service_namespace=self.namespace,
                 ),
                 compute=SlaCompute(

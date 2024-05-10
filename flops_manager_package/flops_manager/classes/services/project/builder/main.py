@@ -2,7 +2,7 @@ from flops_manager.classes.services.project.project_service import FLOpsProjectS
 from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_IP
 from flops_manager.mqtt.sender import notify_project_observer
 from flops_manager.registry_management import FLOPS_IMAGE_REGISTRY_URL
-from flops_manager.utils.common import get_shortened_id
+from flops_manager.utils.common import get_shortened_unique_id
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
 from flops_manager.utils.sla.components import (
     SlaComponentsWrapper,
@@ -57,7 +57,7 @@ class FLOpsImageBuilder(FLOpsProjectService):
                 names=SlaNames(
                     app_name=self.parent_app.app_name,
                     app_namespace=self.parent_app.namespace,
-                    service_name=f"builder{get_shortened_id(self.parent_app.app_id)}",
+                    service_name=f"builder{get_shortened_unique_id(self.parent_app.app_id)}",
                     service_namespace=self.namespace,
                 ),
                 compute=SlaCompute(

@@ -1,7 +1,7 @@
 from flops_manager.classes.apps.app_base import FLOpsApp
 from flops_manager.database.common import add_to_db, replace_in_db
 from flops_manager.ml_repo_management import get_latest_commit_hash
-from flops_manager.utils.common import get_shortened_id
+from flops_manager.utils.common import get_shortened_unique_id
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
 from flops_manager.utils.sla.components import SlaComponentsWrapper, SlaCore, SlaDetails, SlaNames
 from flops_manager.utils.types import Application
@@ -65,7 +65,7 @@ class FLOpsProject(FLOpsApp):
             core=SlaCore(
                 customerID=FLOPS_USER_ACCOUNT,
                 names=SlaNames(
-                    app_name=f"proj{get_shortened_id(str(flops_db_id))}",
+                    app_name=f"proj{get_shortened_unique_id(str(flops_db_id))}",
                     app_namespace=self.namespace,
                 ),
             ),

@@ -2,7 +2,7 @@ from flops_manager.classes.apps.observatory import FLOpsObservatory
 from flops_manager.classes.apps.project import FLOpsProject
 from flops_manager.classes.services.service_base import FLOpsService
 from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_IP, FLOPS_MQTT_BROKER_PORT
-from flops_manager.utils.common import generate_ip, get_shortened_id
+from flops_manager.utils.common import generate_ip, get_shortened_unique_id
 from flops_manager.utils.constants import FLOPS_SERVICE_CMD_PREFIX
 from flops_manager.utils.sla.components import (
     SlaComponentsWrapper,
@@ -35,7 +35,7 @@ class FLOpsProjectObserver(FLOpsService):
         super().model_post_init(_)
 
     def _configure_sla_components(self) -> None:
-        service_name = f"observ{get_shortened_id(self.flops_project.flops_project_id)}"
+        service_name = f"observ{get_shortened_unique_id(self.flops_project.flops_project_id)}"
         self.sla_components = SlaComponentsWrapper(
             core=SlaCore(
                 customerID=self.flops_project.customer_id,

@@ -1,3 +1,4 @@
+import hashlib
 import shlex
 import subprocess
 
@@ -8,8 +9,8 @@ def run_in_bash(bash_cmd: str) -> subprocess.CompletedProcess[bytes]:
     return subprocess.run(shlex.split(bash_cmd), capture_output=True, check=True)
 
 
-def get_shortened_id(id: str) -> str:
-    return id[:6]
+def get_shortened_unique_id(id: str) -> str:
+    return hashlib.md5(id.encode()).digest()[:6].hex()
 
 
 def generate_ip(unique_id: str, object: BaseModel) -> str:

@@ -1,6 +1,6 @@
 from flops_manager.classes.apps.app_base import FLOpsApp
 from flops_manager.database.common import retrieve_from_db_by_customer_id
-from flops_manager.utils.sla.components import SlaComponentsWrapper, SlaCore, SlaDetails, SlaNames
+from flops_manager.utils.sla.components import SlaComponentsWrapper, SlaCore, SlaNames
 from pydantic import AliasChoices, Field
 
 
@@ -22,7 +22,6 @@ class FLOpsObservatory(FLOpsApp):
                     app_namespace=self.namespace,
                 ),
             ),
-            details=SlaDetails(app_desc="TODO"),
         )
 
 
