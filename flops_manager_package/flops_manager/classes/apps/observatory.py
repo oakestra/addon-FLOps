@@ -1,4 +1,5 @@
 from flops_manager.classes.apps.app_base import FLOpsApp
+from flops_manager.database.common import retrieve_from_db_by_customer_id
 from flops_manager.utils.sla.components import SlaComponentsWrapper, SlaCore, SlaDetails, SlaNames
 from pydantic import AliasChoices, Field
 
@@ -23,3 +24,9 @@ class FLOpsObservatory(FLOpsApp):
             ),
             details=SlaDetails(app_desc="TODO"),
         )
+
+
+def get_observatory(customer_id: str) -> FLOpsObservatory:
+    """There should be only one observatory per user."""
+    existing_observatory = retrieve_from_db_by_customer_id(FLOpsObservatory, customer_id)
+    return existing_observatory or FLOpsObservatory(customer_id=customer_id)

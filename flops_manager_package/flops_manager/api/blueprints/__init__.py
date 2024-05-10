@@ -1,3 +1,3 @@
-from .flops_services import flops_blp
+from .projects import projects_blp
 
-blueprints = [flops_blp]
+blueprints = [projects_blp]

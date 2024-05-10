@@ -1,6 +1,6 @@
 import threading
 
-from flops_manager.classes.apps.observatory.management import get_observatory
+from flops_manager.classes.apps.observatory import get_observatory
 from flops_manager.classes.apps.project import FLOpsProject
 from flops_manager.classes.services.observatory.project_observer import FLOpsProjectObserver
 from flops_manager.classes.services.project.builder.main import FLOpsImageBuilder

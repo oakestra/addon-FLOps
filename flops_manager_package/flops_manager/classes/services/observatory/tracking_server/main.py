@@ -1,4 +1,4 @@
-from flops_manager.classes.apps.observatory.main import FLOpsObservatory
+from flops_manager.classes.apps.observatory import FLOpsObservatory
 from flops_manager.classes.services.service_base import FLOpsService
 from flops_manager.utils.common import generate_ip, get_shortened_id
 from flops_manager.utils.sla.components import (

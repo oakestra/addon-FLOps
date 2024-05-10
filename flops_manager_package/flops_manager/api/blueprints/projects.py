@@ -3,20 +3,21 @@ from typing import Tuple
 
 import flask
 import flask_openapi3
+from flops_manager.api.blueprints.common import API_PREFIX
 from flops_manager.flops_management import handle_new_flops_project
 from flops_manager.mqtt.sender import notify_project_observer
 from flops_manager.utils.exceptions.main import FLOpsManagerException
 from flops_utils.logging import colorful_logger as logger
 
-flops_blp = flask_openapi3.APIBlueprint(
+projects_blp = flask_openapi3.APIBlueprint(
     "flops",
     __name__,
-    url_prefix="/api/flops",
+    url_prefix=f"{API_PREFIX}/projects",
 )
 
 
-@flops_blp.post("/")
-def post_fl_service() -> Tuple[dict, HTTPStatus]:
+@projects_blp.post("/")
+def post_project() -> Tuple[dict, HTTPStatus]:
     try:
         handle_new_flops_project(
             request_data=flask.request.json,

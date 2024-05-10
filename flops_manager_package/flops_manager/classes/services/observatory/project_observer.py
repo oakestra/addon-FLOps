@@ -1,4 +1,4 @@
-from flops_manager.classes.apps.observatory.main import FLOpsObservatory
+from flops_manager.classes.apps.observatory import FLOpsObservatory
 from flops_manager.classes.apps.project import FLOpsProject
 from flops_manager.classes.services.service_base import FLOpsService
 from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_IP, FLOPS_MQTT_BROKER_PORT
