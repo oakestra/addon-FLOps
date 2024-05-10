@@ -4,12 +4,10 @@ from flops_manager.classes.apps.observatory import FLOpsObservatory
 from flops_manager.classes.apps.project import FLOpsProject
 from flops_manager.classes.services.observatory.project_observer import FLOpsProjectObserver
 from flops_manager.classes.services.project.builder.main import FLOpsImageBuilder
-from flops_manager.database.common import retrieve_from_db_by_app_id, retrieve_from_db_by_project_id
 from flops_manager.fl_management import handle_fl_operations
 from flops_manager.image_management import check_if_latest_matching_images_exist
 from flops_manager.mqtt.sender import notify_project_observer
 from flops_utils.logging import colorful_logger as logger
-from icecream import ic
 
 
 def handle_new_flops_project(request_data: dict, bearer_token: str) -> None:

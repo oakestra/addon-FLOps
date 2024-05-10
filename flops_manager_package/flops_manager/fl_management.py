@@ -16,9 +16,7 @@ def handle_fl_operations(flops_project: FLOpsProject) -> None:
         FLOpsProjectObserver, flops_project.flops_project_id
     )
 
-    fl_aggregator = FLAggregator(
-        flops_project=flops_project, project_observer_ip=project_observer.ip
-    )
-    FLLearners(flops_project=flops_project, fl_aggregator=fl_aggregator)
+    fl_aggregator = FLAggregator(parent_app=flops_project, project_observer_ip=project_observer.ip)
+    FLLearners(parent_app=flops_project, fl_aggregator_ip=fl_aggregator.ip)
 
     # TODO

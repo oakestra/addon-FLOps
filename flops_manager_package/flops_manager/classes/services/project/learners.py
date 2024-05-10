@@ -1,5 +1,4 @@
 from flops_manager.api.service_management import deploy
-from flops_manager.classes.services.project.aggregator.main import FLAggregator
 from flops_manager.classes.services.project.project_service import FLOpsProjectService
 from flops_manager.image_management import FLOpsImageTypes, get_flops_image_name
 from flops_manager.mqtt.sender import notify_project_observer
@@ -17,28 +16,23 @@ from pydantic import Field
 
 
 class FLLearners(FLOpsProjectService):
-    total_number_of_learners: int = Field(1, init=False)
-
-    fl_aggregator: FLAggregator = Field(None, exclude=True, repr=False)
-
-    fl_learner_image: str = Field("", init=False)
-
     namespace = "flearner"
+
+    total_number_of_learners: int = Field(1, init=False)
+    fl_learner_image: str = Field("", init=False)
+    fl_aggregator_ip: str = Field(None, exclude=True, repr=False)
 
     def model_post_init(self, _):
         if self.gets_loaded_from_db:
             return
 
-        if self.flops_project.verbose:
+        if self.parent_app.verbose:
             notify_project_observer(
-                flops_project_id=self.flops_project_id,
+                flops_project_id=self.parent_app.flops_project_id,
                 msg="Preparing new FL Learners.",
             )
 
-        self.total_number_of_learners = (
-            self.flops_project.training_configuration.min_available_clients
-        )
-        self.flops_project_id = self.flops_project.flops_project_id
+        self.total_number_of_learners = self.parent_app.training_configuration.min_available_clients
         self.fl_learner_image = get_flops_image_name(
             ml_repo_url=self.parent_app.ml_repo_url,
             ml_repo_latest_commit_hash=self.parent_app.ml_repo_latest_commit_hash,
@@ -46,9 +40,9 @@ class FLLearners(FLOpsProjectService):
         )
         super().model_post_init(_)
 
-        if self.flops_project.verbose:
+        if self.parent_app.verbose:
             notify_project_observer(
-                flops_project_id=self.flops_project_id,
+                flops_project_id=self.parent_app.flops_project_id,
                 msg="New FL Learners service created & deployed",
             )
 
@@ -57,16 +51,16 @@ class FLLearners(FLOpsProjectService):
             deploy(service_id=self.service_id, matching_caller_object=self)
 
     def configure_sla_components(self) -> None:
-        cmd = f"python main.py {self.fl_aggregator.ip}"
+        cmd = f"python main.py {self.fl_aggregator_ip}"
 
         self.sla_components = SlaComponentsWrapper(
             core=SlaCore(
                 app_id=self.flops_project_id,
                 customerID=FLOPS_USER_ACCOUNT,
                 names=SlaNames(
-                    app_name=self.flops_project.app_name,
-                    app_namespace=self.flops_project.namespace,
-                    service_name=f"flearner{get_shortened_id(self.flops_project.flops_project_id)}",
+                    app_name=self.parent_app.app_name,
+                    app_namespace=self.parent_app.namespace,
+                    service_name=f"flearner{get_shortened_id(self.parent_app.flops_project_id)}",
                     service_namespace=self.namespace,
                 ),
                 compute=SlaCompute(

@@ -23,9 +23,7 @@ def notify_ui(msg: str) -> None:
     if build_context.develop:
         logger.info(f"DEVEL: {msg}")
         return
-    notify_project_observer(
-        project_observer_ip=build_context.project_observer_ip, msg=msg
-    )
+    notify_project_observer(project_observer_ip=build_context.project_observer_ip, msg=msg)
 
 
 def notify_about_successful_build() -> None:

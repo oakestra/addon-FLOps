@@ -17,40 +17,37 @@ from pydantic import Field
 
 
 class FLAggregator(FLOpsProjectService):
-    project_observer_ip: str = Field("", exclude=True, repr=False)
-
-    ip: str = Field("", init=False)
-
-    fl_aggregator_image: str = Field("", init=False)
-
     namespace = "aggr"
+    fl_aggregator_image: str = Field("", init=False)
+    project_observer_ip: str = Field("", exclude=True, repr=False)
+    ip: str = Field("", init=False)
 
     def model_post_init(self, _):
         if self.gets_loaded_from_db:
             return
 
-        self.flops_project_id = self.flops_project.flops_project_id
-        if self.flops_project.verbose:
+        if self.parent_app.verbose:
             notify_project_observer(
-                flops_project_id=self.flops_project_id,
+                flops_project_id=self.parent_app.flops_project_id,
                 msg="Preparing new FL Aggregator.",
             )
-        self.ip = generate_ip(self.flops_project_id, self)
+
+        self.ip = generate_ip(self.parent_app.flops_project_id, self)
         self.fl_aggregator_image = get_flops_image_name(
             ml_repo_url=self.parent_app.ml_repo_url,
             ml_repo_latest_commit_hash=self.parent_app.ml_repo_latest_commit_hash,
             flops_image_type=FLOpsImageTypes.AGGREGATOR,
         )
-
         super().model_post_init(_)
-        if self.flops_project.verbose:
+
+        if self.parent_app.verbose:
             notify_project_observer(
-                flops_project_id=self.flops_project_id,
+                flops_project_id=self.parent_app.flops_project_id,
                 msg="New Aggregator service created & deployed",
             )
 
     def configure_sla_components(self) -> None:
-        training_conf = self.flops_project.training_configuration
+        training_conf = self.parent_app.training_configuration
         cmd = " ".join(
             (
                 "python",
@@ -71,9 +68,9 @@ class FLAggregator(FLOpsProjectService):
                 app_id=self.flops_project_id,
                 customerID=FLOPS_USER_ACCOUNT,
                 names=SlaNames(
-                    app_name=self.flops_project.app_name,
-                    app_namespace=self.flops_project.namespace,
-                    service_name=f"aggr{get_shortened_id(self.flops_project.flops_project_id)}",
+                    app_name=self.parent_app.app_name,
+                    app_namespace=self.parent_app.namespace,
+                    service_name=f"aggr{get_shortened_id(self.flops_project_id)}",
                     service_namespace=self.namespace,
                 ),
                 compute=SlaCompute(

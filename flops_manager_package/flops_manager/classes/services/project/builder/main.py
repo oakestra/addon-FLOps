@@ -25,7 +25,7 @@ class FLOpsImageBuilder(FLOpsProjectService):
 
         if self.parent_app.verbose:
             notify_project_observer(
-                flops_project_id=self.flops_project_id,
+                flops_project_id=self.parent_app.flops_project_id,
                 msg="New FLOps images need to be build. Start build delegation processes.",
             )
 
@@ -33,7 +33,7 @@ class FLOpsImageBuilder(FLOpsProjectService):
 
         if self.parent_app.verbose:
             notify_project_observer(
-                flops_project_id=self.flops_project_id,
+                flops_project_id=self.parent_app.flops_project_id,
                 msg="New Builder service created & deployed",
             )
 
