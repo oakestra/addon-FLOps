@@ -12,12 +12,12 @@ def get_shortened_id(id: str) -> str:
     return id[:6]
 
 
-def generate_ip(flops_id: str, object: BaseModel) -> str:
+def generate_ip(unique_id: str, object: BaseModel) -> str:
     # Note: These numerical gymnastics are intended to avoid IP collisions.
     # TODO/Future work: this logic needs to be more bullet proof.
     # I.e. we need to ask the OAK components for available IPs instead of conjuring one ourselves.
 
-    unique_int = int(flops_id, 16) % 65536
+    unique_int = int(unique_id, 16) % 65536
 
     type_based_hash_offset = hash(type(object))
     magic_number = (unique_int + type_based_hash_offset) % (10**6)

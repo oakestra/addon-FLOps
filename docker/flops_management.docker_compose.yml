@@ -72,15 +72,6 @@ services:
     volumes:
       - mlflow_backend_store_data:/var/lib/mysql
     
-  mlflow_tracking_server:
-    image: mlflow_tracking_server
-    build:
-      dockerfile: mlflow_tracking_server.Dockerfile
-    container_name: mlflow_tracking_server
-    hostname: mlflow_tracking_server
-    ports:
-      - "7027:7027"
-
   vsftpd_server:
     # Note: There is only the "latest" tag (Red Flag -> Maybe change to another image)
     image: fauria/vsftpd 

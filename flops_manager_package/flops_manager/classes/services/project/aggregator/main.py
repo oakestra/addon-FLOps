@@ -1,6 +1,5 @@
 from flops_manager.classes.services.project.project_service import FLOpsProjectService
 from flops_manager.image_management import FLOpsImageTypes, get_flops_image_name
-from flops_manager.mlflow.tracking_server import get_mlflow_tracking_server_url
 from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_IP
 from flops_manager.mqtt.sender import notify_project_observer
 from flops_manager.utils.common import generate_ip, get_shortened_id
@@ -20,6 +19,8 @@ class FLAggregator(FLOpsProjectService):
     namespace = "aggr"
     fl_aggregator_image: str = Field("", init=False)
     project_observer_ip: str = Field("", exclude=True, repr=False)
+    tracking_server_url: str = Field("", exclude=True, repr=False)
+
     ip: str = Field("", init=False)
 
     def model_post_init(self, _):
@@ -48,6 +49,7 @@ class FLAggregator(FLOpsProjectService):
 
     def _configure_sla_components(self) -> None:
         training_conf = self.parent_app.training_configuration
+
         cmd = " ".join(
             (
                 "python",
@@ -55,7 +57,7 @@ class FLAggregator(FLOpsProjectService):
                 self.flops_project_id,
                 FLOPS_MQTT_BROKER_IP,
                 self.project_observer_ip,
-                get_mlflow_tracking_server_url(),
+                self.tracking_server_url,
                 str(training_conf.training_rounds),
                 str(training_conf.min_available_clients),
                 str(training_conf.min_fit_clients),

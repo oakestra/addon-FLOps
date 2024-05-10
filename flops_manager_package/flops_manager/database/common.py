@@ -31,9 +31,9 @@ def retrieve_from_db_by_app_id(cls: BaseModel, app_id: str) -> BaseModel:
     )
 
 
-def retrieve_from_db_by_user_id(cls, user_id: str) -> Optional[dict]:
+def retrieve_from_db_by_customer_id(cls, customer_id: str) -> Optional[dict]:
     return _load_object_from_retrieved_db_result(
-        cls, get_collection(cls).find_one({"user_id": user_id})
+        cls, get_collection(cls).find_one({"customer_id": customer_id})
     )
 
 
