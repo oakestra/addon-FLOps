@@ -23,9 +23,10 @@ def post_project() -> Tuple[dict, HTTPStatus]:
             bearer_token=flask.request.headers.get("Authorization"),
         )
     except FLOpsManagerException as e:
-        logger.exception(f"{e.msg}, {e.http_status}")
-        notify_project_observer(msg=e.message, flops_project_id=e.flops_project_id)
-        return {"message": e.msg}, e.http_status or HTTPStatus.INTERNAL_SERVER_ERROR
+        e.log()
+        if e.flops_project_id:
+            notify_project_observer(msg=e.message, flops_project_id=e.flops_project_id)
+        return {"message": e.message}, e.http_status or HTTPStatus.INTERNAL_SERVER_ERROR
     except Exception as e:
         err_msg = "Unexpected exception occurred"
         logger.exception(err_msg)

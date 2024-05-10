@@ -9,9 +9,8 @@ _mqtt_client = None
 
 class FLOpsMQTTDisconnectedException(Exception):
     # Note: This exception is not part of the other FLOps exceptions.
-    # The other ones will trigger a mqtt based call to the FLOps UI.
+    # The project ones will trigger a mqtt based call to the FLOps UI.
     # If the MQTT is no longer working it cannot be reached.
-    # That is why this exception is excluded from the others.
     pass
 
 

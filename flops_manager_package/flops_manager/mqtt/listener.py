@@ -42,8 +42,9 @@ def _on_new_message(client, userdata, message) -> None:
                 logger.error(f"Message received for an unsupported topic '{topic}'")
 
     except FLOpsManagerException as e:
-        logger.exception(f"{e.message}")
-        notify_project_observer(flops_project_id=e.flops_project_id, msg=e.message)
+        e.log()
+        if e.flops_project_id:
+            notify_project_observer(flops_project_id=e.flops_project_id, msg=e.message)
         return
     except Exception:
         logger.exception("Unexpected exception occurred")

@@ -29,8 +29,7 @@ def create_app(
             custom_headers={"Authorization": bearer_token} if bearer_token else None,
         ),
         aux=RequestAuxiliaries(
-            what_should_happen=f"Create new {app_type }application {flops_project_id}",
-            flops_project_id=flops_project_id,
+            what_should_happen=f"Create new {app_type }application",
             show_msg_on_success=True,
             flops_exception_type=FlOpsExceptionTypes.APP_CREATE,
         ),
@@ -47,9 +46,10 @@ def create_app(
     if new_app is None:
         raise FLOpsManagerException(
             flops_exception_type=FlOpsExceptionTypes.APP_CREATE,
-            mgs=f"Could not find new {app_type } app after creating it",
             flops_project_id=flops_project_id,
+            text=f"Could not find new {app_type } app after creating it",
         )
+
     return new_app
 
 

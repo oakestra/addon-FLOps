@@ -16,6 +16,7 @@ def append_service_to_app(
     app_id: str,
     bearer_token: str = None,
     matching_caller_object: BaseModel = None,
+    flops_project_id: str = None,
 ) -> ServiceId:
     service_type = get_matching_type(matching_caller_object)
     response = CustomRequest(
@@ -28,7 +29,7 @@ def append_service_to_app(
         ),
         aux=RequestAuxiliaries(
             what_should_happen=f"Append new {service_type }service to {app_id}",
-            # flops_project_id=flops_project_id,
+            flops_project_id=flops_project_id,
             show_msg_on_success=True,
             flops_exception_type=FlOpsExceptionTypes.INTERNAL_PROJECT_SERVICE_APPEND,
         ),

@@ -23,9 +23,9 @@ class RequestCore(NamedTuple):
 class RequestAuxiliaries(NamedTuple):
     what_should_happen: str
     flops_exception_type: FlOpsExceptionTypes = FlOpsExceptionTypes.UNSPECIFIED
-    flops_project_id: str = None
     show_msg_on_success: bool = False
     is_oakestra_api: bool = True
+    flops_project_id: str = None
 
 
 # Note: The use of Pydantic here leads to strange validation errors.
@@ -96,7 +96,7 @@ class CustomRequest:
 
         raise FLOpsManagerException(
             flops_exception_type=self.aux.flops_exception_type,
+            flops_project_id=self.aux.flops_project_id,
             text=error_msg,
             http_status=self.response.status if self.response else None,
-            flops_project_id=self.aux.flops_project_id,
         )

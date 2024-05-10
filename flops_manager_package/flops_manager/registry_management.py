@@ -22,7 +22,6 @@ def check_registry_reachable(flops_project: FLOpsProject) -> bool:
         ),
         aux=RequestAuxiliaries(
             what_should_happen="Registry is reachable",
-            flops_project_id=flops_project,
             flops_exception_type=FlOpsExceptionTypes.IMAGE_REGISTRY,
             show_msg_on_success=True,
         ),
