@@ -16,7 +16,7 @@ class FLOpsApp(FlOpsOakestraBaseClass, ABC):
     app_id: str = Field("", init=False, alias=AliasChoices("app_id", "applicationID"))
     app_name: str = Field("", init=False)
 
-    def create_in_orchestrator(self) -> Application:
+    def _create_in_orchestrator(self) -> Application:
         return create_app(
             sla=generate_sla(self.sla_components),
             bearer_token=getattr(self, "bearer_token", None),

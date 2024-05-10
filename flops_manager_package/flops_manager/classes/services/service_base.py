@@ -23,7 +23,7 @@ class FLOpsService(FlOpsOakestraBaseClass, ABC):
         super().model_post_init(_)
         self.deploy()
 
-    def create_in_orchestrator(self) -> None:
+    def _create_in_orchestrator(self) -> None:
         self.service_id = append_service_to_app(
             sla=generate_sla(self.sla_components),
             bearer_token=getattr(self, "bearer_token", None),

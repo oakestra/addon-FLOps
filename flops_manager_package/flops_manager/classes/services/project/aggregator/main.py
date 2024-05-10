@@ -46,7 +46,7 @@ class FLAggregator(FLOpsProjectService):
                 msg="New Aggregator service created & deployed",
             )
 
-    def configure_sla_components(self) -> None:
+    def _configure_sla_components(self) -> None:
         training_conf = self.parent_app.training_configuration
         cmd = " ".join(
             (

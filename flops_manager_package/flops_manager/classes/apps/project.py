@@ -55,12 +55,12 @@ class FLOpsProject(FLOpsApp):
 
         self.ml_repo_latest_commit_hash = get_latest_commit_hash(self.ml_repo_url)
         flops_db_id = add_to_db(self)
-        self.configure_sla_components(flops_db_id)
-        created_app = self.create_in_orchestrator()
+        self._configure_sla_components(flops_db_id)
+        created_app = self._create_in_orchestrator()
         self._set_properties_based_on_created_result(created_app)
         replace_in_db(self, flops_db_id)
 
-    def configure_sla_components(self, flops_db_id: str) -> None:
+    def _configure_sla_components(self, flops_db_id: str) -> None:
         self.sla_components = SlaComponentsWrapper(
             core=SlaCore(
                 customerID=FLOPS_USER_ACCOUNT,

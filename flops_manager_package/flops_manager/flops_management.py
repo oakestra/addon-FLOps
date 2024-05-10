@@ -1,6 +1,6 @@
 import threading
 
-from flops_manager.classes.apps.observatory import FLOpsObservatory
+from flops_manager.classes.apps.observatory.management import get_observatory
 from flops_manager.classes.apps.project import FLOpsProject
 from flops_manager.classes.services.observatory.project_observer import FLOpsProjectObserver
 from flops_manager.classes.services.project.builder.main import FLOpsImageBuilder
@@ -11,10 +11,8 @@ from flops_utils.logging import colorful_logger as logger
 
 
 def handle_new_flops_project(request_data: dict, bearer_token: str) -> None:
-    # TODO check if observatory already exists and fetch it instead of creating a new one
-    observatory = FLOpsObservatory.model_validate(request_data)
+    observatory = get_observatory(customer_id=request_data["customerID"])
     flops_project = FLOpsProject.model_validate(request_data)
-
     project_observer = FLOpsProjectObserver(
         parent_app=observatory,
         flops_project=flops_project,

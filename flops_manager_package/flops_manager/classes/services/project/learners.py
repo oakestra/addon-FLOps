@@ -50,7 +50,7 @@ class FLLearners(FLOpsProjectService):
         for _ in range(self.total_number_of_learners):
             deploy(service_id=self.service_id, matching_caller_object=self)
 
-    def configure_sla_components(self) -> None:
+    def _configure_sla_components(self) -> None:
         cmd = f"python main.py {self.fl_aggregator_ip}"
 
         self.sla_components = SlaComponentsWrapper(

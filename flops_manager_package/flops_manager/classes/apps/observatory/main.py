@@ -10,7 +10,7 @@ class FLOpsObservatory(FLOpsApp):
     namespace = "observatory"
     customer_id: str = Field(alias=AliasChoices("customer_id", "customerID"))
 
-    def configure_sla_components(self) -> None:
+    def _configure_sla_components(self) -> None:
         self.sla_components = SlaComponentsWrapper(
             core=SlaCore(
                 customerID=self.customer_id,

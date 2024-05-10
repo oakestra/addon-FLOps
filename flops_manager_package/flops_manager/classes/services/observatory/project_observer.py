@@ -1,4 +1,4 @@
-from flops_manager.classes.apps.observatory import FLOpsObservatory
+from flops_manager.classes.apps.observatory.main import FLOpsObservatory
 from flops_manager.classes.apps.project import FLOpsProject
 from flops_manager.classes.services.service_base import FLOpsService
 from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_IP, FLOPS_MQTT_BROKER_PORT
@@ -34,7 +34,7 @@ class FLOpsProjectObserver(FLOpsService):
 
         super().model_post_init(_)
 
-    def configure_sla_components(self) -> None:
+    def _configure_sla_components(self) -> None:
         service_name = f"observ{get_shortened_id(self.flops_project.flops_project_id)}"
         self.sla_components = SlaComponentsWrapper(
             core=SlaCore(

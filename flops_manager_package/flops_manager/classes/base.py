@@ -15,18 +15,18 @@ class FlOpsOakestraBaseClass(BaseModel, ABC):
         if self.gets_loaded_from_db:
             return
 
-        self.configure_sla_components()
-        result = self.create_in_orchestrator()
+        self._configure_sla_components()
+        result = self._create_in_orchestrator()
         self._set_properties_based_on_created_result(result)
         add_to_db(self)
 
     @abstractmethod
-    def configure_sla_components(self) -> None:
+    def _configure_sla_components(self) -> None:
         """Sets the self.sla_components property."""
         pass
 
     @abstractmethod
-    def create_in_orchestrator(self):
+    def _create_in_orchestrator(self):
         pass
 
     def _set_properties_based_on_created_result(self, *_) -> None:
