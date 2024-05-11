@@ -2,11 +2,15 @@ import sys
 
 from flops_utils.logging import logger
 from flops_utils.notifications import notify_flops_manager, notify_project_observer
-from utils.build_context import get_build_context
+from utils.builder_context import get_builder_context
 
 
-def _notify_flops_manager(topic: str, error_msg: str = None) -> None:
-    build_context = get_build_context()
+def _notify_flops_manager(
+    topic: str,
+    error_msg: str = None,
+    msg_payload: dict = {},
+) -> None:
+    build_context = get_builder_context()
     logger.info(error_msg)
     if build_context.develop:
         return
@@ -15,19 +19,29 @@ def _notify_flops_manager(topic: str, error_msg: str = None) -> None:
         mqtt_ip=build_context.mqtt_ip,
         topic=topic,
         error_msg=error_msg,
+        msg_payload=msg_payload,
     )
 
 
 def notify_ui(msg: str) -> None:
-    build_context = get_build_context()
+    build_context = get_builder_context()
     logger.info(msg)
     if build_context.develop:
         return
-    notify_project_observer(project_observer_ip=build_context.project_observer_ip, msg=msg)
+    notify_project_observer(
+        project_observer_ip=build_context.project_observer_ip, msg=msg
+    )
 
 
-def notify_about_successful_build() -> None:
-    _notify_flops_manager(topic="flops_manager/image_builder/success")
+def notify_about_successful_builder_process() -> None:
+    msg_payload = {}
+    for name, time_frame in get_builder_context().timer.time_frames.items():
+        msg_payload[name] = time_frame.get_duration(human_readable=True)
+
+    _notify_flops_manager(
+        topic="flops_manager/image_builder/success", msg_payload=msg_payload
+    )
+    notify_ui(msg=str(msg_payload))
 
 
 def notify_about_failed_build_and_terminate(error_msg: str) -> None:

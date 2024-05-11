@@ -5,15 +5,26 @@ import subprocess
 
 from flops_utils.logging import colorful_logger as logger
 from notification_management import notify_about_failed_build_and_terminate, notify_ui
-from utils.build_context import get_build_context
-from utils.common import FL_AGGREGATOR_IMAGE_PATH, FL_BASE_IMAGE_PATH, FL_LEARNER_IMAGE_PATH
+from utils.builder_context import (
+    BASE_IMAGE_BUILD_TIMEFRAME,
+    BUILD_ALL_IMAGES_TIMEFRAME,
+    IMAGE_PUSH_TIMEFRAME,
+    get_builder_context,
+)
+from utils.common import (
+    FL_AGGREGATOR_IMAGE_PATH,
+    FL_BASE_IMAGE_PATH,
+    FL_LEARNER_IMAGE_PATH,
+)
 
 
 def prepare_new_image_names() -> None:
-    full_registry_url = get_build_context().image_registry_url
-    cloned_repo = get_build_context().cloned_repo
+    full_registry_url = get_builder_context().image_registry_url
+    cloned_repo = get_builder_context().cloned_repo
 
-    image_registry_url = full_registry_url.removeprefix("http://").removeprefix("https://")
+    image_registry_url = full_registry_url.removeprefix("http://").removeprefix(
+        "https://"
+    )
     latest_commit_hash = cloned_repo.head.commit.hexsha
 
     repo_url = cloned_repo.remotes.origin.url
@@ -22,8 +33,10 @@ def prepare_new_image_names() -> None:
     username = user_repo_name.split("/")[0].lower()
     repo_name = user_repo_name.split("/")[1]
 
-    get_build_context().set_new_image_name_prefix(f"{image_registry_url}/{username}/{repo_name}")
-    get_build_context().set_new_image_tag(latest_commit_hash)
+    get_builder_context().set_new_image_name_prefix(
+        f"{image_registry_url}/{username}/{repo_name}"
+    )
+    get_builder_context().set_new_image_tag(latest_commit_hash)
 
 
 def build_image(
@@ -46,7 +59,7 @@ def build_image(
         # TODO read further about buildah options/flags - might improve the build further.
         build_cmd = f"buildah build --isolation=chroot -t {image_name_with_tag}"
         build_cmd += (
-            f" --build-arg ML_MODEL_FLAVOR={get_build_context().ml_model_flavor.value}"
+            f" --build-arg ML_MODEL_FLAVOR={get_builder_context().ml_model_flavor.value}"
             if is_base_image
             else " --build-arg BASE_IMAGE=fl_base"
         )
@@ -71,15 +84,21 @@ def build_image(
 
 
 def build_images() -> None:
+    get_builder_context().timer.start_new_time_frame(BUILD_ALL_IMAGES_TIMEFRAME)
+
+    get_builder_context().timer.start_new_time_frame(BASE_IMAGE_BUILD_TIMEFRAME)
     build_image(build_directory=FL_BASE_IMAGE_PATH, is_base_image=True)
+    get_builder_context().timer.end_time_frame(BASE_IMAGE_BUILD_TIMEFRAME)
+
     build_image(
         build_directory=FL_LEARNER_IMAGE_PATH,
-        image_name_with_tag=get_build_context().get_learner_image_name(),
+        image_name_with_tag=get_builder_context().get_learner_image_name(),
     )
     build_image(
         build_directory=FL_AGGREGATOR_IMAGE_PATH,
-        image_name_with_tag=get_build_context().get_aggregator_image_name(),
+        image_name_with_tag=get_builder_context().get_aggregator_image_name(),
     )
+    get_builder_context().timer.end_time_frame(BUILD_ALL_IMAGES_TIMEFRAME)
 
 
 def push_image(image_name_with_tag: str) -> None:
@@ -98,5 +117,7 @@ def push_image(image_name_with_tag: str) -> None:
 
 
 def push_images() -> None:
-    push_image(get_build_context().get_learner_image_name())
-    push_image(get_build_context().get_aggregator_image_name())
+    get_builder_context().timer.start_new_time_frame(IMAGE_PUSH_TIMEFRAME)
+    push_image(get_builder_context().get_learner_image_name())
+    push_image(get_builder_context().get_aggregator_image_name())
+    get_builder_context().timer.end_time_frame(IMAGE_PUSH_TIMEFRAME)
