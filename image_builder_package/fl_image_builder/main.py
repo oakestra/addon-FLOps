@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 from image_management import build_images, prepare_new_image_names, push_images
 from notification_management import (
     notify_about_failed_build_and_terminate,
@@ -14,8 +13,8 @@ def main() -> None:
     try:
         clone_repo()
         check_cloned_repo()
-
         prepare_new_image_names()
+
         build_images()
         push_images()
 

@@ -7,7 +7,9 @@ RUN pip install \
     icecream &&\
     conda install -y \
     mlflow>=2.12.1 \
-    pydantic>=2.6.4 &&\
+    pydantic>=2.6.4 \
+    psutil>=5.9.8 \
+    pynvml>=11.5.0 &&\
     conda clean -tipy
 
 WORKDIR /fl_aggregator

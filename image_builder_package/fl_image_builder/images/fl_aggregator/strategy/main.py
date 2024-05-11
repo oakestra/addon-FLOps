@@ -9,10 +9,12 @@ from flwr.common import EvaluateRes, FitIns, FitRes, Parameters, Scalar, paramet
 from flwr.server.client_manager import ClientManager
 from flwr.server.client_proxy import ClientProxy
 from flwr.server.strategy.aggregate import weighted_loss_avg
+from strategy.logging import handle_system_metrics_logging, init_logging
 
 
 class OakFedAvg(fl.server.strategy.FedAvg):
     def __init__(self, mlflow_experiment_id: int, *args, **kwargs):
+        init_logging()
         self.mlflow_experiment_id = mlflow_experiment_id
         self.model_manager = get_model_manager()
         super().__init__(*args, **kwargs)
@@ -84,4 +86,5 @@ class OakFedAvg(fl.server.strategy.FedAvg):
         metrics_aggregated = {"loss": loss_aggregated, "accuracy": accuracy_aggregated}
         mlflow.log_metrics(metrics_aggregated)
         mlflow.end_run()
+        handle_system_metrics_logging()
         return loss_aggregated, metrics_aggregated

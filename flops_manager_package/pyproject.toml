@@ -18,7 +18,7 @@ pydantic = "^2.6.4"
 pymysql = "^1.1.0"
 waitress = "3.0.0"
 icecream = "^2.1.3"
-flops-utils = "^0.3.5"
+flops-utils = "^0.3.7"
 
 [build-system]
 requires = ["poetry-core"]

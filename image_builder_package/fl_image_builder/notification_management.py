@@ -7,8 +7,8 @@ from utils.build_context import get_build_context
 
 def _notify_flops_manager(topic: str, error_msg: str = None) -> None:
     build_context = get_build_context()
+    logger.info(error_msg)
     if build_context.develop:
-        logger.fatal(f"DEVEL: {error_msg}")
         return
     notify_flops_manager(
         flops_project_id=build_context.flops_project_id,
@@ -20,8 +20,8 @@ def _notify_flops_manager(topic: str, error_msg: str = None) -> None:
 
 def notify_ui(msg: str) -> None:
     build_context = get_build_context()
+    logger.info(msg)
     if build_context.develop:
-        logger.info(f"DEVEL: {msg}")
         return
     notify_project_observer(project_observer_ip=build_context.project_observer_ip, msg=msg)
 

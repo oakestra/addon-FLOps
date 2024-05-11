@@ -5,7 +5,7 @@ from notification_management import (
     notify_about_failure_and_terminate,
     notify_about_successful_completion,
 )
-from strategy import OakFedAvg
+from strategy.main import OakFedAvg
 from utils.aggregator_context import AggregatorContext
 
 FL_START_INFO_TEXT = """
