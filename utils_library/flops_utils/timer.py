@@ -23,7 +23,7 @@ def _get_duration(
 
 @dataclass
 class TimeFrame:
-    start_time: datetime = field(default=datetime.now(), init=False)
+    start_time: datetime = field(default_factory=datetime.now, init=False)
     end_time: datetime = field(default=None, init=False)
 
     def end_time_frame(self) -> datetime:
