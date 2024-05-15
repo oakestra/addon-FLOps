@@ -1,6 +1,7 @@
 from flops_manager.classes.apps.observatory import FLOpsObservatory
 from flops_manager.classes.services.service_base import FLOpsService
-from flops_manager.mlflow.storages.backend_stores import get_user_backend_store_uri
+from flops_manager.mlflow.storages.artifact_store import get_user_artifact_store_uri
+from flops_manager.mlflow.storages.backend_store import get_user_backend_store_uri
 from flops_manager.utils.common import generate_ip, get_shortened_unique_id
 from flops_manager.utils.sla.components import (
     SlaComponentsWrapper,
@@ -34,10 +35,11 @@ class TrackingServer(FLOpsService):
         return f"http://{self.ip}:{TRACKING_SERVER_PORT}"
 
     def _configure_sla_components(self) -> None:
-        service_name = f"tracking{get_shortened_unique_id(self.parent_app.customer_id)}"
+        customer_id = self.parent_app.customer_id
+        service_name = f"tracking{get_shortened_unique_id(customer_id)}"
         self.sla_components = SlaComponentsWrapper(
             core=SlaCore(
-                customerID=self.parent_app.customer_id,
+                customerID=customer_id,
                 app_id=self.parent_app.app_id,
                 names=SlaNames(
                     app_name=self.parent_app.app_name,
@@ -52,14 +54,14 @@ class TrackingServer(FLOpsService):
                             "mlflow",
                             "server",
                             "--backend-store-uri",
-                            get_user_backend_store_uri(self.parent_app.customer_id),
+                            get_user_backend_store_uri(customer_id),
                             "--host",
                             "0.0.0.0",
                             "--port",
                             str(TRACKING_SERVER_PORT),
                             "--serve-artifacts",
                             "--artifacts-destination",
-                            "ftp://flops:flops@192.168.178.44/flops_artifacts",
+                            get_user_artifact_store_uri(customer_id),
                         )
                     ),
                 ),
