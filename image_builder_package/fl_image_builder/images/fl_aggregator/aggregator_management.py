@@ -5,7 +5,7 @@ from notification_management import (
     notify_about_failure_and_terminate,
     notify_about_successful_completion,
 )
-from strategy.main import OakFedAvg
+from strategy.main import FLOpsFedAvg
 from utils.aggregator_context import AggregatorContext
 
 FL_START_INFO_TEXT = """
@@ -36,8 +36,10 @@ def handle_aggregator(aggregator_context: AggregatorContext) -> None:
         mlflow_experiment = mlflow.set_experiment(
             experiment_name=f"FLOps Project {aggregator_context.flops_project_id}"
         )
-        strategy_instance = OakFedAvg(
+        strategy_instance = FLOpsFedAvg(
             mlflow_experiment_id=mlflow_experiment.experiment_id,
+            # Note: The Flower Strategy lacks the notion of the number of expected training rounds.
+            requested_total_number_of_training_rounds=aggregator_context.training_rounds,
             min_available_clients=aggregator_context.min_available_clients,
             min_fit_clients=aggregator_context.min_fit_clients,
             min_evaluate_clients=aggregator_context.min_evaluate_clients,

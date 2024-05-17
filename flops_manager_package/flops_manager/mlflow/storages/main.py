@@ -1,4 +1,4 @@
-from flops_manager.mlflow.storages.backend_stores import ensure_user_backend_store_exists
+from flops_manager.mlflow.storages.backend_store import ensure_user_backend_store_exists
 
 
 def handle_storages(customer_id: str) -> None:
