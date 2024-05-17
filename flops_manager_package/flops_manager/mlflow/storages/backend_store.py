@@ -2,6 +2,7 @@ from contextlib import contextmanager
 
 import pymysql
 from flops_manager.mlflow.storages.common import get_user_store_name
+from flops_manager.utils.env_vars import BACKEND_STORE_IP
 from flops_utils.logging import colorful_logger as logger
 
 # Note/Future Work:
@@ -12,7 +13,6 @@ from flops_utils.logging import colorful_logger as logger
 # E.g. by the uses of dedicated user accounts for each customer.
 # Right now the content and access is isolated by creating sub-folders for each client.
 
-BACKEND_STORE_IP = "192.168.178.44"
 BACKEND_STORE_PORT = 3306
 BACKEND_STORE_CONNECTION_USER_NAME = "root"
 BACKEND_STORE_CONNECTION_PWD = "oakestra"

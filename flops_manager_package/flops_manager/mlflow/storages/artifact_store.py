@@ -1,4 +1,5 @@
 from flops_manager.mlflow.storages.common import get_user_store_name
+from flops_manager.utils.env_vars import ARTIFACT_STORE_IP
 
 # Note/Future Work:
 # Currently the Tracking Server is used as a proxy for both stores,
@@ -8,7 +9,6 @@ from flops_manager.mlflow.storages.common import get_user_store_name
 # E.g. by the uses of dedicated user accounts for each customer.
 # Right now the content and access is isolated by creating sub-folders for each client.
 
-ARTIFACT_STORE_IP = "192.168.178.44"
 ARTIFACT_STORE_CONNECTION_USER_NAME = "flops"
 ARTIFACT_STORE_CONNECTION_PWD = "flops"
 

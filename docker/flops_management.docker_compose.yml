@@ -10,13 +10,8 @@ services:
     hostname: flops_manager
     container_name: flops_manager
     environment:
-      - FLOPS_MANAGER_PORT=5072
-      - FLOPS_IMAGE_REGISTRY_PORT=5073
       - SYSTEM_MANAGER_IP=system_manager
-      - SYSTEM_MANAGER_PORT=10000
-      - FLOPS_MQTT_BROKER_PORT=9027
       - FLOPS_MQTT_BROKER_URL=flops_mqtt
-      - FLOPS_DB_PORT=10027
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     expose:
@@ -88,8 +83,6 @@ services:
       - FTP_USER=flops
       # Note: Future work - Find out a nicer & more secure way of doing this.
       - FTP_PASS=flops
-      # Might need adjusting
-      # - PASV_ADDRESS
       # This will be used as the lower bound of the passive mode port range.
       - PASV_MIN_PORT=21100
       # This will be used as the upper bound of the passive mode port range.

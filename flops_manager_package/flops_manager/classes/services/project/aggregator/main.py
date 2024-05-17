@@ -1,9 +1,9 @@
 from flops_manager.classes.services.project.project_service import FLOpsProjectService
 from flops_manager.image_management import FLOpsImageTypes, get_flops_image_name
-from flops_manager.mqtt.constants import FLOPS_MQTT_BROKER_IP
 from flops_manager.mqtt.sender import notify_project_observer
 from flops_manager.utils.common import generate_ip, get_shortened_unique_id
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
+from flops_manager.utils.env_vars import FLOPS_MQTT_BROKER_IP
 from flops_manager.utils.sla.components import (
     SlaComponentsWrapper,
     SlaCompute,

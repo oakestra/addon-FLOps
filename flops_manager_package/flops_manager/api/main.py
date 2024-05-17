@@ -2,7 +2,7 @@ from http import HTTPStatus
 
 import flask_openapi3
 import flops_manager.api.blueprints as blps
-from flops_manager.api.utils.consts import FLOPS_MANAGER_PORT
+from flops_manager.utils.env_vars import FLOPS_MANAGER_PORT
 from waitress import serve
 
 _info = flask_openapi3.Info(title="FLOps Manager API", version="1.0.0")
