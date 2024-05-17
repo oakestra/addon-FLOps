@@ -21,7 +21,8 @@ class BuilderContext:
     flops_project_id: str
     mqtt_ip: str
     project_observer_ip: str
-    develop: bool = False
+    deactivate_notifications: bool = False
+    use_devel_base_images: bool = False
 
     cloned_repo: git.repo.base.Repo = field(default=None, init=False)
     new_image_name_prefix: str = field(default="", init=False)

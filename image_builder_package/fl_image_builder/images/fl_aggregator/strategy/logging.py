@@ -25,16 +25,14 @@ def handle_system_metrics_logging() -> None:
     run_duration = (run_end - run_start) / 1000
     if (
         run_duration < DEFAULT_SYSTEM_METRICS_LOGGING_INTERVAL
-        and current_system_metrics_logging_interval
-        == DEFAULT_SYSTEM_METRICS_LOGGING_INTERVAL
+        and current_system_metrics_logging_interval == DEFAULT_SYSTEM_METRICS_LOGGING_INTERVAL
     ):
         _update_system_metrics_logging_interval(run_duration / 2)
         return
 
     if (
         run_duration > DEFAULT_SYSTEM_METRICS_LOGGING_INTERVAL
-        and current_system_metrics_logging_interval
-        < DEFAULT_SYSTEM_METRICS_LOGGING_INTERVAL
+        and current_system_metrics_logging_interval < DEFAULT_SYSTEM_METRICS_LOGGING_INTERVAL
     ):
         _update_system_metrics_logging_interval(DEFAULT_SYSTEM_METRICS_LOGGING_INTERVAL)
         return

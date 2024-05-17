@@ -1,0 +1,5 @@
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
+
+COPY . /fl_base
+WORKDIR /fl_base

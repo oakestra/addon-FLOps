@@ -12,7 +12,7 @@ def _notify_flops_manager(
 ) -> None:
     build_context = get_builder_context()
     logger.info(error_msg)
-    if build_context.develop:
+    if build_context.deactivate_notifications:
         return
     notify_flops_manager(
         flops_project_id=build_context.flops_project_id,
@@ -26,11 +26,9 @@ def _notify_flops_manager(
 def notify_ui(msg: str) -> None:
     build_context = get_builder_context()
     logger.info(msg)
-    if build_context.develop:
+    if build_context.deactivate_notifications:
         return
-    notify_project_observer(
-        project_observer_ip=build_context.project_observer_ip, msg=msg
-    )
+    notify_project_observer(project_observer_ip=build_context.project_observer_ip, msg=msg)
 
 
 def notify_about_successful_builder_process() -> None:
@@ -38,9 +36,7 @@ def notify_about_successful_builder_process() -> None:
     for name, time_frame in get_builder_context().timer.time_frames.items():
         msg_payload[name] = time_frame.get_duration(human_readable=True)
 
-    _notify_flops_manager(
-        topic="flops_manager/image_builder/success", msg_payload=msg_payload
-    )
+    _notify_flops_manager(topic="flops_manager/image_builder/success", msg_payload=msg_payload)
     notify_ui(msg=str(msg_payload))
 
 

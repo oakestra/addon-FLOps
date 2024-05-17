@@ -13,7 +13,9 @@ def notify_project_observer(
         logger.debug(f"Received message '{msg}' without any flops_project_id")
         return
 
-    logger.debug(f"Sending message '{msg}' to FLOps UI for FLOps: '{flops_project_id}'")
+    logger.debug(
+        f"Sending message '{msg}' to the Project Observer with FLOps ID: '{flops_project_id}'"
+    )
     get_mqtt_client().publish(
         topic=f"flopsui/{flops_project_id}",
         payload=msg,

@@ -35,6 +35,7 @@ class FLOpsProject(FLOpsApp):
 
     customer_id: str = Field(alias=AliasChoices("customer_id", "customerID"))
     verbose: bool = False
+    use_devel_base_images: bool = False
     ml_model_flavor: MLModelFlavor
 
     training_configuration: _TrainingConfiguration = _TrainingConfiguration()

@@ -50,6 +50,9 @@ class FLOpsImageBuilder(FLOpsProjectService):
                 self.project_observer_ip,
             )
         )
+        if self.parent_app.use_devel_base_images:
+            cmd += " --use_devel_base_images"
+
         self.sla_components = SlaComponentsWrapper(
             core=SlaCore(
                 app_id=self.flops_project_id,

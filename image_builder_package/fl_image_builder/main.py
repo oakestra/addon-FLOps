@@ -6,10 +6,7 @@ from notification_management import (
 )
 from repo_management import check_cloned_repo, clone_repo
 from utils.arg_parsing import parse_args
-from utils.builder_context import (
-    BUILD_PREPARATION_TIMEFRAME,
-    FULL_BUILDER_PROCESS_TIMEFRAME,
-)
+from utils.builder_context import BUILD_PREPARATION_TIMEFRAME, FULL_BUILDER_PROCESS_TIMEFRAME
 
 
 def main() -> None:
@@ -26,9 +23,7 @@ def main() -> None:
         builder_context.timer.end_time_frame(FULL_BUILDER_PROCESS_TIMEFRAME)
         notify_about_successful_builder_process()
     except Exception as e:
-        notify_about_failed_build_and_terminate(
-            f"Something unexpected went wrong; '{e}'"
-        )
+        notify_about_failed_build_and_terminate(f"Something unexpected went wrong; '{e}'")
 
 
 if __name__ == "__main__":
