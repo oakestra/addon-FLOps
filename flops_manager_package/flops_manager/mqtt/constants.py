@@ -1,5 +1,3 @@
-import os
-
 from flops_manager.utils.types import CustomEnum
 
 

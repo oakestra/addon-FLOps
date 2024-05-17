@@ -10,6 +10,7 @@ from flops_manager.utils.env_vars import FLOPS_IMAGE_REGISTRY_IP
 from flops_manager.utils.exceptions.types import FlOpsExceptionTypes
 
 FLOPS_IMAGE_REGISTRY_PORT = "5073"
+
 FLOPS_IMAGE_REGISTRY_URL = f"http://{FLOPS_IMAGE_REGISTRY_IP}:{FLOPS_IMAGE_REGISTRY_PORT}"
 
 

@@ -1,7 +1,5 @@
-import os
-
 import pymongo
-from flops_manager.utils.env_vars import FLOPS_MANAGER_IP
+from flops_manager.utils.env_vars import FLOPS_DB_PORT, FLOPS_MANAGER_IP
 
 _flops_db = None
 

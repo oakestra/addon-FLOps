@@ -12,6 +12,11 @@ services:
     environment:
       - SYSTEM_MANAGER_IP=system_manager
       - FLOPS_MQTT_BROKER_URL=flops_mqtt
+      - FLOPS_MANAGER_IP=$FLOPS_MANAGER_IP
+      - FLOPS_MQTT_BROKER_IP=$FLOPS_MQTT_BROKER_IP
+      - FLOPS_IMAGE_REGISTRY_IP=$FLOPS_IMAGE_REGISTRY_IP
+      - ARTIFACT_STORE_IP=$ARTIFACT_STORE_IP
+      - BACKEND_STORE_IP=$BACKEND_STORE_IP
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     expose:

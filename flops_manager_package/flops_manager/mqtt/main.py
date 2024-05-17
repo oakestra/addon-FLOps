@@ -48,7 +48,10 @@ def _init_mqtt() -> paho_mqtt.Client:
 
     _mqtt_client.on_disconnect = on_disconnect
 
-    _mqtt_client.connect(FLOPS_MQTT_BROKER_IP, int(FLOPS_MQTT_BROKER_PORT))
+    _mqtt_client.connect(
+        FLOPS_MQTT_BROKER_IP,
+        int(FLOPS_MQTT_BROKER_PORT),
+    )
     return _mqtt_client
 
 
