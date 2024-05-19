@@ -8,7 +8,7 @@ authors = ["Alexander Malyuk <malyuk.alexander1999@gmail.com>"]
 python = "^3.10"
 requests = "^2.28.1"
 icecream = "^2.1.3"
-flops-utils = "^0.4.5"
+flops-utils = "^0.4.7"
 flwr_datasets = "^0.1.0"
 
 

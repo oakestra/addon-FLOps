@@ -2,30 +2,42 @@ from abc import ABC, abstractmethod
 from typing import Any, Tuple
 
 
-class LearnerDataManagerTemplate(ABC):
+class DataManagerTemplate(ABC):
+
+    @abstractmethod
+    def _prepare_data(self) -> Any:
+        """Calls the load_ml_data function and does data preprocessing, etc. (optional)
+        The Learner does not yet have the data from the worker node.
+        To get this data please use the 'load_ml_data' function which can be imported like this:
+        ```
+        from flops_utils.flops_learner_files_wrapper import load_ml_data
+        ```
+        Once the data has been fetched, custom data preprocessing and augmentations can be applied.
+        """
 
     @abstractmethod
     def get_data(self) -> Tuple[Any, Any]:
-        """Gets the necessary data for training and evaluation.
+        """Get the necessary data for training and evaluation.
+        This data has to be already prepared/preprocessed.
+
+        This method is intended to be called by the ModelManager.
 
         Examples:
         - self.training_data, self.testing_data
-          which were set in the init like this: tf.keras.datasets.cifar10.load_data()
         """
 
 
 class ModelManagerTemplate(ABC):
 
     @abstractmethod
-    def prepare_data(self) -> None:
-        """Gets the date from the DataManager and makes it available to the model.
-        Make sure to now prepare the data in the ModelManager init function.
-        This will avoid the aggregator from trying and fetch the data too.
-        Data fetching is reserved for Learners.
+    def set_model_data(self) -> None:
+        """Gets the data from the DataManager and makes it available to the model.
+        Do not include this method call in the ModelManager init function.
+        The aggregator also needs the model but does not have access to the data.
+
+        This function will be called by the FLOps Learner only.
 
         Heavily depends on the underlying model and ML library.
-
-        Will be called by FLOps.
 
         Examples: ()
         - self.trainloader, self.testloader = DataManager().get_data()
