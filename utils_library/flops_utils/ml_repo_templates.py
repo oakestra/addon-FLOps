@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Any, Tuple
 
 
-class DataManagerTemplate(ABC):
+class LearnerDataManagerTemplate(ABC):
 
     @abstractmethod
     def get_data(self) -> Tuple[Any, Any]:
