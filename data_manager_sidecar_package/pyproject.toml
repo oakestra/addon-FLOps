@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "data_manager"
+name = "data_manager_sidecar"
 version = "0.1.0"
 description = "The Data Manager Sidecar on a FL enabled Worker Node"
 authors = ["Alexander Malyuk <malyuk.alexander1999@gmail.com>"]
@@ -19,7 +19,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-main = "data_manager.main:main"
+main = "data_manager_sidecar.main:main"
 
 [tool.black]
 line-length = 100

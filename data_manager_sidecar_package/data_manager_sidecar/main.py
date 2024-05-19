@@ -1,4 +1,4 @@
-from data_manager.api.main import handle_api
+from data_manager_sidecar.api.main import handle_api
 from flops_utils.logging import logger
 
 

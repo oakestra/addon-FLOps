@@ -6,7 +6,7 @@ from flops_utils.logging import logger
 
 
 def load_data(
-    hugging_face_dataset: str = "cifar10",
+    hugging_face_dataset: str = "mnist",
     seed: int = None,
 ) -> Dataset:
     logger.info("Start loading data")

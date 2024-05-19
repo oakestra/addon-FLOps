@@ -1,7 +1,7 @@
 import os
 from http import HTTPStatus
 
-import data_manager.api.blueprints as blps
+import data_manager_sidecar.api.blueprints as blps
 import flask_openapi3
 from waitress import serve
 

@@ -6,7 +6,7 @@ import flask
 import flask_openapi3
 
 CONTENT_TYPE = "application/octet-stream"
-DATA_VOLUME = pathlib.Path("/flops_data_volume")
+DATA_VOLUME = pathlib.Path("/flops_data_manager_sidecar_volume")
 
 binaries_blp = flask_openapi3.APIBlueprint(
     "binaries",
