@@ -25,7 +25,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-oak = "flops_manager.main:main"
+main = "flops_manager.main:main"
 
 [tool.black]
 line-length = 100
