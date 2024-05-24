@@ -22,8 +22,12 @@ RUN conda env update --file ./conda.yaml &&\
     # https://flower.dev/docs/framework/how-to-install-flower.html
     conda config --add channels conda-forge &&\
     conda config --set channel_priority strict &&\
-    # Note: This flwr version is the latest one that is available for the current base image.
-    conda install flwr=1.8.0 -y
+    conda install -y \
+        # Note: This flwr version is the latest one that is available for the current base image.
+        flwr=1.8.0 \
+        pydantic~=2.7.1 \
+        # TODO Remove after debugging
+        icecream 
 
 # Note: For dependencies that cannot be installed via conda yet.    
 COPY requirements.txt .
