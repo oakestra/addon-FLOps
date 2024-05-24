@@ -34,4 +34,6 @@ ENV FLOPS_MQTT_BROKER_URL=flops_mqtt
 
 ENV SYSTEM_MANAGER_PORT=10000
 
+RUN pip install --upgrade git+https://github.com/oakestra/plugin-FLOps.git@main#subdirectory=utils_library
+
 CMD ["poetry", "run", "python", "main.py"]
