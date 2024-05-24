@@ -7,4 +7,6 @@ WORKDIR /mock_data_provider
 COPY mock_data_provider /mock_data_provider
 RUN poetry install
 
+RUN poetry add git+https://github.com/Malyuk-A/tmp_flops_utils.git@main
+
 CMD ["poetry", "run", "python", "main.py"]

@@ -1,2 +1,2 @@
 flwr_datasets == 0.1.0
-flops-utils == 0.4.7
+git+https://github.com/Malyuk-A/tmp_flops_utils.git@main

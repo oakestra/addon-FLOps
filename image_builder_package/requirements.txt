@@ -1,8 +1,8 @@
 requests ~=2.28.1
 gitpython ~= 3.1.42
-
-flops-utils == 0.4.7
 icecream
+
+git+https://github.com/Malyuk-A/tmp_flops_utils.git@main
 
 # Not used because pydantic needs rust and other tooling which would further bload the current slim base image.
 # pydantic ~= 2.6.4 

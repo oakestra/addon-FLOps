@@ -14,4 +14,6 @@ ENV FLASK_DEBUG=TRUE
 ENV DATA_MANAGER_SIDECAR_PORT=11027
 EXPOSE $DATA_MANAGER_SIDECAR_PORT
 
+RUN poetry add git+https://github.com/Malyuk-A/tmp_flops_utils.git@main
+
 CMD ["poetry", "run", "python", "main.py"]
