@@ -3,16 +3,16 @@
 import os
 import pathlib
 
-import pyarrow as pa
-import pyarrow.flight
-import pyarrow.parquet
+import pyarrow
+import pyarrow.flight as flight
+import pyarrow.parquet as parquet
 from icecream import ic
 
 ML_DATA_MANAGER_PORT = os.environ.get("DATA_MANAGER_PORT", 11027)
-DATA_VOLUME = pathlib.Path("/flops_data_manager_sidecar_volume")
+DATA_VOLUME = pathlib.Path("/ml_data_server_volume")
 
 
-class FlightServer(pa.flight.FlightServerBase):
+class FlightServer(flight.FlightServerBase):
 
     def __init__(
         self,
@@ -26,16 +26,15 @@ class FlightServer(pa.flight.FlightServerBase):
 
     def _make_flight_info(self, dataset):
         dataset_path = self._repo / dataset
-        schema = pa.parquet.read_schema(dataset_path)
-        metadata = pa.parquet.read_metadata(dataset_path)
-        descriptor = pa.flight.FlightDescriptor.for_path(dataset.encode("utf-8"))
-        endpoints = [pa.flight.FlightEndpoint(dataset, [self._location])]
-        return pyarrow.flight.FlightInfo(
+        schema = parquet.read_schema(dataset_path)
+        metadata = parquet.read_metadata(dataset_path)
+        descriptor = flight.FlightDescriptor.for_path(dataset.encode("utf-8"))
+        endpoints = [flight.FlightEndpoint(dataset, [self._location])]
+        return flight.FlightInfo(
             schema, descriptor, endpoints, metadata.num_rows, metadata.serialized_size
         )
 
     def list_flights(self, context, criteria):
-        ic("list_flights")
         for dataset in self._repo.iterdir():
             yield self._make_flight_info(dataset.name)
 
@@ -44,31 +43,27 @@ class FlightServer(pa.flight.FlightServerBase):
         return self._make_flight_info(descriptor.path[0].decode("utf-8"))
 
     def do_put(self, context, descriptor, reader, writer):
-        ic("do_put")
         dataset = descriptor.path[0].decode("utf-8")
         dataset_path = self._repo / dataset
         # Read the uploaded data and write to Parquet incrementally
         with dataset_path.open("wb") as sink:
-            with pa.parquet.ParquetWriter(sink, reader.schema) as writer:
+            with parquet.ParquetWriter(sink, reader.schema) as writer:
                 for chunk in reader:
-                    writer.write_table(pa.Table.from_batches([chunk.data]))
+                    writer.write_table(pyarrow.Table.from_batches([chunk.data]))
 
     def do_get(self, context, ticket):
-        ic("do_get")
         dataset = ticket.ticket.decode("utf-8")
         # Stream data from a file
         dataset_path = self._repo / dataset
-        reader = pa.parquet.ParquetFile(dataset_path)
-        return pa.flight.GeneratorStream(reader.schema_arrow, reader.iter_batches())
+        reader = parquet.ParquetFile(dataset_path)
+        return flight.GeneratorStream(reader.schema_arrow, reader.iter_batches())
 
     def list_actions(self, context):
-        ic("list_actions")
         return [
             ("drop_dataset", "Delete a dataset."),
         ]
 
     def do_action(self, context, action):
-        ic("do_action")
         if action.type == "drop_dataset":
             self.do_drop_dataset(action.body.to_pybytes().decode("utf-8"))
         else:
@@ -80,7 +75,6 @@ class FlightServer(pa.flight.FlightServerBase):
 
 
 def handle_server() -> None:
-    ic("Start Server")
     server = FlightServer()
     server._repo.mkdir(exist_ok=True)
     server.serve()

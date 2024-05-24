@@ -2,19 +2,24 @@ import os
 import tempfile
 
 import datasets
-import pyarrow
-import pyarrow.flight
-import pyarrow.parquet as pq
+import pyarrow.flight as flight
+import pyarrow.parquet as parquet
 
 # Note: "localhost" does not work.
 DOCKER_HOST_IP_LINUX = "172.17.0.1"
 
 
-def load_data_from_worker_node() -> datasets.Dataset:
-    client = pyarrow.flight.connect("grpc://192.168.178.44:11027")
-    descriptor = pyarrow.flight.FlightDescriptor.for_path("uploaded.parquet")
-    flight = client.get_flight_info(descriptor)
-    reader = client.do_get(flight.endpoints[0].ticket)
+def load_data_from_ml_data_server() -> datasets.Dataset:
+    """Loads the data from the co-located ml-data-server from the learner node.
+
+    Returns a single dataset that encompasses all matching found data from the server.
+    This dataset is in "Arrow" format.
+    """
+
+    client = flight.connect("grpc://192.168.178.44:11027")
+    descriptor = flight.FlightDescriptor.for_path("uploaded.parquet")
+    flight_info = client.get_flight_info(descriptor)
+    reader = client.do_get(flight_info.endpoints[0].ticket)
     arrow_table = reader.read_all()
 
     # Note/Important/Future-Work
@@ -41,7 +46,7 @@ def load_data_from_worker_node() -> datasets.Dataset:
     # with tempfile.NamedTemporaryFile(mode="wb") as tmp_file:
 
     with tempfile.NamedTemporaryFile(delete=False, suffix=".parquet") as tmp_file:
-        pq.write_table(arrow_table, tmp_file.name)
+        parquet.write_table(arrow_table, tmp_file.name)
         tmp_file.flush()
 
     # Note: We need to split up the read and write part

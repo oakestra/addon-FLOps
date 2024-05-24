@@ -20,7 +20,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-main = "data_manager_sidecar.main:main"
+main = "ml_data_server.main:main"
 
 [tool.black]
 line-length = 100

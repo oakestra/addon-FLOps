@@ -1,9 +1,9 @@
 import tempfile
 
 import datasets
-import pyarrow as pa
-import pyarrow.parquet as pq
-from flops_utils.env_vars_checker.py import get_env_var
+import pyarrow.flight as flight
+import pyarrow.parquet as parquet
+from flops_utils.env_vars_checker import get_env_var
 from flops_utils.logging import logger
 
 ML_DATA_SERVER_PORT = get_env_var("DATA_MANAGER_PORT", 11027)
@@ -17,7 +17,7 @@ def send_data_to_ml_data_server(dataset: datasets.Dataset):
     """
 
     logger.info("Start sending data")
-    client = pa.flight.connect(f"grpc://{ML_DATA_SERVER_IP}:{ML_DATA_SERVER_PORT}")
+    client = flight.connect(f"grpc://{ML_DATA_SERVER_IP}:{ML_DATA_SERVER_PORT}")
 
     with tempfile.NamedTemporaryFile() as tmp_file:
         dataset.to_parquet(tmp_file)
@@ -25,12 +25,12 @@ def send_data_to_ml_data_server(dataset: datasets.Dataset):
         # to disk we need to flush when writing to them.
         tmp_file.flush()
         # TODO figure out naming convention, etc.
-        upload_descriptor = pa.flight.FlightDescriptor.for_path("uploaded.parquet")
-        schema = pa.parquet.read_schema(tmp_file)
+        upload_descriptor = flight.FlightDescriptor.for_path("uploaded.parquet")
+        schema = parquet.read_schema(tmp_file)
 
         # Stream the Parquet file to the server.
         writer, _ = client.do_put(upload_descriptor, schema)
-        writer.write_table(pq.read_table(tmp_file))
+        writer.write_table(parquet.read_table(tmp_file))
         writer.close()
 
     logger.info("Finished sending data")
