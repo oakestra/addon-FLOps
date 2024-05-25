@@ -9,7 +9,7 @@ from flops_manager.utils.exceptions.main import FLOpsManagerException
 from flops_utils.logging import colorful_logger as logger
 
 projects_blp = flask_openapi3.APIBlueprint(
-    "flops",
+    "projects",
     __name__,
     url_prefix="/api/flops/projects",
 )

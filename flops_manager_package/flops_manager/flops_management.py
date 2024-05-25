@@ -35,6 +35,6 @@ def handle_new_flops_project(request_data: dict, bearer_token: str) -> None:
 
 
 def handle_new_mock_data_provider(request_data: dict, bearer_token: str) -> None:
-    helper_app = FLOpsHelperApp.get_app(customer_id=request_data["customerID"])
-    request_data["parent_app"] = helper_app
+    request_data["parent_app"] = FLOpsHelperApp.get_app(customer_id=request_data["customerID"])
+    request_data["bearer_token"] = bearer_token
     MockDataProvider.model_validate(request_data)

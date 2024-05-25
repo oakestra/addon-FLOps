@@ -8,7 +8,7 @@ from flops_manager.utils.exceptions.main import FLOpsManagerException
 from flops_utils.logging import colorful_logger as logger
 
 mock_data_provider_blp = flask_openapi3.APIBlueprint(
-    "flops",
+    "mock_data_providers",
     __name__,
     url_prefix="/api/flops/mocks",
 )

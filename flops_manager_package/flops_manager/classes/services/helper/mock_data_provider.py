@@ -73,6 +73,7 @@ class MockDataProvider(FLOpsService):
                 ),
                 compute=SlaCompute(
                     code="ghcr.io/malyuk-a/flops-mock-data-provider:latest",
+                    one_shot_service=True,
                     cmd=" ".join(
                         (
                             FLOPS_SERVICE_CMD_PREFIX,
@@ -83,5 +84,8 @@ class MockDataProvider(FLOpsService):
                     ),
                 ),
             ),
-            details=SlaDetails(resources=SlaResources(memory=200, vcpus=1, storage=0)),
+            details=SlaDetails(
+                resources=SlaResources(memory=200, vcpus=1, storage=0),
+                port=str(11027),
+            ),
         )
