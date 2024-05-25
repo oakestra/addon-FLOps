@@ -1,4 +1,3 @@
-import json
 import tempfile
 
 import datasets
@@ -6,7 +5,6 @@ import pyarrow.flight as flight
 import pyarrow.parquet as parquet
 from flops_utils.env_vars import DOCKER_HOST_IP_LINUX, get_env_var
 from flops_utils.logging import logger
-from icecream import ic
 from mock_data_provider.context import get_context
 from mock_data_provider.utils.hash import generate_unique_hash_identifier
 
@@ -42,27 +40,3 @@ def send_data_to_ml_data_server(dataset: datasets.Dataset):
         writer.close()
 
     logger.info(f"Finished sending data. Stored data as '{final_file_name}'")
-    # return
-    ic(1)
-    # TODO
-    # descriptor = flight.FlightDescriptor.for_path("uploaded.parquet")
-    flight_request = {"data_tags": ["testing"]}
-    descriptor = flight.FlightDescriptor.for_command(json.dumps(flight_request))
-    ic(2)
-    # flight_info = client.get_flight_info(descriptor)
-    flights = client.list_flights(criteria=descriptor.command)
-    ic(flights)
-    for _flight in flights:
-        ic(_flight)
-        ic(3)
-        reader = client.do_get(_flight.endpoints[0].ticket)
-        ic(4, reader)
-        arrow_table = reader.read_all()
-        ic(5, arrow_table)
-    ic("end")
-    return
-    # ic(3, flight_info, type(flight_info))
-    # reader = client.do_get(flight_info.endpoints[0].ticket)
-    # ic(4)
-    # arrow_table = reader.read_all()
-    # ic(5)
