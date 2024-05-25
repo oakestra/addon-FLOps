@@ -1,27 +1,19 @@
-import random
-
 import flwr_datasets
 from datasets import Dataset
 from flops_utils.logging import logger
+from mock_data_provider.context import get_context
 
 
-def load_data(
-    hugging_face_dataset: str = "mnist",
-    seed: int = None,
-) -> Dataset:
+def load_data() -> Dataset:
     logger.info("Start loading data")
 
     partition_type = "train"
 
-    if seed:
-        random.seed(seed)
-
-    total_partitions = random.randint(1, 10)
     federated_dataset = flwr_datasets.FederatedDataset(
-        dataset=hugging_face_dataset,
-        partitioners={partition_type: total_partitions},
+        dataset=get_context().dataset_name,
+        partitioners={partition_type: get_context().number_of_partitions},
     )
-    selected_partition = random.randint(1, total_partitions)
+    selected_partition = 1  # TODO
     partition = federated_dataset.load_partition(
         selected_partition - 1,
         partition_type,

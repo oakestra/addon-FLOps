@@ -6,7 +6,7 @@ import pyarrow.flight as flight
 import pyarrow.parquet as parquet
 
 # Note: "localhost" does not work.
-DOCKER_HOST_IP_LINUX = "172.17.0.1"
+from flops_utils.env_vars import DOCKER_HOST_IP_LINUX
 
 
 def load_data_from_ml_data_server() -> datasets.Dataset:
@@ -16,7 +16,8 @@ def load_data_from_ml_data_server() -> datasets.Dataset:
     This dataset is in "Arrow" format.
     """
 
-    client = flight.connect("grpc://192.168.178.44:11027")
+    # client = flight.connect("grpc://192.168.178.44:11027")
+    client = flight.connect(f"grpc://{DOCKER_HOST_IP_LINUX}:11027")
     descriptor = flight.FlightDescriptor.for_path("uploaded.parquet")
     flight_info = client.get_flight_info(descriptor)
     reader = client.do_get(flight_info.endpoints[0].ticket)

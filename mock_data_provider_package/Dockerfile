@@ -1,5 +1,8 @@
 FROM python:3.10-slim
 
+# TODO remove after debugging
+RUN apt update && apt install vim -y
+
 COPY pyproject.toml pyproject.toml
 RUN pip install poetry~=1.8.2 && poetry lock && poetry install --no-root
 
@@ -9,6 +12,7 @@ RUN poetry install
 
 RUN poetry add git+https://github.com/Malyuk-A/tmp_flops_utils.git@main
 
-EXPOSE 11027
+ENV ML_DATA_SERVER_COMMUNICATION_CHANNEL_PORT=11027
+EXPOSE $ML_DATA_SERVER_COMMUNICATION_CHANNEL_PORT
 
 CMD ["poetry", "run", "python", "main.py"]

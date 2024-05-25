@@ -2,6 +2,7 @@ from flops_manager.classes.apps.helper import FLOpsHelperApp
 from flops_manager.classes.services.service_base import FLOpsService
 from flops_manager.utils.common import get_shortened_unique_id
 from flops_manager.utils.constants import FLOPS_SERVICE_CMD_PREFIX
+from flops_manager.utils.env_vars import ML_DATA_SERVER_PORT
 from flops_manager.utils.sla.components import (
     SlaComponentsWrapper,
     SlaCompute,
@@ -39,11 +40,13 @@ class _MockDataConfiguration(BaseModel):
             )
         ),
     )
-    data_tags: str = Field(
-        default="*",
+    # Note: Currently this tag is just a file-name-prefix. Future work might organize these files
+    # in a different manner (be it DB, FS, etc.) where adding metadata is natively supported.
+    data_tag: str = Field(
+        default="",
         description=" ".join(
             (
-                "The data will be stored with these data_tags to differentiate it easily.",
+                "The stored data will be marked with this tag to differentiate it easily.",
                 "Learner services also use these data_tags to query all found data",
                 "matching these tags from the ml-data-server.",
                 "These tags enable us to differentiate between different use-cases,",
@@ -77,7 +80,10 @@ class MockDataProvider(FLOpsService):
                     cmd=" ".join(
                         (
                             FLOPS_SERVICE_CMD_PREFIX,
-                            # TODO: add the mock config params here
+                            self.mock_data_configuration.dataset_name,
+                            str(self.mock_data_configuration.number_of_partitions),
+                            str(self.mock_data_configuration.one_mock_service_per_partition),
+                            self.mock_data_configuration.data_tag,
                             # TODO: add ip (instance IP) option to specify where exactly
                             # to send mock data to
                         )
@@ -86,6 +92,6 @@ class MockDataProvider(FLOpsService):
             ),
             details=SlaDetails(
                 resources=SlaResources(memory=200, vcpus=1, storage=0),
-                port=str(11027),
+                port=str(ML_DATA_SERVER_PORT),
             ),
         )
