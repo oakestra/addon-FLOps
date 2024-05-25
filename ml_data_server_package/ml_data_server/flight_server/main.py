@@ -1,12 +1,12 @@
 # Reference: https://arrow.apache.org/cookbook/py/flight.html#id3
 
+import json
 import os
 import pathlib
 
 import pyarrow
 import pyarrow.flight as flight
 import pyarrow.parquet as parquet
-from icecream import ic
 
 ML_DATA_MANAGER_PORT = os.environ.get("DATA_MANAGER_PORT", 11027)
 DATA_VOLUME = pathlib.Path("/ml_data_server_volume")
@@ -35,11 +35,13 @@ class FlightServer(flight.FlightServerBase):
         )
 
     def list_flights(self, context, criteria):
+        requested_data_tags = json.loads(criteria.decode("utf-8"))["data_tags"]
         for dataset in self._repo.iterdir():
-            yield self._make_flight_info(dataset.name)
+            if dataset.name.split(".")[0] in requested_data_tags:
+                # Note: Returns a generator object that can be iterated over via a for loop.
+                yield self._make_flight_info(dataset.name)
 
     def get_flight_info(self, context, descriptor):
-        ic("get_flight_info")
         return self._make_flight_info(descriptor.path[0].decode("utf-8"))
 
     def do_put(self, context, descriptor, reader, writer):

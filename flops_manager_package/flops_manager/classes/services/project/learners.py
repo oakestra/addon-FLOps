@@ -51,7 +51,15 @@ class FLLearners(FLOpsProjectService):
             deploy(service_id=self.service_id, matching_caller_object=self)
 
     def _configure_sla_components(self) -> None:
-        cmd = f"python main.py {self.fl_aggregator_ip}"
+        f"python main.py {self.fl_aggregator_ip} {self.parent_app.training_configuration.data_tags}"
+        cmd = " ".join(
+            (
+                "python main.py",
+                self.fl_aggregator_ip,
+                # Note: This turns the tag list into a single comma-separated string.
+                ",".join(self.parent_app.training_configuration.data_tags),
+            )
+        )
         service_name = f"flearner{get_shortened_unique_id(self.parent_app.flops_project_id)}"
         self.sla_components = SlaComponentsWrapper(
             core=SlaCore(

@@ -1,9 +1,9 @@
 from flops_utils.logging import logger
-from ml_data_server.flight_server import handle_server
+from ml_data_server.flight_server.main import handle_server
 
 
 def main():
-    logger.info("FLOps Manager started.")
+    logger.info("ML-Data-Server started.")
     handle_server()
 
 

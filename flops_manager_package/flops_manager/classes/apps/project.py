@@ -1,3 +1,5 @@
+from typing import List
+
 from flops_manager.classes.apps.app_base import FLOpsApp
 from flops_manager.database.common import add_to_db, replace_in_db
 from flops_manager.ml_repo_management import get_latest_commit_hash
@@ -15,6 +17,15 @@ from pydantic import AliasChoices, BaseModel, Field
 
 # Note: Using BaseModel instead of NamedTuple here allows for nicer serialized data in the DB.
 class _TrainingConfiguration(BaseModel):
+    data_tags: List[str] = Field(
+        default_factory=list,
+        description=" ".join(
+            (
+                "Data tags are used to select and find data that is stored in the ML-Data-Servers",
+                "and that should be used for this FLOps project.",
+            )
+        ),
+    )
     training_rounds: int = 3
     min_available_clients: int = 1
     min_fit_clients: int = 1
