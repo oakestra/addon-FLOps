@@ -1,7 +1,9 @@
 import threading
 
-from flops_manager.classes.apps.observatory import get_observatory
+from flops_manager.classes.apps.helper import FLOpsHelperApp
+from flops_manager.classes.apps.observatory import FLOpsObservatory
 from flops_manager.classes.apps.project import FLOpsProject
+from flops_manager.classes.services.helper.mock_data_provider import MockDataProvider
 from flops_manager.classes.services.observatory.project_observer import FLOpsProjectObserver
 from flops_manager.classes.services.project.builder.main import FLOpsImageBuilder
 from flops_manager.fl_management import handle_fl_operations
@@ -11,7 +13,7 @@ from flops_utils.logging import colorful_logger as logger
 
 
 def handle_new_flops_project(request_data: dict, bearer_token: str) -> None:
-    observatory = get_observatory(customer_id=request_data["customerID"])
+    observatory = FLOpsObservatory.get_app(customer_id=request_data["customerID"])
     flops_project = FLOpsProject.model_validate(request_data)
     project_observer = FLOpsProjectObserver(
         parent_app=observatory,
@@ -30,3 +32,9 @@ def handle_new_flops_project(request_data: dict, bearer_token: str) -> None:
         return
 
     FLOpsImageBuilder(parent_app=flops_project, project_observer_ip=project_observer.ip)
+
+
+def handle_new_mock_data_provider(request_data: dict, bearer_token: str) -> None:
+    helper_app = FLOpsHelperApp.get_app(customer_id=request_data["customerID"])
+    request_data["parent_app"] = helper_app
+    MockDataProvider.model_validate(request_data)
