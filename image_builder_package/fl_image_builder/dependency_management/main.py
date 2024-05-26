@@ -17,7 +17,7 @@ def remove_mlflow() -> None:
     MLflow is a great tool to extract the necessary dependencies of ML code though.
     MLflow is used in the aggregator. Where the dependency is added again with a fixed version.
     """
-    run_in_bash(f"sed '/ - mlflow/d' {CONDA_ENV_FILE_PATH}")
+    run_in_bash(f"sed -i '/ - mlflow/d' {CONDA_ENV_FILE_PATH}")
 
 
 def handle_dependencies():
