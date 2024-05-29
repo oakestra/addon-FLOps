@@ -1,5 +1,8 @@
+import sys
+
 import flwr as fl
 import mlflow
+from flops_utils.logging import logger
 from flops_utils.notifications import notify_project_observer
 from notification_management import (
     notify_about_failure_and_terminate,
@@ -16,21 +19,24 @@ Visit the page below to observe your (active) FLOps Project.
 
 
 def start_fl_server(aggregator_context: AggregatorContext, strategy, rounds):
-    notify_project_observer(
-        project_observer_ip=aggregator_context.project_observer_ip,
-        msg=f"{FL_START_INFO_TEXT}\n '{aggregator_context.mlflow_tracking_server_url}'",
-    )
+    if not aggregator_context.deactivate_notifications:
+        notify_project_observer(
+            project_observer_ip=aggregator_context.project_observer_ip,
+            msg=f"{FL_START_INFO_TEXT}\n '{aggregator_context.mlflow_tracking_server_url}'",
+        )
     fl.server.start_server(
         server_address="0.0.0.0:8080",
         config=fl.server.ServerConfig(num_rounds=rounds),
         strategy=strategy,
     )
-    notify_about_successful_completion(aggregator_context=aggregator_context)
+    if not aggregator_context.deactivate_notifications:
+        notify_about_successful_completion(aggregator_context=aggregator_context)
 
 
 def handle_aggregator(aggregator_context: AggregatorContext) -> None:
     try:
-        mlflow.set_tracking_uri(aggregator_context.mlflow_tracking_server_url)
+        if not aggregator_context.track_locally:
+            mlflow.set_tracking_uri(aggregator_context.mlflow_tracking_server_url)
         # Note: A MLflow experiment consists of multiple runs.
         # For FLOps: experiment = project, run = Flower FL training + evaluation round.
         mlflow_experiment = mlflow.set_experiment(
@@ -51,6 +57,10 @@ def handle_aggregator(aggregator_context: AggregatorContext) -> None:
         )
 
     except Exception as e:
+        if aggregator_context.deactivate_notifications:
+            logger.exception("Aggregation failed with exception.")
+            sys.exit(1)
+
         notify_about_failure_and_terminate(
             aggregator_context=aggregator_context,
             error_msg=f"Aggregator failed: '{e}'",

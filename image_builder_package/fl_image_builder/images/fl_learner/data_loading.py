@@ -45,10 +45,6 @@ def load_data_from_ml_data_server() -> datasets.Dataset:
         # Here the complex underlying data structure gets misinterpreted.
         # Resulting in a wrong final shape of our data.
 
-        # Using the tmpfile lib leads to unexpected errors here, because the tmpfiles are not real files
-        # They lead to specific type related issues or lack certain methods.
-        # with tempfile.NamedTemporaryFile(mode="wb") as tmp_file:
-
         with tempfile.NamedTemporaryFile(delete=False, suffix=".parquet") as tmp_file:
             parquet.write_table(arrow_table, tmp_file.name)
             tmp_file.flush()
@@ -56,7 +52,8 @@ def load_data_from_ml_data_server() -> datasets.Dataset:
         # Note: We need to split up the read and write part
         # because the writing has to occur in binary mode but not the reading.
 
-        # TODO currently the dataset is only one file -> need to combine fetched pieces on the client (here).
+        # TODO currently the dataset is only one file
+        # -> need to combine fetched pieces on the client (here).
         dataset = datasets.Dataset.from_parquet(tmp_file.name).with_format("arrow")
         os.remove(tmp_file.name)
 

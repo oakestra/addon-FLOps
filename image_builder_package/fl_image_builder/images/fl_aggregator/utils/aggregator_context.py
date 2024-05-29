@@ -14,3 +14,6 @@ class AggregatorContext(BaseModel):
     min_available_clients: int = 1
     min_fit_clients: int = 1
     min_evaluate_clients: int = 1
+    # For development purposes
+    track_locally: bool = False  # Does not use the remote tracking server
+    deactivate_notifications: bool = False  # Does not use MQTT

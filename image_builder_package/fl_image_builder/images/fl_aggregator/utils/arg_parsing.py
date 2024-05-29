@@ -20,6 +20,20 @@ def parse_args() -> AggregatorContext:
     parser.add_argument("min_fit_clients", type=int)
     parser.add_argument("min_evaluate_clients", type=int)
 
+    parser.add_argument(
+        "--track-locally",
+        action="store_true",
+        default=False,
+        help="Does not use the remote Tracking Server",
+    )
+
+    parser.add_argument(
+        "--deactivate-notifications",
+        action="store_true",
+        default=False,
+        help="Deactivates MQTT for local debugging",
+    )
+
     args = parser.parse_args()
 
     return AggregatorContext(
@@ -31,4 +45,6 @@ def parse_args() -> AggregatorContext:
         min_available_clients=args.min_available_clients,
         min_fit_clients=args.min_fit_clients,
         min_evaluate_clients=args.min_evaluate_clients,
+        track_locally=args.track_locally,
+        deactivate_notifications=args.deactivate_notifications,
     )
