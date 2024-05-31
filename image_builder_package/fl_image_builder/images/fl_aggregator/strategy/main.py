@@ -3,45 +3,40 @@ from typing import Dict, List, Optional, Tuple, Union
 import flwr as fl
 import mlflow
 import numpy as np
-from flops_utils.ml_model_flavor_proxy import get_ml_model_flavor
 from flops_utils.ml_repo_files_proxy import get_model_manager
 from flwr.common import EvaluateRes, FitIns, FitRes, Parameters, Scalar, parameters_to_ndarrays
 from flwr.server.client_manager import ClientManager
 from flwr.server.client_proxy import ClientProxy
 from flwr.server.strategy.aggregate import weighted_loss_avg
-from strategy.logging import handle_system_metrics_logging, init_logging
+from strategy.logging import handle_system_metrics_logging, init_logging, log_project_params
+from strategy.model_tracking import handle_model_tracking
+from utils.aggregator_context import AggregatorContext
 
 
 class FLOpsFedAvg(fl.server.strategy.FedAvg):
     def __init__(
         self,
+        aggregator_context: AggregatorContext,
         mlflow_experiment_id: int,
         requested_total_number_of_training_rounds: int,
         *args,
         **kwargs,
     ):
         init_logging()
+        self.aggregator_context = aggregator_context
         self.mlflow_experiment_id = mlflow_experiment_id
         self.requested_total_number_of_training_rounds = requested_total_number_of_training_rounds
         self.model_manager = get_model_manager()
-
+        # Note: Both will be overwritten after the first training round.
+        self.best_found_accuracy = -1
+        self.best_found_loss = -1
         super().__init__(*args, **kwargs)
 
-    def _log_project_params(self):
-        interesting_params = [
-            "min_available_clients",
-            "min_evaluate_clients",
-            "min_fit_clients",
-            "fraction_evaluate",
-            "fraction_fit",
-        ]
-
-        mlflow.log_params(
-            dict(filter(lambda pair: pair[0] in interesting_params, list(vars(self).items())))
-        )
-
     def configure_fit(
-        self, server_round: int, parameters: Parameters, client_manager: ClientManager
+        self,
+        server_round: int,
+        parameters: Parameters,
+        client_manager: ClientManager,
     ) -> List[Tuple[ClientProxy, FitIns]]:
         if mlflow.active_run():
             mlflow.end_run()
@@ -49,7 +44,7 @@ class FLOpsFedAvg(fl.server.strategy.FedAvg):
             experiment_id=self.mlflow_experiment_id,
             run_name=f"FLOps FL round {server_round}",
         )
-        self._log_project_params()
+        log_project_params(strategy=self)
         return super().configure_fit(server_round, parameters, client_manager)
 
     def aggregate_fit(
@@ -65,7 +60,6 @@ class FLOpsFedAvg(fl.server.strategy.FedAvg):
         if parameters_aggregated is not None:
             aggregated_ndarrays: List[np.ndarray] = parameters_to_ndarrays(parameters_aggregated)
             self.model_manager.set_model_parameters(aggregated_ndarrays)
-            get_ml_model_flavor().log_model(self.model_manager.get_model(), "logged_model_artifact")
 
         return parameters_aggregated, metrics_aggregated
 
@@ -92,6 +86,12 @@ class FLOpsFedAvg(fl.server.strategy.FedAvg):
 
         metrics_aggregated = {"loss": loss_aggregated, "accuracy": accuracy_aggregated}
         mlflow.log_metrics(metrics_aggregated)
+        handle_model_tracking(
+            strategy=self,
+            server_round=server_round,
+            current_rounds_accuracy=accuracy_aggregated,
+            current_rounds_loss=loss_aggregated,
+        )
         mlflow.end_run()
         handle_system_metrics_logging()
         return loss_aggregated, metrics_aggregated

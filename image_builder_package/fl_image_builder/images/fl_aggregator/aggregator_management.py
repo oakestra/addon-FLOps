@@ -43,6 +43,7 @@ def handle_aggregator(aggregator_context: AggregatorContext) -> None:
             experiment_name=f"FLOps Project {aggregator_context.flops_project_id}"
         )
         strategy_instance = FLOpsFedAvg(
+            aggregator_context=aggregator_context,
             mlflow_experiment_id=mlflow_experiment.experiment_id,
             # Note: The Flower Strategy lacks the notion of the number of expected training rounds.
             requested_total_number_of_training_rounds=aggregator_context.training_rounds,

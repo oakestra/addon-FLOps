@@ -1,3 +1,4 @@
+import flwr as fl
 import mlflow
 from flops_utils.ml_model_flavor_proxy import get_ml_model_flavor
 
@@ -41,3 +42,16 @@ def handle_system_metrics_logging() -> None:
 def init_logging() -> None:
     get_ml_model_flavor().autolog()
     mlflow.enable_system_metrics_logging()
+
+
+def log_project_params(strategy: fl.server.strategy.Strategy) -> None:
+    interesting_params = [
+        "min_available_clients",
+        "min_evaluate_clients",
+        "min_fit_clients",
+        "fraction_evaluate",
+        "fraction_fit",
+    ]
+    mlflow.log_params(
+        dict(filter(lambda pair: pair[0] in interesting_params, list(vars(strategy).items())))
+    )
