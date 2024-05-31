@@ -39,6 +39,9 @@ class Context(abc.ABC):
         else:
             return f"{self.new_image_name_prefix}:{self.new_image_tag}"
 
+    def get_protocol_free_image_registry_url(self) -> str:
+        return self.image_registry_url.removeprefix("http://").removeprefix("https://")
+
     def get_image_name(self) -> str:
         return self._build_image_name()
 

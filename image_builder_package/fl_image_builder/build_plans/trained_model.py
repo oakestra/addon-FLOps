@@ -6,8 +6,13 @@ from typing import TYPE_CHECKING
 
 import mlflow
 from flops_utils.logging import logger
+from image_management import build_image, push_image
 from utils.common import run_in_bash
-from utils.timeframes import BUILD_PREPARATION_TIMEFRAME
+from utils.timeframes import (
+    BUILD_IMAGE_TIMEFRAME,
+    BUILD_PREPARATION_TIMEFRAME,
+    IMAGE_PUSH_TIMEFRAME,
+)
 
 if TYPE_CHECKING:
     from context.trained_model import ContextTrainedModel
@@ -18,14 +23,6 @@ if TYPE_CHECKING:
 MODEL_ARTIFACT_NAME = "logged_model_artifact"
 DOWNLOADED_MODEL_DIR = pathlib.Path("downloaded_model")
 DOCKERFILE_DIR = pathlib.Path("trained_model_dockerfile_dir")
-
-
-def _download_trained_model(context: ContextTrainedModel) -> None:
-    mlflow.artifacts.download_artifacts(
-        run_id=context.run_id,
-        artifact_path=MODEL_ARTIFACT_NAME,
-        dst_path=DOWNLOADED_MODEL_DIR,
-    )
 
 
 def _create_dockerfile() -> None:
@@ -41,16 +38,39 @@ def _create_dockerfile() -> None:
     )
 
 
+def _prepare_new_image_name(context: ContextTrainedModel) -> None:
+    # Note: (docker) image registry URLs do now allow upper cases.
+    # TODO inject customer_id here
+    # username = customer_id
+    customer_id = "Admin"
+    image_registry_url = context.get_protocol_free_image_registry_url()
+    context().set_new_image_name_prefix(
+        f"{image_registry_url}/{customer_id}/trained_model"
+    )
+    context().set_new_image_tag(context.run_id)
+
+
 def handle_trained_model_image_build(context: ContextTrainedModel) -> None:
     context.timer.start_new_time_frame(BUILD_PREPARATION_TIMEFRAME)
     # TODO add tracking server URI as param to builder
     # (only needed for trained model build plan not the normal one!)
     mlflow.set_tracking_uri("http://192.168.178.44:7027")
-    _download_trained_model(context)
+    mlflow.artifacts.download_artifacts(
+        run_id=context.run_id,
+        artifact_path=MODEL_ARTIFACT_NAME,
+        dst_path=DOWNLOADED_MODEL_DIR,
+    )
     # Note: We first build a dockerfile and then based on it the image via buildah.
     # MLflow has a command for building the image directly but it uses docker for it.
     _create_dockerfile()
-    # prepare_new_image_names()
-    # context.timer.end_time_frame(BUILD_PREPARATION_TIMEFRAME)
-    # build_trained_model_image()
-    # push_image()
+    _prepare_new_image_name()
+    context.timer.end_time_frame(BUILD_PREPARATION_TIMEFRAME)
+    context.timer.start_new_time_frame(BUILD_IMAGE_TIMEFRAME)
+    build_image(
+        build_directory=DOCKERFILE_DIR,
+        image_name_with_tag=context.get_image_name(),
+    )
+    context.timer.end_time_frame(BUILD_IMAGE_TIMEFRAME)
+    context.timer.start_new_time_frame(IMAGE_PUSH_TIMEFRAME)
+    push_image(context.get_image_name())
+    context.timer.end_time_frame(IMAGE_PUSH_TIMEFRAME)
