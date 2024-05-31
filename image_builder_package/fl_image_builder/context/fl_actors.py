@@ -1,38 +1,19 @@
 from dataclasses import dataclass, field
 
 import git
-from flops_utils.timer import Timer
+from context.main import Context
 from flops_utils.types import MLModelFlavor
-
-_build_context = None
-
-FULL_BUILDER_PROCESS_TIMEFRAME = "full_builder_process"
-BUILD_PREPARATION_TIMEFRAME = "build_preparation"
-BUILD_ALL_IMAGES_TIMEFRAME = "build_all_images"
-BASE_IMAGE_BUILD_TIMEFRAME = "base_image_build"
-IMAGE_PUSH_TIMEFRAME = "image_push"
 
 
 @dataclass
-class BuilderContext:
+class ContextFLActors(Context):
     ml_model_flavor: MLModelFlavor
     repo_url: str
-    image_registry_url: str
-    flops_project_id: str
-    mqtt_ip: str
-    project_observer_ip: str
-    deactivate_notifications: bool = False
     use_devel_base_images: bool = False
 
     cloned_repo: git.repo.base.Repo = field(default=None, init=False)
     new_image_name_prefix: str = field(default="", init=False)
     new_image_tag: str = field(default="", init=False)
-
-    timer: Timer = field(default_factory=Timer, init=False)
-
-    def __post_init__(self):
-        global _build_context
-        _build_context = self
 
     def set_cloned_repo(self, cloned_repo: git.repo.base.Repo) -> None:
         self.cloned_repo = cloned_repo
@@ -51,7 +32,3 @@ class BuilderContext:
 
     def get_aggregator_image_name(self) -> str:
         return self._build_image_name("aggregator")
-
-
-def get_builder_context() -> BuilderContext:
-    return _build_context

@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field
 
 
 class WinnerModel(BaseModel):
-    # Note: IDs are string because MLflow also uses strings for them.
+    # Note: IDs are strings because MLflow also uses strings for them.
     experiment_id: str
     run_id: str
     accuracy: float

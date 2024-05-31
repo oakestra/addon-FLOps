@@ -3,25 +3,31 @@ import pathlib
 import shlex
 import subprocess
 
+from context.main import get_context
 from flops_utils.logging import colorful_logger as logger
 from notification_management import notify_about_failed_build_and_terminate, notify_ui
-from utils.builder_context import (
+from utils.common import (
+    FL_AGGREGATOR_IMAGE_PATH,
+    FL_BASE_IMAGE_PATH,
+    FL_LEARNER_IMAGE_PATH,
+)
+from utils.devel_base_images import DEVEL_BASE_IMAGES_MAPPING
+from utils.timeframes import (
     BASE_IMAGE_BUILD_TIMEFRAME,
     BUILD_ALL_IMAGES_TIMEFRAME,
     IMAGE_PUSH_TIMEFRAME,
-    get_builder_context,
 )
-from utils.common import FL_AGGREGATOR_IMAGE_PATH, FL_BASE_IMAGE_PATH, FL_LEARNER_IMAGE_PATH
-from utils.devel_base_images import DEVEL_BASE_IMAGES_MAPPING
 
 FL_BASE_IMAGE_NAME = "fl_base"
 
 
 def prepare_new_image_names() -> None:
-    full_registry_url = get_builder_context().image_registry_url
-    cloned_repo = get_builder_context().cloned_repo
+    full_registry_url = get_context().image_registry_url
+    cloned_repo = get_context().cloned_repo
 
-    image_registry_url = full_registry_url.removeprefix("http://").removeprefix("https://")
+    image_registry_url = full_registry_url.removeprefix("http://").removeprefix(
+        "https://"
+    )
     latest_commit_hash = cloned_repo.head.commit.hexsha
 
     repo_url = cloned_repo.remotes.origin.url
@@ -30,8 +36,10 @@ def prepare_new_image_names() -> None:
     username = user_repo_name.split("/")[0].lower()
     repo_name = user_repo_name.split("/")[1]
 
-    get_builder_context().set_new_image_name_prefix(f"{image_registry_url}/{username}/{repo_name}")
-    get_builder_context().set_new_image_tag(latest_commit_hash)
+    get_context().set_new_image_name_prefix(
+        f"{image_registry_url}/{username}/{repo_name}"
+    )
+    get_context().set_new_image_tag(latest_commit_hash)
 
 
 def build_image(
@@ -55,13 +63,13 @@ def build_image(
         # TODO read further about buildah options/flags - might improve the build further.
         build_cmd = f"buildah build --isolation=chroot -t {image_name_with_tag}"
         if is_flops_base_image:
-            model_flavor = get_builder_context().ml_model_flavor.value
+            model_flavor = get_context().ml_model_flavor.value
             build_cmd += f" --build-arg ML_MODEL_FLAVOR={model_flavor}"
-            if get_builder_context().use_devel_base_images:
+            if get_context().use_devel_base_images:
                 build_cmd += " -f devel.Dockerfile"
         if base_image_to_use:
             build_cmd += f" --build-arg BASE_IMAGE={base_image_to_use}"
-            if get_builder_context().use_devel_base_images:
+            if get_context().use_devel_base_images:
                 build_cmd += f" --build-arg USE_DEVEL_BASE_IMAGES={True}"
         result = subprocess.run(
             shlex.split(build_cmd),
@@ -84,36 +92,36 @@ def build_image(
 
 
 def _build_base_image() -> None:
-    get_builder_context().timer.start_new_time_frame(BASE_IMAGE_BUILD_TIMEFRAME)
-    if get_builder_context().use_devel_base_images:
+    get_context().timer.start_new_time_frame(BASE_IMAGE_BUILD_TIMEFRAME)
+    if get_context().use_devel_base_images:
         build_image(
             build_directory=FL_BASE_IMAGE_PATH,
             is_flops_base_image=True,
-            base_image_to_use=DEVEL_BASE_IMAGES_MAPPING[get_builder_context().repo_url],
+            base_image_to_use=DEVEL_BASE_IMAGES_MAPPING[get_context().repo_url],
         )
     else:
         build_image(build_directory=FL_BASE_IMAGE_PATH, is_flops_base_image=True)
 
-    get_builder_context().timer.end_time_frame(BASE_IMAGE_BUILD_TIMEFRAME)
+    get_context().timer.end_time_frame(BASE_IMAGE_BUILD_TIMEFRAME)
 
 
 def build_images() -> None:
-    get_builder_context().timer.start_new_time_frame(BUILD_ALL_IMAGES_TIMEFRAME)
+    get_context().timer.start_new_time_frame(BUILD_ALL_IMAGES_TIMEFRAME)
 
     _build_base_image()
 
     build_image(
         build_directory=FL_LEARNER_IMAGE_PATH,
-        image_name_with_tag=get_builder_context().get_learner_image_name(),
+        image_name_with_tag=get_context().get_learner_image_name(),
         base_image_to_use=FL_BASE_IMAGE_NAME,
     )
 
     build_image(
         build_directory=FL_AGGREGATOR_IMAGE_PATH,
-        image_name_with_tag=get_builder_context().get_aggregator_image_name(),
+        image_name_with_tag=get_context().get_aggregator_image_name(),
         base_image_to_use=FL_BASE_IMAGE_NAME,
     )
-    get_builder_context().timer.end_time_frame(BUILD_ALL_IMAGES_TIMEFRAME)
+    get_context().timer.end_time_frame(BUILD_ALL_IMAGES_TIMEFRAME)
 
 
 def push_image(image_name_with_tag: str) -> None:
@@ -132,7 +140,7 @@ def push_image(image_name_with_tag: str) -> None:
 
 
 def push_images() -> None:
-    get_builder_context().timer.start_new_time_frame(IMAGE_PUSH_TIMEFRAME)
-    push_image(get_builder_context().get_learner_image_name())
-    push_image(get_builder_context().get_aggregator_image_name())
-    get_builder_context().timer.end_time_frame(IMAGE_PUSH_TIMEFRAME)
+    get_context().timer.start_new_time_frame(IMAGE_PUSH_TIMEFRAME)
+    push_image(get_context().get_learner_image_name())
+    push_image(get_context().get_aggregator_image_name())
+    get_context().timer.end_time_frame(IMAGE_PUSH_TIMEFRAME)
