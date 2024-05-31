@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from context.fl_actors import ContextFLActors
 
 
-def build_fl_actor_images(context: ContextFLActors) -> None:
+def handle_fl_actor_images_build(context: ContextFLActors) -> None:
     context.timer.start_new_time_frame(BUILD_PREPARATION_TIMEFRAME)
     clone_repo()
     check_cloned_repo()
