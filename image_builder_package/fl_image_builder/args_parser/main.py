@@ -3,10 +3,11 @@ import argparse
 from args_parser.fl_actors import prepare_fl_actors_argparsers
 from args_parser.trained_model import prepare_trained_model_argparsers
 from context.fl_actors import ContextFLActors
+from context.main import Context
 from context.trained_model import ContextTrainedModel
 
 
-def parse_arguments_and_execute() -> None:
+def parse_arguments_and_set_context() -> Context:
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
@@ -29,7 +30,7 @@ def parse_arguments_and_execute() -> None:
     )
 
     subparsers = parser.add_subparsers(
-        dest="command",
+        dest="build_plan",
         required=True,
     )
 
@@ -44,8 +45,8 @@ def parse_arguments_and_execute() -> None:
         "project_observer_ip": args.project_observer_ip,
         "deactivate_notifications": args.deactivate_notifications,
     }
-    if args.command == "fl_actors":
-        ContextFLActors(
+    if args.build_plan == "fl_actors":
+        return ContextFLActors(
             **{
                 **common_attributes,
                 "ml_model_flavor": args.ml_model_flavor,
@@ -53,9 +54,7 @@ def parse_arguments_and_execute() -> None:
                 "use_devel_base_images": args.use_devel_base_images,
             },
         )
-        return
 
-    if args.command == "trained_model":
-        ContextTrainedModel(
-            **{**common_attributes, "run_id": args.run_id},
-        )
+    return ContextTrainedModel(
+        **{**common_attributes, "run_id": args.run_id},
+    )

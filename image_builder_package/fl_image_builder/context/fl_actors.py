@@ -1,12 +1,15 @@
 from dataclasses import dataclass, field
 
 import git
+from build_plans.fl_actors import build_fl_actor_images
 from context.main import Context
 from flops_utils.types import MLModelFlavor
 
 
 @dataclass
 class ContextFLActors(Context):
+    build_plan_trigger = build_fl_actor_images
+
     ml_model_flavor: MLModelFlavor
     repo_url: str
     use_devel_base_images: bool = False

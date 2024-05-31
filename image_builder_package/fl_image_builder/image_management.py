@@ -105,7 +105,7 @@ def _build_base_image() -> None:
     get_context().timer.end_time_frame(BASE_IMAGE_BUILD_TIMEFRAME)
 
 
-def build_images() -> None:
+def build_fl_actor_images() -> None:
     get_context().timer.start_new_time_frame(BUILD_ALL_IMAGES_TIMEFRAME)
 
     _build_base_image()

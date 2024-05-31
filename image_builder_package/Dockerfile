@@ -2,6 +2,8 @@
 # Note: This python version comes with the proper apt listing to install buildah version 1.28.2(+)
 # This buildah version is crucial to be able to run its "build" command.
 FROM python:3.13.0a4-slim-bookworm
+#FROM python:3.13.0b1-slim-bookworm
+#FROM python:3.13.0b1-slim-bookworm
 WORKDIR /image_builder
 
 RUN apt-get update && apt-get install -y \
