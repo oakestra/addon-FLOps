@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from flops_manager.classes.apps.helper import FLOpsHelperApp
+from flops_manager.classes.services.helper.trained_model import TrainedModel
 from flops_manager.image_management.trained_model_images import get_trained_model_image_name
 from flops_manager.mqtt.sender import notify_project_observer
 from flops_utils.logging import colorful_logger as logger
@@ -20,5 +21,4 @@ def handle_trained_model_image_deployment(flops_project: FLOpsProject, run_id: s
     trained_model_name = get_trained_model_image_name(
         customer_id=flops_project.customer_id, run_id=run_id
     )
-
-    logger.debug("REEEEEEEEEEEEEEEEEEElelele")
+    TrainedModel(parent_app=helper_app, image_name=trained_model_name)
