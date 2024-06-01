@@ -1,7 +1,8 @@
 requests ~=2.28.1
 gitpython ~= 3.1.42
 # Note: TODO add comment if things work out about how skinny works and the full fledged thing needs a ton of breaking depenendcies, etc.
-mlflow-skinny ~= 2.12.1
+#mlflow-skinny ~= 2.12.1
+mlflow ~= 2.12.1
 git+https://github.com/Malyuk-A/tmp_flops_utils.git@main
 
 # Not used because pydantic needs rust and other tooling which would further bload the current slim base image.

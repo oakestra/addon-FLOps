@@ -1,5 +1,6 @@
-from dependency_management.pytorch import handle_pytorch
-from utils.common import CONDA_ENV_FILE_PATH, run_in_bash
+from build_plans.fl_actors.dependency_management.pytorch import handle_pytorch
+from build_plans.fl_actors.paths import CONDA_ENV_FILE_PATH
+from utils.common import run_in_bash
 
 
 def dependency_exists(target_dependency: str) -> bool:

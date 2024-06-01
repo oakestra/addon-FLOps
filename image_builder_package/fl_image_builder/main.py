@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from args_parser.main import parse_arguments_and_set_context
+from flops_utils.logging import logger
 from notification_management import (
     notify_about_failed_build_and_terminate,
     notify_about_successful_builder_process,
@@ -15,9 +16,9 @@ def main() -> None:
         notify_about_successful_builder_process()
         context.timer.end_time_frame(FULL_BUILDER_PROCESS_TIMEFRAME)
     except Exception as e:
-        notify_about_failed_build_and_terminate(
-            f"Something unexpected went wrong; '{e}'"
-        )
+        msg = "Something unexpected went wrong"
+        logger.exception(msg)
+        notify_about_failed_build_and_terminate(f"{msg}; '{e}'")
 
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 
 import git
-from build_plans.fl_actors import handle_fl_actor_images_build
+from build_plans.fl_actors.main import handle_fl_actor_images_build
 from context.main import Context
 from flops_utils.types import MLModelFlavor
 

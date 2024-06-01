@@ -1,6 +1,6 @@
 import pathlib
 
-IMAGES_PATH = pathlib.Path("images")
+IMAGES_PATH = pathlib.Path("build_plans/fl_actors/images")
 FL_BASE_IMAGE_PATH = IMAGES_PATH / "fl_base"
 FL_LEARNER_IMAGE_PATH = IMAGES_PATH / "fl_learner"
 FL_AGGREGATOR_IMAGE_PATH = IMAGES_PATH / "fl_aggregator"

@@ -1,9 +1,10 @@
 # IMPORTANT!: Needs to be run with --privileged otherwise errors occur.
-# Note: This python version comes with the proper apt listing to install buildah version 1.28.2(+)
-# This buildah version is crucial to be able to run its "build" command.
-FROM python:3.13.0a4-slim-bookworm
-#FROM python:3.13.0b1-slim-bookworm
-#FROM python:3.13.0b1-slim-bookworm
+# The baseimage has to support the following:
+# - a buildah version (apt) that has the "build" command (older versions don't have it yet)
+# - python (version 3.10+)
+# - mlflow (normal not skinny version)
+# Note: This combination is surprisingly rare.
+FROM ghcr.io/malyuk-a/miniconda3:24.4.0-0
 WORKDIR /image_builder
 
 RUN apt-get update && apt-get install -y \
@@ -13,7 +14,11 @@ RUN apt-get update && apt-get install -y \
     vim tree &&\
     rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt .
-RUN pip install -r requirements.txt
+RUN conda install -y \
+    requests>=2.28.1 \
+    gitpython>=3.1.42\
+    mlflow>=2.12.1
+
+RUN pip install --no-cache-dir git+https://github.com/Malyuk-A/tmp_flops_utils.git@main
 
 COPY /fl_image_builder /image_builder

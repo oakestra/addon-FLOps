@@ -6,7 +6,7 @@
 # https://github.com/conda/conda/issues/13560
 # Thus we use an older image version where this bug does not occur.
 # TODO update this image to the latest version once this bug is fixed by conda.
-# Buggy images: 24.3.0-0, 24.1.2-0 (maybe more)
+# Buggy images: 24.4.0-0, 24.3.0-0, 24.1.2-0 (maybe more)
 FROM ghcr.io/malyuk-a/miniconda3:23.10.0-1
 
 RUN apt-get update && apt-get install -y \

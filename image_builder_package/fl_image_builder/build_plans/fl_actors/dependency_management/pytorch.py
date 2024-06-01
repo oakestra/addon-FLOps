@@ -1,5 +1,6 @@
-import dependency_management.main as dep_manager
-from utils.common import CONDA_ENV_FILE_PATH, run_in_bash
+import build_plans.fl_actors.dependency_management.main as dep_manager
+from build_plans.fl_actors.paths import CONDA_ENV_FILE_PATH
+from utils.common import run_in_bash
 
 
 def _handle_pyvision() -> None:

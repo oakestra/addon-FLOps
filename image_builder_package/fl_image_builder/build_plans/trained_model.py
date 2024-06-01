@@ -44,13 +44,12 @@ def _prepare_new_image_name(context: ContextTrainedModel) -> None:
     # username = customer_id
     customer_id = "Admin"
     image_registry_url = context.get_protocol_free_image_registry_url()
-    context().set_new_image_name_prefix(
-        f"{image_registry_url}/{customer_id}/trained_model"
-    )
-    context().set_new_image_tag(context.run_id)
+    context.set_new_image_name_prefix(f"{image_registry_url}/{customer_id.lower()}/trained_model")
+    context.set_new_image_tag(context.run_id)
 
 
 def handle_trained_model_image_build(context: ContextTrainedModel) -> None:
+    logger.debug("Start handling trained model image build process")
     context.timer.start_new_time_frame(BUILD_PREPARATION_TIMEFRAME)
     # TODO add tracking server URI as param to builder
     # (only needed for trained model build plan not the normal one!)
@@ -60,17 +59,22 @@ def handle_trained_model_image_build(context: ContextTrainedModel) -> None:
         artifact_path=MODEL_ARTIFACT_NAME,
         dst_path=DOWNLOADED_MODEL_DIR,
     )
+    logger.debug("Downloaded model artifact directory")
     # Note: We first build a dockerfile and then based on it the image via buildah.
     # MLflow has a command for building the image directly but it uses docker for it.
     _create_dockerfile()
-    _prepare_new_image_name()
+    logger.debug("Created dockerfile")
+    _prepare_new_image_name(context=context)
     context.timer.end_time_frame(BUILD_PREPARATION_TIMEFRAME)
+
     context.timer.start_new_time_frame(BUILD_IMAGE_TIMEFRAME)
     build_image(
         build_directory=DOCKERFILE_DIR,
         image_name_with_tag=context.get_image_name(),
+        should_notify_observer=True,
     )
     context.timer.end_time_frame(BUILD_IMAGE_TIMEFRAME)
+
     context.timer.start_new_time_frame(IMAGE_PUSH_TIMEFRAME)
     push_image(context.get_image_name())
     context.timer.end_time_frame(IMAGE_PUSH_TIMEFRAME)

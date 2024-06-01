@@ -17,9 +17,7 @@ def prepare_fl_actors_argparsers(subparsers: Subparsers) -> None:
         help="command for FL actors image builds (e.g. learner, aggregator)",
         formatter_class=argparse.RawTextHelpFormatter,
     )
-    fl_actors_parser.add_argument(
-        "repo_url", type=str, help="The URL of the GitHub repository."
-    )
+    fl_actors_parser.add_argument("repo_url", type=str, help="The URL of the GitHub repository.")
     fl_actors_parser.add_argument("ml_model_flavor", type=MLModelFlavor)
     fl_actors_parser.add_argument(
         "--use-devel-base-images",
