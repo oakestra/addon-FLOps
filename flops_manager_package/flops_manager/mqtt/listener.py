@@ -6,10 +6,7 @@ from flops_manager.classes.services.project.aggregator.termination import (
     handle_aggregator_failed,
     handle_aggregator_success,
 )
-from flops_manager.classes.services.project.builder.termination import (
-    handle_builder_failed,
-    handle_builder_success,
-)
+from flops_manager.classes.services.project.builders.fl_actors_builder import FLActorsImageBuilder
 from flops_manager.mqtt.constants import Topics
 from flops_manager.mqtt.main import get_mqtt_client
 from flops_manager.mqtt.sender import notify_project_observer
@@ -29,9 +26,9 @@ def _on_new_message(client, userdata, message) -> None:
                 logger.critical(data)
 
             case Topics.FL_ACTORS_IMAGE_BUILDER_SUCCESS.value:
-                handle_builder_success(builder_success_msg=data)
+                FLActorsImageBuilder.handle_builder_success(builder_success_msg=data)
             case Topics.FL_ACTORS_IMAGE_BUILDER_FAILED.value:
-                handle_builder_failed(builder_failed_msg=data)
+                FLActorsImageBuilder.handle_builder_failed(builder_failed_msg=data)
 
             case Topics.AGGREGATOR_SUCCESS.value:
                 handle_aggregator_success(aggregator_success_msg=data)

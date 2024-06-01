@@ -1,4 +1,11 @@
+from enum import Enum
+
 from flops_manager.utils.types import CustomEnum
+
+
+class PostTrainingSteps(str, Enum):
+    BUILD_IMAGE_FOR_TRAINED_MODEL = "build_image_for_trained_model"
+    DEPLOY_TRAINED_MODEL_IMAGE = "deploy_trained_model_image"
 
 
 class FlOpsExceptionTypes(CustomEnum):

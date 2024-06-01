@@ -6,7 +6,7 @@ from flops_manager.ml_repo_management import get_latest_commit_hash
 from flops_manager.utils.common import get_shortened_unique_id
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
 from flops_manager.utils.sla.components import SlaComponentsWrapper, SlaCore, SlaDetails, SlaNames
-from flops_manager.utils.types import Application
+from flops_manager.utils.types import Application, PostTrainingSteps
 from flops_utils.types import MLModelFlavor
 from pydantic import AliasChoices, BaseModel, Field
 
@@ -51,6 +51,7 @@ class FLOpsProject(FLOpsApp):
 
     training_configuration: _TrainingConfiguration = _TrainingConfiguration()
     resource_constraints: _ResourceContraints = _ResourceContraints()
+    post_training_steps: List[PostTrainingSteps] = Field(default_factory=list)
 
     ml_repo_url: str
     ml_repo_latest_commit_hash: str = Field("", init=False)

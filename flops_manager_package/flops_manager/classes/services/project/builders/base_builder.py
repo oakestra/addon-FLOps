@@ -1,6 +1,7 @@
 import abc
 
 from flops_manager.classes.services.project.project_service import FLOpsProjectService
+from flops_manager.database.common import retrieve_from_db_by_project_id
 from flops_manager.mqtt.sender import notify_project_observer
 from flops_manager.registry_management import FLOPS_IMAGE_REGISTRY_URL
 from flops_manager.utils.common import get_shortened_unique_id
@@ -14,6 +15,7 @@ from flops_manager.utils.sla.components import (
     SlaNames,
     SlaResources,
 )
+from flops_utils.logging import logger
 from pydantic import Field
 
 
@@ -76,3 +78,20 @@ class FLOpsBaseImageBuilder(FLOpsProjectService, abc.ABC):
                 ),
             ),
         )
+
+    @classmethod
+    def handle_builder_failed(cls, builder_failed_msg: dict) -> None:
+        logger.debug(builder_failed_msg)
+        flops_project_id = builder_failed_msg["flops_project_id"]
+        retrieve_from_db_by_project_id(cls, flops_project_id).undeploy()
+        msg = "Builder failed. Terminating this FLOps Project."
+        logger.critical(msg)
+        notify_project_observer(flops_project_id=flops_project_id, msg=msg)
+
+    @classmethod
+    def handle_builder_success(cls, builder_success_msg: dict) -> str:
+        """Undeploys the builder service and returns its FLOps Project ID."""
+        logger.debug(builder_success_msg)
+        flops_project_id = builder_success_msg["flops_project_id"]
+        retrieve_from_db_by_project_id(cls, flops_project_id).undeploy()
+        return flops_project_id

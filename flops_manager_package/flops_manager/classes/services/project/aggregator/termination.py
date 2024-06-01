@@ -1,6 +1,8 @@
+from flops_manager.classes.apps.project import FLOpsProject
 from flops_manager.classes.services.project.aggregator.main import FLAggregator
 from flops_manager.classes.services.project.learners import FLLearners
 from flops_manager.database.common import retrieve_from_db_by_project_id
+from flops_manager.fl_management import init_fl_post_training_steps
 from flops_manager.mqtt.sender import notify_project_observer
 from flops_utils.logging import colorful_logger as logger
 
@@ -10,7 +12,7 @@ def handle_aggregator_success(aggregator_success_msg: dict) -> None:
     flops_project_id = aggregator_success_msg["flops_project_id"]
     retrieve_from_db_by_project_id(FLAggregator, flops_project_id).undeploy()
     retrieve_from_db_by_project_id(FLLearners, flops_project_id).undeploy()
-    # TODO
+    init_fl_post_training_steps(retrieve_from_db_by_project_id(FLOpsProject, flops_project_id))
 
 
 def handle_aggregator_failed(aggregator_failed_msg: dict) -> None:
