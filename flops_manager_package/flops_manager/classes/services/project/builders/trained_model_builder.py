@@ -35,7 +35,7 @@ class TrainedModelImageBuilder(FLOpsBaseImageBuilder):
             notify_project_observer(flops_project_id=flops_project.flops_project_id, msg=msg)
             return
 
-        msg = "Start handling FL post training step: deployment of trained model image."
+        msg = "Start handling FL post training step: Deployment of trained model image."
         logger.info(msg)
         notify_project_observer(flops_project_id=flops_project.flops_project_id, msg=msg)
         # TODO

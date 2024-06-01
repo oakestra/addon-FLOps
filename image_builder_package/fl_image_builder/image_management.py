@@ -60,7 +60,7 @@ def build_image(
 
 
 def push_image(context: Context, image_name_with_tag: str = None) -> None:
-    image_name_with_tag = image_name_with_tag or context.image_name_with_tag
+    image_name_with_tag = image_name_with_tag or context.get_image_name()
     logger.info(f"Start pushing image '{image_name_with_tag}'")
     try:
         subprocess.check_call(

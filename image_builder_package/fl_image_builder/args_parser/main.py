@@ -56,5 +56,10 @@ def parse_arguments_and_set_context() -> Context:
         )
 
     return ContextTrainedModel(
-        **{**common_attributes, "run_id": args.run_id},
+        **{
+            **common_attributes,
+            "customer_id": args.customer_id,
+            "tracking_server_uri": args.tracking_server_uri,
+            "run_id": args.run_id,
+        },
     )

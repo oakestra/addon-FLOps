@@ -93,5 +93,6 @@ class FLOpsBaseImageBuilder(FLOpsProjectService, abc.ABC):
         """Undeploys the builder service and returns its FLOps Project ID."""
         logger.debug(builder_success_msg)
         flops_project_id = builder_success_msg["flops_project_id"]
-        retrieve_from_db_by_project_id(cls, flops_project_id).undeploy()
+        builder = retrieve_from_db_by_project_id(cls, flops_project_id)
+        builder.undeploy()
         return flops_project_id

@@ -12,7 +12,10 @@ def handle_aggregator_success(aggregator_success_msg: dict) -> None:
     flops_project_id = aggregator_success_msg["flops_project_id"]
     retrieve_from_db_by_project_id(FLAggregator, flops_project_id).undeploy()
     retrieve_from_db_by_project_id(FLLearners, flops_project_id).undeploy()
-    init_fl_post_training_steps(retrieve_from_db_by_project_id(FLOpsProject, flops_project_id))
+    init_fl_post_training_steps(
+        flops_project=retrieve_from_db_by_project_id(FLOpsProject, flops_project_id),
+        winner_model_run_id=aggregator_success_msg["run_id"],
+    )
 
 
 def handle_aggregator_failed(aggregator_failed_msg: dict) -> None:
