@@ -3,7 +3,7 @@ from typing import Tuple
 
 import flask
 import flask_openapi3
-from flops_manager.flops_management import handle_new_mock_data_provider
+from flops_manager.flops_management.mock_data_providers import handle_new_mock_data_provider
 from flops_manager.utils.exceptions.main import FLOpsManagerException
 from flops_utils.logging import colorful_logger as logger
 

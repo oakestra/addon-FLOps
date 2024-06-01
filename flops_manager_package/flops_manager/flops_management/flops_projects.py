@@ -1,13 +1,11 @@
 import threading
 
-from flops_manager.classes.apps.helper import FLOpsHelperApp
 from flops_manager.classes.apps.observatory import FLOpsObservatory
 from flops_manager.classes.apps.project import FLOpsProject
-from flops_manager.classes.services.helper.mock_data_provider import MockDataProvider
 from flops_manager.classes.services.observatory.project_observer import FLOpsProjectObserver
 from flops_manager.classes.services.project.builders.fl_actors_builder import FLActorsImageBuilder
-from flops_manager.fl_management import handle_fl_training_processes
-from flops_manager.image_management import check_if_latest_matching_images_exist
+from flops_manager.flops_management.training import handle_fl_training_processes
+from flops_manager.image_management.fl_actor_images import check_if_latest_matching_images_exist
 from flops_manager.mqtt.sender import notify_project_observer
 from flops_utils.logging import colorful_logger as logger
 
@@ -35,9 +33,3 @@ def handle_new_flops_project(request_data: dict, bearer_token: str) -> None:
         parent_app=flops_project,
         project_observer_ip=project_observer.ip,
     )
-
-
-def handle_new_mock_data_provider(request_data: dict, bearer_token: str) -> None:
-    request_data["parent_app"] = FLOpsHelperApp.get_app(customer_id=request_data["customerID"])
-    request_data["bearer_token"] = bearer_token
-    MockDataProvider.model_validate(request_data)

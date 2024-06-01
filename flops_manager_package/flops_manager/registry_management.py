@@ -5,7 +5,6 @@ from flops_manager.api.request_management.custom_requests import (
     RequestAuxiliaries,
     RequestCore,
 )
-from flops_manager.classes.apps.project import FLOpsProject
 from flops_manager.utils.env_vars import FLOPS_IMAGE_REGISTRY_IP
 from flops_manager.utils.exceptions.types import FlOpsExceptionTypes
 
@@ -14,7 +13,7 @@ FLOPS_IMAGE_REGISTRY_PORT = "5073"
 FLOPS_IMAGE_REGISTRY_URL = f"http://{FLOPS_IMAGE_REGISTRY_IP}:{FLOPS_IMAGE_REGISTRY_PORT}"
 
 
-def check_registry_reachable(flops_project: FLOpsProject) -> bool:
+def check_registry_reachable() -> bool:
     CustomRequest(
         core=RequestCore(
             base_url=FLOPS_IMAGE_REGISTRY_URL,

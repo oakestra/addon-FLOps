@@ -1,6 +1,9 @@
 from flops_manager.classes.apps.project import FLOpsProject
 from flops_manager.classes.services.project.builders.base_builder import FLOpsBaseImageBuilder
 from flops_manager.database.common import retrieve_from_db_by_project_id
+from flops_manager.flops_management.post_training_steps.trained_model_image_deployment import (
+    handle_trained_model_image_deployment,
+)
 from flops_manager.mqtt.sender import notify_project_observer
 from flops_manager.utils.types import PostTrainingSteps
 from flops_utils.logging import logger
@@ -20,7 +23,12 @@ class TrainedModelImageBuilder(FLOpsBaseImageBuilder):
 
     @classmethod
     def handle_builder_success(cls, builder_success_msg: dict) -> None:
-        flops_project_id = super().handle_builder_success(builder_success_msg)
+        logger.debug(builder_success_msg)
+        flops_project_id = builder_success_msg["flops_project_id"]
+        builder = retrieve_from_db_by_project_id(cls, flops_project_id)
+        run_id = builder.run_id
+        builder.undeploy()
+
         flops_project = retrieve_from_db_by_project_id(FLOpsProject, flops_project_id)
 
         msg = (
@@ -35,7 +43,4 @@ class TrainedModelImageBuilder(FLOpsBaseImageBuilder):
             notify_project_observer(flops_project_id=flops_project.flops_project_id, msg=msg)
             return
 
-        msg = "Start handling FL post training step: Deployment of trained model image."
-        logger.info(msg)
-        notify_project_observer(flops_project_id=flops_project.flops_project_id, msg=msg)
-        # TODO
+        handle_trained_model_image_deployment(flops_project=flops_project, run_id=run_id)

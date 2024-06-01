@@ -1,7 +1,7 @@
 from flops_manager.classes.apps.project import FLOpsProject
 from flops_manager.classes.services.project.builders.base_builder import FLOpsBaseImageBuilder
 from flops_manager.database.common import retrieve_from_db_by_project_id
-from flops_manager.fl_management import handle_fl_training_processes
+from flops_manager.flops_management.training import handle_fl_training_processes
 
 
 class FLActorsImageBuilder(FLOpsBaseImageBuilder):

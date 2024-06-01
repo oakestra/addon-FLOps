@@ -27,5 +27,5 @@ class FLOpsCustomerFacingApp(FLOpsApp, abc.ABC):
     @classmethod
     def get_app(cls, customer_id: str) -> "FLOpsCustomerFacingApp":
         """There should be only one per user."""
-        existing_helper = retrieve_from_db_by_customer_id(cls, customer_id)
-        return existing_helper or cls(customer_id=customer_id)
+        existing_app = retrieve_from_db_by_customer_id(cls, customer_id)
+        return existing_app or cls(customer_id=customer_id)

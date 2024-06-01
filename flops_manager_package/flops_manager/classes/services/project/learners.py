@@ -1,6 +1,9 @@
 from flops_manager.api.service_management import deploy
 from flops_manager.classes.services.project.project_service import FLOpsProjectService
-from flops_manager.image_management import FLOpsImageTypes, get_flops_image_name
+from flops_manager.image_management.fl_actor_images import (
+    FLActorImageTypes,
+    get_fl_actor_image_name,
+)
 from flops_manager.mqtt.sender import notify_project_observer
 from flops_manager.utils.common import get_shortened_unique_id
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
@@ -33,10 +36,10 @@ class FLLearners(FLOpsProjectService):
             )
 
         self.total_number_of_learners = self.parent_app.training_configuration.min_available_clients
-        self.fl_learner_image = get_flops_image_name(
+        self.fl_learner_image = get_fl_actor_image_name(
             ml_repo_url=self.parent_app.ml_repo_url,
             ml_repo_latest_commit_hash=self.parent_app.ml_repo_latest_commit_hash,
-            flops_image_type=FLOpsImageTypes.LEARNER,
+            flops_image_type=FLActorImageTypes.LEARNER,
         )
         super().model_post_init(_)
 
