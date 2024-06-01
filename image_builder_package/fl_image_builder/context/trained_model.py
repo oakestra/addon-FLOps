@@ -8,4 +8,6 @@ from context.main import Context
 class ContextTrainedModel(Context):
     build_plan_trigger = handle_trained_model_image_build
 
+    customer_id: str
+    tracking_server_uri: str
     run_id: str

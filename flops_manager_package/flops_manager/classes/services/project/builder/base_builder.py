@@ -1,3 +1,5 @@
+import abc
+
 from flops_manager.classes.services.project.project_service import FLOpsProjectService
 from flops_manager.mqtt.sender import notify_project_observer
 from flops_manager.registry_management import FLOPS_IMAGE_REGISTRY_URL
@@ -15,7 +17,7 @@ from flops_manager.utils.sla.components import (
 from pydantic import Field
 
 
-class FLOpsImageBuilder(FLOpsProjectService):
+class FLOpsBaseImageBuilder(FLOpsProjectService, abc.ABC):
     namespace = "builder"
     project_observer_ip: str = Field(None, exclude=True, repr=False)
 
@@ -37,22 +39,19 @@ class FLOpsImageBuilder(FLOpsProjectService):
                 msg="New Builder service created & deployed",
             )
 
-    def _configure_sla_components(self) -> None:
-        cmd = " ".join(
+    def _prepare_cmd(self) -> str:
+        return " ".join(
             (
                 "python3",
                 "main.py",
-                self.parent_app.ml_model_flavor,
-                self.parent_app.ml_repo_url,
                 FLOPS_IMAGE_REGISTRY_URL,
                 self.flops_project_id,
                 FLOPS_MQTT_BROKER_IP,
                 self.project_observer_ip,
             )
         )
-        if self.parent_app.use_devel_base_images:
-            cmd += " --use_devel_base_images"
 
+    def _configure_sla_components(self) -> None:
         self.sla_components = SlaComponentsWrapper(
             core=SlaCore(
                 app_id=self.flops_project_id,
@@ -66,7 +65,7 @@ class FLOpsImageBuilder(FLOpsProjectService):
                 compute=SlaCompute(
                     code="ghcr.io/malyuk-a/flops-image-builder:latest",
                     one_shot_service=True,
-                    cmd=cmd,
+                    cmd=self._prepare_cmd(),
                 ),
             ),
             details=SlaDetails(

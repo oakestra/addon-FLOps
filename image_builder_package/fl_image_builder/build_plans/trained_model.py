@@ -40,20 +40,17 @@ def _create_dockerfile() -> None:
 
 def _prepare_new_image_name(context: ContextTrainedModel) -> None:
     # Note: (docker) image registry URLs do now allow upper cases.
-    # TODO inject customer_id here
-    # username = customer_id
-    customer_id = "Admin"
     image_registry_url = context.get_protocol_free_image_registry_url()
-    context.set_new_image_name_prefix(f"{image_registry_url}/{customer_id.lower()}/trained_model")
+    context.set_new_image_name_prefix(
+        f"{image_registry_url}/{context.customer_id.lower()}/trained_model"
+    )
     context.set_new_image_tag(context.run_id)
 
 
 def handle_trained_model_image_build(context: ContextTrainedModel) -> None:
     logger.debug("Start handling trained model image build process")
     context.timer.start_new_time_frame(BUILD_PREPARATION_TIMEFRAME)
-    # TODO add tracking server URI as param to builder
-    # (only needed for trained model build plan not the normal one!)
-    mlflow.set_tracking_uri("http://192.168.178.44:7027")
+    mlflow.set_tracking_uri(context.tracking_server_uri)
     mlflow.artifacts.download_artifacts(
         run_id=context.run_id,
         artifact_path=MODEL_ARTIFACT_NAME,

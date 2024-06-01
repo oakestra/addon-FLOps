@@ -5,7 +5,9 @@ from flops_manager.classes.apps.observatory import FLOpsObservatory
 from flops_manager.classes.apps.project import FLOpsProject
 from flops_manager.classes.services.helper.mock_data_provider import MockDataProvider
 from flops_manager.classes.services.observatory.project_observer import FLOpsProjectObserver
-from flops_manager.classes.services.project.builder.main import FLOpsImageBuilder
+from flops_manager.classes.services.project.builder.build_plans_builders.fl_actors_builder import (
+    FLActorsImageBuilder,
+)
 from flops_manager.fl_management import handle_fl_operations
 from flops_manager.image_management import check_if_latest_matching_images_exist
 from flops_manager.mqtt.sender import notify_project_observer
@@ -31,7 +33,10 @@ def handle_new_flops_project(request_data: dict, bearer_token: str) -> None:
         threading.Thread(target=handle_fl_operations, args=(flops_project,)).start()
         return
 
-    FLOpsImageBuilder(parent_app=flops_project, project_observer_ip=project_observer.ip)
+    FLActorsImageBuilder(
+        parent_app=flops_project,
+        project_observer_ip=project_observer.ip,
+    )
 
 
 def handle_new_mock_data_provider(request_data: dict, bearer_token: str) -> None:
