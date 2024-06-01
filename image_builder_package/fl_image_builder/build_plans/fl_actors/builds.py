@@ -54,6 +54,7 @@ def _build_fl_actor_image(
         if context.use_devel_base_images:
             build_cmd_addition += f" --build-arg USE_DEVEL_BASE_IMAGES={True}"
     build_image(
+        context=context,
         build_directory=build_directory,
         image_name_with_tag=image_name_with_tag,
         base_image_to_use=base_image_to_use,

@@ -1,5 +1,5 @@
 # IMPORTANT!: Needs to be run with --privileged otherwise errors occur.
-# The baseimage has to support the following:
+# The base image has to support the following:
 # - a buildah version (apt) that has the "build" command (older versions don't have it yet)
 # - python (version 3.10+)
 # - mlflow (normal not skinny version)

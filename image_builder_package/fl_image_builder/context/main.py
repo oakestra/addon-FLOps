@@ -1,15 +1,16 @@
 import abc
+import sys
 from dataclasses import dataclass, field
 from typing import ClassVar
 
 from flops_utils.timer import Timer
-
-_context = None
+from notification_management import notify_manager, notify_observer
 
 
 @dataclass
 class Context(abc.ABC):
     build_plan_trigger: ClassVar[callable]
+    mqtt_topic_infix: ClassVar[str]
 
     image_registry_url: str
     flops_project_id: str
@@ -45,6 +46,23 @@ class Context(abc.ABC):
     def get_image_name(self) -> str:
         return self._build_image_name()
 
+    def notify_about_failed_build_and_terminate(self, error_msg: str) -> None:
+        notify_manager(
+            context=self,
+            topic=f"flops_manager/{self.mqtt_topic_infix}/failed",
+            error_msg=error_msg,
+        )
+        notify_observer(context=self, msg=error_msg)
+        sys.exit(1)
 
-def get_context() -> Context:
-    return _context
+    def notify_about_successful_builder_process(self) -> None:
+        msg_payload = {}
+        for name, time_frame in self.timer.time_frames.items():
+            msg_payload[name] = time_frame.get_duration(human_readable=True)
+
+        notify_manager(
+            context=self,
+            topic=f"flops_manager/{self.mqtt_topic_infix}/success",
+            msg_payload=msg_payload,
+        )
+        notify_observer(context=self, msg=str(msg_payload))

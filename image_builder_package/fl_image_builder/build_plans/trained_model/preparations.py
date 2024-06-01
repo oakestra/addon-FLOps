@@ -6,23 +6,19 @@ from typing import TYPE_CHECKING
 
 import mlflow
 from flops_utils.logging import logger
-from image_management import build_image, push_image
 from utils.common import run_in_bash
-from utils.timeframes import (
-    BUILD_IMAGE_TIMEFRAME,
-    BUILD_PREPARATION_TIMEFRAME,
-    IMAGE_PUSH_TIMEFRAME,
-)
+from utils.timeframes import BUILD_PREPARATION_TIMEFRAME
 
 if TYPE_CHECKING:
     from context.trained_model import ContextTrainedModel
+
+from build_plans.trained_model.common import DOCKERFILE_DIR
 
 # Note: Currently max only one model is logged/saved per MLflow run.
 # It is mandatory to provide a name when logging models.
 # For simplicity sake we use the same.
 MODEL_ARTIFACT_NAME = "logged_model_artifact"
 DOWNLOADED_MODEL_DIR = pathlib.Path("downloaded_model")
-DOCKERFILE_DIR = pathlib.Path("trained_model_dockerfile_dir")
 
 
 def _create_dockerfile() -> None:
@@ -47,8 +43,7 @@ def _prepare_new_image_name(context: ContextTrainedModel) -> None:
     context.set_new_image_tag(context.run_id)
 
 
-def handle_trained_model_image_build(context: ContextTrainedModel) -> None:
-    logger.debug("Start handling trained model image build process")
+def prepare_build(context: ContextTrainedModel) -> None:
     context.timer.start_new_time_frame(BUILD_PREPARATION_TIMEFRAME)
     mlflow.set_tracking_uri(context.tracking_server_uri)
     mlflow.artifacts.download_artifacts(
@@ -63,15 +58,3 @@ def handle_trained_model_image_build(context: ContextTrainedModel) -> None:
     logger.debug("Created dockerfile")
     _prepare_new_image_name(context=context)
     context.timer.end_time_frame(BUILD_PREPARATION_TIMEFRAME)
-
-    context.timer.start_new_time_frame(BUILD_IMAGE_TIMEFRAME)
-    build_image(
-        build_directory=DOCKERFILE_DIR,
-        image_name_with_tag=context.get_image_name(),
-        should_notify_observer=True,
-    )
-    context.timer.end_time_frame(BUILD_IMAGE_TIMEFRAME)
-
-    context.timer.start_new_time_frame(IMAGE_PUSH_TIMEFRAME)
-    push_image(context.get_image_name())
-    context.timer.end_time_frame(IMAGE_PUSH_TIMEFRAME)

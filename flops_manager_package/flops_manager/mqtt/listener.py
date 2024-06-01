@@ -28,9 +28,9 @@ def _on_new_message(client, userdata, message) -> None:
             case Topics.PROJECT_OBSERVER_FAILED.value:
                 logger.critical(data)
 
-            case Topics.IMAGE_BUILDER_SUCCESS.value:
+            case Topics.FL_ACTORS_IMAGE_BUILDER_SUCCESS.value:
                 handle_builder_success(builder_success_msg=data)
-            case Topics.IMAGE_BUILDER_FAILED.value:
+            case Topics.FL_ACTORS_IMAGE_BUILDER_FAILED.value:
                 handle_builder_failed(builder_failed_msg=data)
 
             case Topics.AGGREGATOR_SUCCESS.value:

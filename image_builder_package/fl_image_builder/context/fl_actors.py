@@ -9,6 +9,7 @@ from flops_utils.types import MLModelFlavor
 @dataclass
 class ContextFLActors(Context):
     build_plan_trigger = handle_fl_actor_images_build
+    mqtt_topic_infix = "fl_actors_image_builder"
 
     ml_model_flavor: MLModelFlavor
     repo_url: str
