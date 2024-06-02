@@ -19,6 +19,7 @@ def handle_trained_model_image_deployment(flops_project: FLOpsProject, run_id: s
 
     helper_app = FLOpsHelperApp.get_app(customer_id=flops_project.customer_id)
     trained_model_name = get_trained_model_image_name(
-        customer_id=flops_project.customer_id, run_id=run_id
+        customer_id=flops_project.customer_id,
+        run_id=run_id,
     )
     TrainedModel(parent_app=helper_app, image_name=trained_model_name)

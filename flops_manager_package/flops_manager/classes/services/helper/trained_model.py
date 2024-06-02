@@ -24,7 +24,7 @@ class TrainedModel(FLOpsService):
         if self.gets_loaded_from_db:
             return
 
-        self.ip = generate_ip(self.parent_app.flops_project_id, self)
+        self.ip = generate_ip(self.parent_app.app_id, self)
         super().model_post_init(_)
 
     def _configure_sla_components(self) -> None:

@@ -51,6 +51,7 @@ def get_fl_actor_image_name(
     return "".join(
         (
             get_flops_image_prefix(),
+            "/",
             get_sanitize_ml_repo_name(ml_repo_url),
             "/",
             flops_image_type.value,
