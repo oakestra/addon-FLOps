@@ -5,7 +5,7 @@ from flops_manager.utils.exceptions.types import FlOpsExceptionTypes
 from flops_utils.logging import colorful_logger as logger
 
 
-# Note: Pydantic.BaseModel and Exception do not seem to work well if inherited together.
+# NOTE: Pydantic.BaseModel and Exception do not seem to work well if inherited together.
 @dataclass
 class FLOpsManagerException(Exception):
     flops_exception_type: FlOpsExceptionTypes

@@ -37,7 +37,7 @@ def handle_aggregator(aggregator_context: AggregatorContext) -> None:
     try:
         if not aggregator_context.track_locally:
             mlflow.set_tracking_uri(aggregator_context.mlflow_tracking_server_url)
-        # Note: A MLflow experiment consists of multiple runs.
+        # NOTE: A MLflow experiment consists of multiple runs.
         # For FLOps: experiment = project, run = Flower FL training + evaluation round.
         mlflow_experiment = mlflow.set_experiment(
             experiment_name=f"FLOps Project {aggregator_context.flops_project_id}"
@@ -45,7 +45,7 @@ def handle_aggregator(aggregator_context: AggregatorContext) -> None:
         strategy_instance = FLOpsFedAvg(
             aggregator_context=aggregator_context,
             mlflow_experiment_id=mlflow_experiment.experiment_id,
-            # Note: The Flower Strategy lacks the notion of the number of expected training rounds.
+            # NOTE: The Flower Strategy lacks the notion of the number of expected training rounds.
             requested_total_number_of_training_rounds=aggregator_context.training_rounds,
             min_available_clients=aggregator_context.min_available_clients,
             min_fit_clients=aggregator_context.min_fit_clients,

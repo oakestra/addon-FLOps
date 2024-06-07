@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 
 from build_plans.trained_model.common import DOCKERFILE_DIR
 
-# Note: Currently max only one model is logged/saved per MLflow run.
+# NOTE: Currently max only one model is logged/saved per MLflow run.
 # It is mandatory to provide a name when logging models.
 # For simplicity sake we use the same.
 MODEL_ARTIFACT_NAME = "logged_model_artifact"
@@ -22,7 +22,7 @@ DOWNLOADED_MODEL_DIR = pathlib.Path("downloaded_model")
 
 
 def _create_dockerfile() -> None:
-    # Note: We have to run this cmd via shell because there is no equivalent python API yet.
+    # NOTE: We have to run this cmd via shell because there is no equivalent python API yet.
     run_in_bash(
         bash_cmd=" ".join(
             (
@@ -35,7 +35,7 @@ def _create_dockerfile() -> None:
 
 
 def _prepare_new_image_name(context: ContextTrainedModel) -> None:
-    # Note: (docker) image registry URLs do now allow upper cases.
+    # NOTE: (docker) image registry URLs do now allow upper cases.
     image_registry_url = context.get_protocol_free_image_registry_url()
     context.set_new_image_name_prefix(
         f"{image_registry_url}/{context.customer_id.lower()}/trained_model"
@@ -52,7 +52,7 @@ def prepare_build(context: ContextTrainedModel) -> None:
         dst_path=DOWNLOADED_MODEL_DIR,
     )
     logger.debug("Downloaded model artifact directory")
-    # Note: We first build a dockerfile and then based on it the image via buildah.
+    # NOTE: We first build a dockerfile and then based on it the image via buildah.
     # MLflow has a command for building the image directly but it uses docker for it.
     _create_dockerfile()
     logger.debug("Created dockerfile")

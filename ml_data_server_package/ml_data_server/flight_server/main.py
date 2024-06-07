@@ -38,7 +38,7 @@ class FlightServer(flight.FlightServerBase):
         requested_data_tags = json.loads(criteria.decode("utf-8"))["data_tags"]
         for dataset in self._repo.iterdir():
             if dataset.name.split(".")[0] in requested_data_tags:
-                # Note: Returns a generator object that can be iterated over via a for loop.
+                # NOTE: Returns a generator object that can be iterated over via a for loop.
                 yield self._make_flight_info(dataset.name)
 
     def get_flight_info(self, context, descriptor):

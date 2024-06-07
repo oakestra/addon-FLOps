@@ -3,7 +3,7 @@ This repository hosts the code for the (static) FLOps fl-learner-image-builder i
 
 This image does not only build the FL Learner image. It does the following:
 
-Note: The image runs a python module to be able to handle complex logic easier.
+NOTE: The image runs a python module to be able to handle complex logic easier.
 1. Clones the GitHub repo provided via its URL.
 2. Verifies if this repo is compatible.
     - Including checking necessary files.
@@ -17,7 +17,7 @@ Note: The image runs a python module to be able to handle complex logic easier.
 The image can be found in the Oakestra image registry.
 
 ## Commands
-Note: Make sure you are in the `src` directory.
+NOTE: Make sure you are in the `src` directory.
 
 ### Building the builder image
 ```
@@ -28,7 +28,7 @@ docker build -t ghcr.io/oakestra/plugins/flops/fl-learner-image-builder:latest .
 ```
 docker run --privileged ghcr.io/oakestra/plugins/flops/fl-learner-image-builder:latest python3 main.py https://github.com/Malyuk-A/mlflower-test-a https://192.168.178.44:5073 123456 192.168.178.44 9027 10.30.27.3
 ```
-Note:
+NOTE:
 - The builder image will be used in the containerd environment of Oakestra so it is not the same as running it in a local privileged docker environment. 
     - However, this is the fastest way to check if the new image works as intended or not. 
     - I.e. if it does not work in a privileged local docker environment then it will most likely also not work anywhere else.

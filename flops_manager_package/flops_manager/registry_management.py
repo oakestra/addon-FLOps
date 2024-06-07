@@ -28,7 +28,7 @@ def check_registry_reachable() -> bool:
     return True
 
 
-# Note: (image) repos are the "grouping" of all tags of a single image.
+# NOTE: (image) repos are the "grouping" of all tags of a single image.
 # E.g. The (image) repo "alpine" can have multiple tags "latest", "1.0.0", etc.
 # We usually first check the image repo and then its tags.
 def get_current_registry_image_repo_names() -> List[str]:

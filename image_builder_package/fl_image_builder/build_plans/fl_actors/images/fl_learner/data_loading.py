@@ -7,7 +7,7 @@ import pyarrow.flight as flight
 import pyarrow.parquet as parquet
 from context import get_context
 
-# Note: "localhost" does not work.
+# NOTE: "localhost" does not work.
 from flops_utils.env_vars import DOCKER_HOST_IP_LINUX
 
 
@@ -20,13 +20,13 @@ def load_data_from_ml_data_server() -> datasets.Dataset:
 
     client = flight.connect(f"grpc://{DOCKER_HOST_IP_LINUX}:11027")
     criteria = {"data_tags": get_context().data_tags}
-    # Note: The Server endpoint expects binary data.
+    # NOTE: The Server endpoint expects binary data.
     flights = client.list_flights(criteria=json.dumps(criteria).encode("utf-8"))
     for _flight in flights:
         reader = client.do_get(_flight.endpoints[0].ticket)
         arrow_table = reader.read_all()
 
-        # Note/Important/Future-Work
+        # NOTE/Important/Future-Work
         # The current solution is a workaround that can be optimized.
         #
         # We have the following challenge here:
@@ -36,7 +36,7 @@ def load_data_from_ml_data_server() -> datasets.Dataset:
         # Then we use the datasets library to reconstruct our original dataset object
         # from this parquet file.
         #
-        # Note that the received table and the final dataset are both in arrow format.
+        # NOTE that the received table and the final dataset are both in arrow format.
         #
         # We should find a way to remove the intermediate parquet transformation/storage step.
         # This step is currently used because directly transforming the table
@@ -49,7 +49,7 @@ def load_data_from_ml_data_server() -> datasets.Dataset:
             parquet.write_table(arrow_table, tmp_file.name)
             tmp_file.flush()
 
-        # Note: We need to split up the read and write part
+        # NOTE: We need to split up the read and write part
         # because the writing has to occur in binary mode but not the reading.
 
         # TODO currently the dataset is only one file

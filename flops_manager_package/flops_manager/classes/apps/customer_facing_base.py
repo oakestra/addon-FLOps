@@ -17,7 +17,7 @@ class FLOpsCustomerFacingApp(FLOpsApp, abc.ABC):
                 customerID=self.customer_id,
                 names=SlaNames(
                     # TODO investigate if this can lead to name collisions
-                    # keep in mind: 1 observ for 1 user - so we could be fine
+                    # keep in mind: 1 observer for 1 user - so we could be fine
                     app_name=self.namespace,
                     app_namespace=self.namespace,
                 ),

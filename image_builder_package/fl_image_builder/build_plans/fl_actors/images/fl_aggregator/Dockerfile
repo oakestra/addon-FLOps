@@ -4,7 +4,7 @@ FROM ${BASE_IMAGE}
 ARG USE_DEVEL_BASE_IMAGES="false"
 RUN if [ "$USE_DEVEL_BASE_IMAGES" = "false" ]; then\
         pip install \
-            # Note: These dependency versions do not yet exist in conda.
+            # NOTE: These dependency versions do not yet exist in conda.
             paho-mqtt==2.0 \
             && conda install -y \
             mlflow>=2.12.1 \

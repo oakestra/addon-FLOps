@@ -40,7 +40,7 @@ class _MockDataConfiguration(BaseModel):
             )
         ),
     )
-    # Note: Currently this tag is just a file-name-prefix. Future work might organize these files
+    # NOTE: Currently this tag is just a file-name-prefix. Future work might organize these files
     # in a different manner (be it DB, FS, etc.) where adding metadata is natively supported.
     data_tag: str = Field(
         default="",

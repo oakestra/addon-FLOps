@@ -25,7 +25,7 @@ def _prepare_new_image_names(context: ContextFLActors) -> None:
 
     repo_url = cloned_repo.remotes.origin.url
     user_repo_name = repo_url.split("github.com/")[1].split(".git")[0]
-    # Note: (docker) image registry URLs do now allow upper cases.
+    # NOTE: (docker) image registry URLs do now allow upper cases.
     username = user_repo_name.split("/")[0].lower()
     repo_name = user_repo_name.split("/")[1]
 

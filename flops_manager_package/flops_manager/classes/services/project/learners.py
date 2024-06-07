@@ -59,7 +59,7 @@ class FLLearners(FLOpsProjectService):
             (
                 "python main.py",
                 self.fl_aggregator_ip,
-                # Note: This turns the tag list into a single comma-separated string.
+                # NOTE: This turns the tag list into a single comma-separated string.
                 ",".join(self.parent_app.training_configuration.data_tags),
             )
         )

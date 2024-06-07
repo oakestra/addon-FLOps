@@ -7,7 +7,7 @@ from mock_data_provider.context import get_context
 def load_data() -> Dataset:
     logger.info("Start loading data")
 
-    # Note/TODO/Future Work
+    # NOTE/TODO/Future Work
     #
     # Currently we are only loading the training part of the data not the test part.
     # Because we currently do not differentiate between test and training data.

@@ -1,12 +1,12 @@
 from pydantic import BaseModel, Field
 
-# Note: The approach of using a global variable does not work here.
+# NOTE: The approach of using a global variable does not work here.
 # So the context object gets injected into the methods as a parameter instead.
 # Perhaps this is due to concurrent/background FLWR things that lack access to this variable.
 
 
 class WinnerModel(BaseModel):
-    # Note: IDs are strings because MLflow also uses strings for them.
+    # NOTE: IDs are strings because MLflow also uses strings for them.
     experiment_id: str
     run_id: str
     accuracy: float

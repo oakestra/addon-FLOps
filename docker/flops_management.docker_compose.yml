@@ -73,7 +73,7 @@ services:
       - mlflow_backend_store_data:/var/lib/mysql
     
   vsftpd_server:
-    # Note: There is only the "latest" tag (Red Flag -> Maybe change to another image)
+    # NOTE: There is only the "latest" tag (Red Flag -> Maybe change to another image)
     image: fauria/vsftpd 
     container_name: vsftpd_server
     restart: unless-stopped
@@ -86,7 +86,7 @@ services:
     environment:
       - MODE=passive
       - FTP_USER=flops
-      # Note: Future work - Find out a nicer & more secure way of doing this.
+      # NOTE: Future work - Find out a nicer & more secure way of doing this.
       - FTP_PASS=flops
       # This will be used as the lower bound of the passive mode port range.
       - PASV_MIN_PORT=21100

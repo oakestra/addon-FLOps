@@ -19,7 +19,7 @@ def create_app(
     matching_caller_object: BaseModel = None,
 ) -> Application:
     app_type = get_matching_type(matching_caller_object)
-    # Note: The called endpoint returns all apps of the user not just the newest inserted one.
+    # NOTE: The called endpoint returns all apps of the user not just the newest inserted one.
     response = CustomRequest(
         core=RequestCore(
             http_method=HttpMethods.POST,

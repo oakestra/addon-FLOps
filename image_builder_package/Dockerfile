@@ -3,7 +3,7 @@
 # - A buildah version (apt) that has the "build" command (older versions don't have it yet)
 # - Python (version 3.10+)
 # - MLflow (normal not skinny version)
-# Note: This combination is surprisingly rare.
+# NOTE: This combination is surprisingly rare.
 FROM ghcr.io/malyuk-a/miniconda3:24.4.0-0
 WORKDIR /image_builder
 

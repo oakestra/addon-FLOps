@@ -1,7 +1,7 @@
 from flops_manager.mlflow.storages.common import get_user_store_name
 from flops_manager.utils.env_vars import ARTIFACT_STORE_IP
 
-# Note/Future Work:
+# NOTE/Future Work:
 # Currently the Tracking Server is used as a proxy for both stores,
 # thus only a single user/account is enough for it to work.
 # However, hardcoding the access like this is not good regarding security.

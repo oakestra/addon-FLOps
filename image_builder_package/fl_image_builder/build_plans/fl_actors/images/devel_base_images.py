@@ -1,4 +1,4 @@
-# Note: We need a separate var for the repo due to max line length linting.
+# NOTE: We need a separate var for the repo due to max line length linting.
 _mnist_sklearn_ml_repo = "https://github.com/Malyuk-A/flops_ml_repo_mnist_sklearn"
 _cifar10_keras_ml_repo = "https://github.com/Malyuk-A/flops_ml_repo_cifar10_keras"
 _cifar10_pytorch_ml_repo = "https://github.com/Malyuk-A/flops_ml_repo_cifar10_pytorch"

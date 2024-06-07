@@ -1,4 +1,4 @@
-# Note: The reason for splitting the listener and sender is to avoid cyclic dependency issues.
+# NOTE: The reason for splitting the listener and sender is to avoid cyclic dependency issues.
 
 import json
 

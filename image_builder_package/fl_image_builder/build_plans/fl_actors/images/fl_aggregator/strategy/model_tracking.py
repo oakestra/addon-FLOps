@@ -29,7 +29,9 @@ def handle_model_tracking(
         if TRACKED_MODEL_DIR.exists():
             shutil.rmtree(TRACKED_MODEL_DIR)
         # This saves the current model locally.
-        get_ml_model_flavor().save_model(strategy.model_manager.get_model(), TRACKED_MODEL_DIR)
+        get_ml_model_flavor().save_model(
+            strategy.model_manager.get_model(), TRACKED_MODEL_DIR
+        )
 
     if server_round == 1:
         update_best_found_model()
@@ -41,7 +43,7 @@ def handle_model_tracking(
     ):
         update_best_found_model()
 
-    # Note: Only log the best found model after the last training round.
+    # NOTE: Only log the best found model after the last training round.
     # Logging means sending the model data to the remote artifact store.
     if server_round == strategy.requested_total_number_of_training_rounds:
         get_ml_model_flavor().log_model(

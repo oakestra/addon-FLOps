@@ -28,7 +28,7 @@ class RequestAuxiliaries(NamedTuple):
     flops_project_id: str = None
 
 
-# Note: The use of Pydantic here leads to strange validation errors.
+# NOTE: The use of Pydantic here leads to strange validation errors.
 @dataclass
 class CustomRequest:
     core: RequestCore

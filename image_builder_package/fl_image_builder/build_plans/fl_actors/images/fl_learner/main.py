@@ -27,7 +27,9 @@ class Learner(flwr.client.NumPyClient):
 
     def evaluate(self, parameters, config):
         self.set_parameters(parameters)
-        loss, accuracy, number_of_evaluation_examples = self.model_manager.evaluate_model()
+        loss, accuracy, number_of_evaluation_examples = (
+            self.model_manager.evaluate_model()
+        )
         return loss, number_of_evaluation_examples, {"accuracy": accuracy}
 
 
@@ -35,7 +37,7 @@ def _start_fl_learner() -> None:
     max_retries = 10
     retry_delay = 20
 
-    # Note: The FL Learner image might be pulled and running quicker than the aggregator.
+    # NOTE: The FL Learner image might be pulled and running quicker than the aggregator.
     # For these cases we want to wait for the aggregator to come online.
     # Compared to other solutions where the Learners are only deployed once the Aggregator is up,
     # this approach has the benefit of pulling/instantiating the learners concurrently/quicker.

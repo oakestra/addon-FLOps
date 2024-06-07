@@ -8,7 +8,7 @@ RUN apt-get update &&\
     apt-get clean &&\
     pip install poetry~=1.8.2
 
-# Note: First install the dependencies in a seperate layer to improve docker layer caching.
+# NOTE: First install the dependencies in a seperate layer to improve docker layer caching.
 # Thus making building and pushing faster by reusing the dependency layer.
 COPY pyproject.toml pyproject.toml
 RUN poetry lock && poetry install --no-root

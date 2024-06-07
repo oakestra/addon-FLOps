@@ -6,7 +6,7 @@ from flops_utils.logging import logger
 
 SERVER_PORT = os.environ.get("PROJECT_OBSERVER_PORT")
 
-# Note: This python server cannot bind to this service's RR IP.
+# NOTE: This python server cannot bind to this service's RR IP.
 # What works is if it listens to 0.0.0.0 and the clients connect to this RR IP only.
 SERVER_IP = "0.0.0.0"
 

@@ -1,4 +1,4 @@
-# Notes:
+# NOTE:
 # Docker pull max gets reached very quickly when using the dockerhub image.
 # Pushing a retagged miniconda image to a github repo ommits this problem.
 # 
@@ -23,18 +23,18 @@ RUN conda env update --file ./conda.yaml &&\
     conda config --add channels conda-forge &&\
     conda config --set channel_priority strict &&\
     conda install -y \
-        # Note: This flwr version is the latest one that is available for the current base image.
+        # NOTE: This flwr version is the latest one that is available for the current base image.
         flwr=1.8.0 \
         pydantic~=2.7.1
 
-# Note: For dependencies that cannot be installed via conda yet.    
+# NOTE: For dependencies that cannot be installed via conda yet.    
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
 # https://flower.dev/docs/framework/ref-telemetry.html
 ENV FLWR_TELEMETRY_ENABLED=0
 
-# Note: If you place this ARG at the very top, before the FROM it will not work.
+# NOTE: If you place this ARG at the very top, before the FROM it will not work.
 # The reason is that this ARG is part of another "context".
 # There is a "context" switch after every FROM statement.
 # See multistage docker builds for more.

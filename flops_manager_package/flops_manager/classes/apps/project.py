@@ -15,7 +15,7 @@ from pydantic import AliasChoices, BaseModel, Field
 #       min_..._clients > 1, etc.
 
 
-# Note: Using BaseModel instead of NamedTuple here allows for nicer serialized data in the DB.
+# NOTE: Using BaseModel instead of NamedTuple here allows for nicer serialized data in the DB.
 class _TrainingConfiguration(BaseModel):
     data_tags: List[str] = Field(
         default_factory=list,
@@ -32,7 +32,7 @@ class _TrainingConfiguration(BaseModel):
     min_evaluate_clients: int = 1
 
 
-class _ResourceContraints(BaseModel):
+class _ResourceConstraints(BaseModel):
     # TODO: Fine-tune these values. + incorporate them in the final Project component SLAs.
     memory: int = 100
     vcpus: int = 1
@@ -50,7 +50,7 @@ class FLOpsProject(FLOpsApp):
     ml_model_flavor: MLModelFlavor
 
     training_configuration: _TrainingConfiguration = _TrainingConfiguration()
-    resource_constraints: _ResourceContraints = _ResourceContraints()
+    resource_constraints: _ResourceConstraints = _ResourceConstraints()
     post_training_steps: List[PostTrainingSteps] = Field(default_factory=list)
 
     ml_repo_url: str

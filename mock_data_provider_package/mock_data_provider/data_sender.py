@@ -13,7 +13,7 @@ ML_DATA_SERVER_IP = get_env_var("ML_DATA_SERVER_IP", DOCKER_HOST_IP_LINUX)
 
 
 def send_data_to_ml_data_server(dataset: datasets.Dataset):
-    """Note: The dataset should use the Arrow format.
+    """NOTE: The dataset should use the Arrow format.
     (This is not an absolute necessity, but uniformity reduces the risk of side effects.)
     """
 
@@ -22,7 +22,7 @@ def send_data_to_ml_data_server(dataset: datasets.Dataset):
 
     with tempfile.NamedTemporaryFile() as tmp_file:
         dataset.to_parquet(tmp_file)
-        # Note: Temporary files are buffers and ensure the content is properly propagated
+        # NOTE: Temporary files are buffers and ensure the content is properly propagated
         # to disk we need to flush when writing to them.
         tmp_file.flush()
 

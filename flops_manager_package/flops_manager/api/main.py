@@ -18,7 +18,7 @@ def handle_api():
     for blp in blps.blueprints:
         app.register_api(blp)
 
-    # Note (AFAIK): 'waitress' comes with its own logger.
+    # NOTE: (AFAIK): 'waitress' comes with its own logger.
     # We are already using the flops logger.
     # Thus we have duplicated logger outputs (not just for API things but generally).
     # To avoid this the waitress ones gets muted.
