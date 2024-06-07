@@ -8,7 +8,7 @@ def dependency_exists(target_dependency: str) -> bool:
     # Hint: success = returncode == 0 -> bool = false
     #       failure = returncode != 0 -> bool = true
     # -> needs to be inverted
-    return not bool(run_in_shell(shell_cmd).returncode)
+    return not bool(run_in_shell(shell_cmd, check=False).returncode)
 
 
 def remove_mlflow() -> None:
