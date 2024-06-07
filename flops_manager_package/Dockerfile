@@ -1,11 +1,12 @@
 FROM python:3.10-slim-buster
-LABEL org.opencontainers.image.source https://github.com/oakestra/oakestra
 
-RUN apt-get update && apt-get install git wget libnss3-tools -y && apt-get clean && pip install poetry~=1.8.2
-
-RUN wget https://github.com/FiloSottile/mkcert/releases/download/v1.4.4/mkcert-v1.4.4-linux-amd64 &&\
-    mv mkcert-v1.4.4-linux-amd64 /usr/bin/mkcert &&\
-    chmod +x /usr/bin/mkcert
+RUN apt-get update &&\
+    apt-get install -y \
+        git \
+        wget \
+        libnss3-tools &&\
+    apt-get clean &&\
+    pip install poetry~=1.8.2
 
 # Note: First install the dependencies in a seperate layer to improve docker layer caching.
 # Thus making building and pushing faster by reusing the dependency layer.

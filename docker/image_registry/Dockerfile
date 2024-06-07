@@ -1,7 +1,8 @@
 FROM python:3.10-slim
 
-RUN apt-get update && apt-get install -y wget &&\
-    rm -rf /var/lib/apt/lists/* &&\
+RUN apt-get update && \
+    apt-get install -y wget &&\
+    apt-get-clean &&\
     wget -q https://github.com/distribution/distribution/releases/download/v2.8.3/registry_2.8.3_linux_amd64.tar.gz &&\
     tar -xvf registry_2.8.3_linux_amd64.tar.gz &&\
     mv registry /usr/local/bin/ &&\

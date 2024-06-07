@@ -1,8 +1,5 @@
 FROM python:3.10-slim
 
-# TODO remove after debugging
-RUN apt update && apt install vim -y
-
 COPY pyproject.toml pyproject.toml
 RUN pip install poetry~=1.8.2 && poetry lock && poetry install --no-root
 
