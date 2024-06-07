@@ -1,14 +1,14 @@
 from build_plans.fl_actors.dependency_management.pytorch import handle_pytorch
 from build_plans.fl_actors.paths import CONDA_ENV_FILE_PATH
-from utils.common import run_in_bash
+from flops_utils.shell import run_in_shell
 
 
 def dependency_exists(target_dependency: str) -> bool:
-    bash_cmd = f"grep '{target_dependency}' {CONDA_ENV_FILE_PATH}"
+    shell_cmd = f"grep '{target_dependency}' {CONDA_ENV_FILE_PATH}"
     # Hint: success = returncode == 0 -> bool = false
     #       failure = returncode != 0 -> bool = true
     # -> needs to be inverted
-    return not bool(run_in_bash(bash_cmd).returncode)
+    return not bool(run_in_shell(shell_cmd).returncode)
 
 
 def remove_mlflow() -> None:
@@ -18,7 +18,7 @@ def remove_mlflow() -> None:
     MLflow is a great tool to extract the necessary dependencies of ML code though.
     MLflow is used in the aggregator. Where the dependency is added again with a fixed version.
     """
-    run_in_bash(f"sed -i '/ - mlflow/d' {CONDA_ENV_FILE_PATH}")
+    run_in_shell(f"sed -i '/ - mlflow/d' {CONDA_ENV_FILE_PATH}")
 
 
 def handle_dependencies():

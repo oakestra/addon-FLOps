@@ -5,12 +5,8 @@ from typing import TYPE_CHECKING
 
 import git
 from build_plans.fl_actors.dependency_management.main import handle_dependencies
-from build_plans.fl_actors.paths import (
-    CLONED_REPO_PATH,
-    CONDA_ENV_FILE_PATH,
-    FL_BASE_IMAGE_PATH,
-)
-from utils.common import run_in_bash
+from build_plans.fl_actors.paths import CLONED_REPO_PATH, CONDA_ENV_FILE_PATH, FL_BASE_IMAGE_PATH
+from flops_utils.shell import run_in_shell
 
 if TYPE_CHECKING:
     from context.main import Context
@@ -21,15 +17,13 @@ def clone_repo(context: Context) -> None:
     try:
         repo = git.Repo.clone_from(repo_url, str(CLONED_REPO_PATH))
     except Exception as e:
-        context.notify_about_failed_build_and_terminate(
-            f"Failed to clone repo '{repo_url}'; '{e}'"
-        )
+        context.notify_about_failed_build_and_terminate(f"Failed to clone repo '{repo_url}'; '{e}'")
 
     context.set_cloned_repo(repo)
 
 
 def _normalize_conda_env_name() -> None:
-    run_in_bash(f"sed -i -e 's/name: .*/name: base/' {CONDA_ENV_FILE_PATH}")
+    run_in_shell(f"sed -i -e 's/name: .*/name: base/' {CONDA_ENV_FILE_PATH}")
 
 
 def _copy_verified_repo_content_into_fl_base_image() -> None:

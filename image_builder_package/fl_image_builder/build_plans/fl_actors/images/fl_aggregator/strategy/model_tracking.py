@@ -29,9 +29,7 @@ def handle_model_tracking(
         if TRACKED_MODEL_DIR.exists():
             shutil.rmtree(TRACKED_MODEL_DIR)
         # This saves the current model locally.
-        get_ml_model_flavor().save_model(
-            strategy.model_manager.get_model(), TRACKED_MODEL_DIR
-        )
+        get_ml_model_flavor().save_model(strategy.model_manager.get_model(), TRACKED_MODEL_DIR)
 
     if server_round == 1:
         update_best_found_model()

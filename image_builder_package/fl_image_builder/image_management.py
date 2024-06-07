@@ -2,11 +2,10 @@ from __future__ import annotations
 
 import os
 import pathlib
-import shlex
-import subprocess
 from typing import TYPE_CHECKING
 
 from flops_utils.logging import colorful_logger as logger
+from flops_utils.shell import run_in_shell
 from notification_management import notify_observer
 
 if TYPE_CHECKING:
@@ -39,11 +38,7 @@ def build_image(
             build_cmd += f" --build-arg BASE_IMAGE={base_image_to_use}"
         if build_cmd_addition:
             build_cmd += build_cmd_addition
-        result = subprocess.run(
-            shlex.split(build_cmd),
-            check=False,
-            text=True,
-        )
+        result = run_in_shell(shell_cmd=build_cmd, check=False, text=True)
         if result.returncode != 0:
             context.notify_about_failed_build_and_terminate(
                 f"Image build for '{image_name_with_tag}' completed with rc != 0; '{result.stderr}'"
@@ -63,9 +58,7 @@ def push_image(context: Context, image_name_with_tag: str = None) -> None:
     image_name_with_tag = image_name_with_tag or context.get_image_name()
     logger.info(f"Start pushing image '{image_name_with_tag}'")
     try:
-        subprocess.check_call(
-            shlex.split(f"buildah push --tls-verify=false  {image_name_with_tag}")
-        )
+        run_in_shell(f"buildah push --tls-verify=false  {image_name_with_tag}")
     except Exception as e:
         context.notify_about_failed_build_and_terminate(
             f"Failed to push '{image_name_with_tag}' to image registry; '{e}'"

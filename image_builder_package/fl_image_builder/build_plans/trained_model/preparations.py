@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 
 import mlflow
 from flops_utils.logging import logger
-from utils.common import run_in_bash
+from flops_utils.shell import run_in_shell
 from utils.timeframes import BUILD_PREPARATION_TIMEFRAME
 
 if TYPE_CHECKING:
@@ -22,16 +22,15 @@ DOWNLOADED_MODEL_DIR = pathlib.Path("downloaded_model")
 
 
 def _create_dockerfile() -> None:
-    # NOTE: We have to run this cmd via shell because there is no equivalent python API yet.
-    run_in_bash(
-        bash_cmd=" ".join(
-            (
-                "mlflow models generate-dockerfile",
-                f"--model-uri {DOWNLOADED_MODEL_DIR}/{MODEL_ARTIFACT_NAME}",
-                f"--output-directory {DOCKERFILE_DIR}",
-            )
+    shell_cmd = " ".join(
+        (
+            "mlflow models generate-dockerfile",
+            f"--model-uri {DOWNLOADED_MODEL_DIR}/{MODEL_ARTIFACT_NAME}",
+            f"--output-directory {DOCKERFILE_DIR}",
         )
     )
+    # NOTE: We have to run this cmd via shell because there is no equivalent python API yet.
+    run_in_shell(shell_cmd=shell_cmd)
 
 
 def _prepare_new_image_name(context: ContextTrainedModel) -> None:

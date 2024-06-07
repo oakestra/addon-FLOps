@@ -1,12 +1,6 @@
 import hashlib
-import shlex
-import subprocess
 
 from pydantic import BaseModel
-
-
-def run_in_bash(bash_cmd: str) -> subprocess.CompletedProcess[bytes]:
-    return subprocess.run(shlex.split(bash_cmd), capture_output=True, check=True)
 
 
 def get_shortened_unique_id(id: str) -> str:
