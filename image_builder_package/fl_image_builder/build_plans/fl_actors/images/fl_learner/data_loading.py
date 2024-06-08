@@ -1,14 +1,17 @@
 import json
-import os
+import pathlib
+import shutil
 import tempfile
 
 import datasets
+import pyarrow
 import pyarrow.flight as flight
 import pyarrow.parquet as parquet
 from context import get_context
 
 # NOTE: "localhost" does not work.
 from flops_utils.env_vars import DOCKER_HOST_IP_LINUX
+from flops_utils.logging import logger
 
 
 def load_data_from_ml_data_server() -> datasets.Dataset:
@@ -18,10 +21,15 @@ def load_data_from_ml_data_server() -> datasets.Dataset:
     This dataset is in "Arrow" format.
     """
 
+    logger.info("Start loading data from ML Data Server")
+
     client = flight.connect(f"grpc://{DOCKER_HOST_IP_LINUX}:11027")
     criteria = {"data_tags": get_context().data_tags}
     # NOTE: The Server endpoint expects binary data.
     flights = client.list_flights(criteria=json.dumps(criteria).encode("utf-8"))
+
+    tmp_dir_path = pathlib.Path(tempfile.mkdtemp())
+
     for _flight in flights:
         reader = client.do_get(_flight.endpoints[0].ticket)
         arrow_table = reader.read_all()
@@ -36,7 +44,7 @@ def load_data_from_ml_data_server() -> datasets.Dataset:
         # Then we use the datasets library to reconstruct our original dataset object
         # from this parquet file.
         #
-        # NOTE that the received table and the final dataset are both in arrow format.
+        # NOTE: that the received table and the final dataset are both in arrow format.
         #
         # We should find a way to remove the intermediate parquet transformation/storage step.
         # This step is currently used because directly transforming the table
@@ -45,16 +53,26 @@ def load_data_from_ml_data_server() -> datasets.Dataset:
         # Here the complex underlying data structure gets misinterpreted.
         # Resulting in a wrong final shape of our data.
 
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".parquet") as tmp_file:
+        with tempfile.NamedTemporaryFile(
+            delete=False,
+            suffix=".parquet",
+            dir=tmp_dir_path,
+        ) as tmp_file:
             parquet.write_table(arrow_table, tmp_file.name)
             tmp_file.flush()
 
-        # NOTE: We need to split up the read and write part
-        # because the writing has to occur in binary mode but not the reading.
+    logger.info(
+        f"Found and downloaded '{len(list(tmp_dir_path.glob('*')))}' flights/files"
+    )
+    parquet_tables = []
+    for file_name in tmp_dir_path.iterdir():
+        parquet_tables.append(parquet.read_table(file_name))
 
-        # TODO currently the dataset is only one file
-        # -> need to combine fetched pieces on the client (here).
-        dataset = datasets.Dataset.from_parquet(tmp_file.name).with_format("arrow")
-        os.remove(tmp_file.name)
-
+    merged_parquet_path = tmp_dir_path / "merged.parquet"
+    parquet.write_table(pyarrow.concat_tables(parquet_tables), merged_parquet_path)
+    dataset = datasets.Dataset.from_parquet(str(merged_parquet_path)).with_format(
+        "arrow"
+    )
+    shutil.rmtree(tmp_dir_path)
+    logger.info("Successfully created (merged) dataset")
     return dataset

@@ -17,7 +17,7 @@ def send_data_to_ml_data_server(dataset: datasets.Dataset):
     (This is not an absolute necessity, but uniformity reduces the risk of side effects.)
     """
 
-    # logger.info("Start sending data")
+    logger.info("Start sending data")
     client = flight.connect(f"grpc://{ML_DATA_SERVER_IP}:{ML_DATA_SERVER_PORT}")
 
     with tempfile.NamedTemporaryFile() as tmp_file:

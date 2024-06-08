@@ -1,3 +1,5 @@
+from typing import Optional
+
 from flops_manager.classes.apps.helper import FLOpsHelperApp
 from flops_manager.classes.services.service_base import FLOpsService
 from flops_manager.utils.common import get_shortened_unique_id
@@ -28,15 +30,18 @@ class _MockDataConfiguration(BaseModel):
             )
         ),
     )
-    one_mock_service_per_partition: bool = Field(
-        default=False,
+    # NOTE: The idea is to allow two uses for the mock data provider.
+    # 1) Where a single mock service will provide all the data partitions.
+    # 2) One partition will be handled by one mock service (more "realistic").
+    #    The multiple services will be spawned up by the FLOps Manager.
+    partition_index: Optional[int] = Field(
+        default=None,
         description=" ".join(
             (
-                "If disabled one single mock service will be created.",
-                "It will split the dataset into the number of specified partitions"
-                "and send each partition ot the ml-data-server.",
-                "If enabled one mock server per requested partition will be created",
-                "to simulate multiple devices.",
+                "If provided the mock will only use this one partition.",
+                "E.g. If number_of_partitions=3 and partition_index=1",
+                "the mock will split the dataset into 3 parts and only send the 2nd to the server."
+                "Else the mock will send all partitions to the server, piece by piece.",
             )
         ),
     )
@@ -64,6 +69,18 @@ class MockDataProvider(FLOpsService):
 
     def _configure_sla_components(self) -> None:
         service_name = f"mockdp{get_shortened_unique_id(self.parent_app.app_id)}"
+        cmd = " ".join(
+            (
+                FLOPS_SERVICE_CMD_PREFIX,
+                self.mock_data_configuration.dataset_name,
+                str(self.mock_data_configuration.number_of_partitions),
+                self.mock_data_configuration.data_tag,
+                # TODO: add ip (instance IP) option to specify where exactly
+                # to send mock data to
+            )
+        )
+        if self.mock_data_configuration.partition_index:
+            cmd += f" {self.mock_data_configuration.partition_index}"
         self.sla_components = SlaComponentsWrapper(
             core=SlaCore(
                 customerID=self.parent_app.customer_id,
@@ -77,17 +94,7 @@ class MockDataProvider(FLOpsService):
                 compute=SlaCompute(
                     code="ghcr.io/malyuk-a/flops-mock-data-provider:latest",
                     one_shot_service=True,
-                    cmd=" ".join(
-                        (
-                            FLOPS_SERVICE_CMD_PREFIX,
-                            self.mock_data_configuration.dataset_name,
-                            str(self.mock_data_configuration.number_of_partitions),
-                            str(self.mock_data_configuration.one_mock_service_per_partition),
-                            self.mock_data_configuration.data_tag,
-                            # TODO: add ip (instance IP) option to specify where exactly
-                            # to send mock data to
-                        )
-                    ),
+                    cmd=cmd,
                 ),
             ),
             details=SlaDetails(

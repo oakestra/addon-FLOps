@@ -2,10 +2,11 @@ import flwr_datasets
 from datasets import Dataset
 from flops_utils.logging import logger
 from mock_data_provider.context import get_context
+from mock_data_provider.data_sender import send_data_to_ml_data_server
 
 
-def load_data() -> Dataset:
-    logger.info("Start loading data")
+def load_and_send_data_to_server() -> Dataset:
+    logger.info("Start loading dataset")
 
     # NOTE/TODO/Future Work
     #
@@ -25,11 +26,22 @@ def load_data() -> Dataset:
         dataset=get_context().dataset_name,
         partitioners={partition_type: get_context().number_of_partitions},
     )
-    selected_partition = 1  # TODO
-    partition = federated_dataset.load_partition(
-        selected_partition - 1,
-        partition_type,
-    ).with_format("arrow")
 
-    logger.info("Finished loading data")
-    return partition
+    logger.info("Finished loading dataset")
+
+    def get_partition_and_send_to_server(partition_number: int) -> None:
+        partition = federated_dataset.load_partition(
+            partition_number,
+            partition_type,
+        ).with_format("arrow")
+        send_data_to_ml_data_server(partition)
+
+    if get_context().partition_index:
+        # If an explicit partition_index was provided send only this partition.
+        get_partition_and_send_to_server(get_context().partition_index)
+    else:
+        # Otherwise partition the entire dataset and send it over.
+        for partition_number in range(get_context().number_of_partitions):
+            get_partition_and_send_to_server(partition_number)
+
+    logger.info("Finished sending partitions")

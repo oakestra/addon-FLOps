@@ -11,5 +11,3 @@ RUN poetry add git+https://github.com/Malyuk-A/tmp_flops_utils.git@main
 
 ENV ML_DATA_SERVER_COMMUNICATION_CHANNEL_PORT=11027
 EXPOSE $ML_DATA_SERVER_COMMUNICATION_CHANNEL_PORT
-
-CMD ["poetry", "run", "python", "main.py"]
