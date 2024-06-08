@@ -29,19 +29,11 @@ def load_and_send_data_to_server() -> Dataset:
 
     logger.info("Finished loading dataset")
 
-    def get_partition_and_send_to_server(partition_number: int) -> None:
+    for partition_number in range(get_context().number_of_partitions):
         partition = federated_dataset.load_partition(
             partition_number,
             partition_type,
         ).with_format("arrow")
         send_data_to_ml_data_server(partition)
-
-    if get_context().partition_index:
-        # If an explicit partition_index was provided send only this partition.
-        get_partition_and_send_to_server(get_context().partition_index)
-    else:
-        # Otherwise partition the entire dataset and send it over.
-        for partition_number in range(get_context().number_of_partitions):
-            get_partition_and_send_to_server(partition_number)
 
     logger.info("Finished sending partitions")

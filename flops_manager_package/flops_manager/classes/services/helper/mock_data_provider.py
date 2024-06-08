@@ -1,5 +1,3 @@
-from typing import Optional
-
 from flops_manager.classes.apps.helper import FLOpsHelperApp
 from flops_manager.classes.services.service_base import FLOpsService
 from flops_manager.utils.common import get_shortened_unique_id
@@ -27,21 +25,6 @@ class _MockDataConfiguration(BaseModel):
             (
                 "The dataset is usually fetched as a whole and then split into partitions.",
                 "If the number of partitions is 1 then the whole dataset will be used.",
-            )
-        ),
-    )
-    # NOTE: The idea is to allow two uses for the mock data provider.
-    # 1) Where a single mock service will provide all the data partitions.
-    # 2) One partition will be handled by one mock service (more "realistic").
-    #    The multiple services will be spawned up by the FLOps Manager.
-    partition_index: Optional[int] = Field(
-        default=None,
-        description=" ".join(
-            (
-                "If provided the mock will only use this one partition.",
-                "E.g. If number_of_partitions=3 and partition_index=1",
-                "the mock will split the dataset into 3 parts and only send the 2nd to the server."
-                "Else the mock will send all partitions to the server, piece by piece.",
             )
         ),
     )
@@ -79,8 +62,6 @@ class MockDataProvider(FLOpsService):
                 # to send mock data to
             )
         )
-        if self.mock_data_configuration.partition_index:
-            cmd += f" {self.mock_data_configuration.partition_index}"
         self.sla_components = SlaComponentsWrapper(
             core=SlaCore(
                 customerID=self.parent_app.customer_id,

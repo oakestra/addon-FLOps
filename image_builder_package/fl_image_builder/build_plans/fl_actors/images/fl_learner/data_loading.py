@@ -61,18 +61,14 @@ def load_data_from_ml_data_server() -> datasets.Dataset:
             parquet.write_table(arrow_table, tmp_file.name)
             tmp_file.flush()
 
-    logger.info(
-        f"Found and downloaded '{len(list(tmp_dir_path.glob('*')))}' flights/files"
-    )
+    logger.info(f"Found and downloaded '{len(list(tmp_dir_path.glob('*')))}' flights/files")
     parquet_tables = []
     for file_name in tmp_dir_path.iterdir():
         parquet_tables.append(parquet.read_table(file_name))
 
     merged_parquet_path = tmp_dir_path / "merged.parquet"
     parquet.write_table(pyarrow.concat_tables(parquet_tables), merged_parquet_path)
-    dataset = datasets.Dataset.from_parquet(str(merged_parquet_path)).with_format(
-        "arrow"
-    )
+    dataset = datasets.Dataset.from_parquet(str(merged_parquet_path)).with_format("arrow")
     shutil.rmtree(tmp_dir_path)
     logger.info("Successfully created (merged) dataset")
     return dataset

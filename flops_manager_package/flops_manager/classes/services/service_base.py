@@ -35,9 +35,5 @@ class FLOpsService(FlOpsOakestraBaseClass, ABC):
         deploy(service_id=self.service_id, matching_caller_object=self)
 
     def undeploy(self) -> None:
-        undeploy(
-            service_id=self.service_id,
-            matching_caller_object=self,
-            # flops_project_id=self.flops_project_id,
-        )
+        undeploy(service_id=self.service_id, matching_caller_object=self)
         remove_from_db_by_project_id(FLOpsService, self.flops_project_id)
