@@ -7,6 +7,7 @@ from flops_manager.image_management.fl_actor_images import (
 from flops_manager.mqtt.sender import notify_project_observer
 from flops_manager.utils.common import get_shortened_unique_id
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
+from flops_manager.utils.env_vars import FLOPS_MQTT_BROKER_IP
 from flops_manager.utils.sla.components import (
     SlaComponentsWrapper,
     SlaCompute,
@@ -20,6 +21,9 @@ from pydantic import Field
 
 class FLLearners(FLOpsProjectService):
     namespace = "flearner"
+
+    project_observer_ip: str = Field("", exclude=True, repr=False)
+    tracking_server_url: str = Field("", exclude=True, repr=False)
 
     total_number_of_learners: int = Field(1, init=False)
     fl_learner_image: str = Field("", init=False)
@@ -57,7 +61,11 @@ class FLLearners(FLOpsProjectService):
         f"python main.py {self.fl_aggregator_ip} {self.parent_app.training_configuration.data_tags}"
         cmd = " ".join(
             (
-                "python main.py",
+                "python",
+                "main.py",
+                self.flops_project_id,
+                FLOPS_MQTT_BROKER_IP,
+                self.project_observer_ip,
                 self.fl_aggregator_ip,
                 # NOTE: This turns the tag list into a single comma-separated string.
                 ",".join(self.parent_app.training_configuration.data_tags),

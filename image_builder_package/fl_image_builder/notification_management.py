@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from flops_utils.logging import logger
+from flops_utils.mqtt_topics import SupportedTopic
 from flops_utils.notifications import notify_flops_manager, notify_project_observer
 
 if TYPE_CHECKING:
@@ -11,7 +12,7 @@ if TYPE_CHECKING:
 
 def notify_manager(
     context: Context,
-    topic: str,
+    topic: SupportedTopic,
     error_msg: str = None,
     msg_payload: dict = {},
 ) -> None:

@@ -1,4 +1,4 @@
-from flops_manager.utils.types import CustomEnum
+from flops_utils.types import CustomEnum
 
 
 class FlOpsExceptionTypes(CustomEnum):

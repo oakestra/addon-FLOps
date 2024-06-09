@@ -10,7 +10,7 @@ def parse_args() -> AggregatorContext:
     parser.add_argument(
         "mqtt_ip",
         type=str,
-        help="The MQTT IP to be able to notify the FLOps manager about the image build.",
+        help="The MQTT IP to be able to notify the FLOps manager.",
     )
     parser.add_argument("project_observer_ip", type=str)
     parser.add_argument("mlflow_tracking_server_url", type=str)

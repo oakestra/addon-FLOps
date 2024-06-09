@@ -1,12 +1,13 @@
 import sys
 
+from flops_utils.mqtt_topics import SupportedTopic
 from flops_utils.notifications import notify_flops_manager, notify_project_observer
 from utils.aggregator_context import AggregatorContext
 
 
 def _notify_flops_manager(
     aggregator_context: AggregatorContext,
-    topic: str,
+    topic: SupportedTopic,
     error_msg: str = None,
 ) -> None:
     winner_model = aggregator_context.winner_model
@@ -27,7 +28,7 @@ def _notify_flops_manager(
 def notify_about_successful_completion(aggregator_context: AggregatorContext) -> None:
     _notify_flops_manager(
         aggregator_context=aggregator_context,
-        topic="flops_manager/aggregator/success",
+        topic=SupportedTopic.AGGREGATOR_SUCCESS,
     )
     winner_model = aggregator_context.winner_model
     notify_project_observer(
@@ -51,7 +52,7 @@ def notify_about_failure_and_terminate(
 ) -> None:
     _notify_flops_manager(
         aggregator_context=aggregator_context,
-        topic="flops_manager/aggregator/failed",
+        topic=SupportedTopic.AGGREGATOR_FAILED,
         error_msg=error_msg,
     )
     notify_project_observer(

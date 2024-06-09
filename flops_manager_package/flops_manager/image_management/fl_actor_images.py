@@ -6,7 +6,7 @@ from flops_manager.registry_management import (
     get_current_registry_image_repo_names,
     get_current_tags_for_image_in_registry,
 )
-from flops_manager.utils.types import CustomEnum
+from flops_utils.types import CustomEnum
 
 
 class FLActorImageTypes(CustomEnum):

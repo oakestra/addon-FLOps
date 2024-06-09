@@ -31,4 +31,9 @@ def handle_fl_training_processes(flops_project: FLOpsProject) -> None:
         project_observer_ip=project_observer.ip,
         tracking_server_url=tracking_server.get_url(),
     )
-    FLLearners(parent_app=flops_project, fl_aggregator_ip=fl_aggregator.ip)
+    FLLearners(
+        parent_app=flops_project,
+        fl_aggregator_ip=fl_aggregator.ip,
+        project_observer_ip=project_observer.ip,
+        tracking_server_url=tracking_server.get_url(),
+    )

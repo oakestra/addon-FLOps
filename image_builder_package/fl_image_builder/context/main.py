@@ -3,6 +3,7 @@ import sys
 from dataclasses import dataclass, field
 from typing import ClassVar
 
+from flops_utils.mqtt_topics import Status, Subject, SupportedTopic, Topic
 from flops_utils.timer import Timer
 from notification_management import notify_manager, notify_observer
 
@@ -10,7 +11,7 @@ from notification_management import notify_manager, notify_observer
 @dataclass
 class Context(abc.ABC):
     build_plan_trigger: ClassVar[callable]
-    mqtt_topic_infix: ClassVar[str]
+    mqtt_subject: ClassVar[Subject]
 
     image_registry_url: str
     flops_project_id: str
@@ -49,7 +50,10 @@ class Context(abc.ABC):
     def notify_about_failed_build_and_terminate(self, error_msg: str) -> None:
         notify_manager(
             context=self,
-            topic=f"flops_manager/{self.mqtt_topic_infix}/failed",
+            topic=Topic(
+                subject=self.mqtt_subject,
+                status=Status.FAILED,
+            ).find_matching_supported_topic(),
             error_msg=error_msg,
         )
         notify_observer(context=self, msg=error_msg)
@@ -62,7 +66,10 @@ class Context(abc.ABC):
 
         notify_manager(
             context=self,
-            topic=f"flops_manager/{self.mqtt_topic_infix}/success",
+            topic=Topic(
+                subject=self.mqtt_subject,
+                status=Status.SUCCESS,
+            ).find_matching_supported_topic(),
             msg_payload=msg_payload,
         )
         notify_observer(context=self, msg=str(msg_payload))

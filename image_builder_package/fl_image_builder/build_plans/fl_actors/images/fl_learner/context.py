@@ -6,6 +6,10 @@ _context = None
 
 
 class LearnerContext(BaseModel):
+    flops_project_id: str
+    mqtt_ip: str
+    project_observer_ip: str
+
     aggregator_ip: str
     data_tags: List[str]
 

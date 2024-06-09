@@ -1,11 +1,6 @@
 import enum
 
 
-class CustomEnum(enum.Enum):
-    def __str__(self) -> str:
-        return self.value
-
-
 class PostTrainingSteps(str, enum.Enum):
     BUILD_IMAGE_FOR_TRAINED_MODEL = "build_image_for_trained_model"
     DEPLOY_TRAINED_MODEL_IMAGE = "deploy_trained_model_image"

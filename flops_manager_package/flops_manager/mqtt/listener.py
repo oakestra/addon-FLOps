@@ -10,11 +10,11 @@ from flops_manager.classes.services.project.builders.fl_actors_builder import FL
 from flops_manager.classes.services.project.builders.trained_model_builder import (
     TrainedModelImageBuilder,
 )
-from flops_manager.mqtt.constants import Topics
 from flops_manager.mqtt.main import get_mqtt_client
 from flops_manager.mqtt.sender import notify_project_observer
 from flops_manager.utils.exceptions.main import FLOpsManagerException
 from flops_utils.logging import colorful_logger as logger
+from flops_utils.mqtt_topics import SupportedTopic
 
 
 def _on_new_message(client, userdata, message) -> None:
@@ -25,22 +25,26 @@ def _on_new_message(client, userdata, message) -> None:
         logger.debug(f"Received message: '{decoded_message}' for topic '{topic}'")
         match topic:
 
-            case Topics.PROJECT_OBSERVER_FAILED.value:
+            case SupportedTopic.PROJECT_OBSERVER_FAILED.value:
                 logger.critical(data)
 
-            case Topics.FL_ACTORS_IMAGE_BUILDER_SUCCESS.value:
+            case SupportedTopic.FL_ACTORS_IMAGE_BUILDER_SUCCESS.value:
                 FLActorsImageBuilder.handle_builder_success(builder_success_msg=data)
-            case Topics.FL_ACTORS_IMAGE_BUILDER_FAILED.value:
+            case SupportedTopic.FL_ACTORS_IMAGE_BUILDER_FAILED.value:
                 FLActorsImageBuilder.handle_builder_failed(builder_failed_msg=data)
-            case Topics.TRAINED_MODEL_IMAGE_BUILDER_SUCCESS.value:
+            case SupportedTopic.TRAINED_MODEL_IMAGE_BUILDER_SUCCESS.value:
                 TrainedModelImageBuilder.handle_builder_success(builder_success_msg=data)
-            case Topics.TRAINED_MODEL_IMAGE_BUILDER_FAILED.value:
+            case SupportedTopic.TRAINED_MODEL_IMAGE_BUILDER_FAILED.value:
                 TrainedModelImageBuilder.handle_builder_failed(builder_failed_msg=data)
 
-            case Topics.AGGREGATOR_SUCCESS.value:
+            case SupportedTopic.AGGREGATOR_SUCCESS.value:
                 handle_aggregator_success(aggregator_success_msg=data)
-            case Topics.AGGREGATOR_FAILED.value:
+            case SupportedTopic.AGGREGATOR_FAILED.value:
                 handle_aggregator_failed(aggregator_failed_msg=data)
+
+            case SupportedTopic.LEARNER_FAILED.value:
+                # TODO
+                pass
 
             case _:
                 logger.error(f"Message received for an unsupported topic '{topic}'")
@@ -58,6 +62,6 @@ def _on_new_message(client, userdata, message) -> None:
 def init_mqtt_listener() -> None:
     mqtt_client = get_mqtt_client()
     mqtt_client.on_message = _on_new_message
-    for topic in Topics:
+    for topic in SupportedTopic:
         mqtt_client.subscribe(str(topic))
     mqtt_client.loop_forever()

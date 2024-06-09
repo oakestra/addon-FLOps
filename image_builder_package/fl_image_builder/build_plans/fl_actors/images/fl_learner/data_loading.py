@@ -12,6 +12,7 @@ from context import get_context
 # NOTE: "localhost" does not work.
 from flops_utils.env_vars import DOCKER_HOST_IP_LINUX
 from flops_utils.logging import logger
+from notification_management import notify_about_failure_and_terminate
 
 
 def load_data_from_ml_data_server() -> datasets.Dataset:
@@ -61,7 +62,14 @@ def load_data_from_ml_data_server() -> datasets.Dataset:
             parquet.write_table(arrow_table, tmp_file.name)
             tmp_file.flush()
 
-    logger.info(f"Found and downloaded '{len(list(tmp_dir_path.glob('*')))}' flights/files")
+    number_of_downloaded_files = len(list(tmp_dir_path.glob("*")))
+    logger.info(f"Found and downloaded '{number_of_downloaded_files}' flights/files")
+    if number_of_downloaded_files == 0:
+        notify_about_failure_and_terminate(
+            context=get_context(),
+            error_msg=f"No matching data found for provided data tags '{get_context().data_tags}'",
+        )
+
     parquet_tables = []
     for file_name in tmp_dir_path.iterdir():
         parquet_tables.append(parquet.read_table(file_name))

@@ -4,6 +4,7 @@ import time
 
 import paho.mqtt.client as paho_mqtt
 from flops_utils.logging import logger
+from flops_utils.mqtt_topics import SupportedTopic, Target
 from project_observer.ui_context import get_ui_context
 
 _mqtt_client = None
@@ -64,7 +65,7 @@ def get_mqtt_client():
 
 def handle_mqtt() -> None:
     mqtt_client = get_mqtt_client()
-    mqtt_client.subscribe(f"flopsui/{get_ui_context().flops_id}")
+    mqtt_client.subscribe(f"{Target.PROJECT_OBSERVER}/{get_ui_context().flops_id}")
     mqtt_client.loop_forever()
 
 
@@ -77,7 +78,7 @@ def notify_flops_manager(error_msg: str = None) -> None:
         }
     )
     get_mqtt_client().publish(
-        topic="flops_manager/project_observer/failed",
+        topic=SupportedTopic.PROJECT_OBSERVER_FAILED.value,
         payload=payload,
         qos=2,
         retain=False,
