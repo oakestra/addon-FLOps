@@ -3,7 +3,7 @@ import sys
 from dataclasses import dataclass, field
 from typing import ClassVar
 
-from flops_utils.mqtt_topics import Status, Subject, SupportedTopic, Topic
+from flops_utils.mqtt_topics import Status, Subject, Topic
 from flops_utils.timer import Timer
 from notification_management import notify_manager, notify_observer
 

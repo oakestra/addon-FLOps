@@ -26,7 +26,7 @@ def notify_about_failure_and_terminate(
     error_msg: str,
 ) -> None:
     _notify_flops_manager(
-        aggregator_context=context,
+        context=context,
         topic=SupportedTopic.LEARNER_FAILED,
         error_msg=error_msg,
     )

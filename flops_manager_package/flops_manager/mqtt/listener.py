@@ -43,8 +43,9 @@ def _on_new_message(client, userdata, message) -> None:
                 handle_aggregator_failed(aggregator_failed_msg=data)
 
             case SupportedTopic.LEARNER_FAILED.value:
-                # TODO
-                pass
+                # NOTE: Currently the next steps in a failure case for an aggregator and learner
+                # are very similar. This can be further developed if need be.
+                handle_aggregator_failed(aggregator_failed_msg=data)
 
             case _:
                 logger.error(f"Message received for an unsupported topic '{topic}'")
