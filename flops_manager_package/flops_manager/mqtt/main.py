@@ -39,7 +39,7 @@ def _reconnect(client):
 
 def _init_mqtt() -> paho_mqtt.Client:
     global _mqtt_client
-    _mqtt_client = paho_mqtt.Client(paho_mqtt.CallbackAPIVersion.VERSION1)
+    _mqtt_client = paho_mqtt.Client(paho_mqtt.CallbackAPIVersion.VERSION2)
 
     def on_disconnect(client, userdata, rc):
         if rc != 0:
