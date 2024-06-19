@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y \
         # Mandatory dependencies:
         git wget buildah \
         # Optional development dependencies:
-        vim iputils-ping dnsutils strace lsof telnet tree &&\
+        vim tree &&\
     apt-get clean
 
 RUN conda install -y \
