@@ -1,4 +1,4 @@
-# plugins-FLOps-Project-Observer
+# addon-FLOps-Project-Observer
 TODO 
 
 The FLOps UI image is used for observing the FLOps processes/project.

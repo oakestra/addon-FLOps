@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "flops_manager"
 version = "0.1.0"
-description = "The FLOps Manager is the main control component for the FLOps plugin of Oakestra"
+description = "The FLOps Manager is the main control component for the FLOps addon of Oakestra"
 authors = ["Alexander Malyuk <malyuk.alexander1999@gmail.com>"]
 
 [tool.poetry.dependencies]

@@ -40,7 +40,7 @@ devel
 num
 conda
 CONDA
-VERSION1
+VERSION2
 userdata
 src
 localhost

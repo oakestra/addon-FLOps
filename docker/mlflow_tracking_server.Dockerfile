@@ -6,5 +6,5 @@ RUN pip install \
         pymysql==1.1.0 \
         cryptography==42.0.7
 
-ENV TRACKING_SERVER_PORT=9027
+ENV TRACKING_SERVER_PORT=7027
 EXPOSE $TRACKING_SERVER_PORT

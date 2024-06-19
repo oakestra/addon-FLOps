@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "project_observer"
 version = "1.0.0"
-description = "The User Interface for the FLOps plugin of Oakestra"
+description = "The User Interface for the FLOps addon of Oakestra"
 authors = ["Alexander Malyuk <malyuk.alexander1999@gmail.com>"]
 
 [tool.poetry.dependencies]
