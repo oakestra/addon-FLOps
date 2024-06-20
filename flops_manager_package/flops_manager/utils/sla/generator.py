@@ -34,6 +34,7 @@ def generate_sla(components: SlaComponentsWrapper) -> AppSLA:
                 "microservice_namespace": names.service_namespace,
                 "virtualization": "container",
                 "one_shot": compute.one_shot_service,
+                "privileged": details.privileged,
                 "cmd": ([] if (core.compute.cmd == "") else shlex.split(core.compute.cmd)),
                 "memory": resources.memory,
                 "vcpus": resources.vcpus,
@@ -41,6 +42,15 @@ def generate_sla(components: SlaComponentsWrapper) -> AppSLA:
                 "code": compute.code,
                 **({"addresses": {"rr_ip": details.rr_ip}} if details.rr_ip else {}),
                 **({"port": details.port} if details.port else {}),
+                **(
+                    {
+                        "constraints": [
+                            constraint.to_json_dict() for constraint in details.constraints
+                        ]
+                    }
+                    if details.constraints
+                    else {}
+                ),
             }
         )
 

@@ -9,6 +9,8 @@ from flops_manager.utils.common import get_shortened_unique_id
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
 from flops_manager.utils.env_vars import FLOPS_MQTT_BROKER_IP
 from flops_manager.utils.sla.components import (
+    FLOPS_LEARNER_ADDON_TYPE,
+    AddonConstraint,
     SlaComponentsWrapper,
     SlaCompute,
     SlaCore,
@@ -94,5 +96,6 @@ class FLLearners(FLOpsProjectService):
                     vcpus=1,
                     storage=0,
                 ),
+                constraints=[AddonConstraint(needs=[FLOPS_LEARNER_ADDON_TYPE])],
             ),
         )

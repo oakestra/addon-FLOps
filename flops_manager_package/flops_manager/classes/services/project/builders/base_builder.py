@@ -76,6 +76,7 @@ class FLOpsBaseImageBuilder(FLOpsProjectService, abc.ABC):
                     vcpus=1,
                     storage=15000,
                 ),
+                privileged=True,
             ),
         )
 

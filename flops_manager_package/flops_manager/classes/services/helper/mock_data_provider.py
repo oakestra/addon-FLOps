@@ -4,6 +4,8 @@ from flops_manager.utils.common import get_shortened_unique_id
 from flops_manager.utils.constants import FLOPS_SERVICE_CMD_PREFIX
 from flops_manager.utils.env_vars import ML_DATA_SERVER_PORT
 from flops_manager.utils.sla.components import (
+    FLOPS_LEARNER_ADDON_TYPE,
+    AddonConstraint,
     SlaComponentsWrapper,
     SlaCompute,
     SlaCore,
@@ -81,5 +83,6 @@ class MockDataProvider(FLOpsService):
             details=SlaDetails(
                 resources=SlaResources(memory=200, vcpus=1, storage=0),
                 port=str(ML_DATA_SERVER_PORT),
+                constraints=[AddonConstraint(needs=[FLOPS_LEARNER_ADDON_TYPE])],
             ),
         )

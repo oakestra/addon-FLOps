@@ -27,12 +27,5 @@ class FLOpsCustomerFacingApp(FLOpsApp, abc.ABC):
     @classmethod
     def get_app(cls, customer_id: str) -> "FLOpsCustomerFacingApp":
         """There should be only one per user."""
-        from icecream import ic
-
-        ic(0, customer_id)
         existing_app = retrieve_from_db_by_customer_id(cls, customer_id)
-        ic(1, existing_app)
-        # return existing_app or cls(customer_id=customer_id)
-        res = existing_app or cls(customer_id=customer_id)
-        ic(2, res)
-        return res
+        return existing_app or cls(customer_id=customer_id)
