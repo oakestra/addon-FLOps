@@ -19,7 +19,16 @@ class AggregatorContext(BaseModel):
     project_observer_ip: str
     mlflow_tracking_server_url: str
 
-    training_rounds: int = 3
+    # TODO place into utils lib to share code
+    flops_mode: str
+
+    training_iterations: int = Field(
+        default=1,
+        description="""
+            A training iteration is an umbrella term that can either mean
+            a training round or a training cycle, depending on the current mode.
+            """,
+    )
     min_available_clients: int = 1
     min_fit_clients: int = 1
     min_evaluate_clients: int = 1

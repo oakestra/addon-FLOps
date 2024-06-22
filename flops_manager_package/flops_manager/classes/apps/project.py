@@ -1,3 +1,4 @@
+import enum
 from typing import List
 
 from flops_manager.classes.apps.app_base import FLOpsApp
@@ -15,8 +16,14 @@ from pydantic import AliasChoices, BaseModel, Field
 #       min_..._clients > 1, etc.
 
 
+class FLOPsMode(str, enum.Enum):
+    CLASSIC = "classic"
+    HIERARCHICAL = "hierarchical"
+
+
 # NOTE: Using BaseModel instead of NamedTuple here allows for nicer serialized data in the DB.
 class _TrainingConfiguration(BaseModel):
+    mode: FLOPsMode = Field(default=FLOPsMode.CLASSIC)
     data_tags: List[str] = Field(
         default_factory=list,
         description=" ".join(
@@ -26,10 +33,32 @@ class _TrainingConfiguration(BaseModel):
             )
         ),
     )
-    training_rounds: int = 3
-    min_available_clients: int = 1
-    min_fit_clients: int = 1
-    min_evaluate_clients: int = 1
+    training_cycles: int = Field(
+        default=1,
+        # TODO check naming with ML/FL naming conventions
+        # Maybe "period, round, cycle" are already coined and mean something different.
+        description="""
+        (Only applicable for the 'hierarchical' mode.)
+        The number of training & evaluation rounds performed between
+        the root aggregator (RAg) and cluster aggregators (CAg).
+        Example: training_cycles = 2, training_rounds = 3:
+        - The first training cycle starts:
+          The learners train and share their results with their CAg.
+          After 3 such training rounds the aggregated cluster results are send to the RAg.
+        - The second training cycle starts:
+          The learners train and share their results again with their CAg.
+          After 3 training rounds the aggregated cluster results are again send to the RAg.
+        - The whole training period has come to an end.
+        """,
+    )
+    training_rounds: int = Field(
+        default=3,
+        description="The number of training & evaluations rounds performed on a learner.",
+    )
+
+    min_available_learners: int = 1
+    min_fit_learners: int = 1
+    min_evaluate_learners: int = 1
 
 
 class _ResourceConstraints(BaseModel):

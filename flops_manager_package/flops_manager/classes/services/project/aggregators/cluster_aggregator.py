@@ -1,4 +1,4 @@
-from flops_manager.classes.services.project.project_service import FLOpsProjectService
+from flops_manager.classes.services.project.aggregators.main import FLAggregator
 from flops_manager.image_management.fl_actor_images import (
     FLActorImageTypes,
     get_fl_actor_image_name,
@@ -18,13 +18,11 @@ from flops_manager.utils.sla.components import (
 from pydantic import Field
 
 
-class FLAggregator(FLOpsProjectService):
-    namespace = "aggr"
-    fl_aggregator_image: str = Field("", init=False)
-    project_observer_ip: str = Field("", exclude=True, repr=False)
-    tracking_server_url: str = Field("", exclude=True, repr=False)
+class ClusterFLAggregator(FLAggregator):
+    namespace = "raggr"
 
-    ip: str = Field("", init=False)
+    total_number_of_cluster_aggregators: int = Field(1, init=False)
+    root_fl_aggregator_ip: str = Field(None, exclude=True, repr=False)
 
     def model_post_init(self, _):
         if self.gets_loaded_from_db:
@@ -33,7 +31,7 @@ class FLAggregator(FLOpsProjectService):
         if self.parent_app.verbose:
             notify_project_observer(
                 flops_project_id=self.parent_app.flops_project_id,
-                msg="Preparing new FL Aggregator.",
+                msg="Preparing new Cluster FL Aggregator.",
             )
 
         self.ip = generate_ip(self.parent_app.flops_project_id, self)
@@ -42,12 +40,13 @@ class FLAggregator(FLOpsProjectService):
             ml_repo_latest_commit_hash=self.parent_app.ml_repo_latest_commit_hash,
             flops_image_type=FLActorImageTypes.AGGREGATOR,
         )
+
         super().model_post_init(_)
 
         if self.parent_app.verbose:
             notify_project_observer(
                 flops_project_id=self.parent_app.flops_project_id,
-                msg="New Aggregator service created & deployed",
+                msg="New Cluster Aggregator service created & deployed",
             )
 
     def _configure_sla_components(self) -> None:
@@ -62,9 +61,9 @@ class FLAggregator(FLOpsProjectService):
                 self.project_observer_ip,
                 self.tracking_server_url,
                 str(training_conf.training_rounds),
-                str(training_conf.min_available_clients),
-                str(training_conf.min_fit_clients),
-                str(training_conf.min_evaluate_clients),
+                str(training_conf.min_available_learners),
+                str(training_conf.min_fit_learners),
+                str(training_conf.min_evaluate_learners),
             )
         )
 
@@ -75,7 +74,7 @@ class FLAggregator(FLOpsProjectService):
                 names=SlaNames(
                     app_name=self.parent_app.app_name,
                     app_namespace=self.parent_app.namespace,
-                    service_name=f"aggr{get_shortened_unique_id(self.flops_project_id)}",
+                    service_name=f"caggr{get_shortened_unique_id(self.flops_project_id)}",
                     service_namespace=self.namespace,
                 ),
                 compute=SlaCompute(

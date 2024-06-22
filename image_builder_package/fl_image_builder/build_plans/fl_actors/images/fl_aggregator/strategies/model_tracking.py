@@ -9,7 +9,9 @@ from flops_utils.ml_model_flavor_proxy import get_ml_model_flavor
 from utils.aggregator_context import WinnerModel
 
 if TYPE_CHECKING:
-    from strategy.main import FLOpsFedAvg
+    from fl_image_builder.build_plans.fl_actors.images.fl_aggregator.strategies.classic import (
+        FLOpsFedAvg,
+    )
 
 
 TRACKED_MODEL_NAME = "logged_model_artifact"
@@ -29,7 +31,9 @@ def handle_model_tracking(
         if TRACKED_MODEL_DIR.exists():
             shutil.rmtree(TRACKED_MODEL_DIR)
         # This saves the current model locally.
-        get_ml_model_flavor().save_model(strategy.model_manager.get_model(), TRACKED_MODEL_DIR)
+        get_ml_model_flavor().save_model(
+            strategy.model_manager.get_model(), TRACKED_MODEL_DIR
+        )
 
     if server_round == 1:
         update_best_found_model()

@@ -2,13 +2,15 @@ import sys
 
 import flwr as fl
 import mlflow
+from fl_image_builder.build_plans.fl_actors.images.fl_aggregator.strategies.classic import (
+    FLOpsFedAvg,
+)
 from flops_utils.logging import logger
 from flops_utils.notifications import notify_project_observer
 from notification_management import (
     notify_about_failure_and_terminate,
     notify_about_successful_completion,
 )
-from strategy.main import FLOpsFedAvg
 from utils.aggregator_context import AggregatorContext
 
 FL_START_INFO_TEXT = """
@@ -46,7 +48,7 @@ def handle_aggregator(aggregator_context: AggregatorContext) -> None:
             aggregator_context=aggregator_context,
             mlflow_experiment_id=mlflow_experiment.experiment_id,
             # NOTE: The Flower Strategy lacks the notion of the number of expected training rounds.
-            requested_total_number_of_training_rounds=aggregator_context.training_rounds,
+            requested_total_number_of_training_rounds=aggregator_context.training_iterations,
             min_available_clients=aggregator_context.min_available_clients,
             min_fit_clients=aggregator_context.min_fit_clients,
             min_evaluate_clients=aggregator_context.min_evaluate_clients,
@@ -54,7 +56,7 @@ def handle_aggregator(aggregator_context: AggregatorContext) -> None:
         start_fl_server(
             aggregator_context=aggregator_context,
             strategy=strategy_instance,
-            rounds=aggregator_context.training_rounds,
+            rounds=aggregator_context.training_iterations,
         )
 
     except Exception as e:

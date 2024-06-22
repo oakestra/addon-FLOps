@@ -2,7 +2,7 @@
 
 import json
 
-from flops_manager.classes.services.project.aggregator.termination import (
+from flops_manager.classes.services.project.aggregators.termination import (
     handle_aggregator_failed,
     handle_aggregator_success,
 )
