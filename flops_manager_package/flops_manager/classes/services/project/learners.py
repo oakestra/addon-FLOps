@@ -1,3 +1,5 @@
+from typing import Optional
+
 from flops_manager.api.service_management import deploy
 from flops_manager.classes.services.project.project_service import FLOpsProjectService
 from flops_manager.image_management.fl_actor_images import (
@@ -30,9 +32,9 @@ class FLLearners(FLOpsProjectService):
 
     total_number_of_learners: int = Field(1, init=False)
     fl_learner_image: str = Field("", init=False)
-    fl_aggregator_ip: str = Field(None, exclude=True, repr=False)
+    fl_aggregator_ip: Optional[str] = Field(default=None, exclude=True, repr=False)
 
-    cluster_name: str = None
+    cluster_name: Optional[str] = None
 
     def model_post_init(self, _):
         if self.gets_loaded_from_db:

@@ -1,3 +1,5 @@
+import enum
+
 from pydantic import BaseModel, Field
 
 # NOTE: The approach of using a global variable does not work here.
@@ -13,20 +15,27 @@ class WinnerModel(BaseModel):
     loss: float
 
 
+# TODO place into flops-utils lib to make reusable
+class AggregatorType(enum.Enum):
+    CLASSIC_AGGREGATOR = "CLASSIC_AGGREGATOR"
+
+    ROOT_AGGREGATOR = "ROOT_AGGREGATOR"
+    CLUSTER_AGGREGATOR = "CLUSTER_AGGREGATOR"
+
+
 class AggregatorContext(BaseModel):
     flops_project_id: str
     mqtt_ip: str
     project_observer_ip: str
     mlflow_tracking_server_url: str
 
-    # TODO place into utils lib to share code and go with enum
-    flops_mode: str
+    aggregator_type: AggregatorType = AggregatorType.CLASSIC_AGGREGATOR
 
     training_iterations: int = Field(
         default=1,
         description="""
             A training iteration is an umbrella term that can either mean
-            a training round or a training cycle, depending on the current mode.
+            a training round or a training cycle, depending on the current aggregator type.
             """,
     )
     min_available_clients: int = 1

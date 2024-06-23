@@ -1,4 +1,5 @@
 import abc
+from typing import Optional
 
 from flops_manager.classes.services.project.project_service import FLOpsProjectService
 from flops_manager.database.common import retrieve_from_db_by_project_id
@@ -21,7 +22,7 @@ from pydantic import Field
 
 class FLOpsBaseImageBuilder(FLOpsProjectService, abc.ABC):
     namespace = "builder"
-    project_observer_ip: str = Field(None, exclude=True, repr=False)
+    project_observer_ip: Optional[str] = Field(default=None, exclude=True, repr=False)
 
     def model_post_init(self, _):
         if self.gets_loaded_from_db:

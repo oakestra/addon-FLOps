@@ -1,3 +1,5 @@
+from typing import Optional
+
 from flops_manager.classes.apps.observatory import FLOpsObservatory
 from flops_manager.classes.services.service_base import FLOpsService
 from flops_manager.mlflow.storages.artifact_store import get_user_artifact_store_uri
@@ -19,7 +21,7 @@ TRACKING_SERVER_PORT = 7027
 class TrackingServer(FLOpsService):
     namespace = "tracking"
 
-    parent_app: FLOpsObservatory = Field(None, exclude=True, repr=False)
+    parent_app: Optional[FLOpsObservatory] = Field(default=None, exclude=True, repr=False)
     customer_id: str = Field(alias=AliasChoices("customer_id", "customerID"))
 
     ip: str = Field("", init=False)

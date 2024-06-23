@@ -1,5 +1,5 @@
 import ipaddress
-from typing import ClassVar, List, NamedTuple
+from typing import ClassVar, List, NamedTuple, Optional
 
 from flops_manager.utils.types import ApplicationId
 from pydantic import BaseModel, Field
@@ -22,7 +22,7 @@ class SlaCompute(NamedTuple):
 
 class SlaCore(NamedTuple):
     names: SlaNames = SlaNames()
-    compute: SlaCompute = None
+    compute: Optional[SlaCompute] = None
     customerID: str = ""
     app_id: ApplicationId = ""
 
@@ -84,8 +84,8 @@ class ClusterConstraint(SlaConstraint):
 class SlaDetails(NamedTuple):
     resources: SlaResources = SlaResources()
     app_desc: str = ""
-    rr_ip: ipaddress.IPv4Address = None
-    port: str = None
+    rr_ip: Optional[ipaddress.IPv4Address] = None
+    port: Optional[str] = None
     privileged: bool = False
     constraints: List[SlaConstraint] = []
 

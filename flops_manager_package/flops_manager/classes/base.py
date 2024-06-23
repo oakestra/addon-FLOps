@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import ClassVar
+from typing import ClassVar, Optional
 
 from flops_manager.database.common import add_to_db
 from flops_manager.utils.sla.components import SlaComponentsWrapper
@@ -9,7 +9,12 @@ from pydantic import BaseModel, Field
 class FlOpsOakestraBaseClass(BaseModel, ABC):
     namespace: ClassVar[str]
     gets_loaded_from_db: bool = Field(False, init=False, exclude=True, repr=False)
-    sla_components: SlaComponentsWrapper = Field(None, init=False, exclude=True, repr=False)
+    sla_components: Optional[SlaComponentsWrapper] = Field(
+        default=None,
+        init=False,
+        exclude=True,
+        repr=False,
+    )
 
     def model_post_init(self, _) -> None:
         if self.gets_loaded_from_db:

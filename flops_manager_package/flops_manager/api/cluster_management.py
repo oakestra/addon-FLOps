@@ -13,7 +13,7 @@ def get_active_clusters_from_orchestrator() -> List[dict]:
     active_clusters = CustomRequest(
         core=RequestCore(
             base_url=SYSTEM_MANAGER_URL,
-            api_endpoint=f"/api/clusters/active",
+            api_endpoint="/api/clusters/active",
         ),
         aux=RequestAuxiliaries(
             what_should_happen="Get active clusters",

@@ -16,14 +16,14 @@ from pydantic import AliasChoices, BaseModel, Field
 #       min_..._clients > 1, etc.
 
 
-class FLOPsMode(str, enum.Enum):
+class FLOpsMode(str, enum.Enum):
     CLASSIC = "classic"
     HIERARCHICAL = "hierarchical"
 
 
 # NOTE: Using BaseModel instead of NamedTuple here allows for nicer serialized data in the DB.
 class _TrainingConfiguration(BaseModel):
-    mode: FLOPsMode = Field(default=FLOPsMode.CLASSIC)
+    mode: FLOpsMode = Field(default=FLOpsMode.CLASSIC)
     data_tags: List[str] = Field(
         default_factory=list,
         description=" ".join(

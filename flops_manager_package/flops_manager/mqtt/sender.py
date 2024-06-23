@@ -1,3 +1,5 @@
+from typing import Optional
+
 from flops_manager.mqtt.main import get_mqtt_client
 from flops_utils.logging import colorful_logger as logger
 from flops_utils.mqtt_topics import Target
@@ -5,7 +7,7 @@ from flops_utils.mqtt_topics import Target
 
 def notify_project_observer(
     msg: str,
-    flops_project_id: str = None,
+    flops_project_id: Optional[str] = None,
 ) -> None:
     # NOTE: The communication from the FLOps Manager to the Project Observers
     # does not work via Python sockets.

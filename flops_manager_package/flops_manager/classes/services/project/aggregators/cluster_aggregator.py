@@ -1,4 +1,6 @@
-from flops_manager.classes.services.project.aggregators.main import FLAggregator
+from typing import Optional
+
+from flops_manager.classes.services.project.aggregators.classic_aggregator import FLAggregator
 from flops_manager.image_management.fl_actor_images import (
     FLActorImageTypes,
     get_fl_actor_image_name,
@@ -6,7 +8,8 @@ from flops_manager.image_management.fl_actor_images import (
 from flops_manager.mqtt.sender import notify_project_observer
 from flops_manager.utils.common import generate_ip, get_shortened_unique_id
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
-from flops_manager.utils.env_vars import FLOPS_MQTT_BROKER_IP
+
+# from flops_manager.utils.env_vars import FLOPS_MQTT_BROKER_IP
 from flops_manager.utils.sla.components import (
     ClusterConstraint,
     SlaComponentsWrapper,
@@ -22,7 +25,7 @@ from pydantic import Field
 class ClusterFLAggregator(FLAggregator):
     namespace = "raggr"
 
-    root_fl_aggregator_ip: str = Field(None, exclude=True, repr=False)
+    root_fl_aggregator_ip: Optional[str] = Field(default=None, exclude=True, repr=False)
     cluster_name: str
 
     def model_post_init(self, _):
@@ -51,7 +54,7 @@ class ClusterFLAggregator(FLAggregator):
             )
 
     def _configure_sla_components(self) -> None:
-        training_conf = self.parent_app.training_configuration
+        # training_conf = self.parent_app.training_configuration
 
         # cmd = " ".join(
         #     (
@@ -60,6 +63,7 @@ class ClusterFLAggregator(FLAggregator):
         #         self.flops_project_id,
         #         FLOPS_MQTT_BROKER_IP,
         #         self.project_observer_ip,
+        #         "CLUSTER_AGGREGATOR",
         #         self.tracking_server_url,
         #         str(training_conf.training_rounds),
         #         str(training_conf.min_available_learners),

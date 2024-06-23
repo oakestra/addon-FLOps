@@ -1,3 +1,5 @@
+from typing import Optional
+
 from flops_manager.classes.apps.observatory import FLOpsObservatory
 from flops_manager.classes.apps.project import FLOpsProject
 from flops_manager.classes.services.service_base import FLOpsService
@@ -18,9 +20,9 @@ from pydantic import Field
 class FLOpsProjectObserver(FLOpsService):
     namespace = "observ"
 
-    parent_app: FLOpsObservatory = Field(None, exclude=True, repr=False)
+    parent_app: Optional[FLOpsObservatory] = Field(default=None, exclude=True, repr=False)
 
-    flops_project: FLOpsProject = Field(None, exclude=True, repr=False)
+    flops_project: Optional[FLOpsProject] = Field(default=None, exclude=True, repr=False)
     flops_project_id: str = Field("", init=False)
 
     ip: str = Field("", init=False)

@@ -1,5 +1,5 @@
 from flops_manager.classes.apps.project import FLOpsProject
-from flops_manager.classes.services.project.aggregators.main import FLAggregator
+from flops_manager.classes.services.project.aggregators.classic_aggregator import FLAggregator
 from flops_manager.classes.services.project.learners import FLLearners
 from flops_manager.database.common import retrieve_from_db_by_project_id
 from flops_manager.flops_management.post_training_steps.build_trained_model_image import (

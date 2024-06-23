@@ -1,3 +1,5 @@
+from typing import Optional
+
 from flops_manager.classes.apps.helper import FLOpsHelperApp
 from flops_manager.classes.services.service_base import FLOpsService
 from flops_manager.utils.common import generate_ip, get_shortened_unique_id
@@ -15,7 +17,7 @@ from pydantic import Field
 
 class TrainedModel(FLOpsService):
     namespace = "trmodel"
-    parent_app: FLOpsHelperApp = Field(None, exclude=True, repr=False)
+    parent_app: Optional[FLOpsHelperApp] = Field(default=None, exclude=True, repr=False)
     image_name: str
 
     ip: str = Field("", init=False)

@@ -1,3 +1,5 @@
+from typing import Optional
+
 from flops_manager.classes.apps.helper import FLOpsHelperApp
 from flops_manager.classes.services.service_base import FLOpsService
 from flops_manager.utils.common import get_shortened_unique_id
@@ -48,7 +50,7 @@ class _MockDataConfiguration(BaseModel):
 
 class MockDataProvider(FLOpsService):
     namespace = "mockdp"
-    parent_app: FLOpsHelperApp = Field(None, exclude=True, repr=False)
+    parent_app: Optional[FLOpsHelperApp] = Field(default=None, exclude=True, repr=False)
 
     mock_data_configuration: _MockDataConfiguration = _MockDataConfiguration()
 

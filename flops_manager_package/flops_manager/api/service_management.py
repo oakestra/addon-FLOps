@@ -1,3 +1,5 @@
+from typing import Optional
+
 from flops_manager.api.request_management.custom_http import HttpMethods
 from flops_manager.api.request_management.custom_requests import (
     CustomRequest,
@@ -14,9 +16,9 @@ from pydantic import BaseModel
 def append_service_to_app(
     sla: SLA,
     app_id: str,
-    bearer_token: str = None,
-    matching_caller_object: BaseModel = None,
-    flops_project_id: str = None,
+    bearer_token: Optional[str] = None,
+    matching_caller_object: Optional[BaseModel] = None,
+    flops_project_id: Optional[str] = None,
 ) -> ServiceId:
     service_type = get_matching_type(matching_caller_object)
     response = CustomRequest(
@@ -38,7 +40,7 @@ def append_service_to_app(
     return response["job_id"]
 
 
-def deploy(service_id: ServiceId, matching_caller_object: BaseModel = None) -> None:
+def deploy(service_id: ServiceId, matching_caller_object: Optional[BaseModel] = None) -> None:
     service_type = get_matching_type(matching_caller_object)
 
     CustomRequest(
@@ -57,8 +59,8 @@ def deploy(service_id: ServiceId, matching_caller_object: BaseModel = None) -> N
 
 def undeploy(
     service_id: str,
-    matching_caller_object: BaseModel = None,
-    flops_project_id: str = None,
+    matching_caller_object: Optional[BaseModel] = None,
+    flops_project_id: Optional[str] = None,
 ) -> None:
     service_type = get_matching_type(matching_caller_object)
     CustomRequest(

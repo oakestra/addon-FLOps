@@ -1,6 +1,6 @@
 import argparse
 
-from utils.aggregator_context import AggregatorContext
+from utils.aggregator_context import AggregatorContext, AggregatorType
 
 
 def parse_args() -> AggregatorContext:
@@ -15,7 +15,7 @@ def parse_args() -> AggregatorContext:
     parser.add_argument("project_observer_ip", type=str)
     parser.add_argument("mlflow_tracking_server_url", type=str)
 
-    parser.add_argument("flops_mode", type=str)
+    parser.add_argument("aggregator_type", type=str)
 
     parser.add_argument("training_iterations", type=int)
     parser.add_argument("min_available_clients", type=int)
@@ -43,7 +43,7 @@ def parse_args() -> AggregatorContext:
         mqtt_ip=args.mqtt_ip,
         project_observer_ip=args.project_observer_ip,
         mlflow_tracking_server_url=args.mlflow_tracking_server_url,
-        flops_mode=args.flops_mode,
+        aggregator_type=AggregatorType(args.aggregator_type),
         training_iterations=args.training_iterations,
         min_available_clients=args.min_available_clients,
         min_fit_clients=args.min_fit_clients,
