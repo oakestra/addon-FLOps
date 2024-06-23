@@ -6,9 +6,10 @@ from context import get_context
 from flops_utils.logging import logger
 from model_manager import get_model_manager
 
+# I have a feeling that for this to work the CAg first needs to be
+# started as a "Learner" for the RAg and only afterwards
+# (starting with the init param gathering) start its own aggregation things.
 
-I have a feeling that for this to work the CAg first needs to be started as a "Learner" for the RAg
-and only afterwards (starting with the init param gathering) start its own aggregation things.
 
 class ClusterAggregatorAsLearner(flwr.client.NumPyClient):
 

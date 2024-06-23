@@ -29,7 +29,7 @@ def handle_fl_training_processes(flops_project: FLOpsProject) -> None:
         FLOpsProjectObserver, flops_project.flops_project_id
     )
 
-    if flops_project.mode == FLOPsMode.CLASSIC:
+    if flops_project.training_configuration.mode == FLOPsMode.CLASSIC:
         fl_aggregator = FLAggregator(
             parent_app=flops_project,
             project_observer_ip=project_observer.ip,

@@ -19,7 +19,7 @@ class AggregatorContext(BaseModel):
     project_observer_ip: str
     mlflow_tracking_server_url: str
 
-    # TODO place into utils lib to share code and go with enum
+    # TODO place into utils lib to share code
     flops_mode: str
 
     training_iterations: int = Field(
