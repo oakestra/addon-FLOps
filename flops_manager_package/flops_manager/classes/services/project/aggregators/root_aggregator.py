@@ -21,7 +21,7 @@ from flops_manager.utils.sla.components import (
 class RootFLAggregator(FLAggregator):
     namespace = "raggr"
 
-    number_of_active_clusters: int
+    number_of_cluster_aggregators: int
 
     def model_post_init(self, _):
         if self.gets_loaded_from_db:
@@ -64,9 +64,9 @@ class RootFLAggregator(FLAggregator):
                 # Min. number of available clients, etc. - in this case cluster aggregators.
                 # Currently we assume that the number of active clusters stays the same.
                 # Future work can introduce more flexible and error-prone solutions.
-                str(self.number_of_active_clusters),
-                str(self.number_of_active_clusters),
-                str(self.number_of_active_clusters),
+                str(self.number_of_cluster_aggregators),
+                str(self.number_of_cluster_aggregators),
+                str(self.number_of_cluster_aggregators),
             )
         )
 

@@ -67,6 +67,20 @@ class AddonConstraint(SlaConstraint):
         return object_representation
 
 
+class ClusterConstraint(SlaConstraint):
+    type = "clusters"
+    allowed: List[str] = Field(
+        default_factory=list,
+        examples=["cluster_name_1", "cluster_name_2"],
+        description="Allows service placement only on clusters that are included in the list.",
+    )
+
+    def to_json_dict(self) -> dict:
+        object_representation = super().to_json_dict()
+        object_representation["allowed"] = self.allowed
+        return object_representation
+
+
 class SlaDetails(NamedTuple):
     resources: SlaResources = SlaResources()
     app_desc: str = ""

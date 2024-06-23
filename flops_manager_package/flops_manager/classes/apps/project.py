@@ -56,6 +56,8 @@ class _TrainingConfiguration(BaseModel):
         description="The number of training & evaluations rounds performed on a learner.",
     )
 
+    # NOTE: In the hierarchical mode these values are per cluster not in total.
+    # I.e. 2 'min_learners' -> 2 per cluster.
     min_available_learners: int = 1
     min_fit_learners: int = 1
     min_evaluate_learners: int = 1

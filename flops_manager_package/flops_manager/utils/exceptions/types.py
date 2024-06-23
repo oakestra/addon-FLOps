@@ -14,3 +14,4 @@ class FlOpsExceptionTypes(CustomEnum):
     INTERNAL_PROJECT_SERVICE_APPEND = "Appending internal FLOps service to FLOps Project"
     SERVICE_DEPLOYMENT = "Deploying Service"
     SERVICE_UNDEPLOYMENT = "Undeploying Service"
+    ACTIVE_CLUSTERS = "Active Clusters"

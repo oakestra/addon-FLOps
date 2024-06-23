@@ -8,6 +8,7 @@ from flops_manager.utils.common import generate_ip, get_shortened_unique_id
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
 from flops_manager.utils.env_vars import FLOPS_MQTT_BROKER_IP
 from flops_manager.utils.sla.components import (
+    ClusterConstraint,
     SlaComponentsWrapper,
     SlaCompute,
     SlaCore,
@@ -21,8 +22,8 @@ from pydantic import Field
 class ClusterFLAggregator(FLAggregator):
     namespace = "raggr"
 
-    total_number_of_cluster_aggregators: int = Field(1, init=False)
     root_fl_aggregator_ip: str = Field(None, exclude=True, repr=False)
+    cluster_name: str
 
     def model_post_init(self, _):
         if self.gets_loaded_from_db:
@@ -52,20 +53,21 @@ class ClusterFLAggregator(FLAggregator):
     def _configure_sla_components(self) -> None:
         training_conf = self.parent_app.training_configuration
 
-        cmd = " ".join(
-            (
-                "python",
-                "main.py",
-                self.flops_project_id,
-                FLOPS_MQTT_BROKER_IP,
-                self.project_observer_ip,
-                self.tracking_server_url,
-                str(training_conf.training_rounds),
-                str(training_conf.min_available_learners),
-                str(training_conf.min_fit_learners),
-                str(training_conf.min_evaluate_learners),
-            )
-        )
+        # cmd = " ".join(
+        #     (
+        #         "python",
+        #         "main.py",
+        #         self.flops_project_id,
+        #         FLOPS_MQTT_BROKER_IP,
+        #         self.project_observer_ip,
+        #         self.tracking_server_url,
+        #         str(training_conf.training_rounds),
+        #         str(training_conf.min_available_learners),
+        #         str(training_conf.min_fit_learners),
+        #         str(training_conf.min_evaluate_learners),
+        #     )
+        # )
+        cmd = "sleep infinity"
 
         self.sla_components = SlaComponentsWrapper(
             core=SlaCore(
@@ -90,5 +92,6 @@ class ClusterFLAggregator(FLAggregator):
                     vcpus=1,
                     storage=0,
                 ),
+                constraints=[ClusterConstraint(allowed=[self.cluster_name])],
             ),
         )

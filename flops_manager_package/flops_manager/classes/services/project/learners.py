@@ -11,6 +11,7 @@ from flops_manager.utils.env_vars import FLOPS_MQTT_BROKER_IP
 from flops_manager.utils.sla.components import (
     FLOPS_LEARNER_ADDON_TYPE,
     AddonConstraint,
+    ClusterConstraint,
     SlaComponentsWrapper,
     SlaCompute,
     SlaCore,
@@ -30,6 +31,8 @@ class FLLearners(FLOpsProjectService):
     total_number_of_learners: int = Field(1, init=False)
     fl_learner_image: str = Field("", init=False)
     fl_aggregator_ip: str = Field(None, exclude=True, repr=False)
+
+    cluster_name: str = None
 
     def model_post_init(self, _):
         if self.gets_loaded_from_db:
@@ -76,6 +79,11 @@ class FLLearners(FLOpsProjectService):
             )
         )
         service_name = f"flearner{get_shortened_unique_id(self.parent_app.flops_project_id)}"
+
+        constraints = [AddonConstraint(needs=[FLOPS_LEARNER_ADDON_TYPE])]
+        if self.cluster_name:
+            constraints.append(ClusterConstraint(allowed=[self.cluster_name]))
+
         self.sla_components = SlaComponentsWrapper(
             core=SlaCore(
                 app_id=self.flops_project_id,
@@ -98,6 +106,6 @@ class FLLearners(FLOpsProjectService):
                     vcpus=1,
                     storage=0,
                 ),
-                constraints=[AddonConstraint(needs=[FLOPS_LEARNER_ADDON_TYPE])],
+                constraints=constraints,
             ),
         )
