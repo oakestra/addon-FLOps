@@ -55,7 +55,7 @@ class MockDataProvider(FLOpsService):
     mock_data_configuration: _MockDataConfiguration = _MockDataConfiguration()
 
     def _configure_sla_components(self) -> None:
-        service_name = f"mockdp{get_shortened_unique_id(self.parent_app.app_id)}"
+        service_name = f"mockdp{get_shortened_unique_id(self.parent_app.app_id)}"  # type: ignore
         cmd = " ".join(
             (
                 FLOPS_SERVICE_CMD_PREFIX,
@@ -68,11 +68,11 @@ class MockDataProvider(FLOpsService):
         )
         self.sla_components = SlaComponentsWrapper(
             core=SlaCore(
-                customerID=self.parent_app.customer_id,
-                app_id=self.parent_app.app_id,
+                customerID=self.parent_app.customer_id,  # type: ignore
+                app_id=self.parent_app.app_id,  # type: ignore
                 names=SlaNames(
-                    app_name=self.parent_app.app_name,
-                    app_namespace=self.parent_app.namespace,
+                    app_name=self.parent_app.app_name,  # type: ignore
+                    app_namespace=self.parent_app.namespace,  # type: ignore
                     service_name=service_name,
                     service_namespace=self.namespace,
                 ),

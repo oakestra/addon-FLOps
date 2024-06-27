@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 def notify_manager(
     context: Context,
     topic: SupportedTopic,
-    error_msg: str = None,
+    error_msg: str = "",
     msg_payload: dict = {},
 ) -> None:
     logger.info(error_msg)

@@ -13,7 +13,7 @@ class FLOpsManagerException(Exception):
     text: str
     http_status: Optional[HTTPStatus] = None
     message: str = field(default="<message is not set>", init=False)
-    flops_project_id: Optional[str] = None
+    flops_project_id: str = ""
 
     def __post_init__(self) -> None:
         self.message = f"'{self.flops_exception_type}' exception occured: {self.text}"

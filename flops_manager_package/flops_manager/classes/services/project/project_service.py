@@ -14,5 +14,5 @@ class FLOpsProjectService(FLOpsService, ABC):
         if self.gets_loaded_from_db:
             return
 
-        self.flops_project_id = self.parent_app.flops_project_id
+        self.flops_project_id = self.parent_app.flops_project_id  # type: ignore
         super().model_post_init(_)

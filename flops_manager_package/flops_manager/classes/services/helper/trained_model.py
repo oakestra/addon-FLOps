@@ -26,18 +26,19 @@ class TrainedModel(FLOpsService):
         if self.gets_loaded_from_db:
             return
 
-        self.ip = generate_ip(self.parent_app.app_id, self)
+        self.ip = generate_ip(self.parent_app.app_id, self)  # type: ignore
         super().model_post_init(_)
 
     def _configure_sla_components(self) -> None:
-        service_name = f"{self.namespace}{get_shortened_unique_id(self.parent_app.app_id)}"
+        parent_app_id = self.parent_app.app_id  # type: ignore
+        service_name = f"{self.namespace}{get_shortened_unique_id(parent_app_id)}"
         self.sla_components = SlaComponentsWrapper(
             core=SlaCore(
-                customerID=self.parent_app.customer_id,
-                app_id=self.parent_app.app_id,
+                customerID=self.parent_app.customer_id,  # type: ignore
+                app_id=parent_app_id,
                 names=SlaNames(
-                    app_name=self.parent_app.app_name,
-                    app_namespace=self.parent_app.namespace,
+                    app_name=self.parent_app.app_name,  # type: ignore
+                    app_namespace=self.parent_app.namespace,  # type: ignore
                     service_name=service_name,
                     service_namespace=self.namespace,
                 ),

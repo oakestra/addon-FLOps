@@ -16,8 +16,13 @@ class TrainedModelImageBuilder(FLOpsBaseImageBuilder):
 
     def _prepare_cmd(self) -> str:
         cmd = super()._prepare_cmd()
-        cmd += (
-            f" trained_model {self.parent_app.customer_id} {self.tracking_server_uri} {self.run_id}"
+        cmd += " " + " ".join(
+            (
+                "trained_model",
+                self.parent_app.customer_id,  # type: ignore
+                self.tracking_server_uri,
+                self.run_id,
+            )
         )
         return cmd
 
@@ -26,8 +31,8 @@ class TrainedModelImageBuilder(FLOpsBaseImageBuilder):
         logger.debug(builder_success_msg)
         flops_project_id = builder_success_msg["flops_project_id"]
         builder = retrieve_from_db_by_project_id(cls, flops_project_id)
-        run_id = builder.run_id
-        builder.undeploy()
+        run_id = builder.run_id  # type: ignore
+        builder.undeploy()  # type: ignore
 
         flops_project = retrieve_from_db_by_project_id(FLOpsProject, flops_project_id)
 
@@ -35,12 +40,21 @@ class TrainedModelImageBuilder(FLOpsBaseImageBuilder):
             "Start handling FL post training. Preparing to build image based on best trained model."
         )
         logger.info(msg)
-        notify_project_observer(flops_project_id=flops_project.flops_project_id, msg=msg)
-
-        if PostTrainingSteps.DEPLOY_TRAINED_MODEL_IMAGE not in flops_project.post_training_steps:
+        notify_project_observer(
+            flops_project_id=flops_project.flops_project_id,  # type: ignore
+            msg=msg,
+        )
+        post_training_steps = flops_project.post_training_steps  # type: ignore
+        if PostTrainingSteps.DEPLOY_TRAINED_MODEL_IMAGE not in post_training_steps:
             msg = "No further post training steps requested."
             logger.info(msg)
-            notify_project_observer(flops_project_id=flops_project.flops_project_id, msg=msg)
+            notify_project_observer(
+                flops_project_id=flops_project.flops_project_id,  # type: ignore
+                msg=msg,
+            )
             return
 
-        handle_trained_model_image_deployment(flops_project=flops_project, run_id=run_id)
+        handle_trained_model_image_deployment(
+            flops_project=flops_project,  # type: ignore
+            run_id=run_id,
+        )

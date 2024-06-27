@@ -31,20 +31,21 @@ class FLOpsProjectObserver(FLOpsService):
         if self.gets_loaded_from_db:
             return
 
-        self.flops_project_id = self.flops_project.flops_project_id
+        self.flops_project_id = self.flops_project.flops_project_id  # type: ignore
         self.ip = generate_ip(self.flops_project_id, self)
 
         super().model_post_init(_)
 
     def _configure_sla_components(self) -> None:
-        service_name = f"observ{get_shortened_unique_id(self.flops_project.flops_project_id)}"
+        flops_project_id = self.flops_project.flops_project_id  # type: ignore
+        service_name = f"observ{get_shortened_unique_id(flops_project_id)}"
         self.sla_components = SlaComponentsWrapper(
             core=SlaCore(
-                customerID=self.flops_project.customer_id,
-                app_id=self.parent_app.app_id,
+                customerID=self.flops_project.customer_id,  # type: ignore
+                app_id=self.parent_app.app_id,  # type: ignore
                 names=SlaNames(
-                    app_name=self.parent_app.app_name,
-                    app_namespace=self.parent_app.namespace,
+                    app_name=self.parent_app.app_name,  # type: ignore
+                    app_namespace=self.parent_app.namespace,  # type: ignore
                     service_name=service_name,
                     service_namespace=self.namespace,
                 ),
@@ -61,7 +62,7 @@ class FLOpsProjectObserver(FLOpsService):
                 ),
             ),
             details=SlaDetails(
-                rr_ip=self.ip,
+                rr_ip=self.ip,  # type: ignore
                 resources=SlaResources(memory=200, vcpus=1, storage=0),
             ),
         )

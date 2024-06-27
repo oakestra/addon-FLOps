@@ -36,5 +36,5 @@ def init_fl_post_training_steps(flops_project: FLOpsProject, winner_model_run_id
         tracking_server_uri=tracking_server.get_url(),
         run_id=winner_model_run_id,
         parent_app=flops_project,
-        project_observer_ip=project_observer.ip,
+        project_observer_ip=project_observer.ip,  # type: ignore
     )

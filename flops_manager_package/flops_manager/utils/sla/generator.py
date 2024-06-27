@@ -27,6 +27,7 @@ def generate_sla(components: SlaComponentsWrapper) -> AppSLA:
     }
 
     if compute:
+        cmd = [] if (core.compute.cmd == "") else shlex.split(core.compute.cmd)  # type: ignore
         sla["applications"][0]["microservices"].append(
             {
                 "microserviceID": "",
@@ -35,7 +36,7 @@ def generate_sla(components: SlaComponentsWrapper) -> AppSLA:
                 "virtualization": "container",
                 "one_shot": compute.one_shot_service,
                 "privileged": details.privileged,
-                "cmd": ([] if (core.compute.cmd == "") else shlex.split(core.compute.cmd)),
+                "cmd": cmd,
                 "memory": resources.memory,
                 "vcpus": resources.vcpus,
                 "storage": resources.storage,

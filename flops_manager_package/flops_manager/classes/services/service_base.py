@@ -14,8 +14,12 @@ class FLOpsService(FlOpsOakestraBaseClass, ABC):
 
     parent_app: Optional[FLOpsApp] = Field(default=None, exclude=True, repr=False)
 
-    service_id: str = Field("", init=False, alias=AliasChoices("service_id", "microserviceID"))
-    bearer_token: str = Field("", exclude=True, repr=False)
+    service_id: str = Field(
+        "",
+        init=False,
+        alias=AliasChoices("service_id", "microserviceID"),  # type: ignore
+    )
+    bearer_token: str = Field(default="", exclude=True, repr=False)
 
     def model_post_init(self, _) -> None:
         if self.gets_loaded_from_db:
@@ -26,9 +30,9 @@ class FLOpsService(FlOpsOakestraBaseClass, ABC):
 
     def _create_in_orchestrator(self) -> None:
         self.service_id = append_service_to_app(
-            sla=generate_sla(self.sla_components),
+            sla=generate_sla(self.sla_components),  # type: ignore
             bearer_token=getattr(self, "bearer_token", None),
-            app_id=self.parent_app.app_id,
+            app_id=self.parent_app.app_id,  # type: ignore
             matching_caller_object=self,
         )
 
@@ -37,4 +41,4 @@ class FLOpsService(FlOpsOakestraBaseClass, ABC):
 
     def undeploy(self) -> None:
         undeploy(service_id=self.service_id, matching_caller_object=self)
-        remove_from_db_by_project_id(FLOpsService, self.flops_project_id)
+        remove_from_db_by_project_id(FLOpsService, self.flops_project_id)  # type: ignore

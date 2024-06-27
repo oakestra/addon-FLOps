@@ -27,19 +27,19 @@ def replace_in_db(object: BaseModel, db_collection_object_id: ObjectId) -> None:
 
 def retrieve_from_db_by_app_id(cls: BaseModel, app_id: str) -> BaseModel:
     return _load_object_from_retrieved_db_result(
-        cls, get_collection(cls).find_one({"app_id": app_id})
+        cls, get_collection(cls).find_one({"app_id": app_id})  # type: ignore
     )
 
 
 def retrieve_from_db_by_customer_id(cls, customer_id: str) -> Optional[dict]:
     return _load_object_from_retrieved_db_result(
-        cls, get_collection(cls).find_one({"customer_id": customer_id})
+        cls, get_collection(cls).find_one({"customer_id": customer_id})  # type: ignore
     )
 
 
 def retrieve_from_db_by_project_id(cls, flops_project_id: str) -> Optional[dict]:
     return _load_object_from_retrieved_db_result(
-        cls, get_collection(cls).find_one({"flops_project_id": flops_project_id})
+        cls, get_collection(cls).find_one({"flops_project_id": flops_project_id})  # type: ignore
     )
 
 

@@ -22,4 +22,7 @@ def handle_trained_model_image_deployment(flops_project: FLOpsProject, run_id: s
         customer_id=flops_project.customer_id,
         run_id=run_id,
     )
-    TrainedModel(parent_app=helper_app, image_name=trained_model_name)
+    TrainedModel(
+        parent_app=helper_app,  # type: ignore
+        image_name=trained_model_name,
+    )

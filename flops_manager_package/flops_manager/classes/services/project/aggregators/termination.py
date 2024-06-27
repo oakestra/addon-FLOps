@@ -12,10 +12,13 @@ from flops_utils.logging import colorful_logger as logger
 def handle_aggregator_success(aggregator_success_msg: dict) -> None:
     logger.debug("Aggregator successfully finished training.")
     flops_project_id = aggregator_success_msg["flops_project_id"]
-    retrieve_from_db_by_project_id(FLAggregator, flops_project_id).undeploy()
-    retrieve_from_db_by_project_id(FLLearners, flops_project_id).undeploy()
+    retrieve_from_db_by_project_id(FLAggregator, flops_project_id).undeploy()  # type: ignore
+    retrieve_from_db_by_project_id(FLLearners, flops_project_id).undeploy()  # type: ignore
     init_fl_post_training_steps(
-        flops_project=retrieve_from_db_by_project_id(FLOpsProject, flops_project_id),
+        flops_project=retrieve_from_db_by_project_id(
+            FLOpsProject,  # type: ignore
+            flops_project_id,  # type: ignore
+        ),
         winner_model_run_id=aggregator_success_msg["run_id"],
     )
 
@@ -23,8 +26,8 @@ def handle_aggregator_success(aggregator_success_msg: dict) -> None:
 def handle_aggregator_failed(aggregator_failed_msg: dict) -> None:
     logger.debug(aggregator_failed_msg)
     flops_project_id = aggregator_failed_msg["flops_project_id"]
-    retrieve_from_db_by_project_id(FLAggregator, flops_project_id).undeploy()
-    retrieve_from_db_by_project_id(FLLearners, flops_project_id).undeploy()
+    retrieve_from_db_by_project_id(FLAggregator, flops_project_id).undeploy()  # type: ignore
+    retrieve_from_db_by_project_id(FLLearners, flops_project_id).undeploy()  # type: ignore
 
     msg = "Aggregator failed. Terminating this FLOps Project."
     logger.critical(msg)

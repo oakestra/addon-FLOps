@@ -35,13 +35,13 @@ def handle_fl_training_processes(flops_project: FLOpsProject) -> None:
     if flops_project.training_configuration.mode == FLOpsMode.CLASSIC:
         fl_aggregator = FLAggregator(
             parent_app=flops_project,
-            project_observer_ip=project_observer.ip,
+            project_observer_ip=project_observer.ip,  # type: ignore
             tracking_server_url=tracking_server.get_url(),
         )
         FLLearners(
             parent_app=flops_project,
             fl_aggregator_ip=fl_aggregator.ip,
-            project_observer_ip=project_observer.ip,
+            project_observer_ip=project_observer.ip,  # type: ignore
             tracking_server_url=tracking_server.get_url(),
         )
     else:
@@ -52,7 +52,7 @@ def handle_fl_training_processes(flops_project: FLOpsProject) -> None:
 
         root_fl_aggregator = RootFLAggregator(
             parent_app=flops_project,
-            project_observer_ip=project_observer.ip,
+            project_observer_ip=project_observer.ip,  # type: ignore
             tracking_server_url=tracking_server.get_url(),
             number_of_cluster_aggregators=len(active_clusters),
         )
@@ -62,14 +62,14 @@ def handle_fl_training_processes(flops_project: FLOpsProject) -> None:
             cluster_fl_aggregator = ClusterFLAggregator(
                 parent_app=flops_project,
                 root_fl_aggregator_ip=root_fl_aggregator.ip,
-                project_observer_ip=project_observer.ip,
+                project_observer_ip=project_observer.ip,  # type: ignore
                 tracking_server_url=tracking_server.get_url(),
                 cluster_name=cluster_name,
             )
             FLLearners(
                 parent_app=flops_project,
                 fl_aggregator_ip=cluster_fl_aggregator.ip,
-                project_observer_ip=project_observer.ip,
+                project_observer_ip=project_observer.ip,  # type: ignore
                 tracking_server_url=tracking_server.get_url(),
                 cluster_name=cluster_name,
             )

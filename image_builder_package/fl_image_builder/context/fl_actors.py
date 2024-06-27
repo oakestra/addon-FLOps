@@ -16,9 +16,9 @@ class ContextFLActors(Context):
     repo_url: str
     use_devel_base_images: bool = False
 
-    cloned_repo: git.repo.base.Repo = field(default=None, init=False)
+    cloned_repo: git.repo.base.Repo = field(default=None, init=False)  # type: ignore
 
-    def set_cloned_repo(self, cloned_repo: git.repo.base.Repo) -> None:
+    def set_cloned_repo(self, cloned_repo: git.repo.base.Repo) -> None:  # type: ignore
         self.cloned_repo = cloned_repo
 
     def get_learner_image_name(self) -> str:

@@ -16,8 +16,8 @@ from pydantic import BaseModel
 
 def create_app(
     sla: SLA,
-    flops_project_id: Optional[str] = None,
-    bearer_token: Optional[str] = None,
+    flops_project_id: str = "",
+    bearer_token: str = "",
     matching_caller_object: Optional[BaseModel] = None,
 ) -> Application:
     app_type = get_matching_type(matching_caller_object)

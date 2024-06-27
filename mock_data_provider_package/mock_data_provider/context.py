@@ -14,4 +14,4 @@ class MockDataProviderContext(BaseModel):
 
 
 def get_context() -> MockDataProviderContext:
-    return _context
+    return _context  # type: ignore

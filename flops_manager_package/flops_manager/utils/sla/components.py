@@ -85,7 +85,7 @@ class SlaDetails(NamedTuple):
     resources: SlaResources = SlaResources()
     app_desc: str = ""
     rr_ip: Optional[ipaddress.IPv4Address] = None
-    port: Optional[str] = None
+    port: str = ""
     privileged: bool = False
     constraints: List[SlaConstraint] = []
 

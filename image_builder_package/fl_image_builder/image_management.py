@@ -15,10 +15,10 @@ if TYPE_CHECKING:
 def build_image(
     context: Context,
     build_directory: str,
-    image_name_with_tag: str = None,
-    base_image_to_use: str = None,
+    image_name_with_tag: str = "",
+    base_image_to_use: str = "",
     should_notify_observer: bool = False,
-    build_cmd_addition: str = None,
+    build_cmd_addition: str = "",
 ) -> None:
     image_name_with_tag = image_name_with_tag or build_directory or context.get_image_name()
     cwd = pathlib.Path.cwd()
@@ -54,7 +54,7 @@ def build_image(
     os.chdir(cwd)
 
 
-def push_image(context: Context, image_name_with_tag: str = None) -> None:
+def push_image(context: Context, image_name_with_tag: str = "") -> None:
     image_name_with_tag = image_name_with_tag or context.get_image_name()
     logger.info(f"Start pushing image '{image_name_with_tag}'")
     try:

@@ -75,7 +75,7 @@ class FLOpsProject(FLOpsApp):
 
     namespace = "proj"
 
-    customer_id: str = Field(alias=AliasChoices("customer_id", "customerID"))
+    customer_id: str = Field(alias=AliasChoices("customer_id", "customerID"))  # type: ignore
     verbose: bool = False
     use_devel_base_images: bool = False
     ml_model_flavor: MLModelFlavor
@@ -99,7 +99,7 @@ class FLOpsProject(FLOpsApp):
 
         self.ml_repo_latest_commit_hash = get_latest_commit_hash(self.ml_repo_url)
         flops_db_id = add_to_db(self)
-        self._configure_sla_components(flops_db_id)
+        self._configure_sla_components(str(flops_db_id))
         created_app = self._create_in_orchestrator()
         self._set_properties_based_on_created_result(created_app)
         replace_in_db(self, flops_db_id)

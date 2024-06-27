@@ -1,3 +1,4 @@
+import pathlib
 import tempfile
 
 import datasets
@@ -8,7 +9,7 @@ from flops_utils.logging import logger
 from mock_data_provider.context import get_context
 from mock_data_provider.utils.hash import generate_unique_hash_identifier
 
-ML_DATA_SERVER_PORT = get_env_var("DATA_MANAGER_PORT", 11027)
+ML_DATA_SERVER_PORT = get_env_var("DATA_MANAGER_PORT", "11027")
 ML_DATA_SERVER_IP = get_env_var("ML_DATA_SERVER_IP", DOCKER_HOST_IP_LINUX)
 
 
@@ -21,14 +22,13 @@ def send_data_to_ml_data_server(dataset: datasets.Dataset):
     client = flight.connect(f"grpc://{ML_DATA_SERVER_IP}:{ML_DATA_SERVER_PORT}")
 
     with tempfile.NamedTemporaryFile() as tmp_file:
-        dataset.to_parquet(tmp_file)
+        dataset.to_parquet(tmp_file)  # type: ignore
         # NOTE: Temporary files are buffers and ensure the content is properly propagated
         # to disk we need to flush when writing to them.
         tmp_file.flush()
 
-        unique_file_name = (
-            f"{get_context().data_tag}.{generate_unique_hash_identifier(tmp_file.name)}"
-        )
+        unique_hash = generate_unique_hash_identifier(pathlib.Path(tmp_file.name))
+        unique_file_name = f"{get_context().data_tag}.{unique_hash}"
 
         final_file_name = f"{unique_file_name}.parquet"
         upload_descriptor = flight.FlightDescriptor.for_path(final_file_name)

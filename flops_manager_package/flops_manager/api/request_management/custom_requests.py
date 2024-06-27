@@ -1,7 +1,7 @@
 import json
 from dataclasses import dataclass, field
 from http import HTTPStatus
-from typing import NamedTuple, Optional
+from typing import Any, NamedTuple, Optional
 
 import requests
 from flops_manager.api.request_management.custom_http import HttpMethods
@@ -13,8 +13,8 @@ from flops_utils.logging import colorful_logger as logger
 
 class RequestCore(NamedTuple):
     base_url: str
-    api_endpoint: Optional[str] = None
-    query_params: Optional[str] = None
+    api_endpoint: str = ""
+    query_params: str = ""
     http_method: HttpMethods = HttpMethods.GET
     custom_headers: Optional[dict] = None
     data: Optional[dict] = None
@@ -25,7 +25,7 @@ class RequestAuxiliaries(NamedTuple):
     flops_exception_type: FlOpsExceptionTypes = FlOpsExceptionTypes.UNSPECIFIED
     show_msg_on_success: bool = False
     is_oakestra_api: bool = True
-    flops_project_id: Optional[str] = None
+    flops_project_id: str = ""
 
 
 # NOTE: The use of Pydantic here leads to strange validation errors.
@@ -35,7 +35,7 @@ class CustomRequest:
     aux: RequestAuxiliaries
 
     headers: Optional[dict] = field(default=None, init=False)
-    url: Optional[str] = field(default=None, init=False)
+    url: str = field(default="", init=False)
     args: Optional[dict] = field(default=None, init=False)
     response: Optional[requests.Response] = field(default=None, init=False)
 
@@ -76,7 +76,7 @@ class CustomRequest:
             )
         )
 
-    def execute(self) -> any:
+    def execute(self) -> Any:
         error_msg = ""
         try:
             self.response = self.core.http_method.call(**self.args)

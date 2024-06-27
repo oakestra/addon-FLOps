@@ -1,11 +1,10 @@
 import flwr_datasets
-from datasets import Dataset
 from flops_utils.logging import logger
 from mock_data_provider.context import get_context
 from mock_data_provider.data_sender import send_data_to_ml_data_server
 
 
-def load_and_send_data_to_server() -> Dataset:
+def load_and_send_data_to_server() -> None:
     logger.info("Start loading dataset")
 
     # NOTE/TODO/Future Work

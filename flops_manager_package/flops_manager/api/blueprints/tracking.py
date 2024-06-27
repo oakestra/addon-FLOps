@@ -19,7 +19,8 @@ tracking_blp = flask_openapi3.APIBlueprint(
 @tracking_blp.get("/")
 def get_tracking() -> Tuple[dict, HTTPStatus]:
     try:
-        tracking_server_url = get_tracking_server(flask.request.json["customerID"]).get_url()
+        customer_id = flask.request.json["customerID"]  # type: ignore
+        tracking_server_url = get_tracking_server(customer_id).get_url()
     except FLOpsManagerException as e:
         e.log()
         return {"message": e.message}, e.http_status or HTTPStatus.INTERNAL_SERVER_ERROR

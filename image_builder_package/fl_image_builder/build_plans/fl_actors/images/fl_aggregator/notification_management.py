@@ -8,7 +8,7 @@ from utils.aggregator_context import AggregatorContext
 def _notify_flops_manager(
     aggregator_context: AggregatorContext,
     topic: SupportedTopic,
-    error_msg: str = None,
+    error_msg: str = "",
 ) -> None:
     winner_model = aggregator_context.winner_model
     notify_flops_manager(

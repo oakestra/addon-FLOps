@@ -22,14 +22,14 @@ def _build_base_image(context: ContextFLActors) -> None:
     if context.use_devel_base_images:
         _build_fl_actor_image(
             context=context,
-            build_directory=FL_BASE_IMAGE_PATH,
+            build_directory=FL_BASE_IMAGE_PATH,  # type: ignore
             is_flops_base_image=True,
             base_image_to_use=DEVEL_BASE_IMAGES_MAPPING[context.repo_url],
         )
     else:
         _build_fl_actor_image(
             context=context,
-            build_directory=FL_BASE_IMAGE_PATH,
+            build_directory=FL_BASE_IMAGE_PATH,  # type: ignore
             is_flops_base_image=True,
         )
 
@@ -39,8 +39,8 @@ def _build_base_image(context: ContextFLActors) -> None:
 def _build_fl_actor_image(
     context: ContextFLActors,
     build_directory: str,
-    image_name_with_tag: str = None,
-    base_image_to_use: str = None,
+    image_name_with_tag: str = "",
+    base_image_to_use: str = "",
     is_flops_base_image: bool = False,
 ) -> None:
     build_cmd_addition = ""
@@ -68,13 +68,13 @@ def build_fl_actor_images(context: ContextFLActors) -> None:
     _build_base_image(context=context)
     _build_fl_actor_image(
         context=context,
-        build_directory=FL_LEARNER_IMAGE_PATH,
+        build_directory=FL_LEARNER_IMAGE_PATH,  # type: ignore
         image_name_with_tag=context.get_learner_image_name(),
         base_image_to_use=_FL_BASE_IMAGE_NAME,
     )
     _build_fl_actor_image(
         context=context,
-        build_directory=FL_AGGREGATOR_IMAGE_PATH,
+        build_directory=FL_AGGREGATOR_IMAGE_PATH,  # type: ignore
         image_name_with_tag=context.get_aggregator_image_name(),
         base_image_to_use=_FL_BASE_IMAGE_NAME,
     )

@@ -16,9 +16,9 @@ from pydantic import BaseModel
 def append_service_to_app(
     sla: SLA,
     app_id: str,
-    bearer_token: Optional[str] = None,
+    bearer_token: str = "",
     matching_caller_object: Optional[BaseModel] = None,
-    flops_project_id: Optional[str] = None,
+    flops_project_id: str = "",
 ) -> ServiceId:
     service_type = get_matching_type(matching_caller_object)
     response = CustomRequest(
@@ -60,7 +60,7 @@ def deploy(service_id: ServiceId, matching_caller_object: Optional[BaseModel] = 
 def undeploy(
     service_id: str,
     matching_caller_object: Optional[BaseModel] = None,
-    flops_project_id: Optional[str] = None,
+    flops_project_id: str = "",
 ) -> None:
     service_type = get_matching_type(matching_caller_object)
     CustomRequest(
