@@ -31,6 +31,7 @@ class ClusterAggregatorModelManager(ModelManagerTemplate):
         logger.info("START _set_init_params")
         init_params_context = self.aggregator_context.model_copy()
         init_params_context.training_iterations = 1
+        init_params_context.deactivate_notifications = True
         handle_aggregator(aggregator_context=init_params_context)
         logger.info("FIN _set_init_params")
 

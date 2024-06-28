@@ -33,8 +33,9 @@ class FLOpsFedAvg(fl.server.strategy.FedAvg):
         *args,
         **kwargs,
     ):
-        init_logging()
         self.aggregator_context = aggregator_context
+        if self.aggregator_context.should_use_mlflow:
+            init_logging()
         self.mlflow_experiment_id = mlflow_experiment_id
         self.requested_total_number_of_training_rounds = (
             requested_total_number_of_training_rounds
@@ -51,13 +52,14 @@ class FLOpsFedAvg(fl.server.strategy.FedAvg):
         parameters: Parameters,
         client_manager: ClientManager,
     ) -> List[Tuple[ClientProxy, FitIns]]:
-        if mlflow.active_run():
-            mlflow.end_run()
-        mlflow.start_run(
-            experiment_id=self.mlflow_experiment_id,  # type: ignore
-            run_name=f"FLOps FL round {server_round}",
-        )
-        log_project_params(strategy=self)
+        if self.aggregator_context.should_use_mlflow:
+            if mlflow.active_run():
+                mlflow.end_run()
+            mlflow.start_run(
+                experiment_id=self.mlflow_experiment_id,  # type: ignore
+                run_name=f"FLOps FL round {server_round}",
+            )
+            log_project_params(strategy=self)
         return super().configure_fit(server_round, parameters, client_manager)
 
     def aggregate_fit(
@@ -105,13 +107,16 @@ class FLOpsFedAvg(fl.server.strategy.FedAvg):
         )
 
         metrics_aggregated = {"loss": loss_aggregated, "accuracy": accuracy_aggregated}
-        mlflow.log_metrics(metrics_aggregated)
+        if self.aggregator_context.should_use_mlflow:
+            mlflow.log_metrics(metrics_aggregated)
         handle_model_tracking(
             strategy=self,
             server_round=server_round,
             current_rounds_accuracy=accuracy_aggregated,
             current_rounds_loss=loss_aggregated,
+            should_use_mlflow=self.aggregator_context.should_use_mlflow,
         )
-        mlflow.end_run()
-        handle_system_metrics_logging()
+        if self.aggregator_context.should_use_mlflow:
+            mlflow.end_run()
+            handle_system_metrics_logging()
         return loss_aggregated, metrics_aggregated

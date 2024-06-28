@@ -4,12 +4,11 @@ import flwr as fl
 import mlflow
 from flops_utils.logging import logger
 from flops_utils.notifications import notify_project_observer
-from flops_utils.types import AggregatorType
 from notification_management import (
     notify_about_failure_and_terminate,
     notify_about_successful_completion,
 )
-from strategies.classic import FLOpsFedAvg
+from strategies.main import FLOpsFedAvg
 from utils.aggregator_context import AggregatorContext
 
 FL_START_INFO_TEXT = """

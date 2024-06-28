@@ -11,17 +11,31 @@ def _notify_flops_manager(
     error_msg: str = "",
 ) -> None:
     winner_model = aggregator_context.winner_model
+    msg_payload = {
+        **(
+            {"accuracy": winner_model.accuracy}
+            if winner_model and winner_model.accuracy
+            else {}
+        ),
+        **({"loss": winner_model.loss} if winner_model and winner_model.loss else {}),
+        **(
+            {"experiment_id": winner_model.experiment_id}
+            if aggregator_context.should_use_mlflow
+            else {}
+        ),
+        **(
+            {"run_id": winner_model.run_id}
+            if aggregator_context.should_use_mlflow
+            else {}
+        ),
+    }
+
     notify_flops_manager(
         flops_project_id=aggregator_context.flops_project_id,
         mqtt_ip=aggregator_context.mqtt_ip,
         topic=topic,
         error_msg=error_msg,
-        msg_payload={
-            "experiment_id": winner_model.experiment_id,
-            "run_id": winner_model.run_id,
-            "accuracy": winner_model.accuracy,
-            "loss": winner_model.loss,
-        },
+        msg_payload=msg_payload,
     )
 
 
