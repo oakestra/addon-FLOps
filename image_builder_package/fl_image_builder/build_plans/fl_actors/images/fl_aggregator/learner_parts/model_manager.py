@@ -12,6 +12,7 @@ class ClusterAggregatorModelManager(ModelManagerTemplate):
         logger.info("INIT ClusterAggregatorModelManager")
         self.aggregator_context = aggregator_context
         # NOTE: This will return the model_manager of the real user-provided/configured ML repo.
+        # i.e. The CAg Model Manager uses the ML Repo Model Manager.
         self.model_manager = get_model_manager()
         self.model = self.model_manager.get_model()
 

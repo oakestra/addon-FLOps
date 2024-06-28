@@ -27,7 +27,9 @@ class Learner(flwr.client.NumPyClient):
 
     def evaluate(self, parameters, config):
         self.set_parameters(parameters)
-        loss, accuracy, number_of_evaluation_examples = self.model_manager.evaluate_model()
+        loss, accuracy, number_of_evaluation_examples = (
+            self.model_manager.evaluate_model()
+        )
         return loss, number_of_evaluation_examples, {"accuracy": accuracy}
 
 

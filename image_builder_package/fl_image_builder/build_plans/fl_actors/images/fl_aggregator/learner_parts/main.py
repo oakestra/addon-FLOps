@@ -7,6 +7,12 @@ from learner_parts.model_manager import ClusterAggregatorModelManager
 from utils.aggregator_context import AggregatorContext
 
 
+# NOTE/TODO: This is almost identical to the Learner Class in the fl_actors/images/fl_learner.
+# Maybe move this into the flops_utils lib and share the code
+# The only change necessary is to add an optional input param
+# - (special) ModelManager object instance (necessary for the CAg)
+#   if not specified - use the normal get_model_manager() function call.
+# Plus the optional aggregator_context as input param too.
 class ClusterAggregatorAsLearner(flwr.client.NumPyClient):
     def __init__(self, aggregator_context: AggregatorContext):
         logger.info("INIT ClusterAggregatorAsLearner")
