@@ -1,4 +1,3 @@
-# from flops_manager.classes.apps.project import FLOpsMode
 from flops_manager.classes.services.project.aggregators.classic_aggregator import FLAggregator
 from flops_manager.image_management.fl_actor_images import (
     FLActorImageTypes,
@@ -16,6 +15,7 @@ from flops_manager.utils.sla.components import (
     SlaNames,
     SlaResources,
 )
+from flops_utils.types import AggregatorType
 
 
 class RootFLAggregator(FLAggregator):
@@ -61,7 +61,7 @@ class RootFLAggregator(FLAggregator):
                 FLOPS_MQTT_BROKER_IP,
                 self.project_observer_ip,
                 self.tracking_server_url,
-                "ROOT_AGGREGATOR",
+                AggregatorType.ROOT_AGGREGATOR.value,
                 str(training_conf.training_cycles),
                 # NOTE:
                 # Min. number of available clients, etc. - in this case cluster aggregators.

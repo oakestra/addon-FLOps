@@ -1,4 +1,3 @@
-import enum
 from typing import List
 
 from flops_manager.classes.apps.app_base import FLOpsApp
@@ -8,17 +7,12 @@ from flops_manager.utils.common import get_shortened_unique_id
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
 from flops_manager.utils.sla.components import SlaComponentsWrapper, SlaCore, SlaDetails, SlaNames
 from flops_manager.utils.types import Application, PostTrainingSteps
-from flops_utils.types import MLModelFlavor
+from flops_utils.types import FLOpsMode, MLModelFlavor
 from pydantic import AliasChoices, BaseModel, Field
 
 # TODO/Future Work: Add additional Pydantic checking:
 # e.g.: training_rounds > 1
 #       min_..._clients > 1, etc.
-
-
-class FLOpsMode(str, enum.Enum):
-    CLASSIC = "classic"
-    HIERARCHICAL = "hierarchical"
 
 
 # NOTE: Using BaseModel instead of NamedTuple here allows for nicer serialized data in the DB.

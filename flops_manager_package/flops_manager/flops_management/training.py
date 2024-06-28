@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from flops_manager.api.cluster_management import get_active_clusters_from_orchestrator
-from flops_manager.classes.apps.project import FLOpsMode
 from flops_manager.classes.services.observatory.project_observer import FLOpsProjectObserver
 from flops_manager.classes.services.observatory.tracking_server.management import (
     get_tracking_server,
@@ -17,6 +16,7 @@ from flops_manager.classes.services.project.learners import FLLearners
 from flops_manager.database.common import retrieve_from_db_by_project_id
 from flops_manager.mqtt.sender import notify_project_observer
 from flops_utils.logging import colorful_logger as logger
+from flops_utils.types import FLOpsMode
 
 if TYPE_CHECKING:
     from flops_manager.classes.apps.project import FLOpsProject
@@ -50,6 +50,15 @@ def handle_fl_training_processes(flops_project: FLOpsProject) -> None:
         # GET /api/clusters/active
         active_clusters = get_active_clusters_from_orchestrator()
 
+        from icecream import ic
+
+        ic(
+            "INPUTS",
+            flops_project,
+            project_observer.ip,
+            tracking_server.get_url(),
+            len(active_clusters),
+        )
         root_fl_aggregator = RootFLAggregator(
             parent_app=flops_project,
             project_observer_ip=project_observer.ip,  # type: ignore

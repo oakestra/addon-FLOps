@@ -15,6 +15,7 @@ from flops_manager.utils.sla.components import (
     SlaNames,
     SlaResources,
 )
+from flops_utils.types import AggregatorType
 from pydantic import Field
 
 
@@ -61,7 +62,7 @@ class FLAggregator(FLOpsProjectService):
                 FLOPS_MQTT_BROKER_IP,
                 self.project_observer_ip,
                 self.tracking_server_url,
-                "CLASSIC_AGGREGATOR",
+                AggregatorType.CLASSIC_AGGREGATOR.value,
                 str(training_conf.training_rounds),
                 str(training_conf.min_available_learners),
                 str(training_conf.min_fit_learners),

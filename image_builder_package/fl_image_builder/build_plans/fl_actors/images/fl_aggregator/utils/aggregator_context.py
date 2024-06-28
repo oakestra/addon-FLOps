@@ -1,5 +1,6 @@
-import enum
+from typing import Any
 
+from flops_utils.types import AggregatorType
 from pydantic import BaseModel, Field
 
 # NOTE: The approach of using a global variable does not work here.
@@ -13,14 +14,6 @@ class WinnerModel(BaseModel):
     run_id: str
     accuracy: float
     loss: float
-
-
-# TODO place into flops-utils lib to make reusable
-class AggregatorType(enum.Enum):
-    CLASSIC_AGGREGATOR = "CLASSIC_AGGREGATOR"
-
-    ROOT_AGGREGATOR = "ROOT_AGGREGATOR"
-    CLUSTER_AGGREGATOR = "CLUSTER_AGGREGATOR"
 
 
 class AggregatorContext(BaseModel):
@@ -45,7 +38,16 @@ class AggregatorContext(BaseModel):
     track_locally: bool = False  # Does not use the remote tracking server
     deactivate_notifications: bool = False  # Does not use MQTT
 
+    root_aggregator_ip: str = ""
+
     winner_model: WinnerModel = Field(
         default=None,
         description="The best model after training.",
     )
+
+    should_use_mlflow: bool = False
+
+    def model_post_init(self, __context: Any) -> None:
+        if self.aggregator_type != AggregatorType.CLUSTER_AGGREGATOR:
+            self.should_use_mlflow = True
+        return super().model_post_init(__context)

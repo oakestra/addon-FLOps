@@ -1,6 +1,7 @@
 import argparse
 
-from utils.aggregator_context import AggregatorContext, AggregatorType
+from flops_utils.types import AggregatorType
+from utils.aggregator_context import AggregatorContext
 
 
 def parse_args() -> AggregatorContext:
@@ -21,6 +22,9 @@ def parse_args() -> AggregatorContext:
     parser.add_argument("min_available_clients", type=int)
     parser.add_argument("min_fit_clients", type=int)
     parser.add_argument("min_evaluate_clients", type=int)
+
+    # Only used for cluster-aggregators.
+    parser.add_argument("root_aggregator_ip", type=str, nargs="?", default="")
 
     parser.add_argument(
         "--track-locally",
@@ -50,4 +54,5 @@ def parse_args() -> AggregatorContext:
         min_evaluate_clients=args.min_evaluate_clients,
         track_locally=args.track_locally,
         deactivate_notifications=args.deactivate_notifications,
+        root_aggregator_ip=args.root_aggregator_ip,
     )

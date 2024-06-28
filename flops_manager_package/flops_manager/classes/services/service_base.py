@@ -31,7 +31,7 @@ class FLOpsService(FlOpsOakestraBaseClass, ABC):
     def _create_in_orchestrator(self) -> None:
         self.service_id = append_service_to_app(
             sla=generate_sla(self.sla_components),  # type: ignore
-            bearer_token=getattr(self, "bearer_token", None),
+            bearer_token=getattr(self, "bearer_token", None),  # type: ignore
             app_id=self.parent_app.app_id,  # type: ignore
             matching_caller_object=self,
         )

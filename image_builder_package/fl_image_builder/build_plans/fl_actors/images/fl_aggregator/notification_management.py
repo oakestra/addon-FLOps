@@ -31,18 +31,26 @@ def notify_about_successful_completion(aggregator_context: AggregatorContext) ->
         topic=SupportedTopic.AGGREGATOR_SUCCESS,
     )
     winner_model = aggregator_context.winner_model
-    notify_project_observer(
-        project_observer_ip=aggregator_context.project_observer_ip,
-        msg="\n".join(
+
+    msg = "\n".join(
+        (
+            "Aggregator tasks completed successfully.",
+            "The best performing model:",
+            f"- accuracy: {winner_model.accuracy}",
+            f"- loss: {winner_model.loss}",
+        )
+    )
+    if aggregator_context.should_use_mlflow:
+        msg += "\n" + "\n".join(
             (
-                "Aggregator tasks completed successfully.",
-                "The best performing model:",
-                f"- accuracy: {winner_model.accuracy}",
-                f"- loss: {winner_model.loss}",
                 f"- experiment_id: {winner_model.experiment_id}",
                 f"- run_id: {winner_model.run_id}",
             )
-        ),
+        )
+
+    notify_project_observer(
+        project_observer_ip=aggregator_context.project_observer_ip,
+        msg=msg,
     )
 
 

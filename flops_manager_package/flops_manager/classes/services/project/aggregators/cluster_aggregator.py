@@ -6,8 +6,7 @@ from flops_manager.image_management.fl_actor_images import (
 from flops_manager.mqtt.sender import notify_project_observer
 from flops_manager.utils.common import generate_ip, get_shortened_unique_id
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
-
-# from flops_manager.utils.env_vars import FLOPS_MQTT_BROKER_IP
+from flops_manager.utils.env_vars import FLOPS_MQTT_BROKER_IP
 from flops_manager.utils.sla.components import (
     ClusterConstraint,
     SlaComponentsWrapper,
@@ -17,6 +16,7 @@ from flops_manager.utils.sla.components import (
     SlaNames,
     SlaResources,
 )
+from flops_utils.types import AggregatorType
 from pydantic import Field
 
 
@@ -52,25 +52,24 @@ class ClusterFLAggregator(FLAggregator):
             )
 
     def _configure_sla_components(self) -> None:
-        # training_conf = self.parent_app.training_configuration
+        training_conf = self.parent_app.training_configuration  # type: ignore
 
-        # cmd = " ".join(
-        #     (
-        #         "python",
-        #         "main.py",
-        #         self.flops_project_id,
-        #         FLOPS_MQTT_BROKER_IP,
-        #         self.project_observer_ip,
-        #         "CLUSTER_AGGREGATOR",
-        #         self.tracking_server_url,
-        #         str(training_conf.training_rounds),
-        #         str(training_conf.min_available_learners),
-        #         str(training_conf.min_fit_learners),
-        #         str(training_conf.min_evaluate_learners),
-        #     )
-        # )
-        cmd = "sleep infinity"
-
+        cmd = " ".join(
+            (
+                "python",
+                "main.py",
+                self.flops_project_id,
+                FLOPS_MQTT_BROKER_IP,
+                self.project_observer_ip,
+                self.tracking_server_url,
+                AggregatorType.CLUSTER_AGGREGATOR.value,
+                str(training_conf.training_rounds),
+                str(training_conf.min_available_learners),
+                str(training_conf.min_fit_learners),
+                str(training_conf.min_evaluate_learners),
+                self.root_fl_aggregator_ip,
+            )
+        )
         self.sla_components = SlaComponentsWrapper(
             core=SlaCore(
                 app_id=self.flops_project_id,
