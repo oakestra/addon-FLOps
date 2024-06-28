@@ -18,6 +18,8 @@ class ClusterAggregatorAsLearner(flwr.client.NumPyClient):
         logger.info("INIT ClusterAggregatorAsLearner")
         self.aggregator_context = aggregator_context
         self.model_manager = ClusterAggregatorModelManager(self.aggregator_context)
+        # NOTE: This part is expected to be there for normal Learners.
+        # TODO maybe remove after testing
         self.model_manager.set_model_data()
 
     def get_parameters(self, config=None) -> Any:
