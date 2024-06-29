@@ -1,9 +1,10 @@
+import time
 from typing import Dict, List, Optional, Tuple, Union
 
 import flwr as fl
 import mlflow
 import numpy as np
-from flops_utils.ml_repo_files_proxy import get_model_manager
+from flops_utils.logging import logger
 from flwr.common import (
     EvaluateRes,
     FitIns,
@@ -28,6 +29,7 @@ class FLOpsFedAvg(fl.server.strategy.FedAvg):
     def __init__(
         self,
         aggregator_context: AggregatorContext,
+        model_manager,
         mlflow_experiment_id: Optional[int],
         requested_total_number_of_training_rounds: int,
         *args,
@@ -40,10 +42,12 @@ class FLOpsFedAvg(fl.server.strategy.FedAvg):
         self.requested_total_number_of_training_rounds = (
             requested_total_number_of_training_rounds
         )
-        self.model_manager = get_model_manager()
+        self.model_manager = model_manager
         # NOTE: Both will be overwritten after the first training round.
         self.best_found_accuracy = -1
         self.best_found_loss = -1
+
+        self.total_number_of_training_examples = 0
         super().__init__(*args, **kwargs)
 
     def configure_fit(
@@ -77,6 +81,11 @@ class FLOpsFedAvg(fl.server.strategy.FedAvg):
                 parameters_aggregated
             )
             self.model_manager.set_model_parameters(aggregated_ndarrays)
+
+        for result_tuple in results:
+            fit_res_object = result_tuple[1]
+            num_examples = fit_res_object.num_examples
+            self.total_number_of_training_examples += num_examples
 
         return parameters_aggregated, metrics_aggregated
 

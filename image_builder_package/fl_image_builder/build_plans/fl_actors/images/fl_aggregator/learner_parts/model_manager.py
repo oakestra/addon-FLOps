@@ -38,7 +38,13 @@ class ClusterAggregatorModelManager(ModelManagerTemplate):
     def fit_model(self) -> int:
         logger.info("fit_model")
 
-        # TODO Need to run n FL training rounds.
+        # TODO Need to run n FL training rounds
+        updated_model_manager, used_strategy = handle_aggregator(
+            aggregator_context=self.aggregator_context,
+            model_manager=self.ml_repo_model_manager,
+        )
+        self.ml_repo_model_manager = updated_model_manager
+        return used_strategy.total_number_of_training_examples
 
         # logger.info("START _set_init_params")
         # init_params_context = self.aggregator_context.model_copy()
@@ -53,7 +59,7 @@ class ClusterAggregatorModelManager(ModelManagerTemplate):
         #     self.model.fit(self.x_train, self.y_train)
         # return len(self.x_train)
 
-        return self.ml_repo_model_manager.fit_model()
+        # return self.ml_repo_model_manager.fit_model()
 
     def evaluate_model(self) -> Tuple[Any, Any, int]:
         logger.info("evaluate_model")
