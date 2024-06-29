@@ -52,9 +52,9 @@ class _TrainingConfiguration(BaseModel):
 
     # NOTE: In the hierarchical mode these values are per cluster not in total.
     # I.e. 2 'min_learners' -> 2 per cluster.
-    min_available_learners: int = 1
-    min_fit_learners: int = 1
-    min_evaluate_learners: int = 1
+    min_available_clients: int = 1
+    min_fit_clients: int = 1
+    min_evaluate_clients: int = 1
 
 
 class _ResourceConstraints(BaseModel):

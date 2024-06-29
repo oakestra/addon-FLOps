@@ -64,9 +64,9 @@ class ClusterFLAggregator(FLAggregator):
                 self.tracking_server_url,
                 AggregatorType.CLUSTER_AGGREGATOR.value,
                 str(training_conf.training_rounds),
-                str(training_conf.min_available_learners),
-                str(training_conf.min_fit_learners),
-                str(training_conf.min_evaluate_learners),
+                str(training_conf.min_available_clients),
+                str(training_conf.min_fit_clients),
+                str(training_conf.min_evaluate_clients),
                 self.root_fl_aggregator_ip,
             )
         )

@@ -28,7 +28,7 @@ class FLLearners(FLOpsProjectService):
     project_observer_ip: str = Field("", exclude=True, repr=False)
     tracking_server_url: str = Field("", exclude=True, repr=False)
 
-    total_number_of_learners: int = Field(1, init=False)
+    number_of_learners: int = Field(1, init=False)
     fl_learner_image: str = Field("", init=False)
     fl_aggregator_ip: str = Field(default="", exclude=True, repr=False)
 
@@ -44,8 +44,8 @@ class FLLearners(FLOpsProjectService):
                 msg="Preparing new FL Learners.",
             )
 
-        self.total_number_of_learners = (
-            self.parent_app.training_configuration.min_available_learners  # type: ignore
+        self.number_of_learners = (
+            self.parent_app.training_configuration.min_available_clients  # type: ignore
         )
         self.fl_learner_image = get_fl_actor_image_name(
             ml_repo_url=self.parent_app.ml_repo_url,  # type: ignore
@@ -61,7 +61,7 @@ class FLLearners(FLOpsProjectService):
             )
 
     def deploy(self) -> None:
-        for _ in range(self.total_number_of_learners):
+        for _ in range(self.number_of_learners):
             deploy(service_id=self.service_id, matching_caller_object=self)
 
     def _configure_sla_components(self) -> None:
