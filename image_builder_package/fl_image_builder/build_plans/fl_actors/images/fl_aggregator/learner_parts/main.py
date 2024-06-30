@@ -19,8 +19,8 @@ class ClusterAggregatorAsLearner(flwr.client.NumPyClient):
         self.aggregator_context = aggregator_context
         self.model_manager = ClusterAggregatorModelManager(self.aggregator_context)
         # NOTE: This part is expected to be there for normal Learners.
-        # TODO maybe remove after testing
-        self.model_manager.set_model_data()
+        # But the CAg does not have nor need any data for itself.
+        # self.model_manager.set_model_data()
 
     def get_parameters(self, config=None) -> Any:
         return self.model_manager.get_model_parameters()
@@ -44,11 +44,11 @@ class ClusterAggregatorAsLearner(flwr.client.NumPyClient):
 def start_cluster_aggregator_as_learner(aggregator_context: AggregatorContext) -> None:
     logger.info("START start_cluster_aggregator_as_learner")
     retry_delay = 20
-    try:
-        flwr.client.start_numpy_client(
-            server_address=f"{aggregator_context.root_aggregator_ip}:8080",
-            client=ClusterAggregatorAsLearner(aggregator_context),
-        )
-        return
-    except Exception:
-        time.sleep(retry_delay)
+    while True:
+        try:
+            flwr.client.start_numpy_client(
+                server_address=f"{aggregator_context.root_aggregator_ip}:8080",
+                client=ClusterAggregatorAsLearner(aggregator_context),
+            )
+        except Exception:
+            time.sleep(retry_delay)

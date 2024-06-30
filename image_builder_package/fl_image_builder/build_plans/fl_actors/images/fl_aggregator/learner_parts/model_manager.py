@@ -16,11 +16,9 @@ class ClusterAggregatorModelManager(ModelManagerTemplate):
         self.used_strategy: Optional[FLOpsFedAvg] = None
 
     def set_model_data(self) -> None:
-        # NOTE/TODO: Only for testing:
-        # Afterwards need to set to "pass"
-        # Still need this due to abstract template parent class,
-        # but the CAg does not have any data itself.
-        self.ml_repo_model_manager.set_model_data()
+        # NOTE: This empty method is necessary due to the abstract template parent class,
+        # but the CAg does not have nor need any data itself.
+        pass
 
     def get_model(self) -> Any:
         return self.ml_repo_model_manager.get_model()
@@ -51,11 +49,3 @@ class ClusterAggregatorModelManager(ModelManagerTemplate):
             accuracy,
             self.used_strategy.current_cycles_number_of_evaluation_examples,  # type: ignore
         )
-
-        # For evaluation the underlying user ML repo code will be used directly.
-        # return self.ml_repo_model_manager.evaluate_model()
-
-        # loss = log_loss(self.y_test, self.model.predict_proba(self.x_test))
-        # accuracy = self.model.score(self.x_test, self.y_test)
-        # # return loss, len(self.x_test), {"accuracy": accuracy}
-        # return loss, accuracy, len(self.x_test)
