@@ -89,10 +89,10 @@ def handle_aggregator(
             # thus, enabling us to properly evolve a Hierarchical FL model,
             # because otherwise the Learners would always start from scratch.
             #
-            # NOTE: Initial params only work if they are converted into the Flower Parameter Type.
+            # NOTE: Initial params only work if they are converted into the Flower Parameters Type.
             # (IMO this is poorly checked and documented from Flower's side.
             # The code still runs but behaves very strangely.
-            # i.e. all Learners fail but the Aggregator continues
+            # i.e. all Learner responses fail but the Aggregator continues
             # to fast-forward through his training-rounds.)
             # More info: https://discuss.flower.ai/t/how-do-i-start-from-a-pre-trained-model/73/2
             # TODO: Add a check in the builder to verify that the user provided code

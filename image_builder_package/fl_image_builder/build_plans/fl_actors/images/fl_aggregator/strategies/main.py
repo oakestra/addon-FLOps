@@ -47,7 +47,14 @@ class FLOpsFedAvg(fl.server.strategy.FedAvg):
         self.best_found_accuracy = -1
         self.best_found_loss = -1
 
-        self.total_number_of_training_examples = 0
+        self.current_cycles_number_of_training_examples = 0
+        self.current_cycles_number_of_evaluation_examples = 0
+        # NOTE: The CAg will send the RAg only a single value for loss and accuracy.
+        # To find this value out, the CAg collects all losses and accuracies.
+        # One per training round.
+        # When sending a response to the RAg, the average of these values will be used.
+        self.current_cycles_losses = []
+        self.current_cycles_accuracies = []
         super().__init__(*args, **kwargs)
 
     def configure_fit(
@@ -56,6 +63,27 @@ class FLOpsFedAvg(fl.server.strategy.FedAvg):
         parameters: Parameters,
         client_manager: ClientManager,
     ) -> List[Tuple[ClientProxy, FitIns]]:
+        if server_round == 1:
+            # NOTE:
+            # In the case of HFL the strategy gets reused to continue to improve the model.
+            # All training rounds of a CAg equal a single training round/cycle for the RAg.
+            # We aggregate all seen examples during a CAg training to send the result to the RAg.
+            # Once the next cycle starts we reuse the strategy to keep improving the same model,
+            # so we need to reset the aggregated auxiliary variables.
+            #
+            # Example to demonstrate this need.
+            # Let's say we have 3 cycles with 5 rounds each.
+            # We assume a trivial case with just a single cluster - 1 CAg.
+            # During the first cycle we perform 5 training rounds, per round we see 100 examples.
+            # The cycle has seen 500 example. This number needs to be send to the RAg by the CAg.
+            # The next cycle starts, we need to reset the 500,
+            # otherwise we suddenly would see that the second RAg cycle
+            # had twice as many examples as the last once, which is wrong.
+            self.current_cycles_number_of_training_examples = 0
+            self.current_cycles_number_of_evaluation_examples = 0
+            self.current_cycles_losses = []
+            self.current_cycles_accuracies = []
+
         if self.aggregator_context.should_use_mlflow:
             if mlflow.active_run():
                 mlflow.end_run()
@@ -85,7 +113,7 @@ class FLOpsFedAvg(fl.server.strategy.FedAvg):
         for result_tuple in results:
             fit_res_object = result_tuple[1]
             num_examples = fit_res_object.num_examples
-            self.total_number_of_training_examples += num_examples
+            self.current_cycles_number_of_training_examples += num_examples
 
         return parameters_aggregated, metrics_aggregated
 
@@ -114,6 +142,13 @@ class FLOpsFedAvg(fl.server.strategy.FedAvg):
         accuracy_aggregated = (
             sum(accuracies) / sum(examples) if sum(examples) != 0 else 0  # type: ignore
         )
+
+        # NOTE: The examples, aggregated loss & accuracy need to be forwarded
+        # to the Root Aggregator if this is a case of hierarchical FL.
+        # NOTE:'examples' are a list of num_examples, e.g. [12000, 12000]
+        self.current_cycles_number_of_evaluation_examples += sum(examples)
+        self.current_cycles_losses.append(loss_aggregated)
+        self.current_cycles_accuracies.append(accuracy_aggregated)
 
         metrics_aggregated = {"loss": loss_aggregated, "accuracy": accuracy_aggregated}
         if self.aggregator_context.should_use_mlflow:
