@@ -43,29 +43,12 @@ class ClusterAggregatorAsLearner(flwr.client.NumPyClient):
 
 def start_cluster_aggregator_as_learner(aggregator_context: AggregatorContext) -> None:
     logger.info("START start_cluster_aggregator_as_learner")
-    max_retries = 10
     retry_delay = 20
-    for attempt in range(max_retries):
-        try:
-            flwr.client.start_numpy_client(
-                server_address=f"{aggregator_context.root_aggregator_ip}:8080",
-                client=ClusterAggregatorAsLearner(aggregator_context),
-            )
-            return
-        except Exception as e:
-            if attempt < max_retries:
-                logger.exception(
-                    " ".join(
-                        (
-                            "Unable to connect to the root aggregator.",
-                            f"Retrying in '{retry_delay}' seconds."
-                            f"'{max_retries - attempt}' attempts remaining.",
-                        )
-                    )
-                )
-                time.sleep(retry_delay)
-            else:
-                logger.error(
-                    f"Failed to connect to root aggregator after '{max_retries}' retries. '{e}'"
-                )
-                return
+    try:
+        flwr.client.start_numpy_client(
+            server_address=f"{aggregator_context.root_aggregator_ip}:8080",
+            client=ClusterAggregatorAsLearner(aggregator_context),
+        )
+        return
+    except Exception:
+        time.sleep(retry_delay)

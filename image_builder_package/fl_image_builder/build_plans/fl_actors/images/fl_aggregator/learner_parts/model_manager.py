@@ -37,8 +37,6 @@ class ClusterAggregatorModelManager(ModelManagerTemplate):
 
     def fit_model(self) -> int:
         logger.info("fit_model")
-
-        # TODO Need to run n FL training rounds
         updated_model_manager, used_strategy = handle_aggregator(
             aggregator_context=self.aggregator_context,
             model_manager=self.ml_repo_model_manager,

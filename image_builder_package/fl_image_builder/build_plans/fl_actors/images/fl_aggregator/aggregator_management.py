@@ -79,6 +79,27 @@ def handle_aggregator(
             min_available_clients=aggregator_context.min_available_clients,
             min_fit_clients=aggregator_context.min_fit_clients,
             min_evaluate_clients=aggregator_context.min_evaluate_clients,
+            # NOTE: Instead of waiting for a random Learner to provide the init params.
+            # We let the Aggregator set the init params.
+            # TODO: add paper reference - that shows that
+            # setting init params can give a massive boost/benefit.
+            # (We are not doing anything fancy here yet - but this can be easily enhanced.)
+            #
+            # This also enables us to chain together multiple training cycles,
+            # thus, enabling us to properly evolve a Hierarchical FL model,
+            # because otherwise the Learners would always start from scratch.
+            #
+            # NOTE: Initial params only work if they are converted into the Flower Parameter Type.
+            # (IMO this is poorly checked and documented from Flower's side.
+            # The code still runs but behaves very strangely.
+            # i.e. all Learners fail but the Aggregator continues
+            # to fast-forward through his training-rounds.)
+            # More info: https://discuss.flower.ai/t/how-do-i-start-from-a-pre-trained-model/73/2
+            # TODO: Add a check in the builder to verify that the user provided code
+            # (the get_params() method) can be properly transformed into Flower Parameters.
+            initial_parameters=fl.common.ndarrays_to_parameters(
+                model_manager.get_model_parameters()  # type: ignore
+            ),
         )
         start_fl_server(
             aggregator_context=aggregator_context,
