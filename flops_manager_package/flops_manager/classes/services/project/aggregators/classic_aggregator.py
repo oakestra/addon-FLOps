@@ -34,6 +34,9 @@ class ClassicFLAggregator(FLOpsProjectService):
 
     ip: str = Field("", init=False)
 
+    def generate_unique_ip(self) -> str:
+        return generate_ip(self.parent_app.flops_project_id, self)  # type: ignore
+
     def model_post_init(self, _):
         if self.gets_loaded_from_db:
             return
@@ -41,10 +44,10 @@ class ClassicFLAggregator(FLOpsProjectService):
         if self.parent_app.verbose:  # type: ignore
             notify_project_observer(
                 flops_project_id=self.parent_app.flops_project_id,  # type: ignore
-                msg="Preparing new classic FL Aggregator.",
+                msg="Preparing new FL Aggregator.",
             )
 
-        self.ip = generate_ip(self.parent_app.flops_project_id, self)  # type: ignore
+        self.ip = self.generate_unique_ip()
         self.fl_aggregator_image = get_fl_actor_image_name(
             ml_repo_url=self.parent_app.ml_repo_url,  # type: ignore
             ml_repo_latest_commit_hash=self.parent_app.ml_repo_latest_commit_hash,  # type: ignore

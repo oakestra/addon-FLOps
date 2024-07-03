@@ -33,6 +33,7 @@ class FLLearners(FLOpsProjectService):
     fl_aggregator_ip: str = Field(default="", exclude=True, repr=False)
 
     cluster_name: str = ""
+    cluster_id: str = ""
 
     def model_post_init(self, _):
         if self.gets_loaded_from_db:
@@ -80,7 +81,10 @@ class FLLearners(FLOpsProjectService):
             )
         )
         flops_project_id = self.parent_app.flops_project_id  # type: ignore
-        service_name = f"flearner{get_shortened_unique_id(flops_project_id)}"
+        unique_id = flops_project_id
+        if self.cluster_id:
+            unique_id += self.cluster_id
+        service_name = f"flearner{get_shortened_unique_id(unique_id)}"
 
         constraints = [AddonConstraint(needs=[FLOPS_LEARNER_ADDON_TYPE])]
         if self.cluster_name:

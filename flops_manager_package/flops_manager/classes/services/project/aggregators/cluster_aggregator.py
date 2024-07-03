@@ -1,11 +1,8 @@
+import hashlib
+
 from flops_manager.classes.services.project.aggregators.classic_aggregator import (
     ClassicFLAggregator,
 )
-from flops_manager.image_management.fl_actor_images import (
-    FLActorImageTypes,
-    get_fl_actor_image_name,
-)
-from flops_manager.mqtt.sender import notify_project_observer
 from flops_manager.utils.common import generate_ip, get_shortened_unique_id
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
 from flops_manager.utils.env_vars import FLOPS_MQTT_BROKER_IP
@@ -27,31 +24,13 @@ class ClusterFLAggregator(ClassicFLAggregator):
 
     root_fl_aggregator_ip: str = Field(default="", exclude=True, repr=False)
     cluster_name: str
+    cluster_id: str
 
-    def model_post_init(self, _):
-        if self.gets_loaded_from_db:
-            return
-
-        if self.parent_app.verbose:  # type: ignore
-            notify_project_observer(
-                flops_project_id=self.parent_app.flops_project_id,  # type: ignore
-                msg="Preparing new Cluster FL Aggregator.",
-            )
-
-        self.ip = generate_ip(self.parent_app.flops_project_id, self)  # type: ignore
-        self.fl_aggregator_image = get_fl_actor_image_name(
-            ml_repo_url=self.parent_app.ml_repo_url,  # type: ignore
-            ml_repo_latest_commit_hash=self.parent_app.ml_repo_latest_commit_hash,  # type: ignore
-            flops_image_type=FLActorImageTypes.AGGREGATOR,
-        )
-
-        super().model_post_init(_)
-
-        if self.parent_app.verbose:  # type: ignore
-            notify_project_observer(
-                flops_project_id=self.parent_app.flops_project_id,  # type: ignore
-                msg="New Cluster Aggregator service created & deployed",
-            )
+    def generate_unique_ip(self) -> str:
+        unique_id = hashlib.sha256(
+            (self.parent_app.flops_project_id + self.cluster_id).encode()  # type: ignore
+        ).hexdigest()[: len(self.cluster_id)]
+        return generate_ip(unique_id=unique_id, object=self)
 
     def _configure_sla_components(self) -> None:
         training_conf = self.parent_app.training_configuration  # type: ignore
@@ -72,6 +51,7 @@ class ClusterFLAggregator(ClassicFLAggregator):
                 self.root_fl_aggregator_ip,
             )
         )
+        unique_name = "cag" + get_shortened_unique_id(self.cluster_id + self.flops_project_id)
         self.sla_components = SlaComponentsWrapper(
             core=SlaCore(
                 app_id=self.flops_project_id,
@@ -79,7 +59,7 @@ class ClusterFLAggregator(ClassicFLAggregator):
                 names=SlaNames(
                     app_name=self.parent_app.app_name,  # type: ignore
                     app_namespace=self.parent_app.namespace,  # type: ignore
-                    service_name=f"caggr{get_shortened_unique_id(self.flops_project_id)}",
+                    service_name=unique_name,
                     service_namespace=self.namespace,
                 ),
                 compute=SlaCompute(

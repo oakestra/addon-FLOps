@@ -52,15 +52,6 @@ def handle_fl_training_processes(flops_project: FLOpsProject) -> None:
         # GET /api/clusters/active
         active_clusters = get_active_clusters_from_orchestrator()
 
-        from icecream import ic
-
-        ic(
-            "INPUTS",
-            flops_project,
-            project_observer.ip,
-            tracking_server.get_url(),
-            len(active_clusters),
-        )
         root_fl_aggregator = RootFLAggregator(
             parent_app=flops_project,
             project_observer_ip=project_observer.ip,  # type: ignore
@@ -70,12 +61,15 @@ def handle_fl_training_processes(flops_project: FLOpsProject) -> None:
 
         for cluster in active_clusters:
             cluster_name = cluster["cluster_name"]
+            cluster_id = cluster["_id"]
+
             cluster_fl_aggregator = ClusterFLAggregator(
                 parent_app=flops_project,
                 root_fl_aggregator_ip=root_fl_aggregator.ip,
                 project_observer_ip=project_observer.ip,  # type: ignore
                 tracking_server_url=tracking_server.get_url(),
                 cluster_name=cluster_name,
+                cluster_id=cluster_id,
             )
             FLLearners(
                 parent_app=flops_project,
@@ -83,4 +77,5 @@ def handle_fl_training_processes(flops_project: FLOpsProject) -> None:
                 project_observer_ip=project_observer.ip,  # type: ignore
                 tracking_server_url=tracking_server.get_url(),
                 cluster_name=cluster_name,
+                cluster_id=cluster_id,
             )
