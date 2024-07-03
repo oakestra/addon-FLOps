@@ -52,12 +52,6 @@ def handle_fl_training_processes(flops_project: FLOpsProject) -> None:
         # GET /api/clusters/active
         active_clusters = get_active_clusters_from_orchestrator()
 
-        # TODO Delete
-        dummy_cluster = active_clusters[0].copy()
-        dummy_cluster["cluster_name"] = "dummy"
-        dummy_cluster["_id"] = "111111111111111111111111"
-        active_clusters.append(dummy_cluster)
-
         root_fl_aggregator = RootFLAggregator(
             parent_app=flops_project,
             project_observer_ip=project_observer.ip,  # type: ignore
