@@ -86,7 +86,12 @@ class FLLearners(FLOpsProjectService):
             unique_id += self.cluster_id
         service_name = f"flearner{get_shortened_unique_id(unique_id)}"
 
-        constraints = [AddonConstraint(needs=[FLOPS_LEARNER_ADDON_TYPE])]
+        # TODO add back - once the scheduling constraint logic is fixed!
+        # Current bug: Both of these constraints are necessary to be fulfilled.
+        # But the service gets scheduled even if only once is fulfilled!
+        # constraints = [AddonConstraint(needs=[FLOPS_LEARNER_ADDON_TYPE])]
+        constraints = []
+
         if self.cluster_name:
             constraints.append(ClusterConstraint(allowed=[self.cluster_name]))  # type: ignore
 
