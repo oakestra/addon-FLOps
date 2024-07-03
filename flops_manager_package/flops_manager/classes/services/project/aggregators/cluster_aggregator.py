@@ -1,4 +1,6 @@
-from flops_manager.classes.services.project.aggregators.classic_aggregator import FLAggregator
+from flops_manager.classes.services.project.aggregators.classic_aggregator import (
+    ClassicFLAggregator,
+)
 from flops_manager.image_management.fl_actor_images import (
     FLActorImageTypes,
     get_fl_actor_image_name,
@@ -20,7 +22,7 @@ from flops_utils.types import AggregatorType
 from pydantic import Field
 
 
-class ClusterFLAggregator(FLAggregator):
+class ClusterFLAggregator(ClassicFLAggregator):
     namespace = "raggr"
 
     root_fl_aggregator_ip: str = Field(default="", exclude=True, repr=False)

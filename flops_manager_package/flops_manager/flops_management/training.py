@@ -7,7 +7,9 @@ from flops_manager.classes.services.observatory.project_observer import FLOpsPro
 from flops_manager.classes.services.observatory.tracking_server.management import (
     get_tracking_server,
 )
-from flops_manager.classes.services.project.aggregators.classic_aggregator import FLAggregator
+from flops_manager.classes.services.project.aggregators.classic_aggregator import (
+    ClassicFLAggregator,
+)
 from flops_manager.classes.services.project.aggregators.cluster_aggregator import (
     ClusterFLAggregator,
 )
@@ -33,7 +35,7 @@ def handle_fl_training_processes(flops_project: FLOpsProject) -> None:
     )
 
     if flops_project.training_configuration.mode == FLOpsMode.CLASSIC:
-        fl_aggregator = FLAggregator(
+        fl_aggregator = ClassicFLAggregator(
             parent_app=flops_project,
             project_observer_ip=project_observer.ip,  # type: ignore
             tracking_server_url=tracking_server.get_url(),

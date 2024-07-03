@@ -1,4 +1,6 @@
-from flops_manager.classes.services.project.aggregators.classic_aggregator import FLAggregator
+from flops_manager.classes.services.project.aggregators.classic_aggregator import (
+    ClassicFLAggregator,
+)
 from flops_manager.image_management.fl_actor_images import (
     FLActorImageTypes,
     get_fl_actor_image_name,
@@ -18,7 +20,7 @@ from flops_manager.utils.sla.components import (
 from flops_utils.types import AggregatorType
 
 
-class RootFLAggregator(FLAggregator):
+class RootFLAggregator(ClassicFLAggregator):
     namespace = "raggr"
 
     number_of_cluster_aggregators: int

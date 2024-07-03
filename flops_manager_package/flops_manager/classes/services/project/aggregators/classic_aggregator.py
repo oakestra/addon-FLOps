@@ -1,4 +1,10 @@
+from flops_manager.classes.apps.project import FLOpsProject
+from flops_manager.classes.services.project.learners import FLLearners
 from flops_manager.classes.services.project.project_service import FLOpsProjectService
+from flops_manager.database.common import retrieve_from_db_by_project_id
+from flops_manager.flops_management.post_training_steps.build_trained_model_image import (
+    init_fl_post_training_steps,
+)
 from flops_manager.image_management.fl_actor_images import (
     FLActorImageTypes,
     get_fl_actor_image_name,
@@ -15,11 +21,12 @@ from flops_manager.utils.sla.components import (
     SlaNames,
     SlaResources,
 )
+from flops_utils.logging import colorful_logger as logger
 from flops_utils.types import AggregatorType
 from pydantic import Field
 
 
-class FLAggregator(FLOpsProjectService):
+class ClassicFLAggregator(FLOpsProjectService):
     namespace = "aggr"
     fl_aggregator_image: str = Field("", init=False)
     project_observer_ip: str = Field("", exclude=True, repr=False)
@@ -34,7 +41,7 @@ class FLAggregator(FLOpsProjectService):
         if self.parent_app.verbose:  # type: ignore
             notify_project_observer(
                 flops_project_id=self.parent_app.flops_project_id,  # type: ignore
-                msg="Preparing new FL Aggregator.",
+                msg="Preparing new classic FL Aggregator.",
             )
 
         self.ip = generate_ip(self.parent_app.flops_project_id, self)  # type: ignore
@@ -94,4 +101,28 @@ class FLAggregator(FLOpsProjectService):
                     storage=0,
                 ),
             ),
+        )
+
+    @classmethod
+    def handle_aggregator_failed(cls, aggregator_failed_msg: dict) -> None:
+        logger.debug(aggregator_failed_msg)
+        flops_project_id = aggregator_failed_msg["flops_project_id"]
+        retrieve_from_db_by_project_id(cls, flops_project_id).undeploy()  # type: ignore
+        retrieve_from_db_by_project_id(FLLearners, flops_project_id).undeploy()  # type: ignore
+        msg = f"{cls.__name__} failed. Terminating this FLOps Project."
+        logger.critical(msg)
+        notify_project_observer(flops_project_id=flops_project_id, msg=msg)
+
+    @classmethod
+    def handle_aggregator_success(cls, aggregator_success_msg: dict) -> None:
+        logger.debug("Aggregator successfully finished training.")
+        flops_project_id = aggregator_success_msg["flops_project_id"]
+        retrieve_from_db_by_project_id(cls, flops_project_id).undeploy()  # type: ignore
+        retrieve_from_db_by_project_id(FLLearners, flops_project_id).undeploy()  # type: ignore
+        init_fl_post_training_steps(
+            flops_project=retrieve_from_db_by_project_id(
+                FLOpsProject,  # type: ignore
+                flops_project_id,  # type: ignore
+            ),
+            winner_model_run_id=aggregator_success_msg["run_id"],
         )

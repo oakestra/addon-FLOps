@@ -12,14 +12,23 @@ def _notify_flops_manager(
 ) -> None:
     winner_model = aggregator_context.winner_model
     msg_payload = {
-        **({"accuracy": winner_model.accuracy} if winner_model and winner_model.accuracy else {}),
+        "aggregator_type": aggregator_context.aggregator_type.value,
+        **(
+            {"accuracy": winner_model.accuracy}
+            if winner_model and winner_model.accuracy
+            else {}
+        ),
         **({"loss": winner_model.loss} if winner_model and winner_model.loss else {}),
         **(
             {"experiment_id": winner_model.experiment_id}
             if aggregator_context.should_use_mlflow
             else {}
         ),
-        **({"run_id": winner_model.run_id} if aggregator_context.should_use_mlflow else {}),
+        **(
+            {"run_id": winner_model.run_id}
+            if aggregator_context.should_use_mlflow
+            else {}
+        ),
     }
 
     notify_flops_manager(
@@ -56,7 +65,7 @@ def notify_about_successful_completion(aggregator_context: AggregatorContext) ->
 
     notify_project_observer(
         project_observer_ip=aggregator_context.project_observer_ip,
-        msg=msg,
+        msg=msg + f"({aggregator_context.aggregator_type.value})",
     )
 
 
