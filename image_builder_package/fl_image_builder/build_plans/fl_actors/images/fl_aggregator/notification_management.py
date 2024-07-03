@@ -13,22 +13,14 @@ def _notify_flops_manager(
     winner_model = aggregator_context.winner_model
     msg_payload = {
         "aggregator_type": aggregator_context.aggregator_type.value,
-        **(
-            {"accuracy": winner_model.accuracy}
-            if winner_model and winner_model.accuracy
-            else {}
-        ),
+        **({"accuracy": winner_model.accuracy} if winner_model and winner_model.accuracy else {}),
         **({"loss": winner_model.loss} if winner_model and winner_model.loss else {}),
         **(
             {"experiment_id": winner_model.experiment_id}
             if aggregator_context.should_use_mlflow
             else {}
         ),
-        **(
-            {"run_id": winner_model.run_id}
-            if aggregator_context.should_use_mlflow
-            else {}
-        ),
+        **({"run_id": winner_model.run_id} if aggregator_context.should_use_mlflow else {}),
     }
 
     notify_flops_manager(

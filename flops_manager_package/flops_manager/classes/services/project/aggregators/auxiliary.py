@@ -5,6 +5,7 @@ from flops_manager.classes.services.project.aggregators.cluster_aggregator impor
     ClusterFLAggregator,
 )
 from flops_manager.classes.services.project.aggregators.root_aggregator import RootFLAggregator
+from flops_manager.database.common import retrieve_from_db_by_project_id
 from flops_utils.types import AggregatorType
 
 
@@ -18,6 +19,17 @@ def _get_matching_aggregator_class(
             return RootFLAggregator
         case AggregatorType.CLUSTER_AGGREGATOR:
             return ClusterFLAggregator
+
+
+def get_matching_aggregator_class_based_on_project_id(flops_project_id: str):
+    if retrieve_from_db_by_project_id(ClassicFLAggregator, flops_project_id):
+        return ClassicFLAggregator
+
+    if retrieve_from_db_by_project_id(RootFLAggregator, flops_project_id):
+        return RootFLAggregator
+
+    if retrieve_from_db_by_project_id(ClusterFLAggregator, flops_project_id):
+        return ClusterFLAggregator
 
 
 def handle_aggregator_success(aggregator_success_msg: dict) -> None:

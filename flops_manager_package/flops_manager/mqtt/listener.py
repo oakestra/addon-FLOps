@@ -10,6 +10,7 @@ from flops_manager.classes.services.project.builders.fl_actors_builder import FL
 from flops_manager.classes.services.project.builders.trained_model_builder import (
     TrainedModelImageBuilder,
 )
+from flops_manager.classes.services.project.learners.termination import handle_learner_failed
 from flops_manager.mqtt.main import get_mqtt_client
 from flops_manager.mqtt.sender import notify_project_observer
 from flops_manager.utils.exceptions.main import FLOpsManagerException
@@ -41,6 +42,9 @@ def _on_new_message(client, userdata, message) -> None:
                 handle_aggregator_success(data)
             case SupportedTopic.AGGREGATOR_FAILED.value:
                 handle_aggregator_failed(data)
+
+            case SupportedTopic.LEARNER_FAILED.value:
+                handle_learner_failed(data)
 
             case _:
                 logger.error(f"Message received for an unsupported topic '{topic}'")

@@ -1,6 +1,10 @@
 from flops_manager.classes.services.project.aggregators.classic_aggregator import (
     ClassicFLAggregator,
 )
+from flops_manager.classes.services.project.aggregators.cluster_aggregator import (
+    ClusterFLAggregator,
+)
+from flops_manager.database.common import retrieve_from_db_by_project_id
 from flops_manager.image_management.fl_actor_images import (
     FLActorImageTypes,
     get_fl_actor_image_name,
@@ -100,3 +104,18 @@ class RootFLAggregator(ClassicFLAggregator):
                 ),
             ),
         )
+
+    # TODO/FUTURE WORK: Refactor the two methods a bit to reduce code duplication.
+    @classmethod
+    def handle_aggregator_failed(cls, aggregator_failed_msg: dict) -> None:
+        flops_project_id = aggregator_failed_msg["flops_project_id"]
+        cluster_aggregator = retrieve_from_db_by_project_id(ClusterFLAggregator, flops_project_id)
+        cluster_aggregator.undeploy()  # type: ignore
+        super().handle_aggregator_failed(aggregator_failed_msg)
+
+    @classmethod
+    def handle_aggregator_success(cls, aggregator_success_msg: dict) -> None:
+        flops_project_id = aggregator_success_msg["flops_project_id"]
+        cluster_aggregator = retrieve_from_db_by_project_id(ClusterFLAggregator, flops_project_id)
+        cluster_aggregator.undeploy()  # type: ignore
+        super().handle_aggregator_success(aggregator_success_msg)

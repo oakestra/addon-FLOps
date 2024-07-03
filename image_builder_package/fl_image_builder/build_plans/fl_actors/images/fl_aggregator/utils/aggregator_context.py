@@ -51,4 +51,9 @@ class AggregatorContext(BaseModel):
     def model_post_init(self, __context: Any) -> None:
         if self.aggregator_type != AggregatorType.CLUSTER_AGGREGATOR:
             self.should_use_mlflow = True
+        if self.aggregator_type == AggregatorType.CLUSTER_AGGREGATOR:
+            # NOTE: To reduce complexity for now - The Cluster Aggregator has no MQTT support.
+            # It is a hybrid learner-aggregator that will keep on running.
+            # So even on failure the CAg should be able to get fixed by the Orchestrator.
+            self.deactivate_notifications = True
         return super().model_post_init(__context)

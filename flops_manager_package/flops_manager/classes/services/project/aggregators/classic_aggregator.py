@@ -1,5 +1,5 @@
 from flops_manager.classes.apps.project import FLOpsProject
-from flops_manager.classes.services.project.learners import FLLearners
+from flops_manager.classes.services.project.learners.main import FLLearners
 from flops_manager.classes.services.project.project_service import FLOpsProjectService
 from flops_manager.database.common import retrieve_from_db_by_project_id
 from flops_manager.flops_management.post_training_steps.build_trained_model_image import (
@@ -103,6 +103,7 @@ class ClassicFLAggregator(FLOpsProjectService):
             ),
         )
 
+    # TODO/FUTURE WORK: Refactor the two methods a bit to reduce code duplication.
     @classmethod
     def handle_aggregator_failed(cls, aggregator_failed_msg: dict) -> None:
         logger.debug(aggregator_failed_msg)
