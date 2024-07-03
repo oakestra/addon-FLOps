@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, List, Optional
 
 from bson.objectid import ObjectId
 from database.main import get_flops_db
@@ -41,6 +41,16 @@ def retrieve_from_db_by_project_id(cls, flops_project_id: str) -> Optional[dict]
     return _load_object_from_retrieved_db_result(
         cls, get_collection(cls).find_one({"flops_project_id": flops_project_id})  # type: ignore
     )
+
+
+def retrieve_all_from_db_by_project_id(cls, flops_project_id: str) -> List[dict]:
+    dicts = list(get_collection(cls).find({"flops_project_id": flops_project_id}))
+    retrieved_objects = []
+    for dict in dicts:
+        retrieved_object = _load_object_from_retrieved_db_result(cls, dict)
+        if retrieved_object:
+            retrieved_objects.append(retrieved_object)
+    return retrieved_objects
 
 
 def remove_from_db_by_project_id(cls, flops_project_id: str) -> None:

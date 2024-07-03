@@ -1,10 +1,19 @@
+from flops_manager.classes.apps.project import FLOpsProject
 from flops_manager.classes.services.project.aggregators.classic_aggregator import (
     ClassicFLAggregator,
 )
 from flops_manager.classes.services.project.aggregators.cluster_aggregator import (
     ClusterFLAggregator,
 )
-from flops_manager.database.common import retrieve_from_db_by_project_id
+from flops_manager.classes.services.project.learners.main import FLLearners
+from flops_manager.database.common import (
+    retrieve_all_from_db_by_project_id,
+    retrieve_from_db_by_project_id,
+)
+from flops_manager.flops_management.post_training_steps.build_trained_model_image import (
+    init_fl_post_training_steps,
+)
+from flops_manager.mqtt.sender import notify_project_observer
 from flops_manager.utils.common import get_shortened_unique_id
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
 from flops_manager.utils.env_vars import FLOPS_MQTT_BROKER_IP
@@ -16,6 +25,7 @@ from flops_manager.utils.sla.components import (
     SlaNames,
     SlaResources,
 )
+from flops_utils.logging import colorful_logger as logger
 from flops_utils.types import AggregatorType
 
 
@@ -76,14 +86,44 @@ class RootFLAggregator(ClassicFLAggregator):
     # TODO/FUTURE WORK: Refactor the two methods a bit to reduce code duplication.
     @classmethod
     def handle_aggregator_failed(cls, aggregator_failed_msg: dict) -> None:
+        logger.debug(aggregator_failed_msg)
         flops_project_id = aggregator_failed_msg["flops_project_id"]
-        cluster_aggregator = retrieve_from_db_by_project_id(ClusterFLAggregator, flops_project_id)
-        cluster_aggregator.undeploy()  # type: ignore
-        super().handle_aggregator_failed(aggregator_failed_msg)
+
+        retrieve_from_db_by_project_id(cls, flops_project_id).undeploy()  # type: ignore
+
+        cluster_aggregators = retrieve_all_from_db_by_project_id(
+            ClusterFLAggregator, flops_project_id
+        )
+        for cluster_aggregator in cluster_aggregators:
+            cluster_aggregator.undeploy()  # type: ignore
+
+        learners = retrieve_all_from_db_by_project_id(FLLearners, flops_project_id)
+        for learner in learners:
+            learner.undeploy()
+
+        msg = f"{cls.__name__} failed. Terminating this FLOps Project."
+        logger.critical(msg)
+        notify_project_observer(flops_project_id=flops_project_id, msg=msg)
 
     @classmethod
     def handle_aggregator_success(cls, aggregator_success_msg: dict) -> None:
+        logger.debug("Aggregator successfully finished training.")
         flops_project_id = aggregator_success_msg["flops_project_id"]
-        cluster_aggregator = retrieve_from_db_by_project_id(ClusterFLAggregator, flops_project_id)
-        cluster_aggregator.undeploy()  # type: ignore
-        super().handle_aggregator_success(aggregator_success_msg)
+        retrieve_from_db_by_project_id(cls, flops_project_id).undeploy()  # type: ignore
+        cluster_aggregators = retrieve_all_from_db_by_project_id(
+            ClusterFLAggregator, flops_project_id
+        )
+        for cluster_aggregator in cluster_aggregators:
+            cluster_aggregator.undeploy()  # type: ignore
+
+        learners = retrieve_all_from_db_by_project_id(FLLearners, flops_project_id)
+        for learner in learners:
+            learner.undeploy()
+
+        init_fl_post_training_steps(
+            flops_project=retrieve_from_db_by_project_id(
+                FLOpsProject,  # type: ignore
+                flops_project_id,  # type: ignore
+            ),
+            winner_model_run_id=aggregator_success_msg["run_id"],
+        )
