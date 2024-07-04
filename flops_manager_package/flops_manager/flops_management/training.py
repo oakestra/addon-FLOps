@@ -47,18 +47,13 @@ def handle_fl_training_processes(flops_project: FLOpsProject) -> None:
             tracking_server_url=tracking_server.get_url(),
         )
     else:
-
-        # API request to OAK DB to figure out num of active clusters
-        # GET /api/clusters/active
         active_clusters = get_active_clusters_from_orchestrator()
-
         root_fl_aggregator = RootFLAggregator(
             parent_app=flops_project,
             project_observer_ip=project_observer.ip,  # type: ignore
             tracking_server_url=tracking_server.get_url(),
             number_of_cluster_aggregators=len(active_clusters),
         )
-
         for cluster in active_clusters:
             cluster_name = cluster["cluster_name"]
             cluster_id = cluster["_id"]
