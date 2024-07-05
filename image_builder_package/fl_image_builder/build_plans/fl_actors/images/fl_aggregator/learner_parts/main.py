@@ -35,12 +35,13 @@ class ClusterAggregatorAsLearner(flwr.client.NumPyClient):
 
     def evaluate(self, parameters, config):
         self.set_parameters(parameters)
-        loss, accuracy, number_of_evaluation_examples = self.model_manager.evaluate_model()
+        loss, accuracy, number_of_evaluation_examples = (
+            self.model_manager.evaluate_model()
+        )
         return loss, number_of_evaluation_examples, {"accuracy": accuracy}
 
 
 def start_cluster_aggregator_as_learner(aggregator_context: AggregatorContext) -> None:
-    logger.info("START start_cluster_aggregator_as_learner")
     retry_delay = 20
     while True:
         try:
