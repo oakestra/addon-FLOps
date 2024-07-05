@@ -7,8 +7,14 @@ from flops_manager.flops_management.training import handle_fl_training_processes
 class FLActorsImageBuilder(FLOpsBaseImageBuilder):
     def _prepare_cmd(self) -> str:
         cmd = super()._prepare_cmd()
-        cmd += f" fl_actors {self.parent_app.ml_repo_url} {self.parent_app.ml_model_flavor}"
-        if self.parent_app.use_devel_base_images:
+        cmd += " " + " ".join(
+            (
+                "fl_actors",
+                self.parent_app.ml_repo_url,  # type: ignore
+                self.parent_app.ml_model_flavor,  # type: ignore
+            )
+        )
+        if self.parent_app.use_devel_base_images:  # type: ignore
             cmd += " --use-devel-base-images"
         return cmd
 
@@ -16,5 +22,8 @@ class FLActorsImageBuilder(FLOpsBaseImageBuilder):
     def handle_builder_success(cls, builder_success_msg: dict) -> None:
         flops_project_id = super().handle_builder_success(builder_success_msg)
         handle_fl_training_processes(
-            flops_project=retrieve_from_db_by_project_id(FLOpsProject, flops_project_id)
+            flops_project=retrieve_from_db_by_project_id(
+                FLOpsProject,  # type: ignore
+                flops_project_id,  # type: ignore
+            )
         )

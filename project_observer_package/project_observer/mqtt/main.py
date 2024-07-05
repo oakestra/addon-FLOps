@@ -42,7 +42,7 @@ def _reconnect(client):
 def _init_mqtt() -> paho_mqtt.Client:
 
     global _mqtt_client
-    _mqtt_client = paho_mqtt.Client(paho_mqtt.CallbackAPIVersion.VERSION2)
+    _mqtt_client = paho_mqtt.Client(paho_mqtt.CallbackAPIVersion.VERSION2)  # type: ignore
 
     def on_disconnect(client, userdata, rc):
         if rc != 0:
@@ -69,12 +69,12 @@ def handle_mqtt() -> None:
     mqtt_client.loop_forever()
 
 
-def notify_flops_manager(error_msg: str = None) -> None:
+def notify_flops_manager(error_msg: str = "") -> None:
     ui_context = get_ui_context()
     payload = json.dumps(
         {
             "flops_id": ui_context.flops_id,
-            **({"error_msg": error_msg} if error_msg is not None else {}),
+            **({"error_msg": error_msg} if error_msg else {}),
         }
     )
     get_mqtt_client().publish(

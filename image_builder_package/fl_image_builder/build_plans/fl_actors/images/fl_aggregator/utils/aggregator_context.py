@@ -1,3 +1,6 @@
+from typing import Any
+
+from flops_utils.types import AggregatorType
 from pydantic import BaseModel, Field
 
 # NOTE: The approach of using a global variable does not work here.
@@ -7,10 +10,11 @@ from pydantic import BaseModel, Field
 
 class WinnerModel(BaseModel):
     # NOTE: IDs are strings because MLflow also uses strings for them.
-    experiment_id: str
-    run_id: str
     accuracy: float
     loss: float
+
+    experiment_id: str = ""
+    run_id: str = ""
 
 
 class AggregatorContext(BaseModel):
@@ -19,7 +23,15 @@ class AggregatorContext(BaseModel):
     project_observer_ip: str
     mlflow_tracking_server_url: str
 
-    training_rounds: int = 3
+    aggregator_type: AggregatorType = AggregatorType.CLASSIC_AGGREGATOR
+
+    training_iterations: int = Field(
+        default=1,
+        description="""
+            A training iteration is an umbrella term that can either mean
+            a training round or a training cycle, depending on the current aggregator type.
+            """,
+    )
     min_available_clients: int = 1
     min_fit_clients: int = 1
     min_evaluate_clients: int = 1
@@ -27,7 +39,21 @@ class AggregatorContext(BaseModel):
     track_locally: bool = False  # Does not use the remote tracking server
     deactivate_notifications: bool = False  # Does not use MQTT
 
+    root_aggregator_ip: str = ""
+
     winner_model: WinnerModel = Field(
         default=None,
         description="The best model after training.",
     )
+
+    should_use_mlflow: bool = False
+
+    def model_post_init(self, __context: Any) -> None:
+        if self.aggregator_type != AggregatorType.CLUSTER_AGGREGATOR:
+            self.should_use_mlflow = True
+        if self.aggregator_type == AggregatorType.CLUSTER_AGGREGATOR:
+            # NOTE: To reduce complexity for now - The Cluster Aggregator has no MQTT support.
+            # It is a hybrid learner-aggregator that will keep on running.
+            # So even on failure the CAg should be able to get fixed by the Orchestrator.
+            self.deactivate_notifications = True
+        return super().model_post_init(__context)

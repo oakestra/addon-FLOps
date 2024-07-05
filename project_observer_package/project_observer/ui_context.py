@@ -17,4 +17,4 @@ class UIContext:
 
 
 def get_ui_context() -> UIContext:
-    return _ui_context
+    return _ui_context  # type: ignore

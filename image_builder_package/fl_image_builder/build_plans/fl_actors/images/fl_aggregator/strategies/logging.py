@@ -21,8 +21,8 @@ def handle_system_metrics_logging() -> None:
 
     https://mlflow.org/docs/latest/system-metrics/index.html#customizing-logging-frequency
     """
-    run_start = mlflow.last_active_run().info.start_time
-    run_end = mlflow.last_active_run().info.end_time
+    run_start = mlflow.last_active_run().info.start_time  # type: ignore
+    run_end = mlflow.last_active_run().info.end_time  # type: ignore
     run_duration = (run_end - run_start) / 1000
     if (
         run_duration < DEFAULT_SYSTEM_METRICS_LOGGING_INTERVAL

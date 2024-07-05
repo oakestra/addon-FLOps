@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from http import HTTPStatus
+from typing import Optional
 
 from flops_manager.utils.exceptions.types import FlOpsExceptionTypes
 from flops_utils.logging import colorful_logger as logger
@@ -10,9 +11,9 @@ from flops_utils.logging import colorful_logger as logger
 class FLOpsManagerException(Exception):
     flops_exception_type: FlOpsExceptionTypes
     text: str
-    http_status: HTTPStatus = None
+    http_status: Optional[HTTPStatus] = None
     message: str = field(default="<message is not set>", init=False)
-    flops_project_id: str = None
+    flops_project_id: str = ""
 
     def __post_init__(self) -> None:
         self.message = f"'{self.flops_exception_type}' exception occured: {self.text}"

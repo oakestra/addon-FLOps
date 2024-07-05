@@ -48,7 +48,7 @@ def prepare_build(context: ContextTrainedModel) -> None:
     mlflow.artifacts.download_artifacts(
         run_id=context.run_id,
         artifact_path=MODEL_ARTIFACT_NAME,
-        dst_path=DOWNLOADED_MODEL_DIR,
+        dst_path=DOWNLOADED_MODEL_DIR,  # type: ignore
     )
     logger.debug("Downloaded model artifact directory")
     # NOTE: We first build a dockerfile and then based on it the image via buildah.

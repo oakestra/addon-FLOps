@@ -21,23 +21,23 @@ from pydantic import Field
 
 class FLOpsBaseImageBuilder(FLOpsProjectService, abc.ABC):
     namespace = "builder"
-    project_observer_ip: str = Field(None, exclude=True, repr=False)
+    project_observer_ip: str = Field(default="", exclude=True, repr=False)
 
     def model_post_init(self, _):
         if self.gets_loaded_from_db:
             return
 
-        if self.parent_app.verbose:
+        if self.parent_app.verbose:  # type: ignore
             notify_project_observer(
-                flops_project_id=self.parent_app.flops_project_id,
+                flops_project_id=self.parent_app.flops_project_id,  # type: ignore
                 msg="New FLOps images need to be build. Start build delegation processes.",
             )
 
         super().model_post_init(_)
 
-        if self.parent_app.verbose:
+        if self.parent_app.verbose:  # type: ignore
             notify_project_observer(
-                flops_project_id=self.parent_app.flops_project_id,
+                flops_project_id=self.parent_app.flops_project_id,  # type: ignore
                 msg="New Builder service created & deployed",
             )
 
@@ -49,19 +49,20 @@ class FLOpsBaseImageBuilder(FLOpsProjectService, abc.ABC):
                 FLOPS_IMAGE_REGISTRY_URL,
                 self.flops_project_id,
                 FLOPS_MQTT_BROKER_IP,
-                self.project_observer_ip,
+                self.project_observer_ip,  # type: ignore
             )
         )
 
     def _configure_sla_components(self) -> None:
+        parent_app_id = self.parent_app.app_id  # type: ignore
         self.sla_components = SlaComponentsWrapper(
             core=SlaCore(
                 app_id=self.flops_project_id,
                 customerID=FLOPS_USER_ACCOUNT,
                 names=SlaNames(
-                    app_name=self.parent_app.app_name,
-                    app_namespace=self.parent_app.namespace,
-                    service_name=f"builder{get_shortened_unique_id(self.parent_app.app_id)}",
+                    app_name=self.parent_app.app_name,  # type: ignore
+                    app_namespace=self.parent_app.namespace,  # type: ignore
+                    service_name=f"builder{get_shortened_unique_id(parent_app_id)}",
                     service_namespace=self.namespace,
                 ),
                 compute=SlaCompute(
@@ -84,7 +85,7 @@ class FLOpsBaseImageBuilder(FLOpsProjectService, abc.ABC):
     def handle_builder_failed(cls, builder_failed_msg: dict) -> None:
         logger.debug(builder_failed_msg)
         flops_project_id = builder_failed_msg["flops_project_id"]
-        retrieve_from_db_by_project_id(cls, flops_project_id).undeploy()
+        retrieve_from_db_by_project_id(cls, flops_project_id).undeploy()  # type: ignore
         msg = "Builder failed. Terminating this FLOps Project."
         logger.critical(msg)
         notify_project_observer(flops_project_id=flops_project_id, msg=msg)
@@ -95,5 +96,5 @@ class FLOpsBaseImageBuilder(FLOpsProjectService, abc.ABC):
         logger.debug(builder_success_msg)
         flops_project_id = builder_success_msg["flops_project_id"]
         builder = retrieve_from_db_by_project_id(cls, flops_project_id)
-        builder.undeploy()
+        builder.undeploy()  # type: ignore
         return flops_project_id

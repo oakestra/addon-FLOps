@@ -1,7 +1,7 @@
 import abc
 import sys
 from dataclasses import dataclass, field
-from typing import ClassVar
+from typing import Callable, ClassVar
 
 from flops_utils.mqtt_topics import Status, Subject, Topic
 from flops_utils.timer import Timer
@@ -10,7 +10,7 @@ from notification_management import notify_manager, notify_observer
 
 @dataclass
 class Context(abc.ABC):
-    build_plan_trigger: ClassVar[callable]
+    build_plan_trigger: ClassVar[Callable]
     mqtt_subject: ClassVar[Subject]
 
     image_registry_url: str
@@ -35,7 +35,7 @@ class Context(abc.ABC):
     def set_new_image_tag(self, new_image_tag: str) -> None:
         self.new_image_tag = new_image_tag
 
-    def _build_image_name(self, infix: str = None) -> str:
+    def _build_image_name(self, infix: str = "") -> str:
         if infix:
             return f"{self.new_image_name_prefix}/{infix}:{self.new_image_tag}"
         else:

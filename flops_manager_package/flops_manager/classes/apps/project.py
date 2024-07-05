@@ -7,7 +7,7 @@ from flops_manager.utils.common import get_shortened_unique_id
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
 from flops_manager.utils.sla.components import SlaComponentsWrapper, SlaCore, SlaDetails, SlaNames
 from flops_manager.utils.types import Application, PostTrainingSteps
-from flops_utils.types import MLModelFlavor
+from flops_utils.types import FLOpsMode, MLModelFlavor
 from pydantic import AliasChoices, BaseModel, Field
 
 # TODO/Future Work: Add additional Pydantic checking:
@@ -17,6 +17,7 @@ from pydantic import AliasChoices, BaseModel, Field
 
 # NOTE: Using BaseModel instead of NamedTuple here allows for nicer serialized data in the DB.
 class _TrainingConfiguration(BaseModel):
+    mode: FLOpsMode = Field(default=FLOpsMode.CLASSIC)
     data_tags: List[str] = Field(
         default_factory=list,
         description=" ".join(
@@ -26,7 +27,31 @@ class _TrainingConfiguration(BaseModel):
             )
         ),
     )
-    training_rounds: int = 3
+    training_cycles: int = Field(
+        default=1,
+        # TODO check naming with ML/FL naming conventions
+        # Maybe "period, round, cycle" are already coined and mean something different.
+        description="""
+        (Only applicable for the 'hierarchical' mode.)
+        The number of training & evaluation rounds performed between
+        the root aggregator (RAg) and cluster aggregators (CAg).
+        Example: training_cycles = 2, training_rounds = 3:
+        - The first training cycle starts:
+          The learners train and share their results with their CAg.
+          After 3 such training rounds the aggregated cluster results are send to the RAg.
+        - The second training cycle starts:
+          The learners train and share their results again with their CAg.
+          After 3 training rounds the aggregated cluster results are again send to the RAg.
+        - The whole training period has come to an end.
+        """,
+    )
+    training_rounds: int = Field(
+        default=3,
+        description="The number of training & evaluations rounds performed on a learner.",
+    )
+
+    # NOTE: In the hierarchical mode these values are per cluster not in total.
+    # I.e. 2 'min_learners' -> 2 per cluster.
     min_available_clients: int = 1
     min_fit_clients: int = 1
     min_evaluate_clients: int = 1
@@ -44,7 +69,7 @@ class FLOpsProject(FLOpsApp):
 
     namespace = "proj"
 
-    customer_id: str = Field(alias=AliasChoices("customer_id", "customerID"))
+    customer_id: str = Field(alias=AliasChoices("customer_id", "customerID"))  # type: ignore
     verbose: bool = False
     use_devel_base_images: bool = False
     ml_model_flavor: MLModelFlavor
@@ -68,7 +93,7 @@ class FLOpsProject(FLOpsApp):
 
         self.ml_repo_latest_commit_hash = get_latest_commit_hash(self.ml_repo_url)
         flops_db_id = add_to_db(self)
-        self._configure_sla_components(flops_db_id)
+        self._configure_sla_components(str(flops_db_id))
         created_app = self._create_in_orchestrator()
         self._set_properties_based_on_created_result(created_app)
         replace_in_db(self, flops_db_id)

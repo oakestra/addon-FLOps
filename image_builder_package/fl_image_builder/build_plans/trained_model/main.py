@@ -26,7 +26,7 @@ def handle_trained_model_image_build(context: ContextTrainedModel) -> None:
         context.timer.start_new_time_frame(BUILD_IMAGE_TIMEFRAME)
         build_image(
             context=context,
-            build_directory=DOCKERFILE_DIR,
+            build_directory=DOCKERFILE_DIR,  # type: ignore
             image_name_with_tag=context.get_image_name(),
             should_notify_observer=True,
         )

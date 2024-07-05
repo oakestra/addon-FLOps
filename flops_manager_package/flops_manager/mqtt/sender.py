@@ -5,7 +5,7 @@ from flops_utils.mqtt_topics import Target
 
 def notify_project_observer(
     msg: str,
-    flops_project_id: str = None,
+    flops_project_id: str = "",
 ) -> None:
     # NOTE: The communication from the FLOps Manager to the Project Observers
     # does not work via Python sockets.

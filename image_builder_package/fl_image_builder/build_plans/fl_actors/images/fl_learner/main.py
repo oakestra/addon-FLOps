@@ -3,7 +3,6 @@ from typing import Any
 
 import flwr
 from context import get_context
-from flops_utils.logging import logger
 from flops_utils.ml_repo_files_proxy import get_model_manager
 from utils.arg_parsing import parse_args
 
@@ -32,37 +31,30 @@ class Learner(flwr.client.NumPyClient):
 
 
 def _start_fl_learner() -> None:
-    max_retries = 10
     retry_delay = 20
 
-    # NOTE: The FL Learner image might be pulled and running quicker than the aggregator.
+    # NOTE:
+    # The FL Learner image might be pulled and running quicker than the aggregator.
     # For these cases we want to wait for the aggregator to come online.
     # Compared to other solutions where the Learners are only deployed once the Aggregator is up,
     # this approach has the benefit of pulling/instantiating the learners concurrently/quicker.
-    for attempt in range(max_retries):
+    #
+    # The learner is a continuous service.
+    # I.e. once a training cycle ends the learners awaits a potential successor cycle.
+    # This is necessary for hierarchical FL.
+    # Classic FL will only run a single cycle and undeploy this service via the FLOps Manager.
+    #
+    # We tried using the new Flower NEXT Server and Client Apps (since v1.8.0).
+    # They seem very promising but currently there seems to be only support for static,
+    # stateless CLI usage, which does not fit our use case - so we stick with the legacy way.
+    while True:
         try:
             flwr.client.start_numpy_client(
                 server_address=f"{get_context().aggregator_ip}:8080",
                 client=Learner(),
             )
-            return
-        except Exception as e:
-            if attempt < max_retries:
-                logger.exception(
-                    " ".join(
-                        (
-                            "Unable to connect to aggregator.",
-                            f"Retrying in '{retry_delay}' seconds."
-                            f"'{max_retries - attempt}' attempts remaining.",
-                        )
-                    )
-                )
-                time.sleep(retry_delay)
-            else:
-                logger.error(
-                    f"Failed to connect to aggregator after '{max_retries}' retries. '{e}'"
-                )
-                return
+        except Exception:
+            time.sleep(retry_delay)
 
 
 if __name__ == "__main__":

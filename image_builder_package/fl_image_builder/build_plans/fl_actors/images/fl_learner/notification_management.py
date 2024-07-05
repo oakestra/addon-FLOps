@@ -11,7 +11,7 @@ from flops_utils.notifications import notify_flops_manager, notify_project_obser
 def _notify_flops_manager(
     context: LearnerContext,
     topic: SupportedTopic,
-    error_msg: str = None,
+    error_msg: str = "",
 ) -> None:
     notify_flops_manager(
         flops_project_id=context.flops_project_id,

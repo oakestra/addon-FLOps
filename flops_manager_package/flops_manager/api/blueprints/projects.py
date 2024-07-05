@@ -19,8 +19,8 @@ projects_blp = flask_openapi3.APIBlueprint(
 def post_project() -> Tuple[dict, HTTPStatus]:
     try:
         handle_new_flops_project(
-            request_data=flask.request.json,
-            bearer_token=flask.request.headers.get("Authorization"),
+            request_data=flask.request.json,  # type: ignore
+            bearer_token=flask.request.headers.get("Authorization"),  # type: ignore
         )
     except FLOpsManagerException as e:
         e.log()

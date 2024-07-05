@@ -19,4 +19,4 @@ class LearnerContext(BaseModel):
 
 
 def get_context() -> LearnerContext:
-    return _context
+    return _context  # type: ignore

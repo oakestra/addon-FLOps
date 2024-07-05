@@ -13,12 +13,16 @@ class FLOpsApp(FlOpsOakestraBaseClass, ABC):
     Services can be added to such apps after creating them.
     Such an app is intended to be a place for grouping similar services."""
 
-    app_id: str = Field("", init=False, alias=AliasChoices("app_id", "applicationID"))
+    app_id: str = Field(
+        "",
+        init=False,
+        alias=AliasChoices("app_id", "applicationID"),  # type: ignore
+    )
     app_name: str = Field("", init=False)
 
     def _create_in_orchestrator(self) -> Application:
         return create_app(
-            sla=generate_sla(self.sla_components),
+            sla=generate_sla(self.sla_components),  # type: ignore
             bearer_token=getattr(self, "bearer_token", None),
             matching_caller_object=self,
         )

@@ -1,3 +1,5 @@
+from typing import Optional
+
 from flops_manager.api.request_management.custom_http import HttpMethods
 from flops_manager.api.request_management.custom_requests import (
     CustomRequest,
@@ -14,9 +16,9 @@ from pydantic import BaseModel
 
 def create_app(
     sla: SLA,
-    flops_project_id: str = None,
-    bearer_token: str = None,
-    matching_caller_object: BaseModel = None,
+    flops_project_id: str = "",
+    bearer_token: str = "",
+    matching_caller_object: Optional[BaseModel] = None,
 ) -> Application:
     app_type = get_matching_type(matching_caller_object)
     # NOTE: The called endpoint returns all apps of the user not just the newest inserted one.
@@ -55,7 +57,7 @@ def create_app(
 
 def fetch_app_from_orchestrator(
     app_id: str,
-    matching_caller_object: BaseModel = None,
+    matching_caller_object: Optional[BaseModel] = None,
 ) -> Application:
     app_type = get_matching_type(matching_caller_object)
     response = CustomRequest(

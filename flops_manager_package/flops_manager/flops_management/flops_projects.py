@@ -14,7 +14,7 @@ def handle_new_flops_project(request_data: dict, bearer_token: str) -> None:
     observatory = FLOpsObservatory.get_app(customer_id=request_data["customerID"])
     flops_project = FLOpsProject.model_validate(request_data)
     project_observer = FLOpsProjectObserver(
-        parent_app=observatory,
+        parent_app=observatory,  # type: ignore
         flops_project=flops_project,
         bearer_token=bearer_token,
     )

@@ -4,7 +4,7 @@ from typing import List, Tuple
 from context import LearnerContext
 
 
-def parse_args() -> Tuple[str, List[str]]:
+def parse_args() -> Tuple[str, List[str]]:  # type: ignore
     parser = argparse.ArgumentParser()
 
     parser.add_argument("flops_project_id", type=str)

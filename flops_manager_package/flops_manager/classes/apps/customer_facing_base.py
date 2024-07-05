@@ -9,7 +9,7 @@ from pydantic import AliasChoices, Field
 class FLOpsCustomerFacingApp(FLOpsApp, abc.ABC):
     namespace = "customerfacingapp"
 
-    customer_id: str = Field(alias=AliasChoices("customer_id", "customerID"))
+    customer_id: str = Field(alias=AliasChoices("customer_id", "customerID"))  # type: ignore
 
     def _configure_sla_components(self) -> None:
         self.sla_components = SlaComponentsWrapper(
@@ -28,4 +28,4 @@ class FLOpsCustomerFacingApp(FLOpsApp, abc.ABC):
     def get_app(cls, customer_id: str) -> "FLOpsCustomerFacingApp":
         """There should be only one per user."""
         existing_app = retrieve_from_db_by_customer_id(cls, customer_id)
-        return existing_app or cls(customer_id=customer_id)
+        return existing_app or cls(customer_id=customer_id)  # type: ignore
