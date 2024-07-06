@@ -14,6 +14,17 @@ class FLOpsDB:
     def get_collection(self, collection_name: str):
         return self._db[collection_name]
 
+    def drop_all_collections(self):
+        for coll_name in self._client.list_database_names():
+            if coll_name == "flops":  # Ensure we're not trying to drop the database itself
+                for collection_name in self._client[coll_name].list_collection_names():
+                    self._client[coll_name].drop_collection(collection_name)
+
 
 def get_flops_db() -> FLOpsDB:
     return _flops_db or FLOpsDB()
+
+
+def reset_db() -> None:
+    assert _flops_db is not None
+    _flops_db.drop_all_collections()
