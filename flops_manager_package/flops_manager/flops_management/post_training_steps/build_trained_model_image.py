@@ -17,6 +17,11 @@ from flops_utils.logging import colorful_logger as logger
 if TYPE_CHECKING:
     from flops_manager.classes.apps.project import FLOpsProject
 
+# NOTE: For now the core-components (Project, Observatory, Project-Observer)
+# are kept running and alive in the FLOps DB.
+# The idea is to wait until the Addon Hooks are in,
+# then hook into them to listen for deleted FLOps apps/services and act accordingly.
+
 
 def init_fl_post_training_steps(flops_project: FLOpsProject, winner_model_run_id: str) -> None:
     if PostTrainingSteps.BUILD_IMAGE_FOR_TRAINED_MODEL not in flops_project.post_training_steps:
