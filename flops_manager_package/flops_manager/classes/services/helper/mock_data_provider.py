@@ -77,7 +77,7 @@ class MockDataProvider(FLOpsService):
                     service_namespace=self.namespace,
                 ),
                 compute=SlaCompute(
-                    code="ghcr.io/malyuk-a/flops-mock-data-provider:latest",
+                    code="ghcr.io/oakestra/addon-flops/mock-data-provider:latest",
                     one_shot_service=True,
                     cmd=cmd,
                 ),
