@@ -7,7 +7,8 @@
 # Thus we use an older image version where this bug does not occur.
 # TODO: Update this image to the latest version once this bug is fixed by conda.
 # Buggy images: 24.4.0-0, 24.3.0-0, 24.1.2-0 (maybe more)
-FROM ghcr.io/malyuk-a/miniconda3:23.10.0-1
+FROM ghcr.io/oakestra/addon-flops/aux-miniconda3:23.10.0-1
+LABEL org.opencontainers.image.source https://github.com/oakestra/addon-flops
 
 RUN apt-get update && apt-get install -y \
         # Optinal development dependencies:

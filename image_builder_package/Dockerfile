@@ -4,7 +4,8 @@
 # - Python (version 3.10+)
 # - MLflow (normal not skinny version)
 # NOTE: This combination is surprisingly rare.
-FROM ghcr.io/malyuk-a/miniconda3:24.4.0-0
+FROM ghcr.io/oakestra/addon-flops/aux-miniconda3:24.4.0-0
+LABEL org.opencontainers.image.source https://github.com/oakestra/addon-flops
 WORKDIR /image_builder
 
 RUN apt-get update && apt-get install -y \
