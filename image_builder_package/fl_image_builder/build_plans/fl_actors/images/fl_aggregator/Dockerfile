@@ -1,6 +1,6 @@
 ARG BASE_IMAGE
 FROM ${BASE_IMAGE}
-LABEL org.opencontainers.image.source https://github.com/oakestra/addon-flops
+LABEL org.opencontainers.image.source=https://github.com/oakestra/addon-flops
 
 ARG USE_DEVEL_BASE_IMAGES="false"
 RUN if [ "$USE_DEVEL_BASE_IMAGES" = "false" ]; then\

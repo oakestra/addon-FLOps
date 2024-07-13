@@ -1,5 +1,5 @@
 FROM python:3.10-slim
-LABEL org.opencontainers.image.source https://github.com/oakestra/addon-flops
+LABEL org.opencontainers.image.source=https://github.com/oakestra/addon-flops
 
 RUN apt-get update && \
     apt-get install -y wget &&\
