@@ -7,7 +7,7 @@ RUN if [ "$USE_DEVEL_BASE_IMAGES" = "false" ]; then\
         pip install \
             # NOTE: These dependency versions do not yet exist in conda.
             paho-mqtt==2.0 \
-            && conda install -y \
+        && conda install -y \
             mlflow>=2.12.1 \
             psutil>=5.9.8 \
             pynvml>=11.5.0 &&\
