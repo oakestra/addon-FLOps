@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from build_plans.fl_actors.builds import build_fl_actor_images
+from build_plans.fl_actors.builds import build_base_image, build_fl_actor_images
 from build_plans.fl_actors.repo_management import check_cloned_repo, clone_repo
 from flops_utils.logging import logger
 from image_management import push_image
@@ -41,6 +41,12 @@ def handle_fl_actor_images_build(context: ContextFLActors) -> None:
         check_cloned_repo(context=context)
         _prepare_new_image_names(context)
         context.timer.end_time_frame(BUILD_PREPARATION_TIMEFRAME)
+
+        build_base_image(context)
+        push_image(
+            context=context,
+            image_name_with_tag=context.get_base_image_name(),
+        )
 
         build_fl_actor_images(context)
 

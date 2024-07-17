@@ -10,10 +10,22 @@ WORKDIR /image_builder
 
 RUN apt-get update && apt-get install -y \
         # Mandatory dependencies:
+        #git wget qemu-user-static binfmt-support buildah \
+        #git wget qemu-user-static buildah \
+        #git wget qemu-user-binfmt qemu-user-static buildah \
         git wget buildah \
         # Optional development dependencies:
         vim tree &&\
     apt-get clean
+
+# RUN apt-get update
+# RUN apt-get install -y qemu-user-binfmt
+# RUN apt-get install -y qemu-user-static
+
+# Enable Emulation properly to be able to build multi-platform images.
+# NOTE: This might not be a great solutions nor is it guaranteed to work on arm machines.
+#RUN update-binfmts --enable qemu-arm || update-binfmts --enable qemu-x86_64
+#RUN update-binfmts --enable qemu-arm
 
 RUN conda install -y \
         requests>=2.28.1 \

@@ -2,6 +2,8 @@ import time
 from typing import Any
 
 import flwr
+import grpc
+import grpc._channel
 from context import get_context
 from flops_utils.ml_repo_files_proxy import get_model_manager
 from utils.arg_parsing import parse_args
@@ -26,7 +28,9 @@ class Learner(flwr.client.NumPyClient):
 
     def evaluate(self, parameters, config):
         self.set_parameters(parameters)
-        loss, accuracy, number_of_evaluation_examples = self.model_manager.evaluate_model()
+        loss, accuracy, number_of_evaluation_examples = (
+            self.model_manager.evaluate_model()
+        )
         return loss, number_of_evaluation_examples, {"accuracy": accuracy}
 
 
@@ -53,8 +57,16 @@ def _start_fl_learner() -> None:
                 server_address=f"{get_context().aggregator_ip}:8080",
                 client=Learner(),
             )
-        except Exception:
-            time.sleep(retry_delay)
+        except grpc._channel._MultiThreadedRendezvous as e:
+            if e.code() == grpc.StatusCode.UNAVAILABLE:
+                # NOTE: This exact exception occurs if the Learner cannot reach the Aggregator.
+                # The main reason why this can be is if the Learner service/image starts
+                # (e.g. gets pulled) faster than the Aggregator service/image.
+                time.sleep(retry_delay)
+                continue
+            raise e
+        except Exception as e:
+            raise e
 
 
 if __name__ == "__main__":

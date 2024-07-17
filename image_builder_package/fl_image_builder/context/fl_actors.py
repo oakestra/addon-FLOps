@@ -21,6 +21,9 @@ class ContextFLActors(Context):
     def set_cloned_repo(self, cloned_repo: git.repo.base.Repo) -> None:  # type: ignore
         self.cloned_repo = cloned_repo
 
+    def get_base_image_name(self) -> str:
+        return self._build_image_name("base")
+
     def get_learner_image_name(self) -> str:
         return self._build_image_name("learner")
 

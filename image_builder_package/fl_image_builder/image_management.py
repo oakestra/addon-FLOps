@@ -33,7 +33,17 @@ def build_image(
     logger.info(build_start_msg)
     try:
         # TODO read further about buildah options/flags - might improve the build further.
-        build_cmd = f"buildah build --isolation=chroot -t {image_name_with_tag}"
+        build_cmd = " ".join(
+            (
+                "buildah build",
+                "--platform linux/amd64",
+                # "--platform linux/arm64",
+                "--isolation=chroot",
+                "--tls-verify=false",
+                f"--manifest {image_name_with_tag}-manifest",
+                f"-t {image_name_with_tag}",
+            )
+        )
         if base_image_to_use:
             build_cmd += f" --build-arg BASE_IMAGE={base_image_to_use}"
         if build_cmd_addition:
@@ -57,8 +67,20 @@ def build_image(
 def push_image(context: Context, image_name_with_tag: str = "") -> None:
     image_name_with_tag = image_name_with_tag or context.get_image_name()
     logger.info(f"Start pushing image '{image_name_with_tag}'")
+    cmd = " ".join(
+        (
+            "buildah",
+            "manifest push",
+            "--tls-verify=false",
+            "--all",
+            f"{image_name_with_tag}-manifest",
+            # https://github.com/containers/image/blob/main/docs/containers-transports.5.md#dockerdocker-reference
+            f"docker://{image_name_with_tag}",
+        )
+    )
+
     try:
-        run_in_shell(f"buildah push --tls-verify=false  {image_name_with_tag}")
+        run_in_shell(cmd)
     except Exception as e:
         context.notify_about_failed_build_and_terminate(
             f"Failed to push '{image_name_with_tag}' to image registry; '{e}'"

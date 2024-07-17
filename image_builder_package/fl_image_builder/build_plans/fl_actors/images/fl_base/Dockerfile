@@ -7,10 +7,14 @@
 # Thus we use an older image version where this bug does not occur.
 # TODO: Update this image to the latest version once this bug is fixed by conda.
 # Buggy images: 24.4.0-0, 24.3.0-0, 24.1.2-0 (maybe more)
-FROM ghcr.io/oakestra/addon-flops/aux-miniconda3:23.10.0-1
+#FROM ghcr.io/oakestra/addon-flops/aux-miniconda3:23.10.0-1
+#FROM ghcr.io/oakestra/addon-flops/aux-miniconda3:23.10.0-1_arm64
+FROM docker.io/continuumio/miniconda3:23.10.0-1
 LABEL org.opencontainers.image.source=https://github.com/oakestra/addon-flops
 
 RUN apt-get update && apt-get install -y \
+        # Seems to be necessary for arm64
+        gcc python3-dev \
         # Optinal development dependencies:
         vim tree &&\
     apt-get clean
@@ -26,7 +30,9 @@ RUN conda env update --file ./conda.yaml &&\
     conda install -y \
         # NOTE: This flwr version is the latest one that is available for the current base image.
         flwr=1.8.0 \
-        pydantic~=2.7.1
+        pydantic~=2.7.1 \
+        # NOTE: This dependency could be isolated and only used in the Learner.
+        pillow~=10.4.0
 
 # NOTE: For dependencies that cannot be installed via conda yet.    
 COPY requirements.txt .
