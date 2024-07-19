@@ -20,7 +20,9 @@ def build_image(
     should_notify_observer: bool = False,
     build_cmd_addition: str = "",
 ) -> None:
-    image_name_with_tag = image_name_with_tag or build_directory or context.get_image_name()
+    image_name_with_tag = (
+        image_name_with_tag or build_directory or context.get_image_name()
+    )
     cwd = pathlib.Path.cwd()
     # Important: Be very careful how and where you run buildah.
     # If you run buildah incorrectly it can easily kill your host system.
@@ -31,23 +33,25 @@ def build_image(
     if should_notify_observer:
         notify_observer(context=context, msg=build_start_msg)
     logger.info(build_start_msg)
-    try:
-        # TODO read further about buildah options/flags - might improve the build further.
-        build_cmd = " ".join(
-            (
-                "buildah build",
-                "--platform linux/amd64",
-                # "--platform linux/arm64",
-                "--isolation=chroot",
-                "--tls-verify=false",
-                f"--manifest {image_name_with_tag}-manifest",
-                f"-t {image_name_with_tag}",
-            )
+    platforms = " ".join(
+        [f"--platform {platform.value}" for platform in context.supported_platforms]
+    )
+    # TODO read further about buildah options/flags - might improve the build further.
+    build_cmd = " ".join(
+        (
+            "buildah build",
+            platforms,
+            "--isolation=chroot",
+            "--tls-verify=false",
+            f"--manifest {image_name_with_tag}-manifest",
+            f"-t {image_name_with_tag}",
         )
-        if base_image_to_use:
-            build_cmd += f" --build-arg BASE_IMAGE={base_image_to_use}"
-        if build_cmd_addition:
-            build_cmd += build_cmd_addition
+    )
+    if base_image_to_use:
+        build_cmd += f" --build-arg BASE_IMAGE={base_image_to_use}"
+    if build_cmd_addition:
+        build_cmd += build_cmd_addition
+    try:
         result = run_in_shell(shell_cmd=build_cmd, check=False, text=True)
         if result.returncode != 0:
             context.notify_about_failed_build_and_terminate(

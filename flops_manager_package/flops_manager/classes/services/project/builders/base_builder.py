@@ -27,21 +27,26 @@ class FLOpsBaseImageBuilder(FLOpsProjectService, abc.ABC):
         if self.gets_loaded_from_db:
             return
 
-        if self.parent_app.verbose:  # type: ignore
+        assert self.parent_app
+        if self.parent_app.verbose:
             notify_project_observer(
-                flops_project_id=self.parent_app.flops_project_id,  # type: ignore
+                flops_project_id=self.parent_app.flops_project_id,
                 msg="New FLOps images need to be build. Start build delegation processes.",
             )
 
         super().model_post_init(_)
 
-        if self.parent_app.verbose:  # type: ignore
+        if self.parent_app.verbose:
             notify_project_observer(
-                flops_project_id=self.parent_app.flops_project_id,  # type: ignore
+                flops_project_id=self.parent_app.flops_project_id,
                 msg="New Builder service created & deployed",
             )
 
     def _prepare_cmd(self) -> str:
+        assert self.parent_app
+        supported_platforms = ",".join(
+            [platform.value for platform in self.parent_app.supported_platforms]
+        )
         return " ".join(
             (
                 "python3",
@@ -49,19 +54,21 @@ class FLOpsBaseImageBuilder(FLOpsProjectService, abc.ABC):
                 FLOPS_IMAGE_REGISTRY_URL,
                 self.flops_project_id,
                 FLOPS_MQTT_BROKER_IP,
-                self.project_observer_ip,  # type: ignore
+                self.project_observer_ip,
+                f"--supported_platforms={supported_platforms}",
             )
         )
 
     def _configure_sla_components(self) -> None:
-        parent_app_id = self.parent_app.app_id  # type: ignore
+        assert self.parent_app
+        parent_app_id = self.parent_app.app_id
         self.sla_components = SlaComponentsWrapper(
             core=SlaCore(
                 app_id=self.flops_project_id,
                 customerID=FLOPS_USER_ACCOUNT,
                 names=SlaNames(
-                    app_name=self.parent_app.app_name,  # type: ignore
-                    app_namespace=self.parent_app.namespace,  # type: ignore
+                    app_name=self.parent_app.app_name,
+                    app_namespace=self.parent_app.namespace,
                     service_name=f"builder{get_shortened_unique_id(parent_app_id)}",
                     service_namespace=self.namespace,
                 ),

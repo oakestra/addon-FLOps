@@ -7,7 +7,7 @@ from flops_manager.utils.common import get_shortened_unique_id
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
 from flops_manager.utils.sla.components import SlaComponentsWrapper, SlaCore, SlaDetails, SlaNames
 from flops_manager.utils.types import Application, PostTrainingSteps
-from flops_utils.types import FLOpsMode, MLModelFlavor
+from flops_utils.types import FLOpsMode, MLModelFlavor, PlatformSupport
 from pydantic import AliasChoices, BaseModel, Field
 
 # TODO/Future Work: Add additional Pydantic checking:
@@ -37,11 +37,11 @@ class _TrainingConfiguration(BaseModel):
         the root aggregator (RAg) and cluster aggregators (CAg).
         Example: training_cycles = 2, training_rounds = 3:
         - The first training cycle starts:
-          The learners train and share their results with their CAg.
-          After 3 such training rounds the aggregated cluster results are send to the RAg.
+            The learners train and share their results with their CAg.
+            After 3 such training rounds the aggregated cluster results are send to the RAg.
         - The second training cycle starts:
-          The learners train and share their results again with their CAg.
-          After 3 training rounds the aggregated cluster results are again send to the RAg.
+            The learners train and share their results again with their CAg.
+            After 3 training rounds the aggregated cluster results are again send to the RAg.
         - The whole training period has come to an end.
         """,
     )
@@ -72,6 +72,8 @@ class FLOpsProject(FLOpsApp):
     customer_id: str = Field(alias=AliasChoices("customer_id", "customerID"))  # type: ignore
     verbose: bool = False
     use_devel_base_images: bool = False
+    supported_platforms: List[PlatformSupport] = [PlatformSupport.LINUX_AMD64]
+
     ml_model_flavor: MLModelFlavor
 
     training_configuration: _TrainingConfiguration = _TrainingConfiguration()
