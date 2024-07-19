@@ -5,7 +5,7 @@
 # - MLflow (normal not skinny version)
 # NOTE: This combination is surprisingly rare.
 FROM ghcr.io/oakestra/addon-flops/aux-miniconda3:24.4.0-0
-LABEL org.opencontainers.image.source https://github.com/oakestra/addon-flops
+LABEL org.opencontainers.image.source=https://github.com/oakestra/addon-flops
 WORKDIR /image_builder
 
 RUN apt-get update && apt-get install -y \
@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y \
         git wget buildah \
         # Optional development dependencies:
         vim tree &&\
-    apt-get clean
+        apt-get clean
 
 RUN conda install -y \
         requests>=2.28.1 \

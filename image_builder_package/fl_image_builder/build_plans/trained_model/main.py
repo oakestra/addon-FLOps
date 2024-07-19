@@ -10,7 +10,7 @@ from image_management import build_image, push_image
 from utils.timeframes import (
     BUILD_IMAGE_TIMEFRAME,
     FULL_BUILDER_PROCESS_TIMEFRAME,
-    IMAGE_PUSH_TIMEFRAME,
+    PUSH_IMAGE_TIMEFRAME,
 )
 
 if TYPE_CHECKING:
@@ -32,9 +32,9 @@ def handle_trained_model_image_build(context: ContextTrainedModel) -> None:
         )
         context.timer.end_time_frame(BUILD_IMAGE_TIMEFRAME)
 
-        context.timer.start_new_time_frame(IMAGE_PUSH_TIMEFRAME)
+        context.timer.start_new_time_frame(PUSH_IMAGE_TIMEFRAME)
         push_image(context=context)
-        context.timer.end_time_frame(IMAGE_PUSH_TIMEFRAME)
+        context.timer.end_time_frame(PUSH_IMAGE_TIMEFRAME)
     except Exception as e:
         msg = "Something unexpected went wrong"
         logger.exception(msg)

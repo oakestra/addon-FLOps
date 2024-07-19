@@ -1,10 +1,11 @@
 import abc
 import sys
 from dataclasses import dataclass, field
-from typing import Callable, ClassVar
+from typing import Callable, ClassVar, List
 
 from flops_utils.mqtt_topics import Status, Subject, Topic
 from flops_utils.timer import Timer
+from flops_utils.types import PlatformSupport
 from notification_management import notify_manager, notify_observer
 
 
@@ -18,6 +19,7 @@ class Context(abc.ABC):
     mqtt_ip: str
     project_observer_ip: str
     deactivate_notifications: bool
+    supported_platforms: List[PlatformSupport]
     timer: Timer = field(default_factory=Timer, init=False)
     new_image_name_prefix: str = field(default="", init=False)
     new_image_tag: str = field(default="", init=False)

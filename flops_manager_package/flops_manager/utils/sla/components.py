@@ -5,6 +5,7 @@ from flops_manager.utils.types import ApplicationId
 from pydantic import BaseModel, Field
 
 FLOPS_LEARNER_ADDON_TYPE = "FLOps-learner"
+IMAGE_BUILDER_ADDON_TYPE = "image-builder"
 
 
 class SlaNames(NamedTuple):

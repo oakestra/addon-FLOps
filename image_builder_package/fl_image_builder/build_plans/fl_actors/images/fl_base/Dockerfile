@@ -8,10 +8,14 @@
 # TODO: Update this image to the latest version once this bug is fixed by conda.
 # Buggy images: 24.4.0-0, 24.3.0-0, 24.1.2-0 (maybe more)
 FROM ghcr.io/oakestra/addon-flops/aux-miniconda3:23.10.0-1
-LABEL org.opencontainers.image.source https://github.com/oakestra/addon-flops
+LABEL org.opencontainers.image.source=https://github.com/oakestra/addon-flops
 
 RUN apt-get update && apt-get install -y \
-        # Optinal development dependencies:
+        # Seem to be necessary for arm64.
+        gcc python3-dev \
+        # Necessary to avoid issues with conda/mamba.
+        libarchive13 \
+        # Optional development dependencies:
         vim tree &&\
     apt-get clean
 
@@ -19,14 +23,23 @@ COPY . /fl_base
 WORKDIR /fl_base
 RUN rm Dockerfile requirements.txt
 
-RUN conda env update --file ./conda.yaml &&\
+RUN conda install -n base conda-libmamba-solver &&\
+    # NOTE: AFAIK conda supports its classic solver which is (usually)
+    # more reliable, backward compatible, but also slower
+    # and the LibMamba solver which can be a lot faster yet less robust.
+    # https://conda.io/projects/conda/en/latest/dev-guide/deep-dives/solvers.html
+    # https://conda.github.io/conda-libmamba-solver/user-guide/
+    conda config --set solver libmamba &&\
     # https://flower.dev/docs/framework/how-to-install-flower.html
     conda config --add channels conda-forge &&\
     conda config --set channel_priority strict &&\
+    conda env update --file ./conda.yaml &&\
     conda install -y \
         # NOTE: This flwr version is the latest one that is available for the current base image.
         flwr=1.8.0 \
-        pydantic~=2.7.1
+        pydantic~=2.7.1 \
+        # NOTE: This dependency could be isolated and only used in the Learner.
+        pillow~=10.4.0
 
 # NOTE: For dependencies that cannot be installed via conda yet.    
 COPY requirements.txt .

@@ -5,6 +5,7 @@ from args_parser.trained_model import prepare_trained_model_argparsers
 from context.fl_actors import ContextFLActors
 from context.main import Context
 from context.trained_model import ContextTrainedModel
+from flops_utils.types import PlatformSupport
 
 
 def parse_arguments_and_set_context() -> Context:
@@ -23,6 +24,11 @@ def parse_arguments_and_set_context() -> Context:
     )
     parser.add_argument("project_observer_ip", type=str)
     parser.add_argument(
+        "--supported_platforms",
+        default=PlatformSupport.LINUX_AMD64.value,
+        help="A comma-separated list of supported/requested target platforms",
+    )
+    parser.add_argument(
         "--deactivate-notifications",
         action="store_true",
         default=False,
@@ -38,12 +44,16 @@ def parse_arguments_and_set_context() -> Context:
     prepare_trained_model_argparsers(subparsers)
 
     args = parser.parse_args()
+
     common_attributes = {
         "flops_project_id": args.flops_project_id,
         "image_registry_url": args.image_registry_url,
         "mqtt_ip": args.mqtt_ip,
         "project_observer_ip": args.project_observer_ip,
         "deactivate_notifications": args.deactivate_notifications,
+        "supported_platforms": [
+            PlatformSupport(platform) for platform in args.supported_platforms.split(",")
+        ],
     }
     if args.build_plan == "fl_actors":
         return ContextFLActors(

@@ -1,3 +1,4 @@
+import http
 from typing import List
 
 from flops_manager.classes.apps.app_base import FLOpsApp
@@ -5,9 +6,11 @@ from flops_manager.database.common import add_to_db, replace_in_db
 from flops_manager.ml_repo_management import get_latest_commit_hash
 from flops_manager.utils.common import get_shortened_unique_id
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
+from flops_manager.utils.exceptions.main import FLOpsManagerException
+from flops_manager.utils.exceptions.types import FlOpsExceptionTypes
 from flops_manager.utils.sla.components import SlaComponentsWrapper, SlaCore, SlaDetails, SlaNames
 from flops_manager.utils.types import Application, PostTrainingSteps
-from flops_utils.types import FLOpsMode, MLModelFlavor
+from flops_utils.types import FLOpsMode, MLModelFlavor, PlatformSupport
 from pydantic import AliasChoices, BaseModel, Field
 
 # TODO/Future Work: Add additional Pydantic checking:
@@ -37,11 +40,11 @@ class _TrainingConfiguration(BaseModel):
         the root aggregator (RAg) and cluster aggregators (CAg).
         Example: training_cycles = 2, training_rounds = 3:
         - The first training cycle starts:
-          The learners train and share their results with their CAg.
-          After 3 such training rounds the aggregated cluster results are send to the RAg.
+            The learners train and share their results with their CAg.
+            After 3 such training rounds the aggregated cluster results are send to the RAg.
         - The second training cycle starts:
-          The learners train and share their results again with their CAg.
-          After 3 training rounds the aggregated cluster results are again send to the RAg.
+            The learners train and share their results again with their CAg.
+            After 3 training rounds the aggregated cluster results are again send to the RAg.
         - The whole training period has come to an end.
         """,
     )
@@ -72,6 +75,10 @@ class FLOpsProject(FLOpsApp):
     customer_id: str = Field(alias=AliasChoices("customer_id", "customerID"))  # type: ignore
     verbose: bool = False
     use_devel_base_images: bool = False
+    supported_platforms: List[PlatformSupport] = Field(
+        default_factory=lambda: [PlatformSupport.LINUX_AMD64]
+    )
+
     ml_model_flavor: MLModelFlavor
 
     training_configuration: _TrainingConfiguration = _TrainingConfiguration()
@@ -90,6 +97,14 @@ class FLOpsProject(FLOpsApp):
     def model_post_init(self, _):
         if self.gets_loaded_from_db:
             return
+
+        # NOTE: This check can/should be refactored via a proper Pydantic approach.
+        if self.use_devel_base_images and self.supported_platforms != [PlatformSupport.LINUX_AMD64]:
+            raise FLOpsManagerException(
+                flops_exception_type=FlOpsExceptionTypes.INITIAL_PROJECT_SLA_MISCONFIGURATION,
+                http_status=http.HTTPStatus.BAD_REQUEST,
+                text="Development Base Images can only be used for Linux/amd64.",
+            )
 
         self.ml_repo_latest_commit_hash = get_latest_commit_hash(self.ml_repo_url)
         flops_db_id = add_to_db(self)

@@ -15,3 +15,4 @@ class FlOpsExceptionTypes(CustomEnum):
     SERVICE_DEPLOYMENT = "Deploying Service"
     SERVICE_UNDEPLOYMENT = "Undeploying Service"
     ACTIVE_CLUSTERS = "Active Clusters"
+    INITIAL_PROJECT_SLA_MISCONFIGURATION = "initial_project_sla_misconfiguration"

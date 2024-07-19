@@ -31,13 +31,25 @@ def build_image(
     if should_notify_observer:
         notify_observer(context=context, msg=build_start_msg)
     logger.info(build_start_msg)
+    platforms = " ".join(
+        [f"--platform {platform.value}" for platform in context.supported_platforms]
+    )
+    # TODO read further about buildah options/flags - might improve the build further.
+    build_cmd = " ".join(
+        (
+            "buildah build",
+            platforms,
+            "--isolation=chroot",
+            "--tls-verify=false",
+            f"--manifest {image_name_with_tag}-manifest",
+            f"-t {image_name_with_tag}",
+        )
+    )
+    if base_image_to_use:
+        build_cmd += f" --build-arg BASE_IMAGE={base_image_to_use}"
+    if build_cmd_addition:
+        build_cmd += build_cmd_addition
     try:
-        # TODO read further about buildah options/flags - might improve the build further.
-        build_cmd = f"buildah build --isolation=chroot -t {image_name_with_tag}"
-        if base_image_to_use:
-            build_cmd += f" --build-arg BASE_IMAGE={base_image_to_use}"
-        if build_cmd_addition:
-            build_cmd += build_cmd_addition
         result = run_in_shell(shell_cmd=build_cmd, check=False, text=True)
         if result.returncode != 0:
             context.notify_about_failed_build_and_terminate(
@@ -57,8 +69,20 @@ def build_image(
 def push_image(context: Context, image_name_with_tag: str = "") -> None:
     image_name_with_tag = image_name_with_tag or context.get_image_name()
     logger.info(f"Start pushing image '{image_name_with_tag}'")
+    cmd = " ".join(
+        (
+            "buildah",
+            "manifest push",
+            "--tls-verify=false",
+            "--all",
+            f"{image_name_with_tag}-manifest",
+            # https://github.com/containers/image/blob/main/docs/containers-transports.5.md#dockerdocker-reference
+            f"docker://{image_name_with_tag}",
+        )
+    )
+
     try:
-        run_in_shell(f"buildah push --tls-verify=false  {image_name_with_tag}")
+        run_in_shell(cmd)
     except Exception as e:
         context.notify_about_failed_build_and_terminate(
             f"Failed to push '{image_name_with_tag}' to image registry; '{e}'"

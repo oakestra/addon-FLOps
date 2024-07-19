@@ -1,6 +1,6 @@
 ARG BASE_IMAGE
 FROM ${BASE_IMAGE}
-LABEL org.opencontainers.image.source https://github.com/oakestra/addon-flops
+LABEL org.opencontainers.image.source=https://github.com/oakestra/addon-flops
 
 RUN conda clean -tipy
 WORKDIR /fl_learner

@@ -1,5 +1,5 @@
 FROM python:3.10-slim-buster
-LABEL org.opencontainers.image.source https://github.com/oakestra/addon-flops
+LABEL org.opencontainers.image.source=https://github.com/oakestra/addon-flops
 
 # To be able to use MySQL for MLflow we need to install multiple python dependencies.
 RUN pip install \

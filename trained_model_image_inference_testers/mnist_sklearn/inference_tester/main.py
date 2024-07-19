@@ -25,7 +25,9 @@ while True:
     df = pd.DataFrame([flattened_image_data])
     csv_data = df.to_csv(index=False)
 
-    model_server_url = get_env_var(name="TRAINED_MODEL_URL", default="http://192.168.178.44:8080")
+    model_server_url = get_env_var(
+        name="TRAINED_MODEL_URL",  # Example: "http://192.168.178.44:8080"
+    )
 
     logger.info("Sending inference request to the trained model container")
     headers = {"Content-Type": "text/csv"}
