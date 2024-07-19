@@ -52,8 +52,7 @@ def parse_arguments_and_set_context() -> Context:
         "project_observer_ip": args.project_observer_ip,
         "deactivate_notifications": args.deactivate_notifications,
         "supported_platforms": [
-            PlatformSupport(platform)
-            for platform in args.supported_platforms.split(",")
+            PlatformSupport(platform) for platform in args.supported_platforms.split(",")
         ],
     }
     if args.build_plan == "fl_actors":

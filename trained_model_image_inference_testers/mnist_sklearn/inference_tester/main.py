@@ -26,7 +26,7 @@ while True:
     csv_data = df.to_csv(index=False)
 
     model_server_url = get_env_var(
-        name="TRAINED_MODEL_URL", default="http://192.168.178.44:8080"
+        name="TRAINED_MODEL_URL",  # Example: "http://192.168.178.44:8080"
     )
 
     logger.info("Sending inference request to the trained model container")

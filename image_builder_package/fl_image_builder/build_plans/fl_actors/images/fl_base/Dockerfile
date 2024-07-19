@@ -39,8 +39,7 @@ RUN conda install -n base conda-libmamba-solver &&\
         flwr=1.8.0 \
         pydantic~=2.7.1 \
         # NOTE: This dependency could be isolated and only used in the Learner.
-        pillow
-        #pillow~=10.4.0
+        pillow~=10.4.0
 
 # NOTE: For dependencies that cannot be installed via conda yet.    
 COPY requirements.txt .
