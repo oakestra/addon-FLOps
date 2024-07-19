@@ -8,9 +8,10 @@ from build_plans.fl_actors.repo_management import check_cloned_repo, clone_repo
 from flops_utils.logging import logger
 from image_management import push_image
 from utils.timeframes import (
+    ACTOR_IMAGES_PUSH_TIMEFRAME,
+    BASE_IMAGE_PUSH_TIMEFRAME,
     BUILD_PREPARATION_TIMEFRAME,
     FULL_BUILDER_PROCESS_TIMEFRAME,
-    IMAGE_PUSH_TIMEFRAME,
 )
 
 if TYPE_CHECKING:
@@ -43,14 +44,15 @@ def handle_fl_actor_images_build(context: ContextFLActors) -> None:
         context.timer.end_time_frame(BUILD_PREPARATION_TIMEFRAME)
 
         build_base_image(context)
+        context.timer.start_new_time_frame(BASE_IMAGE_PUSH_TIMEFRAME)
         push_image(
             context=context,
             image_name_with_tag=context.get_base_image_name(),
         )
+        context.timer.end_time_frame(BASE_IMAGE_PUSH_TIMEFRAME)
 
         build_fl_actor_images(context)
-
-        context.timer.start_new_time_frame(IMAGE_PUSH_TIMEFRAME)
+        context.timer.start_new_time_frame(ACTOR_IMAGES_PUSH_TIMEFRAME)
         push_image(
             context=context,
             image_name_with_tag=context.get_learner_image_name(),
@@ -59,7 +61,7 @@ def handle_fl_actor_images_build(context: ContextFLActors) -> None:
             context=context,
             image_name_with_tag=context.get_aggregator_image_name(),
         )
-        context.timer.end_time_frame(IMAGE_PUSH_TIMEFRAME)
+        context.timer.end_time_frame(ACTOR_IMAGES_PUSH_TIMEFRAME)
     except Exception as e:
         msg = "Something unexpected went wrong"
         logger.exception(msg)

@@ -9,7 +9,7 @@ from build_plans.fl_actors.paths import (
     FL_LEARNER_IMAGE_PATH,
 )
 from image_management import build_image
-from utils.timeframes import BASE_IMAGE_BUILD_TIMEFRAME, BUILD_ALL_IMAGES_TIMEFRAME
+from utils.timeframes import ACTOR_IMAGES_BUILD_TIMEFRAME, BASE_IMAGE_BUILD_TIMEFRAME
 
 if TYPE_CHECKING:
     from context.fl_actors import ContextFLActors
@@ -57,7 +57,7 @@ def _build_fl_actor_image(
 
 
 def build_fl_actor_images(context: ContextFLActors) -> None:
-    context.timer.start_new_time_frame(BUILD_ALL_IMAGES_TIMEFRAME)
+    context.timer.start_new_time_frame(ACTOR_IMAGES_BUILD_TIMEFRAME)
     # NOTE: Using the following base-image approach works great for
     # images with only a single target architecture.
     # Once you use multiple --platforms or even the --all-platforms flags
@@ -101,4 +101,4 @@ def build_fl_actor_images(context: ContextFLActors) -> None:
         image_name_with_tag=context.get_aggregator_image_name(),
         base_image_to_use=context.get_base_image_name(),
     )
-    context.timer.end_time_frame(BUILD_ALL_IMAGES_TIMEFRAME)
+    context.timer.end_time_frame(ACTOR_IMAGES_BUILD_TIMEFRAME)
