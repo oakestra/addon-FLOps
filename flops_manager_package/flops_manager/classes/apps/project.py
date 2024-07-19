@@ -1,3 +1,4 @@
+import http
 from typing import List
 
 from flops_manager.classes.apps.app_base import FLOpsApp
@@ -5,6 +6,8 @@ from flops_manager.database.common import add_to_db, replace_in_db
 from flops_manager.ml_repo_management import get_latest_commit_hash
 from flops_manager.utils.common import get_shortened_unique_id
 from flops_manager.utils.constants import FLOPS_USER_ACCOUNT
+from flops_manager.utils.exceptions.main import FLOpsManagerException
+from flops_manager.utils.exceptions.types import FlOpsExceptionTypes
 from flops_manager.utils.sla.components import SlaComponentsWrapper, SlaCore, SlaDetails, SlaNames
 from flops_manager.utils.types import Application, PostTrainingSteps
 from flops_utils.types import FLOpsMode, MLModelFlavor, PlatformSupport
@@ -94,6 +97,14 @@ class FLOpsProject(FLOpsApp):
     def model_post_init(self, _):
         if self.gets_loaded_from_db:
             return
+
+        # NOTE: This check can/should be refactored via a proper Pydantic approach.
+        if self.use_devel_base_images and self.supported_platforms != [PlatformSupport.LINUX_AMD64]:
+            raise FLOpsManagerException(
+                flops_exception_type=FlOpsExceptionTypes.INITIAL_PROJECT_SLA_MISCONFIGURATION,
+                http_status=http.HTTPStatus.BAD_REQUEST,
+                text="Development Base Images can only be used for Linux/amd64.",
+            )
 
         self.ml_repo_latest_commit_hash = get_latest_commit_hash(self.ml_repo_url)
         flops_db_id = add_to_db(self)
