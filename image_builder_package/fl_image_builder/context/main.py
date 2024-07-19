@@ -19,7 +19,7 @@ class Context(abc.ABC):
     mqtt_ip: str
     project_observer_ip: str
     deactivate_notifications: bool
-    supported_platforms: List[PlatformSupport] = [PlatformSupport.LINUX_AMD64]
+    supported_platforms: List[PlatformSupport]
     timer: Timer = field(default_factory=Timer, init=False)
     new_image_name_prefix: str = field(default="", init=False)
     new_image_tag: str = field(default="", init=False)

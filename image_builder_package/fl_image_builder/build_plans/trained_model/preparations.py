@@ -21,6 +21,36 @@ MODEL_ARTIFACT_NAME = "logged_model_artifact"
 DOWNLOADED_MODEL_DIR = pathlib.Path("downloaded_model")
 
 
+def _augment_dockerfile() -> None:
+    """The MLflow created Dockerfile is not capable to be used
+    for multi-platform (especially arm) builds.
+    We augment it to enable multi-platform support."""
+
+    DOCKERFILE_PATH = DOCKERFILE_DIR / "Dockerfile"
+    with open(DOCKERFILE_PATH, "r") as file:
+        dockerfile_lines = file.readlines()
+
+    from_index = None
+    for i, line in enumerate(dockerfile_lines):
+        if line.strip().startswith("FROM"):
+            from_index = i
+            break
+
+    assert from_index
+    multi_platform_fix = " ".join(
+        (
+            "RUN",
+            "apt-get update",
+            "&& apt-get install -y",
+            "gcc python3-dev",
+            "&& apt-get clean",
+        )
+    )
+    dockerfile_lines.insert(from_index + 1, f"\n{multi_platform_fix}\n")
+    with open(DOCKERFILE_PATH, "w") as file:
+        file.writelines(dockerfile_lines)
+
+
 def _create_dockerfile() -> None:
     shell_cmd = " ".join(
         (
@@ -31,6 +61,7 @@ def _create_dockerfile() -> None:
     )
     # NOTE: We have to run this cmd via shell because there is no equivalent python API yet.
     run_in_shell(shell_cmd=shell_cmd)
+    _augment_dockerfile()
 
 
 def _prepare_new_image_name(context: ContextTrainedModel) -> None:

@@ -72,7 +72,9 @@ class FLOpsProject(FLOpsApp):
     customer_id: str = Field(alias=AliasChoices("customer_id", "customerID"))  # type: ignore
     verbose: bool = False
     use_devel_base_images: bool = False
-    supported_platforms: List[PlatformSupport] = [PlatformSupport.LINUX_AMD64]
+    supported_platforms: List[PlatformSupport] = Field(
+        default_factory=lambda: [PlatformSupport.LINUX_AMD64]
+    )
 
     ml_model_flavor: MLModelFlavor
 
