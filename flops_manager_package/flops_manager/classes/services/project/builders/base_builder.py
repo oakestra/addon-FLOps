@@ -82,9 +82,12 @@ class FLOpsBaseImageBuilder(FLOpsProjectService, abc.ABC):
             ),
             details=SlaDetails(
                 resources=SlaResources(
-                    memory=2000,
-                    vcpus=1,
-                    storage=15000,
+                    # TODO fine-tune -> Currently the Trained-Model Image Builder
+                    # has a flaky deployment behavior "NoActiveClustersWithCapacity" is shown
+                    # but when undeploy and redeploy manually it works.
+                    memory=0,  # 2000,
+                    vcpus=0,  # 1,
+                    storage=0,  # 15000,
                 ),
                 privileged=True,
                 constraints=[AddonConstraint(needs=[IMAGE_BUILDER_ADDON_TYPE])],

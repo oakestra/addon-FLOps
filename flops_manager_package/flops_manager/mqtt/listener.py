@@ -38,6 +38,8 @@ def _on_new_message(client, userdata, message) -> None:
             case SupportedTopic.TRAINED_MODEL_IMAGE_BUILDER_FAILED.value:
                 TrainedModelImageBuilder.handle_builder_failed(builder_failed_msg=data)
 
+            case SupportedTopic.AGGREGATOR_STARTED.value:
+                logger.info("Aggregator Started")
             case SupportedTopic.AGGREGATOR_SUCCESS.value:
                 handle_aggregator_success(data)
             case SupportedTopic.AGGREGATOR_FAILED.value:

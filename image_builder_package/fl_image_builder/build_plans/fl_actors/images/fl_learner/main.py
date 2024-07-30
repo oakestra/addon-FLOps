@@ -5,6 +5,7 @@ import flwr
 import grpc
 import grpc._channel
 from context import get_context
+from flops_utils.logging import logger
 from flops_utils.ml_repo_files_proxy import get_model_manager
 from utils.arg_parsing import parse_args
 
@@ -12,8 +13,10 @@ from utils.arg_parsing import parse_args
 class Learner(flwr.client.NumPyClient):
 
     def __init__(self):
+        logger.debug("Start Learner Init")
         self.model_manager = get_model_manager()
         self.model_manager.set_model_data()
+        logger.debug("Finished Learner Init")
 
     def get_parameters(self, config=None) -> Any:
         return self.model_manager.get_model_parameters()
@@ -56,14 +59,18 @@ def _start_fl_learner() -> None:
                 client=Learner(),
             )
         except grpc._channel._MultiThreadedRendezvous as e:
+            logger.warning("GRPC Channel Exception Detected")
             if e.code() == grpc.StatusCode.UNAVAILABLE:
+                logger.warning(f"grpc.StatusCode.UNAVAILABLE - retrying in '{retry_delay}' s")
                 # NOTE: This exact exception occurs if the Learner cannot reach the Aggregator.
                 # The main reason why this can be is if the Learner service/image starts
                 # (e.g. gets pulled) faster than the Aggregator service/image.
                 time.sleep(retry_delay)
                 continue
+            logger.error("Unexpected GRPC Channel Exception Detected")
             raise e
         except Exception as e:
+            logger.error("Unexpected Exception Detected")
             raise e
 
 

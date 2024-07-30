@@ -5,8 +5,10 @@ import flwr as fl
 import mlflow
 from flops_utils.logging import logger
 from flops_utils.ml_repo_files_proxy import get_model_manager
+from flops_utils.mqtt_topics import SupportedTopic
 from flops_utils.notifications import notify_project_observer
 from notification_management import (
+    builder_notify_flops_manager,
     notify_about_failure_and_terminate,
     notify_about_successful_completion,
 )
@@ -25,6 +27,10 @@ def start_fl_server(aggregator_context: AggregatorContext, strategy, rounds):
         notify_project_observer(
             project_observer_ip=aggregator_context.project_observer_ip,
             msg=f"{FL_START_INFO_TEXT}\n '{aggregator_context.mlflow_tracking_server_url}'",
+        )
+        builder_notify_flops_manager(
+            aggregator_context=aggregator_context,
+            topic=SupportedTopic.AGGREGATOR_STARTED,
         )
     fl.server.start_server(
         server_address="0.0.0.0:8080",
