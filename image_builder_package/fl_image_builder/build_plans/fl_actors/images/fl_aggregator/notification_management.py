@@ -17,10 +17,14 @@ def builder_notify_flops_manager(
         **({"loss": winner_model.loss} if winner_model and winner_model.loss else {}),
         **(
             {"experiment_id": winner_model.experiment_id}
-            if aggregator_context.should_use_mlflow
+            if aggregator_context.should_use_mlflow and winner_model and winner_model.experiment_id
             else {}
         ),
-        **({"run_id": winner_model.run_id} if aggregator_context.should_use_mlflow else {}),
+        **(
+            {"run_id": winner_model.run_id}
+            if aggregator_context.should_use_mlflow and winner_model and winner_model.experiment_id
+            else {}
+        ),
     }
 
     notify_flops_manager(
