@@ -29,17 +29,21 @@ def _on_new_message(client, userdata, message) -> None:
             case SupportedTopic.PROJECT_OBSERVER_FAILED.value:
                 logger.critical(data)
 
+            case SupportedTopic.FL_ACTORS_IMAGE_BUILDER_STARTED.value:
+                logger.info("FL_ACTORS_IMAGE_BUILDER_STARTED")
             case SupportedTopic.FL_ACTORS_IMAGE_BUILDER_SUCCESS.value:
                 FLActorsImageBuilder.handle_builder_success(builder_success_msg=data)
             case SupportedTopic.FL_ACTORS_IMAGE_BUILDER_FAILED.value:
                 FLActorsImageBuilder.handle_builder_failed(builder_failed_msg=data)
+            case SupportedTopic.TRAINED_MODEL_IMAGE_BUILDER_STARTED.value:
+                logger.info("TRAINED_MODEL_IMAGE_BUILDER_STARTED")
             case SupportedTopic.TRAINED_MODEL_IMAGE_BUILDER_SUCCESS.value:
                 TrainedModelImageBuilder.handle_builder_success(builder_success_msg=data)
             case SupportedTopic.TRAINED_MODEL_IMAGE_BUILDER_FAILED.value:
                 TrainedModelImageBuilder.handle_builder_failed(builder_failed_msg=data)
 
             case SupportedTopic.AGGREGATOR_STARTED.value:
-                logger.info("Aggregator Started")
+                logger.info("AGGREGATOR_STARTED")
             case SupportedTopic.AGGREGATOR_SUCCESS.value:
                 handle_aggregator_success(data)
             case SupportedTopic.AGGREGATOR_FAILED.value:
