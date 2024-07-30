@@ -75,3 +75,12 @@ class Context(abc.ABC):
             msg_payload=msg_payload,
         )
         notify_observer(context=self, msg=str(msg_payload))
+
+    def notify_about_started_builder_process(self) -> None:
+        notify_manager(
+            context=self,
+            topic=Topic(
+                subject=self.mqtt_subject,
+                status=Status.STARTED,
+            ).find_matching_supported_topic(),
+        )

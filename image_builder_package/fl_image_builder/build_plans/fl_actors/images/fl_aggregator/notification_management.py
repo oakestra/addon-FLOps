@@ -5,7 +5,7 @@ from flops_utils.notifications import notify_flops_manager, notify_project_obser
 from utils.aggregator_context import AggregatorContext
 
 
-def _notify_flops_manager(
+def builder_notify_flops_manager(
     aggregator_context: AggregatorContext,
     topic: SupportedTopic,
     error_msg: str = "",
@@ -33,7 +33,7 @@ def _notify_flops_manager(
 
 
 def notify_about_successful_completion(aggregator_context: AggregatorContext) -> None:
-    _notify_flops_manager(
+    builder_notify_flops_manager(
         aggregator_context=aggregator_context,
         topic=SupportedTopic.AGGREGATOR_SUCCESS,
     )
@@ -65,7 +65,7 @@ def notify_about_failure_and_terminate(
     aggregator_context: AggregatorContext,
     error_msg: str,
 ) -> None:
-    _notify_flops_manager(
+    builder_notify_flops_manager(
         aggregator_context=aggregator_context,
         topic=SupportedTopic.AGGREGATOR_FAILED,
         error_msg=error_msg,

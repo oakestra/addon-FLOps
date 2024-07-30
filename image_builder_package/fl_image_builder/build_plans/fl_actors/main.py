@@ -35,7 +35,7 @@ def _prepare_new_image_names(context: ContextFLActors) -> None:
 
 
 def handle_fl_actor_images_build(context: ContextFLActors) -> None:
-    context.notify_about_started_image_build_process()
+    context.notify_about_started_builder_process()
     context.timer.start_new_time_frame(FULL_BUILDER_PROCESS_TIMEFRAME)
     try:
         context.timer.start_new_time_frame(BUILD_PREPARATION_TIMEFRAME)

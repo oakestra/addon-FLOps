@@ -18,8 +18,8 @@ if TYPE_CHECKING:
 
 
 def handle_trained_model_image_build(context: ContextTrainedModel) -> None:
+    context.notify_about_started_builder_process()
     context.timer.start_new_time_frame(FULL_BUILDER_PROCESS_TIMEFRAME)
-    logger.debug("Start handling trained model image build process")
     try:
         prepare_build(context=context)
 
