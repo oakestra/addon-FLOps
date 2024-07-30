@@ -61,7 +61,10 @@ def handle_aggregator(
 
     try:
         model_manager = model_manager or get_model_manager()
-        if not aggregator_context.track_locally and aggregator_context.should_use_mlflow:
+        if (
+            not aggregator_context.track_locally
+            and aggregator_context.should_use_mlflow
+        ):
             mlflow.set_tracking_uri(aggregator_context.mlflow_tracking_server_url)
         if aggregator_context.should_use_mlflow:
             # NOTE: A MLflow experiment consists of multiple runs.
@@ -73,7 +76,9 @@ def handle_aggregator(
             aggregator_context=aggregator_context,
             model_manager=model_manager,
             mlflow_experiment_id=(
-                mlflow_experiment.experiment_id if aggregator_context.should_use_mlflow else None
+                mlflow_experiment.experiment_id
+                if aggregator_context.should_use_mlflow
+                else None
             ),
             # NOTE: The Flower Strategy lacks the notion of the number of expected training rounds.
             requested_total_number_of_training_rounds=aggregator_context.training_iterations,
