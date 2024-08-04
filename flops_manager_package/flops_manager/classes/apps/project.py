@@ -72,7 +72,10 @@ class FLOpsProject(FLOpsApp):
 
     namespace = "proj"
 
-    customer_id: str = Field(alias=AliasChoices("customer_id", "customerID"))  # type: ignore
+    customer_id: str = Field(
+        default="Admin",
+        alias=AliasChoices("customer_id", "customerID"),  # type: ignore
+    )
     verbose: bool = False
     use_devel_base_images: bool = False
     supported_platforms: List[PlatformSupport] = Field(

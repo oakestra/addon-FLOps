@@ -18,7 +18,7 @@ from pydantic import Field
 class TrainedModel(FLOpsService):
     namespace = "trmodel"
     parent_app: Optional[FLOpsHelperApp] = Field(default=None, exclude=True, repr=False)
-    image_name: str
+    image_name: str = ""
 
     ip: str = Field("", init=False)
 

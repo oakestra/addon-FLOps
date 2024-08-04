@@ -22,7 +22,10 @@ class TrackingServer(FLOpsService):
     namespace = "tracking"
 
     parent_app: Optional[FLOpsObservatory] = Field(default=None, exclude=True, repr=False)
-    customer_id: str = Field(alias=AliasChoices("customer_id", "customerID"))  # type: ignore
+    customer_id: str = Field(
+        default="Admin",
+        alias=AliasChoices("customer_id", "customerID"),  # type: ignore
+    )
 
     ip: str = Field("", init=False)
 
