@@ -1,5 +1,27 @@
-% !TeX root = ../main.tex
+% Background Flow - how ideas are interconnected 
+% + good place to mention resources I used (mostly papers, etc.)
+% How the idea of FLOps came to be + motivation
+% BigData + Industry X.0 + 5/6G, etc -> more data -> boom in AI/ML
+% conflict with privacy & laws & regulations -> FL
+% FL - Basics (as a solution for laws & privacy)
+% FL - focus (especially in research) on complex algo optimization etc - neglect of making this easy to use - accessible
+% -> discuss similar problem with ML -> raise of MLOps
+% To understand/explain MLOps one needs to understand DevOps
+% One of the key things in devops is automation & ease-of use
+% for the developer/development or end-user 
+% CLI, pipelines, containerization (anywhere-anytime)
+% manage all these moving FL components - need orchestration
+% FL primarily focused on edge - use edge friendly orchestrator
+% -> Oakestra
+
+% Still need a place to put motivation (where to motivate showcase problems -> most likely here (?))
+% also still need a place to discuss Related Works (the few quite similar ones)
+
 
 \chapter{Background}\label{chapter:background}
 
-%TODO
+\input{chapters/background/sections/federated_learning.tex}
+
+\input{chapters/background/sections/mlops.tex}
+
+\input{chapters/background/sections/orchestration.tex}
