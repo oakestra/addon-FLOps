@@ -1,36 +1,50 @@
-% ~ max 1 page
-% novel open-source "proof-of-concept" foundational work to 
-% enable real FL (not simulations) to be used/developed/tested 
-% in an automated way - including orchestration
-% users do not even need expert knowlege of FL (or how to set it up / configure)
-% they simply provide ML code that has to "match" a specific structure
-% the rest gets automated for the user
-% including building a containerized image - FL env
-% which wrapps the original (data-less) ML code with all necessary FL tooling
-% to enable FL + handles dependency-management to have a proper image with best practices
-% (try to be as light-weight as possible) - many users might lack know-how how to containerize their ML code
-% and especially do this well - how to handle dependencies, etc.
-
-% automated orchestration & handling of all FL components for the user
-% provide SOTA GUI (mlflow) MLOps tooling to observer progress in real-time
-% analyse progress - safe/export/store/share findings, metrics, trained model
-
-% support HFL (first-ever via Flower)
-% (mix of FL + MLflow)
-
-% support for multi-platform (edge)
-
-% first ever FLOps software
-
-% allows to automatically build an inference server/service based on the trained model
-% and deploy it to test/use it straight away
-
-% On top of all that "Dev"Ops - big focus on making the development of this "foundational system"
-% easy - high code quality - automatic - ready made services & images (Mock Data Provider, Inference Reference Service)
-% (also base-images for faster development cycles)
-% + new Oakestra CLI to interact with this very easily 
-
 % maybe merge in "Objectives" chapter from BA in here
 % i.e. start with what were we intended to do and what did we do to resolve that?
 
 \section{Contribution}
+In this thesis we introduce FLOps, a novel open-source foundational work and proof-of-concept
+that enables real (not simulated) FL to be used, developed and evaluated.
+FLOps enriches FL with best SOTA practices from the realms of automation, DevOps/MLOps, and orchestration.
+FLOps is intended to be easy to use for people without previous expert knowlege in FL, MLOps or orchestration.
+Users can simply provide their ML code in form of a git repository (e.g. in GitHub)
+as long as this code satisfies some simple structural prerequisites.
+This repo code gets automatically augmented by FLOps to support FL.
+FLOps creates a containerized Image with all necessary dependencies to do FL training.
+These images get automatically build and follow best practices to be as fast and light-weight as possible.
+These images can be build for multiple different target platforms.
+Thus enabling FL component images to run e.g. on arm devices like PIs or Nvidia Jetsons.
+With the help of Oakestra deployes and orchestrates these FL components.
+FLOps automatically performs FL training.
+This training process can be observed during runtime via the use of SOTA MLOps tools like MLflow,
+which offers a sophisticated GUI where users can observe, compare, store, export, share, and organize training runs, metrics, and trained models.
+
+FLOps uses Flower as a FL framework which so far does not support Hierarchical FL.
+As far as we know, FLOps is the first work that combines Flower and MLflow and allows HFL.
+
+As far as we know, the term FLOps (besides the unit of how powerful something can compute things)
+has not been used, thus this work is called FLOps but should also open the door into future exiting
+developments for dedicated ML/Dev-Ops practices specifically for FL.
+
+FLOps also allows to automatically build an inference server/service based on the trained model.
+This image can then be pulled like any other image by the user and used for arbitrary purposes.
+If the user requests it FLOps can also directly deploy this trained-model image as an inference service in Oakestra.
+
+Besides the end-user perspective FLOps is intended to be a foundational piece of software
+that should be easily modifiable and extendable for developers and researchers.
+We put a lot of effort into writing high quality code, using SOTA libraries and frameworks.
+We also added many developent friendly features into FLOps.
+E.g. enforced proper styling and typing via formatters and linters, including CI.
+We createad ready-made static images and services that can be used and extended to automate development and evaluation workflows.
+E.g. we have a Mock-Data-Provider image/service that can act as a data provider to populate the data used for FL training.
+Or the Inference Service that can be deployed with the base case FLOps project to 
+verify that the trained model works as expected and is able to properly do inference serving.
+All these images support arm and amd architectures.
+
+We also add base-images with optinal development flags to speed up build and execution times of FLOps
+so that developers can verify and check their changes more rapidly.
+
+On top of that we also implemented a new CLI tool for Oakestra from scratch
+that is used to interact with Oakestra's and FLOps API.
+Besides that this configurable CLI tool also is capable of visualizing 
+current proceses in a human friendly way in real time as well as trigger evaluation runs and
+other automated tasks like installing necessary dependencies onto the local machine.

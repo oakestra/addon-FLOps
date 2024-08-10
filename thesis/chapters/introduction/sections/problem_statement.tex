@@ -1,15 +1,30 @@
-% ~ 1 Page
 % ~ Focus on (current) Problems with 
-
-% conflict with privacy & laws & regulations -> FL
-% ML/FL
-% Data/Privacy/Laws
-% Convenience-Userfriendliness
-% Lack of reserach & focus in making FL
-% easy to use
-% reproducable
-% automate repetetive steps 
-% "dev-ops" ready
 % (also keep an eye on the motivation page for ideas - "mirror")
 
 \section{Problem Statement}
+
+With great access to data comes great responsibility that can be easily exploited.
+Many of the aforementioned machines are personal user devices that store and handle sensitive private data.
+In Classical Machine Learning data gets send from client devices to a server where for training the ML model or performing inference serving.
+This enables direct access to this sensitive data as well as the power to trace it back.
+Thus creating a breach of privacy.
+
+Governments and organisations have put laws and regulations in place to prohibit such potential abuse.
+
+Federated Learning (FL) is one possible solution to still be able to utilize sensitive data.
+Instead of collecting the data on a server and training ML models there the training occurs directly on the client devices.
+Afterwards the individually trained models get send to the server who combines the collected models into a single global one.
+This global model can be then distributed to the clients again for further training cycles.
+Therefore enabling a way to train a shared global model on sensitive data while keeping the sensitive data secure on the local client devices.
+
+Because FL is a rather modern technique it lacks in regards of being easy to set up and utilize.
+It lacks sophisticated tooling to increase ease of access and use.
+There is a lot of research being done in the realm of FL.
+The majority of researchers in this field focus on improving existing FL components, strategies, and algorithms or inventing better alternatives.
+Is is very rare to see work that focuses on the actual initial setup, deployment, or improvment of usability of FL.
+As a result contributing in the field of FL or simply reproducing findings is a task that ranges from non-trivial to completely undocumented blackbox, thus not reproducable.
+Instead of using common tooling to catalyze one's work to be able to quicker get started with doing new novel work.
+One needs to reinvent the wheel of how to setup and manage one's FL.
+I.e. There is a big lack of unity and automation in the realm of FL.
+
+So FL is lacking the bare-bone tools to easily work on it - not even to mention more advanced techniques to increase productivity and effectiveness that other domains are already using for ages.
