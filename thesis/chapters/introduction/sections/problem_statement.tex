@@ -4,27 +4,51 @@
 \section{Problem Statement}
 
 With great access to data comes great responsibility that can be easily exploited.
-Many of the aforementioned machines are personal user devices that store and handle sensitive private data.
-In Classical Machine Learning data gets send from client devices to a server where for training the ML model or performing inference serving.
-This enables direct access to this sensitive data as well as the power to trace it back.
-Thus creating a breach of privacy.
+Many of the aforementioned machines are personal user devices or belong to
+companies and organizations that handle customer or internal resources.
+These devices store and handle sensitive private data.
 
-Governments and organisations have put laws and regulations in place to prohibit such potential abuse.
+In classical Machine Learning, data gets sent from client devices to a centralized server.
+The collected data is used on the server to train ML models or perform inference serving.
+This approach provides direct access to this sensitive data and the power to trace it back,
+creating a breach of privacy. \cite{book:fl}
 
-Federated Learning (FL) is one possible solution to still be able to utilize sensitive data.
-Instead of collecting the data on a server and training ML models there the training occurs directly on the client devices.
-Afterwards the individually trained models get send to the server who combines the collected models into a single global one.
-This global model can be then distributed to the clients again for further training cycles.
-Therefore enabling a way to train a shared global model on sensitive data while keeping the sensitive data secure on the local client devices.
+Governments and organizations have established laws and regulations to prohibit
+potential abuse of sensitive data.
+Examples include the European Parliament regulation to protect personal data \cite{eu_regulation}
+or the California Consumer Privacy Act (CCPA) \cite{california_consumer_privacy_act}.
+These restrictions also aim to allow cooperation between nations and organizations while protecting trade secrets.
+However, some laws and regulations even prohibit sharing or moving data to other countries. \cite{book:fl}
 
-Because FL is a rather modern technique it lacks in regards of being easy to set up and utilize.
-It lacks sophisticated tooling to increase ease of access and use.
-There is a lot of research being done in the realm of FL.
-The majority of researchers in this field focus on improving existing FL components, strategies, and algorithms or inventing better alternatives.
-Is is very rare to see work that focuses on the actual initial setup, deployment, or improvment of usability of FL.
-As a result contributing in the field of FL or simply reproducing findings is a task that ranges from non-trivial to completely undocumented blackbox, thus not reproducable.
-Instead of using common tooling to catalyze one's work to be able to quicker get started with doing new novel work.
-One needs to reinvent the wheel of how to setup and manage one's FL.
-I.e. There is a big lack of unity and automation in the realm of FL.
+Ignoring and no longer using this large amount of data would heavily limit current workflows
+and further improvements for many data-dependent and data-hungry technologies.
+In 2017, a team of Google researcher introduced Federated Learning (FL)
+as one possible solution to utilize sensitive data.
+Instead of collecting the data on a server and training ML models there.
+In FL, the model training occurs directly on the client devices.
+Afterward, the individually trained models get sent to the server,
+which combines the collected models into a single global one.
+This global model can then be distributed to the clients again for further training cycles.
+Therefore, it enables training a shared global model on sensitive data
+while keeping the sensitive data secure on the local client devices. \cite{paper:original_fl}
 
-So FL is lacking the bare-bone tools to easily work on it - not even to mention more advanced techniques to increase productivity and effectiveness that other domains are already using for ages.
+Many researchers are working on the topic of FL.
+The majority in this field focuses on improving existing FL
+components, strategies, and algorithms or inventing better ways of doing FL.
+It is scarce to see work that focuses on the actual initial setup, deployment,
+or improvement of the usability of FL.
+We discuss this in greater detail in the dedicated background section 2.1.
+
+Because FL is a relatively modern technique,
+it lacks a sophisticated production-grade eco-system that includes
+frameworks and libraries that improve ease of use by automation the setup and execution of FL.
+As a result, contributing to the field of FL or reproducing findings is a task
+ranging from non-trivial to improbable due to the lack of documented steps regarding setup,
+deployment, management, and execution.
+
+Instead of using a shared set of tools for bootstrapping to make progress on novel work more efficiently,
+one needs to reinvent the wheel of setting up and managing one’s FL.
+There is a significant lack of unity and automation in the realm of FL.
+FL lacks the bare-bone tools to work on it efficiently,
+not to mention more advanced techniques to increase productivity that
+other domains have already been using for several years, such as modern DevOps practices.
