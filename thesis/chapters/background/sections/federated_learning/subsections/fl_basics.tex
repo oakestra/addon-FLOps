@@ -1,4 +1,4 @@
-% also talk briefly about FL history (that it is rather young)
+
 % FL - Basics (as a solution for laws & privacy)
 % from ML -> to FL
 % what is FL
@@ -6,3 +6,93 @@
 % "classic" FL
 % classic algo
 \subsection{Basics}
+
+Note that we assume the reader to be familiar with basic machine learning concepts.
+
+The majority of this subsection is based on the 2022 book
+'Federated Learning - A Comprehensive Overview of Methods and Applications' \cite{book:fl}.
+It captured and discusses the history and progress of FL research and state of the art FL techniques.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{classic_ml_training.png}
+    \caption{Centralized ML model training}
+    \label{fig:classic_ml_training}
+\end{figure}
+Figure \ref{fig:classic_ml_training} depicts the classic centralized ML model training process.
+Starting from (1), each of the clients has its own data (D).
+The Server hosts the ML model. The model (M) is not yet trained (gray).
+In (2) the clients send their data over to the server.
+The server is now able to train the model using data from both clients.
+(3) depicts the final state after training.
+The model has been trained.
+(The pink/purple color represents that both data sources, red and blue,
+have been used during training.)
+Without any policies in place the client data remains on the server, thus
+be in danger of being exploited.
+
+As discussed in the introductory chapter, this centralized approach leads to
+breaches of privacy. FL was introduced to be able to use sensitive data
+on client devices for training ML models while keeping that data private and 
+comply with laws and regulations.
+
+\begin{figure}%[h]
+    \centering
+    \includegraphics[width=\textwidth]{basic_fl_intro.png}
+    \caption{Basic Federated Learning}
+    \label{fig:basic_fl_intro}
+\end{figure}
+Figure \ref{fig:basic_fl_intro} shows the basic FL training loop.
+The first difference is in the naming of the components.
+In FL the server is oftentimes referred to as an aggregator
+and clients as learners.
+Note that it is still common to use the terms 'server' and 'clients'.
+We prefer to use 'aggregator' and 'learners' because it highlights that these are FL components.
+This naming choice is also used in FLOps and helps with comprehension,
+because FLOps uses a manifold of components, including non-FL servers and clients.
+An additional difference is that all components need to know and posses the ML model.
+Initially at (1) all Models are untrained, thus usually randomly initialized.
+At (2) the aggregator starts the first FL training cycle by telling the learners
+to start their local training.
+The local training rounds are completed at (3) - the 'M's are now colored.
+We remind that ML models are (usually) a static lightweight set of
+programming logic, including layer specification in DNNs, or training configuration,
+including hyperparameters like learning step sizes, what loss type or
+activation function to use.
+Model weights and biases on the other hand can be seen in isolated.
+A model without weights is useless because these weights and biases
+are what gets trained/changed/configured in the first place and allow
+the model to fulfill its intended use like prediction, inference or generation tasks.
+These weights and biases are the major contributor to the 
+overall size (space utilization) of a trained model.
+Because in classic ML/FL the model structure stays static
+one can simply transmit the weights between aggregators and learners.
+In (4) the learners have extracted their model weights and send them to the aggregator.
+The aggregator now has access to these weights but not
+to the sensitive data that was used to train these weights.
+That is how FL can profit from senstitive data while maintaining its privacy.
+Note that there are still attack vectors that allow exposing sensitive client information
+by abusing this weight-based aggregation process.
+We briefly discuss this and other FL security aspects in the 
+subsection about FL research.
+In (5) the server aggregates these collected weights into
+a new 'global' weight which gets applied to its own model instance.
+The result is a global model that was trained for one FL cycle.
+In (6) the aggregator sends its global weights back to the learners.
+The learners apply these weights to their local model instance
+to make it identical to the aggregator's global model.
+Now the FL training loop could terminate and the learners or servers
+could use their own global model copy for inference, or
+as depicted in (6) another FL training cycle begins.
+There can be arbitrary many FL cycles, similar to conventinal training rounds
+in classic ML. Sooner or later FL training will have to stop,
+otherwise the accuracy and loss will get worse due to overfitting.
+(Assuming the available training data is finite and stays the same.)
+
+TODO maybe add a UML diagramm that shows the state changes
+or the different interactions between different components (?)
+
+TODO showcase and explain the underlying classic/basic FL algorithms
+(FedAvg), show the formulas, inlcuding the model aggregation one.
+
+TODO continue working on  the notion page (fl book intro) with my notes
