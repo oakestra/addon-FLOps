@@ -1,19 +1,25 @@
-% Background Flow - how ideas are interconnected 
-% + good place to mention resources I used (mostly papers, etc.)
-
-% To understand/explain MLOps one needs to understand DevOps
-% One of the key things in devops is automation & ease-of use
-% for the developer/development or end-user 
-% CLI, pipelines, containerization (anywhere-anytime)
-% manage all these moving FL components - need orchestration
-% FL primarily focused on edge - use edge friendly orchestrator
-% -> Oakestra
-
 \chapter{Background}\label{chapter:background}
 
-% 1-2 paragraphs that to FLOps connects multiple different domains together
-% (ML/FL-DevOps/MLOps-Orchestration) -> Need to talk about all of these segments 
-% to make sure every reader understands what this work is about
+As mentioned in the contributions section, FLOps combines and uses a large set of technologies from
+different disciplines. To properly understand FLOps as a whole and why it combines these techniques,
+it is necessary to analyze them individually.
+This enables us to form a common understanding, including critical background knowledge of their benefits and downsides.
+Only afterward does it make sense to discuss how FLOps merges them to create something new.
+
+This background chapter provides a general overview for each sector and discuss aspects that
+are necessary for FLOps in greater detail.
+We start with exploring the field of federated learning.
+FL is the core task at hand that FLOps aims to optimize.
+A thorough understanding of this discipline is required to figure out where it has shortcomings.
+To improve upon these weaknesses, we study the established set of 
+best practices from DevOps and MLOps.
+Techniques like automation and CI/CD require infrastructure and resources.
+Orchestration allows us to provision, manage, and deploy such infrastructure and resources.
+We review the field of orchestration technologies and provide a short
+overview of Oakestra \cite{paper:oakestra_usenix} as the chosen platform.
+In the final background section, we take a look at and compare a couple of existing pieces of work
+that resemble FLOps.
+
 
 \input{chapters/background/sections/federated_learning/section.tex}
 
