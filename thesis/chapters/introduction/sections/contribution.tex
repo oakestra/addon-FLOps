@@ -2,21 +2,20 @@
 
 \section{Contribution}
 
-We introduce FLOps, a novel open-source foundational work, and proof-of-concept.
-It enables individuals to use, develop, and evaluate real FL.
+We introduce FLOps to fulfill the objectives above.
+It enables individuals to use, develop, and evaluate tangible FL.
 FLOps enriches FL with modern best practices from automation, DevOps/MLOps, and orchestration.
-It achieves the objectives above in the following ways.
-
-FLOps improves accessibility by enabling people without experience in
+FLOps improves accessibility by enabling users without experience in
 FL, MLOps, or orchestration to do FL and still benefit from these technologies via automated orchestration.
-To do FL, users simply provide their ML code as a git repository link.
+
+To do FL, users simply provide a link to their ML git repository.
 Note that this code needs to satisfy some simple structural prerequisites.
 This repository code gets automatically augmented by FLOps to support FL.
 FLOps creates a containerized image with all necessary dependencies to do FL training.
 These images are automatically built and adhere to best practices, ensuring they are
 as fast and lightweight as possible.
 FLOps can build these images for multiple different target platforms.
-Thus, FL components can run on ARM devices like Raspberry Pis or Nvidia Jetsons.
+Thus, FL components can run on ARM edge-devices like Raspberry Pis or Nvidia Jetsons.
 FLOps enables FL on all devices that support containerization technologies
 like Docker \cite{docker_docs} or containerd \cite{containerd_docs}.
 This approach eliminates the need for tedious device setup and the struggle to configure
@@ -25,11 +24,10 @@ process and saving time.
 
 FLOps automatically performs FL training based on the user-requested configuration.
 Users can, for example, specify resource requirements, the number of training rounds, the FL algorithm,
-the minimum number of participating client devices for learners, and more.
+the minimum number of participating client devices, and more.
 During runtime, users can observe this training process via a sophisticated GUI,
 which allows users to monitor, compare, store, export, share, and organize training runs,
 metrics, and trained models.
-
 FLOps can automatically build inference servers based on the trained model.
 This inference server can be pulled as a regular image.
 FLOps can also directly deploy this trained-model image as an inference server.
@@ -38,14 +36,17 @@ A multitude of diverse technologies and areas are necessary
 for FLOps to provide its services.
 Instead of reimplementing these complex features in a subpar fashion from scratch,
 we benefit from combining and extending existing solutions and technologies in unique and novel ways.
-
 This includes the use of Anaconda \cite{anaconda_docs} and Buildah \cite{buildah_homepage}
 to manage dependencies and build images.
 We utilize a pioneering FL framework called Flower \cite{flower_docs} to execute the FL training loop.
-The mentioned runtime observability features are available via a production-grade MLOps tool called MLflow \cite{mlflow_docs}.
-Because FL pushes model training to client devices, including edge devices,
+The mentioned runtime observability features are available via a mature MLOps tool called MLflow \cite{mlflow_docs}.
+Because FL pushes model training to client devices, especially edge devices,
 we decided to use an orchestrator native to the edge environment.
 With the help of Oakestra \cite{paper:oakestra_usenix}, FLOps can deploy and orchestrate its components.
+FLOps is implemented as an separate addon for Oakestra.
+Because their interaction is based on general API endpoints and SLAs,
+FLOps can be modified to support other Orchestrators.
+
 It is noteworthy that these different tools do not natively support each other.
 FLOps combines them in unprecedented ways to achieve its goals.
 As an example, FLOps supports hierarchical FL (HFL), which is not directly supported or offered by Flower.
