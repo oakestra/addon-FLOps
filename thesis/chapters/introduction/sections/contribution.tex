@@ -2,7 +2,7 @@
 
 \section{Contribution}
 
-This thesis introduces FLOps, a novel open-source foundational work, and proof-of-concept.
+We introduce FLOps, a novel open-source foundational work, and proof-of-concept.
 It enables individuals to use, develop, and evaluate real FL.
 FLOps enriches FL with modern best practices from automation, DevOps/MLOps, and orchestration.
 It achieves the objectives above in the following ways.
@@ -17,7 +17,8 @@ These images are automatically built and adhere to best practices, ensuring they
 as fast and lightweight as possible.
 FLOps can build these images for multiple different target platforms.
 Thus, FL components can run on ARM devices like Raspberry Pis or Nvidia Jetsons.
-FLOps enables FL on all devices that support containerization technologies like Docker or containerd.
+FLOps enables FL on all devices that support containerization technologies
+like Docker \cite{docker_docs} or containerd \cite{containerd_docs}.
 This approach eliminates the need for tedious device setup and the struggle to configure
 heterogeneous dependencies to match the necessary requirements for training, thereby streamlining the
 process and saving time.
@@ -38,19 +39,20 @@ for FLOps to provide its services.
 Instead of reimplementing these complex features in a subpar fashion from scratch,
 we benefit from combining and extending existing solutions and technologies in unique and novel ways.
 
-This includes the use of Anaconda and Buildah to manage dependencies and build images.
-We utilize a pioneering FL framework called Flower to execute the FL training loop.
-The mentioned runtime observability features are available via a production-grade MLOps tool called MLflow.
+This includes the use of Anaconda \cite{anaconda_docs} and Buildah \cite{buildah_homepage}
+to manage dependencies and build images.
+We utilize a pioneering FL framework called Flower \cite{flower_docs} to execute the FL training loop.
+The mentioned runtime observability features are available via a production-grade MLOps tool called MLflow \cite{mlflow_docs}.
 Because FL pushes model training to client devices, including edge devices,
 we decided to use an orchestrator native to the edge environment.
-With the help of Oakestra, FLOps can deploy and orchestrate its components.
+With the help of Oakestra \cite{paper:oakestra_usenix}, FLOps can deploy and orchestrate its components.
 It is noteworthy that these different tools do not natively support each other.
 FLOps combines them in unprecedented ways to achieve its goals.
 As an example, FLOps supports hierarchical FL (HFL), which is not directly supported or offered by Flower.
 To the best of our knowledge, FLOps is the first work that combines Flower with MLflow and allows HFL,
 as well as automatically converts ML code into FL enabled containerized images.
 
-As far as we know, the term FLOps, besides being a measurement unit for computer performance (Floating point operations per second)
+As far as we know, the term FLOps, besides being a measurement unit for computer performance (Floating point operations per second),
 has not been used or applied to FL unlike MLOps has been used to describe DevOps techniques for ML.
 The goal of this work is to showcase the benefits of utilizing the mentioned techniques and
 open the doors for future developments for FL.
@@ -62,12 +64,12 @@ We put a lot of effort into writing high quality code, using state of the art li
 FLOps includes many development-friendly features.
 We enforce proper styling and typing via formatters and linters, including CI.
 Ready-made extendable multi-platform images and services automate development and evaluation workflows.
-These images, as well as the entire code, are made available on GitHub.
+These images, as well as the entire code, are made available on GitHub \cite{flops_code}.
 We also added base images with optional development flags to speed up the build and execution times of FLOps
 so that developers can verify and check their changes more rapidly.
 
-On top of that we also implemented a new CLI tool for Oakestra and FLOps from the grounds up
-that is used to interact with Oakestra's and FLOps APIs.
+On top of that we also implemented a new CLI tool for Oakestra and FLOps from the grounds up \cite{cli_code}.
+It is used to interact with Oakestra's and FLOps APIs.
 Besides that this configurable CLI tool also is capable of visualizing 
 current processes in a human friendly way in real time as well as trigger evaluation runs and
 other automated tasks like installing necessary dependencies.
