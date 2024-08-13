@@ -1,0 +1,67 @@
+\subsection{Supplementary FL Concepts}
+
+In this subsection we explore important supplementary FL concepts
+to get a better understanding of the field.
+
+\subsubsection{FL compared to Distributed Learning}
+
+On first glance FL seems similar to Distributed Learning (DL).
+Both are used for computational expensive large ML tasks.
+To avoid the need for one extraordinary powerful machine,
+and increase convergence times, 
+the computations are distributed among many machines that
+train individually. Afterward, a global model gets aggregated
+at the server.
+
+Now to the differences.
+In FL, the quantity and distribution of training data
+can be very diverse and might stay unknown for the entire FL process.
+FL uses the data that the learners have. 
+DL starts with full centralized access and control to the entirety of data,
+before splitting it up among its fixed and predefined clients.
+Thus, DL does not support the privacy concerns because it has
+total oversight and control of all data and how it should be split up.
+In FL the data might be IID or non-IID, different learners can have
+different amounts of data.
+The number of learners in FL can be very dynamic.
+Some devices might only join for a few training rounds,
+or crash/fail/disconnect during training.
+
+\subsubsection{FL Variety}
+
+The goal for this part is to showcase that FL can
+be used for various different ML paradigms and use cases.
+
+As we have already discussed in the first FL subsection,
+FL can train DNNs.
+FL is also applicable for classical ML models, such as
+linear models (logistic regression, classification, and more) or
+decision trees for explainable classifications.
+
+FL can also support horizontal, vertical, and split learning.
+Horizontal learning can be useful in scenarios where the available data features are the same but
+originate from different sources.
+For example, patient data from different hospitals
+that records the same features like age, and ailment.
+Vertical learning is useful when different data samples have
+different feature spaces.
+In the hospital example, this would mean asking different doctors/experts
+about the same patients. 
+The patient reports would be about the same individuals but include different features,
+like cardiological metrics or neurological metrics.
+We omit to discuss split learning due to its complexity that would bloat this thesis.
+
+In case the global model is too general and does not satisfy the individual needs
+of a learner, personalization can be employed.
+Different personalized FL (PFL) approaches exist.
+Some take the final trained global model and further train it on local data (fine tuning).
+Others train two models locally.
+One model that gets shared and updated.
+The second one stays isolated and was only influenced by local data.
+For inference a mixture between the global and purely local model can be used.
+PFL is a deep and growing subfield of FL.
+
+Plentiful FL optimizations, such as custom algorithms and strategies,
+exist for each of these ML variants.
+
+\subsubsection{FL Security \& Privacy}
