@@ -28,15 +28,12 @@ or crash/fail/disconnect during training.
 
 \subsubsection{FL Variety}
 
-This part aims to showcase that FL can
-be used for various ML paradigms and use cases.
-
-As discussed in the first FL subsection, FL can train DNNs.
-FL applies to for classical ML models, such as
+As discussed in the first subsection, FL can train DNNs.
+One can also apply FL for classic ML models, such as
 linear models (logistic regression, classification, and more) or
 decision trees for explainable classifications.
 Plentiful FL optimizations, such as custom algorithms and strategies,
-exist for each mentioned ML variants.
+exist for each mentioned ML variant.
 
 FL can also support horizontal, vertical, and split learning.
 Horizontal learning can be helpful in scenarios where the available data features are the same but
@@ -44,7 +41,6 @@ originate from different sources.
 One use case for horizontal learning is working with
 patient data from different hospitals that record the same features,
 such as age and ailment.
-that records the same features like age, and ailment.
 Vertical learning is practical when different data samples have
 different feature spaces.
 In the hospital example, this would mean asking different doctors/experts
@@ -89,15 +85,15 @@ FL can support dynamic or even unknown numbers of learners
 that can use vastly different non-IID data.
 It can be unclear if the learner is innocent and simply has
 access to unusual data or if the learner is adversarial.
-Another example is if there are no safeguards in place during aggregation,
-a malicious learner can claim to have used an overwhelming amount of training samples,
+Another example is if there are no safeguards in place during aggregation.
+A malicious learner can claim to have used an overwhelming amount of training samples,
 thus overshadowing other participants and influencing the global model the most.
 As a result, even very scarce, well-timed attacks in FL can have devastating impact.
 
-Another threat comes from inference, where 
+Another threat comes from (model) inference, where 
 insiders or outsiders try to extract sensitive information
 about the used training data.
-In classical FL, privacy leakage can only occur via inference.
+In classic FL, privacy leakage can only occur via inference.
 Inference attacks try to deduce private information from
 artifacts that the FL process produces.
 A large body of ML research exists that focuses on
@@ -123,6 +119,7 @@ One major technique is differential privacy (DP).
 DP is a complex mathematical framework that is formally proven to work.
 One can use DP as noise for the dataset or (inference) query.
 The downside is that DP might reduce the model accuracy significantly.
+
 Secure aggregation is a prominent protection against model inversion attacks.
 It securely combines individual model parameters into global ones before
 sending them to the aggregator, which makes re-engineering and backtracking much harder. \cite{paper:cluster-based-secure-aggregation-FL}
