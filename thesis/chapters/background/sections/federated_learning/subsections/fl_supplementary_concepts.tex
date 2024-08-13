@@ -65,3 +65,36 @@ Plentiful FL optimizations, such as custom algorithms and strategies,
 exist for each of these ML variants.
 
 \subsubsection{FL Security \& Privacy}
+Secure FL should use secure and authenticated
+communication channels to avoid messages to be intercepted,
+read, or impersonated via a man in the middle adversary.
+To help with that one should ensure that 
+learners and aggregators are the only actors that have
+access to those messages and can decipher them.
+There are two kinds of adversaries in FL.
+Insiders that are part of the FL process, including
+malicious aggregators or learners.
+Or outsiders that try to interfere from beyond the FL system.
+
+A variety of FL threats exist.
+One example is manipulation where insiders try to distort
+the model to their own advantage by tinkering with FL artifacts
+it has access to.
+The attacks goals include polluting the global model
+to misclassify (Backdoor).
+If the attack is un-targeted (Byzantine), by injecting random noise,
+or flip labels, the model performance can degrade.
+
+It is hard to detect malicious activity in because
+FL can support dynamic or even unknown total number of learners
+that can use vastly different non-IID data.
+It can be unclear if the learner is innocent and simply has
+access to unusual data, or if the learner is adversarial.
+Another example is if there are no safeguards in place during aggregation,
+a malicious learner can claim to have used an overwhelming amount of training samples,
+thus overshadowing other participants and influencing the global model the most.
+As a result, even very scarce, well timed attacks in FL can have devastating impact.
+
+Another threat comes from inference, where 
+insiders or outsiders try to extract sensitive information
+about the used training data.
