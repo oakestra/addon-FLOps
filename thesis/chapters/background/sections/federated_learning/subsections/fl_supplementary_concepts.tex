@@ -1,130 +1,128 @@
 \subsection{Supplementary FL Concepts}
 
-In this subsection we explore important supplementary FL concepts
+In this subsection, we explore essential supplementary FL concepts
 to get a better understanding of the field.
 
 \subsubsection{FL compared to Distributed Learning}
 
-On first glance FL seems similar to Distributed Learning (DL).
-Both are used for computationally expensive large ML tasks.
-To avoid the need for one extraordinary powerful machine,
-and increase convergence times, 
-the computations are distributed among many weaker machines that
-train individually. Afterward, a global model gets aggregated
+At first glance, FL seems similar to Distributed Learning (DL).
+Both get used for computationally expensive large ML tasks.
+To increase convergence times and avoid needing one mighty machine,
+the computations get distributed among many weaker machines that train individually.
+Afterward, a global model gets aggregated
 at the server.
 
-Now to the differences.
-In FL, the quantity and distribution of training data
-can be very diverse and might stay unknown for the entire FL process.
+Regarding their differences,
+the quantity and distribution of training data can be very diverse in FL
+and might remain unknown throughout training.
 FL only uses the data that the learners offer. 
 DL starts with full centralized access and control to the entirety of data,
 before splitting it up among its fixed and predefined clients.
-Thus, DL does not support the privacy concerns because it has
-total oversight and control of all data and how it should be split up.
-In FL the data might be IID or non-IID, different learners can have
-different amounts of data.
+Thus, DL does not support the privacy concerns because it has total
+oversight and control of all data and how to split it up.
+In FL, the data might be IID or non-IID.
+Different learners can have varying amounts of data.
 The number of learners in FL can be very dynamic.
-Some devices might only join for a few training rounds,
+Some devices might only join for a few training rounds
 or crash/fail/disconnect during training.
 
 \subsubsection{FL Variety}
 
-The goal for this part is to showcase that FL can
-be used for various different ML paradigms and use cases.
+This part aims to showcase that FL can
+be used for various ML paradigms and use cases.
 
-As we have already discussed in the first FL subsection,
-FL can train DNNs.
-FL is also applicable for classical ML models, such as
+As discussed in the first FL subsection, FL can train DNNs.
+FL applies to for classical ML models, such as
 linear models (logistic regression, classification, and more) or
 decision trees for explainable classifications.
 Plentiful FL optimizations, such as custom algorithms and strategies,
-exist for each of these ML variants.
+exist for each mentioned ML variants.
 
 FL can also support horizontal, vertical, and split learning.
-Horizontal learning can be useful in scenarios where the available data features are the same but
+Horizontal learning can be helpful in scenarios where the available data features are the same but
 originate from different sources.
-For example, patient data from different hospitals
+One use case for horizontal learning is working with
+patient data from different hospitals that record the same features,
+such as age and ailment.
 that records the same features like age, and ailment.
-Vertical learning is useful when different data samples have
+Vertical learning is practical when different data samples have
 different feature spaces.
 In the hospital example, this would mean asking different doctors/experts
 about the same patients. 
-The patient reports would be about the same individuals but include different features,
-like cardiological metrics or neurological metrics.
+The patient reports would be about the same individuals but include varying features,
+such as cardiological metrics or neurological metrics.
 We omit to discuss split learning due to its complexity that would bloat this thesis.
 
-In case the global model is too general and does not satisfy the individual needs
-of a learner, personalization can be employed.
+In case the global model is too general and does not satisfy a
+learner's individual needs, one can employ personalization.
 Different personalized FL (PFL) approaches exist.
-Some take the final trained global model and further train it on local data (fine tuning).
+Some take the final trained global model and further train it on local data (fine-tuning).
 Other techniques train two local models concurrently.
-One model that gets shared and updated.
-The second one stays isolated and only get influenced by local data.
+The first model gets shared and updated with the global parameters.
+The second one stays isolated and only gets influenced by local data.
 For inference a mixture between the global and purely local model can be used.
 PFL is a deep and growing subfield of FL.
 
 
 \subsubsection{FL Security \& Privacy}
-Secure FL should use secure and authenticated
-communication channels to avoid messages to be intercepted,
-read, or impersonated via a man in the middle adversary.
-To help with that one should ensure that 
-learners and aggregators are the only actors that have
+Secure FL should use secure and authenticated communication channels
+to prevent messages from being intercepted, read,
+or impersonated by a man-in-the-middle adversary.
+To help with that, one should ensure that 
+learners and aggregators are the only actors with
 access to those messages and can decipher them.
 There are two kinds of adversaries in FL.
-Insiders that are part of the FL process, such as
+Insiders are part of the FL process, such as
 malicious aggregators or learners.
-Or outsiders that try to interfere from beyond the FL system.
+Outsiders try to interfere from beyond the FL system.
 
 A variety of FL threats exist.
-One example is manipulation where insiders try to distort
-the model to their own advantage by tinkering with FL components
-that the attacker has access to.
+One example is manipulation, where insiders try to distort
+the model to their advantage by tinkering with FL components
+that the attacker can access.
 The attack goals include polluting the global model
 to misclassify (Backdoor).
-If the attack is un-targeted (Byzantine), by injecting random noise,
-or flip labels, the model performance can degrade.
+If the attack is untargeted (Byzantine), injecting random noise or
+flipping labels can degrade the model's performance.
 It is difficult to detect malicious activity because
 FL can support dynamic or even unknown numbers of learners
 that can use vastly different non-IID data.
 It can be unclear if the learner is innocent and simply has
-access to unusual data, or if the learner is adversarial.
+access to unusual data or if the learner is adversarial.
 Another example is if there are no safeguards in place during aggregation,
 a malicious learner can claim to have used an overwhelming amount of training samples,
 thus overshadowing other participants and influencing the global model the most.
-As a result, even very scarce, well timed attacks in FL can have devastating impact.
+As a result, even very scarce, well-timed attacks in FL can have devastating impact.
 
 Another threat comes from inference, where 
 insiders or outsiders try to extract sensitive information
 about the used training data.
-In classical FL leakage of privacy can only occur via inference.
+In classical FL, privacy leakage can only occur via inference.
 Inference attacks try to deduce private information from
 artifacts that the FL process produces.
-A large body of ML research exists that is dedicated
-to analyzing and protecting against such attacks.
+A large body of ML research exists that focuses on
+analyzing and protecting against such attacks.
 There are different subtypes of inference attacks.
-One example is the membership attack that tries to find if
-specific samples were used for training or not.
-Another attack is called extraction attack, which tries to
+One example is the membership attack, which tries to find if
+specific samples were used for training.
+Another attack is called 'extraction attack', which tries to
 obtain all training samples.
 The challenge here is that attackers have easy access to the final model.
-Malicious insiders can even attack intermediate models,
-Model inversion attacks are different attack variant,
-where adversaries query the trained model in peculiar ways to
-reverse engineer data samples. 
-If this attack gets successfully repeated it is possible to
+Malicious insiders can even attack intermediate models.
+Model inversion attacks are different attack variants in which adversaries
+query the trained model in peculiar ways to reverse engineer data samples. 
+If the attacker is repeatedly successful, it is possible to
 deduce the original dataset.
-Other attacks require malicious aggregators, that can
-trace back which update parameters what learner provided
-before aggregating the global parameters.
+Other attacks require malicious aggregators that can trace back
+the update parameters that the learner provided before aggregating
+the global parameters.
 
 Fortunately, there exists a growing array of defenses against those threats.
-It is important to pick and combine these defenses wisely based on the use case and environment.
+It is crucial to pick and combine these defenses wisely based on the use case and environment.
 One major technique is differential privacy (DP).
-DP is a complex mathematical framework which is formally proven to work.
-It can be used as noise for the dataset or (inference) query.
+DP is a complex mathematical framework that is formally proven to work.
+One can use DP as noise for the dataset or (inference) query.
 The downside is that DP might reduce the model accuracy significantly.
-
 Secure aggregation is a prominent protection against model inversion attacks.
-It securely combines individual model parameters into global ones, before
-sending it to the aggregator, which makes re-engineering and backtracking a lot harder. \cite{paper:cluster-based-secure-aggregation-FL}
+It securely combines individual model parameters into global ones before
+sending them to the aggregator, which makes re-engineering and backtracking much harder. \cite{paper:cluster-based-secure-aggregation-FL}
