@@ -6,17 +6,17 @@ to get a better understanding of the field.
 \subsubsection{FL compared to Distributed Learning}
 
 On first glance FL seems similar to Distributed Learning (DL).
-Both are used for computational expensive large ML tasks.
+Both are used for computationally expensive large ML tasks.
 To avoid the need for one extraordinary powerful machine,
 and increase convergence times, 
-the computations are distributed among many machines that
+the computations are distributed among many weaker machines that
 train individually. Afterward, a global model gets aggregated
 at the server.
 
 Now to the differences.
 In FL, the quantity and distribution of training data
 can be very diverse and might stay unknown for the entire FL process.
-FL uses the data that the learners have. 
+FL only uses the data that the learners offer. 
 DL starts with full centralized access and control to the entirety of data,
 before splitting it up among its fixed and predefined clients.
 Thus, DL does not support the privacy concerns because it has
@@ -37,6 +37,8 @@ FL can train DNNs.
 FL is also applicable for classical ML models, such as
 linear models (logistic regression, classification, and more) or
 decision trees for explainable classifications.
+Plentiful FL optimizations, such as custom algorithms and strategies,
+exist for each of these ML variants.
 
 FL can also support horizontal, vertical, and split learning.
 Horizontal learning can be useful in scenarios where the available data features are the same but
@@ -55,14 +57,12 @@ In case the global model is too general and does not satisfy the individual need
 of a learner, personalization can be employed.
 Different personalized FL (PFL) approaches exist.
 Some take the final trained global model and further train it on local data (fine tuning).
-Others train two models locally.
+Other techniques train two local models concurrently.
 One model that gets shared and updated.
-The second one stays isolated and was only influenced by local data.
+The second one stays isolated and only get influenced by local data.
 For inference a mixture between the global and purely local model can be used.
 PFL is a deep and growing subfield of FL.
 
-Plentiful FL optimizations, such as custom algorithms and strategies,
-exist for each of these ML variants.
 
 \subsubsection{FL Security \& Privacy}
 Secure FL should use secure and authenticated
@@ -72,21 +72,20 @@ To help with that one should ensure that
 learners and aggregators are the only actors that have
 access to those messages and can decipher them.
 There are two kinds of adversaries in FL.
-Insiders that are part of the FL process, including
+Insiders that are part of the FL process, such as
 malicious aggregators or learners.
 Or outsiders that try to interfere from beyond the FL system.
 
 A variety of FL threats exist.
 One example is manipulation where insiders try to distort
-the model to their own advantage by tinkering with FL artifacts
-it has access to.
-The attacks goals include polluting the global model
+the model to their own advantage by tinkering with FL components
+that the attacker has access to.
+The attack goals include polluting the global model
 to misclassify (Backdoor).
 If the attack is un-targeted (Byzantine), by injecting random noise,
 or flip labels, the model performance can degrade.
-
-It is hard to detect malicious activity in because
-FL can support dynamic or even unknown total number of learners
+It is difficult to detect malicious activity because
+FL can support dynamic or even unknown numbers of learners
 that can use vastly different non-IID data.
 It can be unclear if the learner is innocent and simply has
 access to unusual data, or if the learner is adversarial.
@@ -98,3 +97,34 @@ As a result, even very scarce, well timed attacks in FL can have devastating imp
 Another threat comes from inference, where 
 insiders or outsiders try to extract sensitive information
 about the used training data.
+In classical FL leakage of privacy can only occur via inference.
+Inference attacks try to deduce private information from
+artifacts that the FL process produces.
+A large body of ML research exists that is dedicated
+to analyzing and protecting against such attacks.
+There are different subtypes of inference attacks.
+One example is the membership attack that tries to find if
+specific samples were used for training or not.
+Another attack is called extraction attack, which tries to
+obtain all training samples.
+The challenge here is that attackers have easy access to the final model.
+Malicious insiders can even attack intermediate models,
+Model inversion attacks are different attack variant,
+where adversaries query the trained model in peculiar ways to
+reverse engineer data samples. 
+If this attack gets successfully repeated it is possible to
+deduce the original dataset.
+Other attacks require malicious aggregators, that can
+trace back which update parameters what learner provided
+before aggregating the global parameters.
+
+Fortunately, there exists a growing array of defenses against those threats.
+It is important to pick and combine these defenses wisely based on the use case and environment.
+One major technique is differential privacy (DP).
+DP is a complex mathematical framework which is formally proven to work.
+It can be used as noise for the dataset or (inference) query.
+The downside is that DP might reduce the model accuracy significantly.
+
+Secure aggregation is a prominent protection against model inversion attacks.
+It securely combines individual model parameters into global ones, before
+sending it to the aggregator, which makes re-engineering and backtracking a lot harder. \cite{paper:cluster-based-secure-aggregation-FL}
