@@ -8,3 +8,46 @@
 % Asynch FL
 % https://www.notion.so/oakestra-team/Chapter-10-Local-Training-Scalability-of-FL-Systems-c0f945e2593e48ea9bdbb71c1d94d091?pvs=4
 \subsection{FL Architectures}
+
+FL comes in two broad structural categories.
+Cross-silo or enterprise FL gets used for example in large data-centers or multinational companies.
+Each learner represent a single large institution or participating group.
+There are only around ten to a few dozen learners involved.
+The identity of the parties are considered for training and verification.
+In general, every individual local update from every learner at every training round is significant.
+Fallouts and failures of individual learners are serious.
+
+Cross-device FL can include hundreds or millions of devices, primarily edge/IoT devices.
+One can say that cross-device is the opposite of cross-silo.
+Due to this large pool of learners, typically one a subset of them get used per training round.
+The identities of the participating learners are usually unimportant and get ignored.
+Due to the nature of these devices and their environments, cross-device FL
+needs to manage challenges, such as non-IID data, heterogenous device-hardware,
+different network conditions, learner outages, or stragglers.
+Various techniques exist to navigate these challenging conditions,
+including specialized algorithms for aggregation or learner selection.
+These strategies can take bias, availability, resources, and battery-life into account.
+FLOps focuses on cross-device FL.
+From now on, when we mention FL, we mean cross-device FL.
+
+As discussed FLOps wants to benefit from the unique three-tiered Oakestra \cite{paper:oakestra_usenix} architecture.
+Different FL architectures exist to support such large-scale FL environments.
+The two main challenges for such scenarios are how o manage huge number of connections and aggregations,
+and how to reduce the negative impact of straggling learner updates.
+The problem with using a single aggregator, as seen in \ref{fig:basic_fl_intro}, is
+that this single aggregator becomes a communication bottleneck.
+Additionally, per-round training latency is limited by the slowest participating learner,
+thus stragglers turn into another bottleneck.
+
+We discuss four main architectures for large-scale FL.
+
+\subsubsection{Clustered FL}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{clustered_fl.png}
+    \caption{Clustered FL Architecture}
+    \label{fig:clustered_fl}
+\end{figure}
+Figure \ref{fig:clustered_fl} todo
+
