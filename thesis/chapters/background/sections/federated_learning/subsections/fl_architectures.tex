@@ -1,43 +1,34 @@
-% introduce more advanced concepts e.g. that "classic" FL is Cross-Device not Cross-Silo
-% https://www.notion.so/oakestra-team/Chapter-9-Introduction-to-FL-Systems-f3c847d6899e4a58be9a1553635bc96c?pvs=4
-% mostly only scratch the surface
-% diff ways to handle larger FL systems
-% Clustered FL
-% Hierarchical FL <- talk a bit more indepth
-% Decentralized FL
-% Asynch FL
-% https://www.notion.so/oakestra-team/Chapter-10-Local-Training-Scalability-of-FL-Systems-c0f945e2593e48ea9bdbb71c1d94d091?pvs=4
 \subsection{FL Architectures}
 
 FL comes in two broad structural categories.
-Cross-silo or enterprise FL gets used for example in large data-centers or multinational companies.
-Each learner represent a single large institution or participating group.
+Cross-silo or enterprise FL gets used in large data centers or multinational companies.
+Each learner represents a single large institution or participating group.
 There are only around ten to a few dozen learners involved.
-The identity of the parties are considered for training and verification.
-In general, every individual local update from every learner at every training round is significant.
+Cross-silo FL considers the identity of the parties for training and verification.
+Generally, every individual local update from every learner at every training round is significant.
 Fallouts and failures of individual learners are serious.
 
 Cross-device FL can include hundreds or millions of devices, primarily edge/IoT devices.
 One can say that cross-device is the opposite of cross-silo.
-Due to this large pool of learners, typically one a subset of them get used per training round.
+Due to this large pool of learners, a subset typically gets used per training round.
 The identities of the participating learners are usually unimportant and get ignored.
 Due to the nature of these devices and their environments, cross-device FL
-needs to manage challenges, such as non-IID data, heterogenous device-hardware,
+needs to manage challenges, such as non-IID data, heterogeneous device hardware,
 different network conditions, learner outages, or stragglers.
 Various techniques exist to navigate these challenging conditions,
 including specialized algorithms for aggregation or learner selection.
-These strategies can take bias, availability, resources, and battery-life into account.
+These strategies can consider bias, availability, resources, and battery life.
 FLOps focuses on cross-device FL.
 From now on, when we mention FL, we mean cross-device FL.
 
-As discussed FLOps wants to benefit from the unique three-tiered Oakestra \cite{paper:oakestra_usenix} architecture.
+As discussed, FLOps wants to benefit from the unique three-tiered Oakestra \cite{paper:oakestra_usenix} architecture.
 Different FL architectures exist to support such large-scale FL environments.
-The two main challenges for such scenarios are how o manage huge number of connections and aggregations,
-and how to reduce the negative impact of straggling learner updates.
+The two main challenges for such scenarios are managing a massive number of connections and aggregations
+and reducing the negative impact of straggling learner updates.
 The problem with using a single aggregator, as seen in \ref{fig:basic_fl_intro}, is
 that this single aggregator becomes a communication bottleneck.
-Additionally, per-round training latency is limited by the slowest participating learner,
-thus stragglers turn into another bottleneck.
+Additionally, per-round training latency is limited by the slowest participating learner.
+Thus, stragglers turn into another bottleneck.
 
 We discuss four main architectures for large-scale FL.
 
@@ -49,30 +40,31 @@ We discuss four main architectures for large-scale FL.
     \caption{Clustered FL Architecture}
     \label{fig:clustered_fl}
 \end{figure}
-Figure \ref{fig:clustered_fl} shows the Clustered FL (CFL) architecture,
-where similar learners are grouped together.
-This clustering can be based on local data distribution, training latency,
-available hardware, or geographical location.
+Figure \ref{fig:clustered_fl} shows the Clustered FL (CFL) architecture
+that groups similar learners into clusters.
+CFL can base clusters on local data distribution, training latency,
+available hardware or geographical location.
 The issue of the singular aggregator as a bottleneck persists.
 
-The main challenge for CFL is choosing a fitting clustering criteria and strategy for the concrete use case.
-If the criteria is very biased the risk arises to heavily favor updates from
-preferred clusters, thus resulting in a biased global model with bad generalization.
-Another task is to properly profile the nodes so that they are matched to the correct cluster.
-For example if a slow outlier is present in a cluster the entire cluster suffers.
-Node properties can very over time, so cluster membership has to be dynamic.
-One should not overdue profiling otherwise privacy might get in danger.
+The main challenge for CFL is choosing a suitable clustering strategy, criteria,
+and strategy for the concrete use case.
+If the criteria are very biased, the risk arises that updates from preferred clusters
+will be heavily favored, resulting in a biased global model with bad generalization.
+Another task is to properly profile the nodes to match them to the correct cluster.
+For example, the entire cluster suffers if a slow outlier is present in a cluster.
+Node properties can vary over time, so cluster membership has to be dynamic.
+One should not overdo profiling.
+Otherwise, privacy might get compromised.
 
 The benefits of CFL are its ease of implementation,
 familiar architecture to classic FL,
-flexibility to tune clustering/selection dynamically,
-and that CFL can be combined with other architectures.
+and flexibility to tune clustering/selection dynamically.
+One can combine CFL with other architectures.
 
-The downsides of CFL are that a proper clustering strategy is 
-use-case dependent and challenging to optimize.
+One downside of CFL is that a proper clustering strategy is 
+use-case-dependent and challenging to optimize.
 CFL does not really solve scalability issues on its own,
-especially that with larger numbers of nodes the clustering overhead becomes
-critical.
+especially since the clustering overhead becomes critical with larger numbers of nodes.
 
 \subsubsection{Hierarchical FL}
 \begin{figure}[h]
@@ -82,20 +74,20 @@ critical.
     \label{fig:hfl_architecture}
 \end{figure}
 Figure \ref{fig:hfl_architecture} depicts the hierarchical FL (HFL) architecture.
-In HFL the root aggregator delegates and distributes the aggregation task to 
+In HFL, the root aggregator delegates and distributes the aggregation task to 
 intermediate aggregators.
 Note that HFL can have multiple layers of intermediate aggregators.
 Each intermediate aggregator and its connected learners resemble an instance of classic FL.
-After aggregating an intermediate model the intermediate aggregators send their parameters
+After aggregating an intermediate model, the intermediate aggregators send their parameters
 upstream to the root aggregator.
 The root combines the intermediate parameters into global ones and sends them downstream for further FL rounds.
 This structure requires significant modifications to the underlying FL architecture.
-The proper design and implementation as well as assignment of learners to aggregators
+The proper design and implementation, as well as the assignment of learners to aggregators,
 determine the success of one's FL setup.
-For example if too many learners are attached to a given aggregator, that aggregator becomes a bottleneck.
-If too few learners are assigned that the intermediate aggregated model can get
-very biased and the infrastructure resource and management costs become unjustified for the little number of learners.
-With more components a management overhead arises, including handling fault-tolerance,
+For example, if too many learners are attached to a given aggregator, that aggregator becomes a bottleneck.
+If too few learners are assigned, the intermediate aggregated model can get
+very biased, and the infrastructure resource and management costs become unjustified for the small number of learners.
+A management overhead arises with more components, including handling fault tolerance,
 monitoring, synchronizing, and balancing.
 Bad synchronization can amplify straggler problems.
 Balancing refers to combining and harmonizing intermediate parameters to
@@ -103,35 +95,35 @@ get a good global model.
 
 The benefits of HFL are its dynamic scalability and load balancing.
 One can easily add or remove intermediate aggregators and their connected learners.
-Due to this distribution of load and aggregation each individual aggregator including the root,
+Due to this distribution of load and aggregation, each aggregator, including the root,
 is less likely to face bottleneck issues.
 
-HFL can be combined with CFL, where each intermediate aggregator is responsible
+One can combine HFL with CFL, where each intermediate aggregator is responsible
 for one or multiple clusters.
 
 The downsides of HFL are communication and management overheads.
-More components lead to more messages being transmitted.
+More components lead to more transmitted messages.
 These messages all need to be secured and encrypted.
-With more components and nodes more possible backdoors exist for adversaries to take advantage of.
+With more components and nodes, adversaries can take advantage of more possible backdoors.
 
 \subsubsection{Decentralized FL}
-Decentralized FL does not require a central aggregator, instead
-it operates on a peer-to-peer basis via a blockchain.
-That way the centralized communication bottleneck gets resolved.
+Decentralized FL does not require a central aggregator.
+Instead, it operates on a peer-to-peer basis via a blockchain.
+That way, the centralized communication bottleneck gets resolved.
 The blockchain represents the global model.
 Learners train in parallel.
 Each locally trained update gets a version.
-Based on this version random clients are chosen for aggregation.
-The results gets appended to the blockchain, and the model version incremented.
-FLOps does not use this kind of FL so we keep this part short.
+Based on this version, random clients are chosen for aggregation.
+The results get appended to the blockchain, and the model version is incremented.
+FLOps does not use this kind of FL, so we keep this part short.
 
 \subsubsection{Asynchronous FL}
-This architecture allows learners to train all the time and push
+This architecture allows learners to train continuously and push
 their updates to the aggregator once they are finished.
-This method eliminates stragglers and dropout problems, because
-a training round does not need to wait or handle for any outliers and timeouts.
-The new issue of staleness arises, where updates get merged into the global model
+This method eliminates stragglers and dropout problems because
+a training round does not need to wait or handle outliers and timeouts.
+A new issue of staleness arises when updates are merged into the global model
 that took a very long time to complete.
 Such an update used a now outdated version of the global model.
-As a result the global model gets partially reverted to an older state.
+As a result, the global model is partially reverted to an older state.
 Asynchronous FL can be combined with other architectures.
