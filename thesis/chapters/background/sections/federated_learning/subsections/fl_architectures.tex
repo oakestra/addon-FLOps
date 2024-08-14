@@ -2,7 +2,7 @@
 
 FL comes in two broad structural categories.
 Cross-silo or enterprise FL gets used in large data centers or multinational companies.
-Each learner represents a single large institution or participating group.
+Each learner represents a single institution or participating group.
 There are only around ten to a few dozen learners involved.
 Cross-silo FL considers the identity of the parties for training and verification.
 Generally, every individual local update from every learner at every training round is significant.
@@ -10,7 +10,7 @@ Fallouts and failures of individual learners are serious.
 
 Cross-device FL can include hundreds or millions of devices, primarily edge/IoT devices.
 One can say that cross-device is the opposite of cross-silo.
-Due to this large pool of learners, a subset typically gets used per training round.
+Due to this great pool of learners, a subset typically gets used per training round.
 The identities of the participating learners are usually unimportant and get ignored.
 Due to the nature of these devices and their environments, cross-device FL
 needs to manage challenges, such as non-IID data, heterogeneous device hardware,
@@ -29,7 +29,6 @@ The problem with using a single aggregator, as seen in \ref{fig:basic_fl_intro},
 that this single aggregator becomes a communication bottleneck.
 Additionally, per-round training latency is limited by the slowest participating learner.
 Thus, stragglers turn into another bottleneck.
-
 We discuss four main architectures for large-scale FL.
 
 \subsubsection{Clustered FL}
@@ -45,9 +44,8 @@ that groups similar learners into clusters.
 CFL can base clusters on local data distribution, training latency,
 available hardware or geographical location.
 The issue of the singular aggregator as a bottleneck persists.
-
-The main challenge for CFL is choosing a suitable clustering strategy, criteria,
-and strategy for the concrete use case.
+The main challenge for CFL is choosing a suitable clustering strategy
+and criteria for the concrete use case.
 If the criteria are very biased, the risk arises that updates from preferred clusters
 will be heavily favored, resulting in a biased global model with bad generalization.
 Another task is to properly profile the nodes to match them to the correct cluster.
@@ -60,8 +58,7 @@ The benefits of CFL are its ease of implementation,
 familiar architecture to classic FL,
 and flexibility to tune clustering/selection dynamically.
 One can combine CFL with other architectures.
-
-One downside of CFL is that a proper clustering strategy is 
+A downside of CFL is that a proper clustering strategy is 
 use-case-dependent and challenging to optimize.
 CFL does not really solve scalability issues on its own,
 especially since the clustering overhead becomes critical with larger numbers of nodes.
@@ -81,6 +78,7 @@ Each intermediate aggregator and its connected learners resemble an instance of 
 After aggregating an intermediate model, the intermediate aggregators send their parameters
 upstream to the root aggregator.
 The root combines the intermediate parameters into global ones and sends them downstream for further FL rounds.
+
 This structure requires significant modifications to the underlying FL architecture.
 The proper design and implementation, as well as the assignment of learners to aggregators,
 determine the success of one's FL setup.
@@ -97,10 +95,8 @@ The benefits of HFL are its dynamic scalability and load balancing.
 One can easily add or remove intermediate aggregators and their connected learners.
 Due to this distribution of load and aggregation, each aggregator, including the root,
 is less likely to face bottleneck issues.
-
 One can combine HFL with CFL, where each intermediate aggregator is responsible
 for one or multiple clusters.
-
 The downsides of HFL are communication and management overheads.
 More components lead to more transmitted messages.
 These messages all need to be secured and encrypted.
