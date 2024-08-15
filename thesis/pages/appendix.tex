@@ -12,137 +12,145 @@ Todo
         \hline
             \cite{paper:adaptive_exper_models_for_pfl}
             &
-            They improved an existing PFL algorithm that used clustered models (but discarded all but one in the end)
-            The propose to use these cluster models as MoE to improve performance.
+            Improved an existing PFL algorithm that used clustered models (but discarded all but one in the end).
+            A novel idea to improve performance by using these cluster models as experts in a MoE (Mixture of Experts) setup.
             &
             -
         \\
         \hline
             \cite{paper:tackling_objective_inconsistency_problem_in_heterogeneous_fl}
             &
-            They reason about drift that occurs due to different learner speeds
-            and propose ways of eliminating that drift.
+            Analysis of drift that occurs due to different learner speeds
+            Novel ideas eliminating that drift.
             &
-            This work does not consider hierarchical structures,
-            clusters/tiers, nor privacy/security.
+            This work does not consider hierarchical structures, clusters/tiers, or privacy/security.
         \\
         \hline
             \cite{paper:efficient_privacy_preserving_ml_in_hierarchical_distributed_systems}
             &
-            They improvement the efficiency of privacy-preserving ML techniques for hierarchically distributed structures.
-            They considered different data partitions and distributions, such as vertical and non-IID.
+            Efficiency improvements for privacy-preserving ML techniques for hierarchically distributed structures.
+            Different data partitions and distributions, such as vertical and non-IID, were considered.
             &
             Written in 2019.
-            Many other, newer papers have investigated HFL security/privacy further.
+            Many other newer papers have investigated HFL security/privacy further.
         \\
         \hline
             \cite{paper:leaf_fl_benchmark}
             &
-            Benchmark for Federated Settings, especially FL, with implementations and datasets.
+            A benchmark for federated settings, especially FL, with implementations and datasets.
             &
             Outdated benchmark from 2019.
-            When we tried to use it we encountered many errors and problems,
-            such as broken dependencies, failing example code, and more.
+            When we tried to use it, we encountered many errors and problems, such as broken dependencies, failing example code, and more.
         \\
         \hline
             \cite{paper:deploying_fl_in_hierarchical_edge_architecture}
             &
-            Demonstrate that FL can be deployed and used in hierarchical architectures that fulfill specific industry standards.
+            Proof-of-concept that demonstrates that FL can be deployed and used in hierarchical architectures that fulfill specific industry standards.
             &
-            Because this is a proof-of-work paper the findings and experiments are very basic.
-            Further topics should be investigated, such as diverse network conditions, heterogeneous data, and resources.
+            The findings and experiments are very basic.
+            Further topics such as diverse network conditions, heterogeneous data, and resources should be investigated.
         \\
         \hline
             \cite{paper:hfl_with_momentum_acceleration_in_multi_tier_networks}
             &
-            Accelerated and improved FL training and the aggregation algorithm.
-            They use a hierarchical structure and ML momentum.
+            Accelerated and improved FL training and the aggregation algorithm via a hierarchical structure and ML momentum.
             &
-            They do not cover security/privacy aspects or the impact on the network.
+            Security, privacy, and challenging network conditions were not considered.
         \\
         \hline
             \cite{paper:scaling_fl_for_fine_tuning_llms}
             &
-            Studies how LLMs behave in FL when using different number of learners.
+            Analysis of LLM behavior in FL when using different numbers of learners.
             &
-            Due to its proof-of-concept nature this work only features trivial experiments that do not lead to many new insights.
+            Due to its proof-of-concept nature, this work only features simple experiments that yield few new insights.
         \\
         \hline
             \cite{paper:edge_fl_via_mqtt_and_oma_lightweight_m2m}
             &
-            Proposes novel approach of finding and sharing information between FL components and discovering learners.
-            Uses MQTT with semantic URIs that represent the properties of the clients, including their resources.
+            A novel approach to finding and sharing information between FL components and discovering learners.
+            This work uses MQTT with semantic URIs representing the clients' properties, including their resources.
             &
             It is a very short paper.
             The experiments are only simulated.
-            They did not extensively compare their approach with other classic or novel approaches.
+            This work's approach was not extensively compared to classic or novel techniques.
         \\
+        \hline
+    \end{tabular}
+    \captionof{table}{Additional FL Papers considered for FLOps - Part I} 
+    \label{table:additional_fl_research_table_1}
+\end{changemargin}
+
+\begin{changemargin}{-2cm}{0cm} 
+    \begin{tabular}{|c||m{0.4\paperwidth}|m{0.4\paperwidth}|}
+        \hline
+            ID & Contributions & Limitations Future Work \\
         \hline
             \cite{paper:hfl_with_privacy}
             &
-            Analyzed benefits of HFL for security.
-            Proposes HFL secure aggregation method
-            and hierarchical DP.
+            Analysis of HFL benefits for security.
+            A novel secure aggregation method and hierarchical DP for HFL.
             &
             The number of (online) clients per zone has to be small.
-            Investigate further privacy improvements.
+            Further privacy improvements should be investigated.
         \\
         \hline
             \cite{paper:model_pruning_for_edge_fl}
             &
-            They introduce distributed adaptive FL model pruning.
+            Introduction of distributed adaptive FL model pruning.
             &
-            They did not consider privacy/security.
-            They want to investigate further optimizations including GPUs.
+            Privacy and security were not considered.
+            Further optimizations are possible, primarily focused on GPUs.
         \\
         \hline
             \cite{paper:rethinking_architecture_design_in_fl_for_diverse_data}
             &
-            They compared and investigated using transformers in FL compared to other architectures
-            and found out that transformers are excellent and should be preferred for FL.
+            Analysis of the use of transformers in FL compared to other architectures.
+            Findings show that transformers are excellent and should be preferred for FL.
             &
-            They allude towards other investigations on how transformers behave with other, latest FL algorithms and privacy/security schemas.
+            Further investigations are required on how transformers behave with other, latest FL algorithms and privacy/security schemas.
         \\
         \hline
             \cite{paper:edgefl_framework}
             &
-            They propose a scalable edge-only (serverless) FL framework.
+            A scalable edge-only (serverless) FL framework.
             It utilizes synchronous training and promises rapid integration, prototyping, and deployment.
             &
-            They want to add resource optimizations like model compression and quantization,
-            explore adaptive aggregation strategies based on network conditions, resources, and data diversity.
-            They assume P2P without addressing diverse network conditions.
-            They do not focus on security or privacy.
-            They only checked image classification.
+            Planned improvements for this framework include
+            resource optimizations like model compression and quantization and
+            adaptive aggregation strategies based on network conditions, resources, and data diversity.
+            The framework assumes P2P without addressing diverse network conditions.
+            It does not consider security or privacy.
+            The evaluation only checked image classification tasks.
         \\
         \hline
             \cite{HPFL_over_massive_mobile_edge_computing_networks}
             & 
-            Likely the first paper to combine PFL with HFL in a three-tiered structure.
-            Proves mathematically that this approach works and converges.
-            Includes many interesting insights regarding the HPFL.
+            This paper is likely the first to combine PFL with HFL in a three-tiered structure.
+            It proves mathematically that its approach works and converges.
+            This work includes many interesting insights regarding HPFL.
             &
             -
         \\
         \hline
             \cite{paper:adaptive_fl_for_resource_constrained_edge}
             &
-            They investigated effects of different global/local update frequencies.
-            They proposed a new algorithm to determine global aggregation frequency instead of using the common static one.
+            Analysis of the effects of different global/local update frequencies.
+            A new algorithm to determine global aggregation frequency instead of using the common static one.
             &
-            They want to investigate diverse resource usage.
+            Diverse resource usage should be investigated.
         \\
 
         \hline
             \cite{paper:fl_inference_anytime_anywhere}
             &
-            They combine FL with transfer-learning on Transformers.
-            Introduces a parameter efficient (PE) learning method to adapt pre-trained Transformer Foundation Models (FMs) in FL.
-            Their novel PE adapter modulates all layers of pre-trained Transformers,
-            that enables flexible early predictions.
+            A combination of FL with transfer-learning on Transformers.
+            A parameter efficient (PE) learning method to adapt pre-trained Transformer Foundation Models (FMs) in FL.
+            A novel PE adapter that modulates all pre-trained Transformers layers, enabling flexible early predictions.
             &
             -
         \\
         \hline
     \end{tabular}
+    \captionof{table}{Additional FL Papers considered for FLOps - Part II} 
+    \label{table:additional_fl_research_table_2}
 \end{changemargin}
