@@ -1,73 +1,69 @@
 \begin{changemargin}{-2cm}{0cm}
     \begin{tabular}{|c||m{0.4\paperwidth}|m{0.4\paperwidth}|}
         \hline
-            ID & Contributions & Limitations Future Work \\
+            ID & Contributions & Limitations \& Future Work \\
         \hline
             \cite{paper:refl_resource_efficient_fl}
             &
-            Proposed a novel selection and staleness-aware aggregation strategy.
-            They highlight resource wastage and the impact of stragglers.
-            Introduce a smart participation selection based on learner availability.
+            A novel selection and staleness-aware aggregation strategy.
+            Analysis of resource wastage and the impact of stragglers.
+            A smart participation selection based on learner availability.
             &
-            They do not yet consider privacy or security.
-            Their evaluations are based on classic datasets (MNIST, CIFAR-10) which might not reflect real non-IID data.
-            They assumes homogeneous resources.
-            They use a simple linear regression model for availability prediction.
+            Privacy or security were not considered.
+            Evaluations are based on classic datasets (MNIST, CIFAR-10), which do not reflect real non-IID data.
+            Only homogeneous resources were assumed.
+            Use of a simple linear regression model for availability prediction.
             More sophisticated alternatives exist.
-            They want to use more factors for availability prediction like battery level, bandwidth, and user preferences.
+            Factors such as battery level, bandwidth, and user preferences should also be considered for availability prediction.
         \\
         \hline
             \cite{paper:cluster_based_secure_aggregation_for_fl}
             &
-            Proposes a novel cluster-based secure aggregation strategy for diverse nodes.
-            Clustering based on processing score \& GPS information/latency.
-            Leads to better throughput.
-            Reduces false-positive dropouts.
-            Introduces a novel additive sharing-based masking scheme that is robust against dropouts.
+            A novel cluster-based secure aggregation strategy for diverse nodes.
+            Clustering based on processing score \& GPS information/latency leads to better throughput and reduces false-positive dropouts.
+            A new additive sharing-based masking scheme that is robust against dropouts.
             &
-            Assumes that all participants are honest - does not evaluated what happens with malicious users.
-            Server might become a bottleneck - can be resolved by using HFL (with cluster heads).
-            Only image classification was checked, no other ML task.
+            All participants are assumed to be honest.
+            Malicious users were not considered.
+            The aggregator might become a bottleneck, which can be resolved via HFL (with cluster heads).
+            Image classification was the only evaluated ML task.
         \\
         \hline
             \cite{paper:privacy_preserving_deep_fl_for_coop_hierarchical_caching_in_fog_computing}
             &
-            They propose an FL caching scheme including novel algorithms and architecture.
-            They utilize an AI training model that considers user history.
+            An FL caching scheme including novel algorithms and architecture.
+            Utilization of an AI training model that considers user history.
             &
-            They do not provide a convergence analysis.
-            They want to investigate blockchain-empowered FL to further improve security/privacy.
+            A convergence analysis was not provided.
+            For further security and privacy improvements, blockchain-empowered FL should be investigated.
         \\
         \hline
             \cite{paper:model_pretraining_and_initialization_for_fl}
             &
-            They investigated the impact of pre-training and initializing
-            ML models for FL compared to the common random approach.
-            They found that one should prefer pre-trained models.
+            Analysis of the impact of pre-training ML models for FL initialization compared to the common random approach.
+            Findings show pre-trained model superiority.
             &
             It is challenging to get a pre-trained model if the necessary data is not available or private.
             Using pre-trained models can lead to biases.
-            They only consider a specific (warm-start) initialization strategy.
+            Only a specific (warm-start) initialization strategy was considered.
         \\
         \hline
             \cite{paper:decentralized_edge_intelligence_dynamic_resource_allocation_framework_hfl}
             &
-            Proposed a novel incentive/resource-based allocation schema that utilizes game theory.
+            A novel incentive/resource-based allocation schema that utilizes game theory.
             Learners with more data are more valuable and they can compete for higher participation rewards.
-            Multiple model owners compete for cluster heads with most data.
+            Multiple model owners compete for cluster heads with the most data.
             &
-            They want to consider social network effects and their impact on cluster selection decisions of workers.
-            Account for existing evil workers.
+            The effects of social networks and their impact on worker's cluster selection decisions should be researched.
+            Malicious workers were not considered.
         \\
         \hline
             \cite{paper:fedat_high_performance_communication_efficient_fl_with_asynch_tiers}
             &
-            Uses asynchronous tiers.
-            Synergy of asynchronous \& synchronous FL
-            Able to handle stragglers.
+            Synergy of asynchronous and synchronous FL via asynchronous tiers, which is able to handle stragglers.
             &
             The tiers all update the server individually.
-            This could further be improved via HFL with intermediate cluster heads to do the aggregation
+            Further improvements are possible via HFL with intermediate cluster heads to do the aggregation.
             Additional security could be applied at these cluster heads.
         \\
         \hline
