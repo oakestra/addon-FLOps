@@ -196,14 +196,55 @@ The rest should be placed in the appendix (will still provide from huge referenc
             They improved an existing PFL algorithm that used clustered models (but discarded all but one in the end)
             The propose to use these cluster models as MoE to improve performance.
             &
-            todo
+            -
         \\
         \hline
-            todo
+            \cite{paper:leaf_fl_benchmark}
             &
-            todo
+            Benchmark for Federated Settings, especially FL, with implementations and datasets.
             &
-            todo
+            Outdated benchmark from 2019.
+            When we tried to use it we encountered many errors and problems,
+            such as broken dependencies, failing example code, and more.
+        \\
+        \hline
+            \cite{paper:model_pretraining_and_initialization_for_fl}
+            &
+            They investigated the impact of pre-training and initializing
+            ML models for FL compared to the common random approach.
+            They found that one should prefer pre-trained models.
+            &
+            It is challenging to get a pre-trained model if the necessary data is not available or private.
+            Using pre-trained models can lead to biases.
+            They only consider a specific (warm-start) initialization strategy.
+        \\
+        \hline
+            \cite{paper:rethinking_architecture_design_in_fl_for_diverse_data}
+            &
+            They compared and investigated using transformers in FL compared to other architectures
+            and found out that transformers are excellent and should be preferred for FL.
+            &
+            They allude towards other investigations on how transformers behave with other, latest FL algorithms and privacy/security schemas.
+        \\
+        \hline
+            \cite{paper:deploying_fl_in_hierarchical_edge_architecture}
+            &
+            Demonstrate that FL can be deployed and used in hierarchical architectures that fulfill specific industry standards.
+            &
+            Because this is a proof-of-work paper the findings and experiments are very basic.
+            Further topics should be investigated, such as diverse network conditions, heterogeneous data, and resources.
+        \\
+        \hline
+            \cite{paper:edgefl_framework}
+            &
+            They propose a scalable edge-only (serverless) FL framework.
+            It utilizes synchronous training and promises rapid integration, prototyping, and deployment.
+            &
+            They want to add resource optimizations like model compression and quantization,
+            explore adaptive aggregation strategies based on network conditions, resources, and data diversity.
+            They assume P2P without addressing diverse network conditions.
+            They do not focus on security or privacy.
+            They only checked image classification.
         \\
         \hline
     \end{tabular}
