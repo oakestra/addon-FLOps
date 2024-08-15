@@ -38,100 +38,206 @@ and completed a couple of payed courses \cite{udemy_homepage}.
 TODO TODO 
 I think this is a great idea, the graphs and table
 I would only feature the most important once in the graph and table.
-The rest should be placed in the appendix (will still provid from huge reference list)
+The rest should be placed in the appendix (will still provide from huge reference list)
 
-\vspace{5mm}
-\begin{tabular}{ |p{0.11\textwidth}||p{0.525\textwidth}|p{0.375\textwidth}|  }
-    \hline
-    \multicolumn{3}{|c|}{Examined FL Papers} \\
-    \hline
-    \hline
-    Reference& Contributions& Limitations Future Work\\
-    \hline
-        \cite{HPFL_over_massive_mobile_edge_computing_networks}
-        & 
-        Likely the first paper to combine PFL with HFL in a three-tiered structure.
-        Proves mathematically that this approach works and converges.
-        Includes many interesting insights regarding the HPFL.
-        &
-        -
-    \\
-    \hline
-        TODO&
-        Proposes a novel cluster-based secure aggregation strategy for diverse nodes.
-        Clustering based on processing score \& GPS information/latency.
-        Leads to better throughput.
-        Reduces false-positive dropouts.
-        Introduces a novel additive sharing-based masking scheme that is robust against dropouts.
-        &
-        Assumes that all participants are honest - does not evaluated what happens with malicious users.
-        Server might become a bottleneck - can be resolved by using HFL (with cluster heads).
-        Only image classification was checked, no other ML task.
-    \\
-    \hline
-\end{tabular}
+\begin{changemargin}{-2cm}{0cm} 
+    \begin{tabular}{|c||m{0.45\paperwidth}|m{0.35\paperwidth}|}
+            \hline
+            ID & Contributions & Limitations Future Work \\
+        \hline
+            \cite{HPFL_over_massive_mobile_edge_computing_networks}
+            & 
+            Likely the first paper to combine PFL with HFL in a three-tiered structure.
+            Proves mathematically that this approach works and converges.
+            Includes many interesting insights regarding the HPFL.
+            &
+            -
+        \\
+        \hline
+            \cite{paper:cluster_based_secure_aggregation_for_fl}
+            &
+            Proposes a novel cluster-based secure aggregation strategy for diverse nodes.
+            Clustering based on processing score \& GPS information/latency.
+            Leads to better throughput.
+            Reduces false-positive dropouts.
+            Introduces a novel additive sharing-based masking scheme that is robust against dropouts.
+            &
+            Assumes that all participants are honest - does not evaluated what happens with malicious users.
+            Server might become a bottleneck - can be resolved by using HFL (with cluster heads).
+            Only image classification was checked, no other ML task.
+        \\
+        \hline
+            \cite{paper:fedat_high_performance_communication_efficient_fl_with_asynch_tiers}
+            &
+            Uses asynchronous tiers.
+            Synergy of asynchronous \& synchronous FL
+            Able to handle stragglers.
+            &
+            The tiers all update the server individually.
+            This could further be improved via HFL with intermediate cluster heads to do the aggregation
+            Additional security could be applied at these cluster heads.
+        \\
+        \hline
+            \cite{paper:global_fl_platform_for_iot}
+            &
+            This is the closest work to FLOps that we encountered.
+            Proof-of-concept prototype of an IoT-FL platform.
+            All-in-one solution that automates and enables FL.
+            &
+            The sources (code) are not mentioned (closed-source).
+            The paper is very short, not detailed, and feels rushed.
+        \\
+        \hline
+            \cite{paper:fl_toward_on_demand_client_deployment_at_edge}
+            &
+            Covers easy on-the-fly deployment and orchestration of FL (e.g. via docker images).
+            Focuses on mobility (real people, 6G devices, where will people go next).
+            &
+            % The (”orchestrators-mini-servers”) layer of the three-layered architecture
+            gets selected naively - this can be a security risk.
+            Selecting clients in a smarter, more efficient way was still under development.
+        \\
+        \hline
+            todo
+            &
+            todo
+            &
+            todo
+        \\
+        \hline
+    \end{tabular}
+\end{changemargin}
 
-TODO
+% \vspace{5mm}
+% \begin{tabular}{ |p{0.11\textwidth}||p{0.525\textwidth}|p{0.375\textwidth}|  }
+%     \hline
+%     \multicolumn{3}{|c|}{Examined FL Papers} \\
+%     \hline
+%     \hline
+%     Reference& Contributions& Limitations Future Work\\
+%     \hline
+%         \cite{HPFL_over_massive_mobile_edge_computing_networks}
+%         & 
+%         Likely the first paper to combine PFL with HFL in a three-tiered structure.
+%         Proves mathematically that this approach works and converges.
+%         Includes many interesting insights regarding the HPFL.
+%         &
+%         -
+%     \\
+%     \hline
+%         \cite{paper:cluster_based_secure_aggregation_for_fl}
+%         &
+%         Proposes a novel cluster-based secure aggregation strategy for diverse nodes.
+%         Clustering based on processing score \& GPS information/latency.
+%         Leads to better throughput.
+%         Reduces false-positive dropouts.
+%         Introduces a novel additive sharing-based masking scheme that is robust against dropouts.
+%         &
+%         Assumes that all participants are honest - does not evaluated what happens with malicious users.
+%         Server might become a bottleneck - can be resolved by using HFL (with cluster heads).
+%         Only image classification was checked, no other ML task.
+%     \\
+%     \hline
+%         \cite{paper:fedat_high_performance_communication_efficient_fl_with_asynch_tiers}
+%         &
+%         Uses asynchronous tiers.
+%         Synergy of asynchronous \& synchronous FL
+%         Able to handle stragglers.
+%         &
+%         The tiers all update the server individually.
+%         This could further be improved via HFL with intermediate cluster heads to do the aggregation
+%         Additional security could be applied at these cluster heads.
+%     \\
+%     \hline
+%         \cite{paper:global_fl_platform_for_iot}
+%         &
+%         This is the closest work to FLOps that we encountered.
+%         Proof-of-concept prototype of an IoT-FL platform.
+%         All-in-one solution that automates and enables FL.
+%         &
+%         The sources (code) are not mentioned (closed-source).
+%         The paper is very short, not detailed, and feels rushed.
+%     \\
+%     \hline
+%         \cite{paper:fl_toward_on_demand_client_deployment_at_edge}
+%         &
+%         Covers easy on-the-fly deployment and orchestration of FL (e.g. via docker images).
+%         Focuses on mobility (real people, 6G devices, where will people go next).
+%         &
+%         % The (”orchestrators-mini-servers”) layer of the three-layered architecture
+%         gets selected naively - this can be a security risk.
+%         Selecting clients in a smarter, more efficient way was still under development.
+%     \\
+%     \hline
+%         todo
+%         &
+%         todo
+%         &
+%         todo
+%     \\
+% \end{tabular}
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.8\textwidth]{fl_research_categories.png}
-    \caption{TODO}
-    \label{fig:fl_research_categories}
-\end{figure}
+% TODO
 
-TODO
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=0.8\textwidth]{fl_research_categories.png}
+%     \caption{TODO}
+%     \label{fig:fl_research_categories}
+% \end{figure}
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.8\textwidth]{fl_research_contributions.png}
-    \caption{TODO}
-    \label{fig:fl_research_contributions}
-\end{figure}
+% TODO
 
-TODO
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=0.8\textwidth]{fl_research_contributions.png}
+%     \caption{TODO}
+%     \label{fig:fl_research_contributions}
+% \end{figure}
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.8\textwidth]{fl_research_problem_challenge.png}
-    \caption{TODO}
-    \label{fig:fl_research_problem_challenge}
-\end{figure}
+% TODO
 
-TODO
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=0.8\textwidth]{fl_research_problem_challenge.png}
+%     \caption{TODO}
+%     \label{fig:fl_research_problem_challenge}
+% \end{figure}
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.8\textwidth]{fl_research_limitations_future_work.png}
-    \caption{TODO}
-    \label{fig:fl_research_limitations_future_work}
-\end{figure}
+% TODO
 
-TODO
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=0.8\textwidth]{fl_research_limitations_future_work.png}
+%     \caption{TODO}
+%     \label{fig:fl_research_limitations_future_work}
+% \end{figure}
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.8\textwidth]{fl_research_achieved_results.png}
-    \caption{TODO}
-    \label{fig:fl_research_achieved_results}
-\end{figure}
+% TODO
 
-TODO
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=0.8\textwidth]{fl_research_achieved_results.png}
+%     \caption{TODO}
+%     \label{fig:fl_research_achieved_results}
+% \end{figure}
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.8\textwidth]{fl_research_ml_frameworks.png}
-    \caption{TODO}
-    \label{fig:fl_research_ml_frameworks}
-\end{figure}
+% TODO
 
-TODO
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=0.8\textwidth]{fl_research_ml_frameworks.png}
+%     \caption{TODO}
+%     \label{fig:fl_research_ml_frameworks}
+% \end{figure}
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.8\textwidth]{fl_research_fl_frameworks.png}
-    \caption{TODO}
-    \label{fig:fl_research_fl_frameworks}
-\end{figure}
+% TODO
 
-TODO
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=0.8\textwidth]{fl_research_fl_frameworks.png}
+%     \caption{TODO}
+%     \label{fig:fl_research_fl_frameworks}
+% \end{figure}
+
+% TODO
