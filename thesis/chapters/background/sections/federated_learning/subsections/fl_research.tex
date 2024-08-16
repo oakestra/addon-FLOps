@@ -35,7 +35,6 @@ joined and participated in discussion forums,
 and completed a couple of paid courses \cite{udemy_homepage}.
 Discussing each paper in detail would heavily bloat this thesis.
 We present key and meta-findings instead.
-
 During our reading, we created and incrementally updated a database in which we noted the specific properties of each paper.
 These properties include one or multiple categories in which the paper fits in, the initial problems or challenges the authors tried to resolve,
 their contributions, results, limitations, and envisioned future work.
@@ -51,7 +50,6 @@ It shows the documented contributions, limitations, and future work properties.
 We explicitly decided to use an abbreviated format instead of verbose sentences
 to optimize the limited space.
 One can inspect the remaining FL papers in the appendix \ref{appendix:fl_research}.
-
 These tables should provide a good impression of the individual papers we examined.
 We look for patterns and trends to better understand the research field of FL as a whole.
 We utilize the documented properties for this.
@@ -60,7 +58,6 @@ Figure \ref{fig:fl_research_categories} shows the different found categories and
 Most of our papers were focused on performance, trying new concepts, finding best practices,
 and exploring different FL architectures.
 Only two papers focused on deployment and orchestration.
-
 \begin{figure}[p]
     \centering
     \includegraphics[width=1.0\textwidth]{fl_research_categories.png}
@@ -71,7 +68,6 @@ Only two papers focused on deployment and orchestration.
     \caption{Targeted Problems \& Challenges of FL Papers}
     \label{fig:fl_research_problem_challenge}
 \end{figure}
-
 A similar trend can be seen in figure \ref{fig:fl_research_problem_challenge}.
 The primary focus is on investigating new concepts or improving existing bottlenecks
 in terms of performance, scalability, and complexity.
@@ -83,7 +79,6 @@ The main contributions seen in figure \ref{fig:fl_research_contributions} streng
 This chart is dominated by mathematical and conceptual proofs that novel
 architectures and algorithms work as proposed.
 Contributions do not seem to focus on improving the initial setup, deployment, and configuration processes.
-
 \begin{figure}[p]
     \centering
     \includegraphics[width=1.0\textwidth]{fl_research_contributions.png}
@@ -94,7 +89,6 @@ Contributions do not seem to focus on improving the initial setup, deployment, a
     \caption{Achieved Results of FL Papers}
     \label{fig:fl_research_achieved_results}
 \end{figure}
-
 The results achieved mirror these finding.
 Figure \ref{fig:fl_research_achieved_results} shows that these contributions
 lead to better efficiencies in terms of speed, resource utilization, training results,
@@ -116,15 +110,12 @@ Even the future focus is not on optimizing accessibility, usability, or the ment
 Because we assigned these properties subjectively and our paper sample size is relatively small,
 we compare our findings so far with the total number of published works about FL.
 We use the same method to gather the data as for \ref{fig:fl_documents_research}.
-
 \begin{figure}[h]
     \centering
     \includegraphics[width=1.0\textwidth]{fl_publications_compared.png}
     \caption{Evolution of FL Publications based on Keywords}
     \label{fig:fl_publications_compared}
 \end{figure}
-
-
 Figure \ref{fig:fl_publications_compared} shows how many works have been published in FL with
 specific keywords that match our custom categories.
 The global results paint a similar picture as our samples.
@@ -138,11 +129,9 @@ and motivate their readers to optimize them based on their findings
 instead of replicating and configuring such an FL setup initially.
 One can also see these tendencies when inspecting the ML and FL frameworks and libraries
 the authors mentioned they used in our examined papers.
-
 Figure \ref{fig:fl_research_ml_frameworks} shows that most authors
 did not explicitly state what ML framework or library they used for their work.
 Many researchers used Pytorch and TensorFlow.
-
 \begin{figure}[p]
     \centering
     \includegraphics[width=0.9\textwidth]{fl_research_ml_frameworks.png}
@@ -153,10 +142,8 @@ Many researchers used Pytorch and TensorFlow.
     \caption{Distribution of mentioned FL Frameworks in FL Papers}
     \label{fig:fl_research_fl_frameworks}
 \end{figure}
-
 Figure \ref{fig:fl_research_fl_frameworks} shows that FL researchers
 rarely mention what FL frameworks they use for their work.
-
 It is much more common for authors to mention what ML 
 framework they used than what FL framework they used.
 
@@ -165,12 +152,10 @@ widespread, and established.
 The same applies to ML frameworks.
 On the other hand, FL is a very young subfield of ML research.
 FL frameworks are still in their early stages.
-
 Therefore, FL researchers might be using FL frameworks, but due to the framework's immaturity,
 the researchers might not deem it important to explicitly point out that they used them.
 Another possible explanation is that FL researchers are experts in FL and
 can set up and configure FL from the ground up on their own.
-
 Either way, this lack of transparency makes reproducing or extending
 their work challenging, if not infeasible.
 
