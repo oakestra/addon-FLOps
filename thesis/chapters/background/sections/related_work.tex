@@ -4,8 +4,8 @@
 
 Only two previous works \cite{paper:fl_toward_on_demand_client_deployment_at_edge, paper:global_fl_platform_for_iot} of those mentioned in \ref{subsection:fl_research} resemble FLOps.
 Both also noticed the lack in research regarding deploying ML and FL capabilities dynamically via containerization on devices.
-They focus on other aspects and do not incorporate MLOps tools or automatic image builds.
-They use different technologies than FLOps, such as Kubernetes and Kubeadm to create dynamic clusters.
+They use different technologies and offer different functionality than FLOps.
+They focus on other aspects and do not incorporate MLOps tools, automatic image builds, or automatic deployment of trained model inference servers.
 
 \subsection{On the feasibility of Federated Learning towards on-demand client deployment at the edge}
 In 2023, Chahoud et al. \cite{paper:fl_toward_on_demand_client_deployment_at_edge} proposed a three-layered FL architecture running on Kubernetes.
@@ -80,10 +80,34 @@ This work enables distributed ML model deployment, federated task orchestration,
 They called their approach FedIoT.
 Their three-layered architecture resembles the one from \cite{paper:fl_toward_on_demand_client_deployment_at_edge} and Oakestra.
 Their root server/orchestrator is called global orchestrator.
+It acts as an FL aggregator and dynamically configures and deploys local orchestrators via an API.
 Their local orchestrator is not equivalent to cluster orchestrators or mini-servers.
 This work focuses on enterprise IoT.
 IoT devices are usually not capable of handling common ML training due to their limited resources.
 This work acknowledges this and uses the IoT devices only as data providers but not as learners.
-Therefore, this work perform classic FL instead of HFL.
+Therefore, this work performs classic FL instead of HFL.
 Local orchestrators are learners in this architecture.
+They need to be in the proximity of IoT devices to be able to receive their data.
+Additionally, they provide customizable data preprosessing and evaluation code to be injected via the API.
 
+This work offers additional tooling, such as a custom compressor and monitoring.
+The compressor is a dedicated component to reduce the size of large files.
+Monitoring agents are deployed on the local and global orchestrators that measure resources and CO2.
+A custom GUI presents these metrics.
+
+As future work the authors wanted to add more FL algorithms and add more sophisticated logic to select participants for training based on the monitored metrics.
+
+There are obvious similarities between this work and FLOps/Oakestra.
+Both want to provide a one-in-all solution to perform FL on tangible devices via containerization and orchestration.
+They want to automate setup, dependency management, configuration, and metric gathering.
+Additionally, they want to improve comprehension and observability by providing a GUI.
+
+This work differs compared to FLOps in multiple ways, besides FLOps larger set of features.
+As already mentioned above, this work only offers classic FL and has a different and less mature architecture than FLOps thanks to Oakestra.
+This work is very short, thus lacks details and readability.
+It has no open sourced code to inspect and replicate its implementation.
+FLOps has this thesis documenting it in great detail and is fully open source.
+This works tries to implement all components by itself from group up, such as orchestration, monitoring, and FL.
+FLOps utilizes and combines existing sophisticated solutions to offer higher quality features and performance.
+For example, this work's GUI is a simple Grafana dashboard, that offers a lot fewer features and is read-only.
+FLOps utilizes MLflow to provide a sophisticated suite of MLOps tools and functionalities.
