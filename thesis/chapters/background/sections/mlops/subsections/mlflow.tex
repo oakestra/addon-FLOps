@@ -13,8 +13,9 @@ This ecosystem includes detailed documentation \cite{mlflow:docs}, code examples
 A great resource besides the official ones to learn more about MLflow is this online course \cite{mlflow:udemy}.
 MLflow helps users manage their ML workflow loops from conception to re-deployment.
 
-MLflow divides its core features into four interconnected components.
+MLflow divides its core features into multiple different interconnected components.
 These components are rather conceptual groupings of functionalities than concrete isolated interfaces.
+The following represents a major selection of critical components.
 \vspace{5mm}
 \newline
 \textbf{Tracking}\newline
@@ -26,7 +27,7 @@ Users can customize what should be tracked and how often.
 MLflow also offers automatic logging capabilities.
 Popular targets for tracking include parameters ranging from hyperparameters to custom metaparameters.
 The utilized code or training data can also be tracked, as well as metrics, such as accuracy and loss.
-MLflow offers its tracking via various APIs, including Python, Java, or REST.
+MLflow offers its tracking via various APIs, including Python, Java, and REST.
 The tracking artifacts get recorded in a centralized place.
 By default, these artifacts are recorded in a local directory.
 These tracked records can also be stored and managed by a dedicated local or remote scalable tracking server.
@@ -70,7 +71,7 @@ Unlike the tracked pieces of code from the tracking or model components, MLflow 
 Projects aim to uniformly package ML code for reproducibility and distribution.
 The heart of an MLflow project is its MLproject file.
 It contains all the necessary information regarding dependencies and environments to guarantee identical conditions.
-This file can have multiple entry points similar to a Docker file.
+This file can have multiple entry points, similar to a Docker file.
 These entry points can be used for different use cases, including training or evaluation.
 Other users can quickly start using such projects due to MLflow's project CLI commands.
 A project's entry point can be called by the project CLI.
@@ -84,7 +85,7 @@ It is not yet possible to orchestrate and deploy MLflow projects directly instea
 Issues arise when wrapping an MLflow project into a generic image and then internally calling its CLI to build and run the corresponding image.
 MLflow uses Docker directly, which is, in most cases, not possible inside a containerized environment.
 This limitation is represented in the official MLflow examples \cite{mlflow:docker_example}.
-In this example all necessary dependencies are explicitly mentioned and installed in a custom Dockerfile that needs to be build manually to run the ML experiments.
+In this example, all necessary dependencies are explicitly mentioned and installed in a custom Dockerfile that needs to be built manually to run the ML experiments.
 This emphasizes that MLflow projects cannot be automatically turned into standalone container images yet.
 \vspace{5mm}
 \newline
@@ -103,12 +104,12 @@ In the simplest case, everything is stored and located on the local machine, wit
 More sophisticated structures support shared and distributed workflows and workloads.
 The mentioned components can be gradually added or removed.
 Therefore, MLflow allows flexible and custom solutions.
-For example, the artifact Store, backend Store, and tracking server can all be deployed on different machines and environments.
+For example, the artifact store, backend store, and tracking server can all be deployed on different machines and environments.
 This separation of concerns enables improved scalability and reduces singular points of failure.
 The tracking server can function as a proxy and bridge between machines that perform the ML experiments and the data stores.
-This approach enables centralized security and access control, simplifies client interactions.
+This approach enables centralized security and access control, which simplifies client interactions.
 
 MLflow lacks native support for FL.
 It does not explicitly mention or support FL.
 However, FL can profit from MLflow due to its modular design, that can be customized and applied to FL specific components and environments.
-For that reason FLOps is using MLflow.
+For that reason, FLOps is using MLflow.
