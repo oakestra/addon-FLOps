@@ -57,15 +57,16 @@ TODO
 \begin{itemize}
     \item [NFR-1] {\textbf{Usability}}:
         \begin{itemize}
-        \item [NFR-1.1] \textbf{Improve Accessibility}:
-            Allow users without specific experience in FL, MLOps, or orchestration to perform FL and benefit from these technologies.
-            Be concrete -> how     
-            -> by Streamline FL Processes and Save Time:
-            Enable users to initiate FL by providing a link to their ML git repository, which then gets automatically augmented to support FL.
-            - NFR14: Ensure that the system is accessible to users with varying levels of technical expertise, including those without prior experience in FL, MLOps, or orchestration.
-        \item [NFR-1.2] \textbf{Development and Evaluation Automation}: (Usability for devs \& reserachers - not just endusers with no experience)
+        \item [NFR-1.1] \textbf{Streamline FL processes \& abstract away complexities}:
+            FLOps automates and streamlines FL, MLOps, and orchestration processes.
+            Thus, it allows users without specific experience in these domains to perform FL and benefit from these technologies.
+            Flops also saves time for FL experts by automating away redundant manual tasks.
+            Users can initiate FL projects by sending out a request to FLOP with a link to their ML git repository.
+        \item [NFR-1.2] \textbf{Accelerate FL development and evaluation}: 
             FLOps provides ready-made extendable multi-platform images and services to automate development and evaluation workflows.    
-            -FR14: Include development-friendly features such as formatters, linters, CI integration, ready-made extendable multi-platform images, and services for automating development and evaluation workflows.
+            (Usability for devs \& reserachers - not just endusers with no experience)
+            
+            -FR14: Include development-friendly features such as formatters, linters, CI integration for automating development and evaluation workflows.
                     % rewrite & adjust - currently too wischi-waschi
             - The GUI should be intuitive and user-friendly, allowing users to easily monitor and manage FL processes.
             - The CLI tool should be straightforward and provide clear, real-time visualizations.
@@ -143,7 +144,32 @@ TODO
 
 
 \section{System Models}
+
+% TODO paraphraze!
+In this section, we will analyze the formulated requirements. We start with user stories, i.e. scenarios that describe the new system which implements the requested changes.
+We continue by illustrating the structure and workflows of the new system by creating various UML models.
+Finally, we take a look at the GUI that shows how the user will interact with the new system.
+
 \subsection{Scenarios}
+
+% TODO paraphraze!
+The goal of scenarios is to enhance the understanding of the proposed system by looking at a concrete set of common use cases [BD09].
+These scenarios are also written in natural language to further increase the comprehension of the planed end user experience while working with the new system.
+Scenarios can also be used to build models. We differentiate between two kinds of scenarios.
+Demo scenarios that illustrate the achieved use cases of the new system.
+Visionary scenarios portrait an almost utopian experience that will not be realized by this thesis, but lay the foundation for future work.
+
+\subsubsection{Visionary Scenario}
+TODO
+ % Maybe split scenarios up by target group - enduser no experience - FL researcher - FL dev
+\subsubsection{Demo Scenario A}
+
+\subsubsection{Demo Scenario B}
+
 \subsection{Use Case Model}
+% TODO paraphraze!
+UML Use Case diagrams are used to visualize the available system functions from the user perspective, i.e. they illustrate the previously described functional requirements [BD09].
+They illustrate all use cases instead of a subset like the previously covered scenarios.
+
 \subsection{Analysis Object Model}
 \subsection{Dynamic Model}
