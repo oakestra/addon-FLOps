@@ -1,25 +1,23 @@
 \chapter{Requirements Analysis}
 
+This chapter performs requirements engineering.
+It uses the problem statement \ref{section:problem_statement}, objectives \ref{section:objectives}, and weaknesses found in the FL field \ref{subsection:fl_research} as input to elicit requirements.
+These requirements are specified, analyzed, and concretised. 
 This chapters starts by analyzing and deriving functional and nonfunctional requirements.
-These requirements are based on the discussed objectives \ref{section:objectives} and weaknesses found in the FL field \ref{subsection:fl_research}.
 It uses (UML) models and use cases to explain the proposed system's functionalities and structure
 Its goal is to explain the new system's workflows, processes and structural relationships without delving into concrete ways of realizing these goals.
-This chapter focuses on the application domain which represents the environment a system is used in.
+This chapter focuses on the application domain which represents the proposed system and its surrounding environment.
 It is crucial to understand the basic behavior, reasoning, and environment of the system before working out how to realize these goals in a concrete manner.
 The contributions section \ref{section:contributions} provide an overview of FLOps's functionalities and features and how they realize the discussed objectives.
 This chapter follows the the Requirements Analysis Document Template by Brügge, et al. \cite{book:bruegge}.
 
 \section{Proposed System}
 
-This section collects functional and nonfunctional requirements.
-These requirements are fundamental for all new system proposals \cite{book:bruegge}.
-# use buzzword - Requirements Elicitaiton (descripes purpose of the system) vs Requirements specification
-
 \subsection{Functional Requirements}
-Functional Requirements (FR) describe necessary functional relationships between the proposed system and its surrounding.
-These requirements only focus on concrete functionalities.
+Functional Requirements (FR) describe mandatory functional relationships between the proposed system and its surrounding.
+These requirements only focus on concrete functionalities, user interactions, and environmental conditions.
 They ignore any and all implementation details and nonfunctional conditions, such as performance.
-FRs capture what a proposed system should achieve and not how it does so. \cite{book:bruegge}
+FRs capture what a proposed system must achieve, instead of how it achieves it. \cite{book:bruegge}
 
 \begin{itemize}
     % \item [FR 1] {\textbf{Federated Learning}}:
@@ -37,7 +35,7 @@ FRs capture what a proposed system should achieve and not how it does so. \cite{
         Additionally FLOps starts and stops the training and evaluation processes.
 
     - Support various FL scenarios:
-        Besides classic FL, FLOps supports (clustered) HFL.    
+        Besides classic FL, FLOps supports (clustered) HFL. + FL libraries/frameworsk (classic ML, etc.)    
 
     - It should be able to manage and orchestrate multiple FL tasks simultaneously. #think if this is correctly placed here
 
