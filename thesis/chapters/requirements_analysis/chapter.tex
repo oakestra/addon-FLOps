@@ -33,13 +33,12 @@ FRs capture what a proposed system must achieve, instead of how it achieves it. 
         \end{itemize}
     \item [FR-2] {\textbf{Provide Flexible Configuration}}:
         Allow users to specify resource requirements, the number of training rounds, the FL algorithm, the minimum number of participating client devices, etc., for FL training.
-    \item [FR-3] {\textbf{Containerization & Build}}:
+    \item [FR-3] {\textbf{Containerization \& Build}}:
         Enable automatic conversion of ML code into FL-enabled containerized images.
     \item [FR-4] {\textbf{Monitoring}}:
         Provide a sophisticated GUI for monitoring, comparing, storing, exporting, sharing, and organizing training runs, metrics, and trained models during runtime.
     \item [FR-5] {\textbf{Inference Serving}}: - Inference Server Creation:
         FLOps can automatically build inference servers based on the trained model, which can be pulled as regular images or directly deployed.
-    \end{itemize}
 \end{itemize}
 
 \subsection{Nonfunctional Requirements}
@@ -50,18 +49,18 @@ TODO
         \begin{itemize}
         \item [NFR-1.1] \textbf{Improve Accessibility}:
             Allow users without specific experience in FL, MLOps, or orchestration to perform FL and benefit from these technologies.
-            # Be concrete -> how     
+            Be concrete -> how     
             -> by Streamline FL Processes and Save Time:
             Enable users to initiate FL by providing a link to their ML git repository, which then gets automatically augmented to support FL.
             - NFR14: Ensure that the system is accessible to users with varying levels of technical expertise, including those without prior experience in FL, MLOps, or orchestration.
-        \item [NFR-1.2] \textbf{Development and Evaluation Automation}: (Usability for devs & reserachers - not just endusers with no experience)
+        \item [NFR-1.2] \textbf{Development and Evaluation Automation}: (Usability for devs \& reserachers - not just endusers with no experience)
             FLOps provides ready-made extendable multi-platform images and services to automate development and evaluation workflows.    
             -FR14: Include development-friendly features such as formatters, linters, CI integration, ready-made extendable multi-platform images, and services for automating development and evaluation workflows.
                     % rewrite & adjust - currently too wischi-waschi
             - The GUI should be intuitive and user-friendly, allowing users to easily monitor and manage FL processes.
             - The CLI tool should be straightforward and provide clear, real-time visualizations.
 
-            - CLI Tool: <- Focus not on the CLI tool itself but on why it is there - what it offers #rewrite
+            - CLI Tool: <- Focus not on the CLI tool itself but on why it is there - what it offers rewrite
                 FLOps includes a CLI tool that interacts with Oakestra’s and FLOps’ APIs, visualizes current processes in real-time, and can trigger evaluation runs and other automated tasks.
                 FR15: Provide a new CLI tool for interacting with Oakestra and FLOps, capable of visualizing current processes, triggering evaluation runs, and managing dependencies.
         \end{itemize}
@@ -84,12 +83,12 @@ TODO
             - FLOps should integrate seamlessly with existing tools and frameworks like Anaconda, Buildah, Flower, MLflow, and Oakestra.
             - NFR12: Design the system to be compatible with a wide range of ML frameworks and containerization technologies, ensuring that users can integrate FLOps with their existing infrastructure and workflows.
         \end{itemize}
-    \item [NFR-3] {\textbf{Performance}}: (Repsonse time, throughput, availability, accurac - should be very precice & measurable)
+    \item [NFR-3] {\textbf{Performance}}: (Repsonse time, throughput, availability, accurac - should be very precice \& measurable)
         \begin{itemize}
         \item [NFR-3.1] {\textbf{Scalability}}:
             - NFR11: Ensure that the system can handle increases in workload or user base without significant degradation in performance, supporting scalability across different hardware and network conditions.
             - FLOps should support scaling to handle a large number of client devices and training rounds.
-            - It should be able to manage and orchestrate multiple FL tasks simultaneously. #think if this is correctly placed here
+            - It should be able to manage and orchestrate multiple FL tasks simultaneously. think if this is correctly placed here
         \item [NFR-3.2] {\textbf{Availability}}: % Reliability
             - NFR7: Guarantee the reliability of FL training by implementing robust error handling and recovery mechanisms, ensuring that the system can recover gracefully from failures during training or deployment.
             - FLOps should ensure high availability and fault tolerance during FL training and orchestration.
@@ -101,7 +100,7 @@ TODO
             - NFR2: Achieve efficient FL training by allowing users to specify resource requirements, ensuring that the system can scale according to the computational needs of the task.
             - The system should create containerized images quickly and efficiently.
             - FL training processes should be optimized for speed and resource usage.
-            - The system should minimize resource consumption, including CPU, memory, and network bandwidth. # maybe too broad <- no hard "must" requirement - might remove
+            - The system should minimize resource consumption, including CPU, memory, and network bandwidth. maybe too broad <- no hard "must" requirement - might remove
         \end{itemize}
     \item [NFR-4] {\textbf{Security}}:
         - The system should ensure secure communication between client devices and the central server.
@@ -128,7 +127,6 @@ TODO
             \item [NFR-5.2] {\textbf{interface requirements?}}:
                 - NFR13: Implement standard API endpoints and SLAs for interaction with other systems and orchestrators, allowing for flexibility in deployment environments.
         \end{itemize}
-    \end{itemize}
 \end{itemize}
 
 
