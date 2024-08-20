@@ -2,43 +2,53 @@
 
 This chapter performs requirements engineering.
 It uses the problem statement \ref{section:problem_statement}, objectives \ref{section:objectives}, and weaknesses found in the FL field \ref{subsection:fl_research} as input to elicit requirements.
-These requirements are specified, analyzed, and concretised. 
-This chapters starts by analyzing and deriving functional and nonfunctional requirements.
-It uses (UML) models and use cases to explain the proposed system's functionalities and structure
-Its goal is to explain the new system's workflows, processes and structural relationships without delving into concrete ways of realizing these goals.
-This chapter focuses on the application domain which represents the proposed system and its surrounding environment.
+These requirements are specified, analyzed, and concretized. 
+This chapter starts by analyzing and deriving functional and nonfunctional requirements.
+It utilizes (UML) models and use cases to explain the proposed system's functionalities and structure.
+Its goal is to explain the new system's workflows, processes, and structural relationships without delving into concrete ways of realizing these goals.
+This chapter focuses on the application domain, which represents the proposed system and its surrounding environment.
 It is crucial to understand the basic behavior, reasoning, and environment of the system before working out how to realize these goals in a concrete manner.
-The contributions section \ref{section:contributions} provide an overview of FLOps's functionalities and features and how they realize the discussed objectives.
-This chapter follows the the Requirements Analysis Document Template by Brügge, et al. \cite{book:bruegge}.
+The contributions section \ref{section:contributions} provides an overview of FLOps's functionalities and features and how they realize the discussed objectives.
+This chapter follows the Requirements Analysis Document Template by Brügge et al. \cite{book:bruegge}.
 
 \section{Proposed System}
 
 \subsection{Functional Requirements}
-Functional Requirements (FR) describe mandatory functional relationships between the proposed system and its surrounding.
+Functional Requirements (FR) describe mandatory functional relationships between the proposed system and its surroundings.
 These requirements only focus on concrete functionalities, user interactions, and environmental conditions.
-They ignore any and all implementation details and nonfunctional conditions, such as performance.
-FRs capture what a proposed system must achieve, instead of how it achieves it. \cite{book:bruegge}
+They ignore implementation details and nonfunctional conditions, such as performance.
+FRs capture what a proposed system must achieve instead of how it achieves it. \cite{book:bruegge}
 
 \begin{itemize}
-    \item [FR-1] {\textbf{Federated Learning}}:
+    \item [FR-1] {\textbf{Federated Learning}}
         \begin{itemize}
-        \item [FR-1.1] \textbf{Enable Individuals to Use, Develop, and Evaluate Practical FL}:
-            Provide a platform where individuals can utilize FL without the need for prior experience in FL.
+        \item [FR-1.1] \textbf{Enable individuals to use, develop, and evaluate practical FL}:
+            FLOps is a platform where individuals can utilize FL regardless of their level of expertise.
+            Target groups include inexperienced and expert users, developers, and researchers.
         \item [FR-1.2] \textbf{Automate FL management \& processes}:
-            FLOps handles all necessary duties to do FL for the user automatically.
-            These duties include, providing, creating, (un)deploying, and removing the learners and aggregator(s).
-            Additionally FLOps starts and stops the training and evaluation processes.
-        \item [FR-1.3] \textbf{Support various FL scenarios}:
-            Besides classic FL, FLOps supports (clustered) HFL. + FL libraries/frameworsk (classic ML, etc.)    
+            FLOps automatically handles all necessary duties to perform FL for the user.
+            These duties include providing, creating, (un)deploying, and removing FL components, such as learners and aggregator(s).
+            FLOps starts and stops the training and evaluation processes.
+        \item [FR-1.3] \textbf{Support multiple FL scenarios}:
+            Besides classic FL, FLOps supports (clustered) HFL.
+            FLOps is ML library/framework agnostic and allows various ML techniques, such as DNNs and classic ML.
         \end{itemize}
     \item [FR-2] {\textbf{Provide Flexible Configuration}}:
-        Allow users to specify resource requirements, the number of training rounds, the FL algorithm, the minimum number of participating client devices, etc., for FL training.
-    \item [FR-3] {\textbf{Containerization \& Build}}:
-        Enable automatic conversion of ML code into FL-enabled containerized images.
-    \item [FR-4] {\textbf{Monitoring}}:
-        Provide a sophisticated GUI for monitoring, comparing, storing, exporting, sharing, and organizing training runs, metrics, and trained models during runtime.
-    \item [FR-5] {\textbf{Inference Serving}}: - Inference Server Creation:
-        FLOps can automatically build inference servers based on the trained model, which can be pulled as regular images or directly deployed.
+        FLOps supports different FL project configurations.
+        For example, users can specify and request different resource requirements, such as the number of training rounds, FL algorithms, and the minimum number of learners.
+    \item [FR-3] {\textbf{Handle FL augmentation and containerization}}:
+        FLOps automatically converts user ML code into FL-capable container images that include all necessary dependencies to do FL.
+        It stores these  images internally and deploys them for training.
+    \item [FR-4] {\textbf{Provide a GUI for monitoring, evaluation, and result management}}:
+        FLOps provides a sophisticated GUI for monitoring, comparing, storing, exporting, sharing, and organizing training runs, metrics, and trained models during runtime.
+    \item [FR-5] {\textbf{Provide trained model access to users}}:
+        FLOps enables users to access their trained models.
+        FLOps can build container images that serve the trained models.
+        Users can pull these images to use their trained models as they wish.
+        Users can see and access their models via the GUI.
+    \item [FR-6] {\textbf{Inference Serving}}:
+        FLOps can automatically build and deploy inference servers based on the trained model.
+        Users can send inference requests to their trained models directly after training on the same platform.
 \end{itemize}
 
 \subsection{Nonfunctional Requirements}
@@ -130,7 +140,7 @@ TODO
 \end{itemize}
 
 
-\subsection{Nonfunctional Requirements}
+
 
 \section{System Models}
 \subsection{Scenarios}
