@@ -29,114 +29,95 @@ FRs capture what a proposed system must achieve instead of how it achieves it. \
             FLOps automatically handles all necessary duties to perform FL for the user.
             These duties include providing, creating, (un)deploying, and removing FL components, such as learners and aggregator(s).
             FLOps starts and stops the training and evaluation processes.
-        \item [FR-1.3] \textbf{Support multiple FL scenarios}:
+        \item [FR-1.3] \textbf{Support various flexible FL scenarios}:
             Besides classic FL, FLOps supports (clustered) HFL.
-            FLOps is ML library/framework agnostic and allows various ML techniques, such as DNNs and classic ML.
+            FLOps is ML library/framework agnostic and allows different ML techniques, such as DNNs and classic ML.
         \end{itemize}
     \item [FR-2] {\textbf{Provide Flexible Configuration}}:
         FLOps supports different FL project configurations.
         For example, users can specify and request different resource requirements, such as the number of training rounds, FL algorithms, and the minimum number of learners.
     \item [FR-3] {\textbf{Handle FL augmentation and containerization}}:
         FLOps automatically converts user ML code into FL-capable container images that include all necessary dependencies to do FL.
-        It stores these  images internally and deploys them for training.
+        It stores these images internally and deploys them for training.
     \item [FR-4] {\textbf{Provide a GUI for monitoring, evaluation, and result management}}:
-        FLOps provides a sophisticated GUI for monitoring, comparing, storing, exporting, sharing, and organizing training runs, metrics, and trained models during runtime.
+        FLOps provides a sophisticated GUI for monitoring, comparing, storing, exporting, sharing, and organizing training runs, metrics, and trained models.
+        Users can access this GUI at any time.
+        They can follow live training progress or inspect their previous results.
     \item [FR-5] {\textbf{Provide trained model access to users}}:
         FLOps enables users to access their trained models.
         FLOps can build container images that serve the trained models.
         Users can pull these images to use their trained models as they wish.
         Users can see and access their models via the GUI.
-    \item [FR-6] {\textbf{Inference Serving}}:
-        FLOps can automatically build and deploy inference servers based on the trained model.
+    \item [FR-6] {\textbf{Enable inference serving}}:
+        FLOps can automatically build and deploy inference servers based on trained models.
         Users can send inference requests to their trained models directly after training on the same platform.
 \end{itemize}
 
 \subsection{Nonfunctional Requirements}
-TODO
+Nonfunctional Requirements (NFR) define how the proposed system should work.
+NFRs include constraints which the system must fulfill.
+The following NFRs are based on the established FURPS+ categories as seen in [BD09].
 
 \begin{itemize}
     \item [NFR-1] {\textbf{Usability}}:
         \begin{itemize}
         \item [NFR-1.1] \textbf{Streamline FL processes \& abstract away complexities}:
-            FLOps automates and streamlines FL, MLOps, and orchestration processes.
-            Thus, it allows users without specific experience in these domains to perform FL and benefit from these technologies.
-            Flops also saves time for FL experts by automating away redundant manual tasks.
-            Users can initiate FL projects by sending out a request to FLOP with a link to their ML git repository.
+            FLOps should automate and streamline FL, MLOps, and orchestration processes.
+            Thus, it should allow users without specific experience in these domains to perform FL and benefit from these technologies.
+            Flops should save time for FL experts by automating away redundant manual tasks.
+            Users should be able to participate and initiate FL projects by linking their (non-FL) ML code.
         \item [NFR-1.2] \textbf{Accelerate FL development and evaluation}: 
-            FLOps provides ready-made extendable multi-platform images and services to automate development and evaluation workflows.    
-            (Usability for devs \& reserachers - not just endusers with no experience)
-            
-            -FR14: Include development-friendly features such as formatters, linters, CI integration for automating development and evaluation workflows.
-                    % rewrite & adjust - currently too wischi-waschi
-            - The GUI should be intuitive and user-friendly, allowing users to easily monitor and manage FL processes.
-            - The CLI tool should be straightforward and provide clear, real-time visualizations.
-
-            - CLI Tool: <- Focus not on the CLI tool itself but on why it is there - what it offers rewrite
-                FLOps includes a CLI tool that interacts with Oakestra’s and FLOps’ APIs, visualizes current processes in real-time, and can trigger evaluation runs and other automated tasks.
-                FR15: Provide a new CLI tool for interacting with Oakestra and FLOps, capable of visualizing current processes, triggering evaluation runs, and managing dependencies.
+            FLOps should provide ready-made extendable multi-platform components to automate development and evaluation workflows.    
+            Its GUI should follow established conventions for usability to ensure intuitive and easy navigation and access to the required features.
+            Its CLI should provide a clear and complete set of commands to interact with the system.
+            The CLI's monitoring capabilities should be comprehensive and close to real-time to provide users with timely information.
+            The CLI should provide users with thorough supportive instructions and help messages to improve onboarding and general use.
         \end{itemize}
     \item [NFR-2] {\textbf{Supportability}}:
         \begin{itemize}
         \item [NFR-2.1] {\textbf{Maintainability}}:
-            - FR13: Implement the system with high-quality, readable code, utilizing state-of-the-art libraries and frameworks.
-            - Code Quality and Readability:
-                FLOps enforces proper styling and typing via formatters and linters, including CI.    
-            - NFR10: Adopt coding standards and practices that promote high-quality, readable code, making it easier for developers to understand and modify the system.
-            - The codebase should be well-documented and follow industry best practices for readability and maintainability.
-            - Developer and Researcher Modifiability:
-                FLOps is designed to be easily modified and extended by developers and researchers.
-            - NFR9: Design the system architecture to be modular and extensible, allowing for easy updates and additions of new features or integrations with other technologies.
-            - FLOps should be designed to allow easy addition of new features and support for new technologies.
-            - It should provide a modular architecture to facilitate extensions and customizations.
+            FLOps should make extending and modifying it straightforward and comfortable to ensure long time developers and occasional contributors can work on it efficiently.
+            The target group should include FL researchers that might have little experience in writing high-quality code.
+            Its codebase should be well-documented and follow industry best practices for readability and maintainability.
+            Therefore, FLOps should uphold high-quality code standards and use state-of-the-art libraries and frameworks.
+            FLOps should uphold these conventions by enforcing formatters, linters, and automatic CI pipelines for verification.
+            Its system design should be modular and extensible, allowing for easy updates and additions of new features or integrations with other technologies.
         \item [NFR-2.2] {\textbf{Portability}}:
-            - The system should be compatible with various platforms and environments, including different operating systems and hardware architectures.
-            - Containerized images should be easily transferable and deployable across different platforms.
-            - FLOps should integrate seamlessly with existing tools and frameworks like Anaconda, Buildah, Flower, MLflow, and Oakestra.
-            - NFR12: Design the system to be compatible with a wide range of ML frameworks and containerization technologies, ensuring that users can integrate FLOps with their existing infrastructure and workflows.
+            The system should be compatible with various platforms and environments, including different operating systems and hardware architectures.
+            FLOps should integrate seamlessly with existing or future tools and frameworks.
         \end{itemize}
     \item [NFR-3] {\textbf{Performance}}: (Repsonse time, throughput, availability, accurac - should be very precice \& measurable)
         \begin{itemize}
         \item [NFR-3.1] {\textbf{Scalability}}:
-            - NFR11: Ensure that the system can handle increases in workload or user base without significant degradation in performance, supporting scalability across different hardware and network conditions.
-            - FLOps should support scaling to handle a large number of client devices and training rounds.
-            - It should be able to manage and orchestrate multiple FL tasks simultaneously. think if this is correctly placed here
-        \item [NFR-3.2] {\textbf{Availability}}: % Reliability
-            - NFR7: Guarantee the reliability of FL training by implementing robust error handling and recovery mechanisms, ensuring that the system can recover gracefully from failures during training or deployment.
-            - FLOps should ensure high availability and fault tolerance during FL training and orchestration.
-            - It should handle errors gracefully and provide meaningful error messages.
-        \item [NFR-3.3] {\textbf{TODO}}: % Reliability
-            - Containerization and Deployment:
-                FR5: Automatically create containerized images with all necessary dependencies for FL training, adhering to best practices for speed and lightness.
-            - NFR1: Ensure that the containerized images created by FLOps are fast and lightweight, optimizing for quick startup and minimal resource usage across different platforms.
-            - NFR2: Achieve efficient FL training by allowing users to specify resource requirements, ensuring that the system can scale according to the computational needs of the task.
-            - The system should create containerized images quickly and efficiently.
-            - FL training processes should be optimized for speed and resource usage.
-            - The system should minimize resource consumption, including CPU, memory, and network bandwidth. maybe too broad <- no hard "must" requirement - might remove
+            FLOps should handle dynamic workload increases without significant degradation in performance.
+            It should be able to scale across different hardware and network conditions.
+            FLOps should be able to support a large number of client devices and training rounds.
+            It should be able to manage and orchestrate multiple FL tasks simultaneously.
+        \item [NFR-3.2] {\textbf{Availability}}:
+            FLOps should provide reliable FL training by implementing robust error handling and recovery mechanisms, ensuring that the system can recover gracefully from failures during training or deployment.
+            FLOps should ensure high availability and fault tolerance during FL training and orchestration.
+            It should handle errors gracefully and provide meaningful error messages.
+        \item [NFR-3.3] {\textbf{Containerization}}:
+            The automatically created containerized images have all necessary dependencies for FL training.
+            They should adhere to best practices for speed and lightness.
+            These images should support multiple platforms.
+            The system should create containerized images quickly and efficiently.
+            These image build processes should not burden the control plane or the user resources to avoid bottlenecks.
         \end{itemize}
     \item [NFR-4] {\textbf{Security}}:
-        - The system should ensure secure communication between client devices and the central server.
-        - It should protect sensitive data during FL training and deployment.
-    \item [NFR-5] {\textbf{Constraints}}: % (pseudo requirements) (can be implementation, interface, operations, packaging, legal)
+        The system should ensure secure communication between client devices and the central server.
+        It should protect sensitive data during FL training and deployment.
+        Otherwise the entire premise of FL gets broken and legal issues arise.
+    \item [NFR-5] {\textbf{Constraints}}:
         \begin{itemize}
-            \item [NFR-5.1] {\textbf{Multiplatform}}:
-                FR6: Deployment Across Different Platforms
-                Support building these images for multiple target platforms, including ARM edge devices like Raspberry Pis or Nvidia Jetsons,
-                and ensure compatibility with containerization technologies like Docker or containerd.
-            \item [NFR-5.2] {\textbf{Existing Tech}}: % Benefit from SOTA 
-                - Integration with Existing Technologies:
-                    FR10: Utilize existing solutions and technologies such as Anaconda for dependency management, Buildah for image building, Flower for FL training loops, and MLflow for runtime observability.
-                    FR11: Leverage Oakestra for deploying and orchestrating components native to the edge environment, with potential modification to support other orchestrators through general API endpoints and SLAs.
-
-                - FL Training Execution:
-                    FLOps utilizes the Flower framework to execute FL training loops.
-
-                - Edge Device Orchestration:
-                    FLOps uses an edge-native orchestrator, Oakestra, to deploy and orchestrate its components.
-
-                - API and SLA Interaction:
-                    FLOps interacts with other orchestrators via general API endpoints and SLAs.
-            \item [NFR-5.2] {\textbf{interface requirements?}}:
-                - NFR13: Implement standard API endpoints and SLAs for interaction with other systems and orchestrators, allowing for flexibility in deployment environments.
+            \item [NFR-5.1] {\textbf{Packaging}}:
+                FLOps' components should be able to run on different architectures, for example ARM and AMD.
+                To maximize coverage and compliance the automatically build container images should be compatible with dominating technologies like Docker or containerd.
+            \item [NFR-5.2] {\textbf{Implementation}}:
+                FLOps should not implement all of its features and components from the grounds up to avoid subpar quality.
+                It should use and benefit from existing solutions and technologies.
+            \item [NFR-5.2] {\textbf{Interface}}:
+                FLOps should uphold SLAs and standard API endpoint conventions to interact with other systems and orchestrators, thus allowing for flexibility in deployment environments.
         \end{itemize}
 \end{itemize}
 
@@ -161,7 +142,7 @@ Visionary scenarios portrait an almost utopian experience that will not be reali
 
 \subsubsection{Visionary Scenario}
 TODO
- % Maybe split scenarios up by target group - enduser no experience - FL researcher - FL dev
+% Maybe split scenarios up by target group - enduser no experience - FL researcher - FL dev
 \subsubsection{Demo Scenario A}
 
 \subsubsection{Demo Scenario B}
