@@ -1,0 +1,64 @@
+\subsection{FLOps Overview}
+
+Thanks to the gathered requirements, scenarios, and use cases the reasons and needs for FLOps are clear.
+Depicting and covering all aspects at once would require a steep learning curve and complicated images and explanations.
+Therefore we will avoid large singular models and explanations but describe and depict FLOps piece by piece, from coarse to fine grained.
+To avoid confusion by focusing on individual aspects before understanding the raw outline of the entire system,
+this subsection shows a heavily abstracted overview of the big picture.
+These simplified concepts are discussed in detail in their own following sections throughout this thesis.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth]{primer_flops.png}
+    \caption{FLOps Coarse Structural Overview}
+    \label{fig:flops_structure_overview}
+\end{figure}
+
+Figure \ref{fig:flops_structure_overview}
+The FLOps system is realized via the interactions and relationships between the FLOps Management, the orchestrator, and the worker nodes.
+The orchestrator is Oakestra.
+The FLOps management is a composition of different components (containers).
+Its goals and responsibilities are to manage and store FLOps processes.
+The management components coordinate different automatic processes and events and store build container images and training results such as metrics and trained models.
+These managerial components do not perform the FL training.
+They delegate and distribute computation to orchestrated worker nodes.
+The FLOps manager uses the orchestrator to create, (un)deploy, and remove different components.
+Especially the computationally heavy image builds and FL training is spread across the worker nodes.
+The GUI and inference servers are also run on worker nodes.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{simple_builder.png}
+    \caption{Simplified FLOps Image Builder Processes}
+    \label{fig:flops_simple_image_builder}
+\end{figure}
+
+Figure \ref{fig:flops_simple_image_builder} shows a simplified overview of FLOps' image builder processes.
+The container images get build on worker nodes.
+The build process occurs inside of a container, thus special requirements arise.
+Remember that the user only provides ML code not FL code.
+FLOps' image builder clones the user ML code, augments it to support FL, handles certain dependency issues, and builds multi platform container images.
+This builder is able to build FL actors, i.e. the aggregator and learner images as well as an inference server for the trained model.
+These images get pushed to the FLOps image registry.
+When the learners, aggregators, or inference servers are needed their corresponding images get pulled from that registry onto a orchestrated worker node and executed.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{simple_data_management.png}
+    \caption{Simplified FLOps Local Data Management}
+    \label{fig:flops_simple_data_management}
+\end{figure}
+
+Figure \ref{fig:flops_simple_data_management} shows a simplified overview how local training data is managed.
+FLOps is targeted for practical real FL application.
+Thus it does not expect users to provide data as part of their ML repositories.
+Instead, users need to coordinate with real data providers on the orchestrated worker nodes.
+The figure shows that a learner container is deployed on a worker node.
+The learner container itself has no data. 
+FLOps cooperates with the orchestrator and deploys a ML Data Server before training on user specified worker nodes.
+This data server is reachable by nearby devices via an API.
+Devices can send their data to this data server.
+The data server will store this data on the local machine.
+During FL training FLOps, the augmented learner container will fetch the local data via the data server.
+This local data will be forwarded to the user ML code for preprocessing and training.
+
