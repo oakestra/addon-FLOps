@@ -34,12 +34,75 @@ Scenarios can also be used to build models. We differentiate between two kinds o
 Demo scenarios that illustrate the achieved use cases of the new system.
 Visionary scenarios portrait an almost utopian experience that will not be realized by this thesis, but lay the foundation for future work.
 
+
+% scenario Name.
+% participating actor instances:
+
+% Flow of events:
+\subsubsection{Demo Scenario A: FLOps workflow for a FL newcomer}
+
+John is a computer science teacher at a highschool.
+He is new to FL, he has some experience in ML but no in MLOps, DevOps or automation.
+During the corona pandemic he had the change to try out different digital solutions and approaches to motivate and teach his students.
+He wants to figure out if there are patterns and correlations between specific approaches and the number and quality of completed homework.
+Because doing this analysis by hand is too tedious and time consuming he wants to use ML.
+Specific local device metrics such as how long students have programs open that are relevant for homework and at what time students make the biggest progress
+or how long each exercise took for students to complete are of his interest.
+He creates a ML code repository where he defines the model architecture and how it should be trained.
+He verifies if his model training approach works by providind mock data.
+
+He is well aware that he is neither legaly nor morally allowed to access this private student data.
+However, these patterns and correlations might make a significant difference for his students success.
+He read online that FL can overcome such issues.
+He wants to set this up by instructing his students to allow their devices to gather these metrics and to train local models based on this data.
+Therefore, John can get his global model and find patterns without breaking the privacy and trust of his students.
+
+The students he works with have diverse setups for online homework.
+Some have might gaming PCs, other old or borrowed laptops, some savy kids use very unique devices.
+So he needs to to enable FL on different devices in a easy and non breaking way for his students to replicate at home or during CS class.
+
+He want to use established solutions instead of creating a custom solution from scratch.
+He notices that there are several FL frameworks but no easy platform to do FL, until he discovers FLOps.
+
+He installs docker on his students devices, starts a local python script to scrape the metrics he is interested in.
+Now student machines collect the correct data locally.
+He setsup a oakestra cluster at school and shows his students how to turn their devices into worker nodes.
+
+After a week of collecting data he starts up his FLOps management components with a single command via the CLI.
+He sends a SLA request to his FLOps manager via the CLI.
+He assumes that only halve of his students have working connection to the orchestrator.
+He configures his SLA to have a minimum of 14 learners and a maximum of 28 learners.
+He wants to do a test run so he keeps everything else as is.
+Thus he will create a FLOps project that will perform classic FL for 3 FL rounds.
+Each round will trigger his ML model that will train 10 rounds locally.
+It total each learner will train for 30 rounds.
+As part of this SLA he provides a link to his github repository where he stored his ML code.
+He needed to adjust his code slightly to satisfy FLOps' requirements.
+
+He sends of his requests and observes via the project observer that a new project has been started.
+He goes to the tracking server url shows in the observer.
+There he sees a modern GUI showing the first round of training.
+This first round uses 21 learners.
+
+After 30 minutes the FL training is completed and he can see in the GUI that his model has now a 65\% accuracy.
+John wants to have a higher accuracy.
+He starts another FLOps project that now performs 6 rounds instead of 3.
+He notices that the second time the training starts sooner because the relevant components have already been build and reused from the integrated image registry.
+After the training has completed john sees that the new model reached 87\% accuracy.
+He wants to test it out straigt away.
+This time he added the optional post training steps in the SLA to automatically wrap the trained model as an inference server and deploy it in the orchestrator.
+He finds this inference server and sends a request to it to check if things work out as planned.
+The inference server returns his requests with the correct prediction and presents the first interesting pattern to him.
+Now John can continue finding new patterns and correlations to help his students to learn and him to teach better while preserving privacy.
+
+
+
+
+\subsubsection{Demo Scenario B}
+
 \subsubsection{Visionary Scenario}
 TODO
 % Maybe split scenarios up by target group - enduser no experience - FL researcher - FL dev
-\subsubsection{Demo Scenario A}
-
-\subsubsection{Demo Scenario B}
 
 \subsection{Use Case Model}
 % TODO paraphraze!
