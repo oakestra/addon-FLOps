@@ -11,6 +11,8 @@ It is crucial to understand the basic behavior, reasoning, and environment of th
 The contributions section \ref{section:contributions} provides an overview of FLOps's functionalities and features and how they realize the discussed objectives.
 This chapter follows the Requirements Analysis Document Template by Brügge et al. \cite{book:bruegge}.
 
+
+
 \section{Proposed System}
 
 \input{chapters/requirements_analysis/subsections/functional_requirements.tex}
@@ -22,7 +24,6 @@ This chapter follows the Requirements Analysis Document Template by Brügge et a
 % TODO paraphraze!
 In this section, we will analyze the formulated requirements. We start with user stories, i.e. scenarios that describe the new system which implements the requested changes.
 We continue by illustrating the structure and workflows of the new system by creating various UML models.
-Finally, we take a look at the GUI that shows how the user will interact with the new system.
 
 \subsection{Scenarios}
 
@@ -42,17 +43,16 @@ TODO
 
 \subsection{Use Case Model}
 % TODO paraphraze!
-
 UML Use Case diagrams depict the system functions from the external user perspective.
 It shows system functionalities that lead to visible results for the users.
 The shown functions and use cases are based on the previously explored functional requirements.
-Unlike scenarios Use Case diagrams depict all functionalities in a non-concrete and abstract way.
+Unlike scenarios Use Case diagrams depict all functionalities in a non-concrete and abstract way. \cite{book:bruegge}
 
 \begin{figure}[p]
     \begin{adjustwidth}{-0.1\paperwidth}{-0.1\paperwidth}
         \centering
         \includegraphics[width=0.9\paperwidth]{uml_use_case_diagram.png}
-        \caption{UML Use Case Diagram}
+        \caption{FLOps UML Use Case Diagram}
         \label{fig:uml_use_case_diagram}
     \end{adjustwidth}
 \end{figure}
@@ -60,6 +60,7 @@ Unlike scenarios Use Case diagrams depict all functionalities in a non-concrete 
 Figure \ref{fig:uml_use_case_diagram} shows the Use Case diagram for FLOps.
 The white use cases represent the functionalities the external users can directly trigger.
 The grey use cases are internal system actions that are directly visible or lead to visible results for the users.
+They get triggered as a result of user actions.
 For example, the user knows that FLOps is performing FL training by inspecting different provided outlets.
 FLOps tracks the training progress and results.
 These logged artifacts become incrementally visible to the user who inspects the GUI.
@@ -67,7 +68,7 @@ Thus, the user knows that FLOps is currently performing FL training and logging.
 This diagram shows how users can interact with FLOps.
 Use cases inside the GUI boundary are directly accessible via the GUI, same goes for the API boundary.
 Other tasks are executed and accessible via FLOps combined with its orchestrator.
-Use cases that involve developing or modifying FLOps itself are not explicitly portrait, but implied.
+Use cases that involve developing or modifying FLOps itself are not explicitly portrait.
 The depicted User actor represents endusers of varying FL expertice.
 This actor includes FL developers and researchers.
 The core usecase is starting an FL project.
@@ -78,10 +79,241 @@ The user can access this trained model and request inference from its inference 
 
 
 
+\subsection{FLOps Overview}
+
+Thanks to the gathered requirements, scenarios, and use cases the reasons and needs for FLOps are clear.
+Depicting and covering all aspects at once would require a steep learning curve and complicated images and explanations.
+Therefore we will avoid large singular models and explanations but describe and depict FLOps piece by piece, from coarse to fine grained.
+To avoid confusion by focusing on individual aspects before understanding the raw outline of the entire system,
+this subsection shows a heavily abstracted overview of the big picture.
+These simplified concepts are discussed in detail in their own following sections throughout this thesis.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth]{primer_flops.png}
+    \caption{FLOps Coarse Structural Overview}
+    \label{fig:flops_structure_overview}
+\end{figure}
+
+Figure \ref{fig:flops_structure_overview}
+The FLOps system is realized via the interactions and relationships between the FLOps Management, the orchestrator, and the worker nodes.
+The orchestrator is Oakestra.
+The FLOps management is a composition of different components (containers).
+Its goals and responsibilities are to manage and store FLOps processes.
+The management components coordinate different automatic processes and events and store build container images and training results such as metrics and trained models.
+These managerial components do not perform the FL training.
+They delegate and distribute computation to orchestrated worker nodes.
+The FLOps manager uses the orchestrator to create, (un)deploy, and remove different components.
+Especially the computationally heavy image builds and FL training is spread across the worker nodes.
+The GUI and inference servers are also run on worker nodes.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{simple_builder.png}
+    \caption{Simplified FLOps Image Builder Processes}
+    \label{fig:flops_simple_image_builder}
+\end{figure}
+
+Figure \ref{fig:flops_simple_image_builder} shows a simplified overview of FLOps' image builder processes.
+The container images get build on worker nodes.
+The build process occurs inside of a container, thus special requirements arise.
+Remember that the user only provides ML code not FL code.
+FLOps' image builder clones the user ML code, augments it to support FL, handles certain dependency issues, and builds multi platform container images.
+This builder is able to build FL actors, i.e. the aggregator and learner images as well as an inference server for the trained model.
+These images get pushed to the FLOps image registry.
+When the learners, aggregators, or inference servers are needed their corresponding images get pulled from that registry onto a orchestrated worker node and executed.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{simple_data_management.png}
+    \caption{Simplified FLOps Local Data Management}
+    \label{fig:flops_simple_data_management}
+\end{figure}
+
+Figure \ref{fig:flops_simple_data_management} shows a simplified overview how local training data is managed.
+FLOps is targeted for practical real FL application.
+Thus it does not expect users to provide data as part of their ML repositories.
+Instead, users need to coordinate with real data providers on the orchestrated worker nodes.
+The figure shows that a learner container is deployed on a worker node.
+The learner container itself has no data. 
+FLOps cooperates with the orchestrator and deploys a ML Data Server before training on user specified worker nodes.
+This data server is reachable by nearby devices via an API.
+Devices can send their data to this data server.
+The data server will store this data on the local machine.
+During FL training FLOps, the augmented learner container will fetch the local data via the data server.
+This local data will be forwarded to the user ML code for preprocessing and training.
+
+
+
 \subsection{Analysis Object Model}
 % TODO Paraphraze!
 To increase the understanding of the underlying structure of the proposed
 system UML class diagrams are used to visualize the main components and
 their relationships [BD09].
+The analysis model represents the system under development from the user’s point of view. The
+"analysis object model is a part of the analysis model and focuses on the individual concepts that
+are manipulated by the system, their properties and their relationships. The analysis object
+model, depicted with UML class diagrams, includes classes, attributes, and operations. The
+analysis object model is a visual dictionary of the main concepts visible to the user."
+
+FLOps covers various different aspects that need to be understood individually to be able to comprehend their need for the whole picture.
+
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth]{uml_analysis_object_model_core.png}
+    \caption{FLOps Core UML Analysis Object Model}
+    \label{fig:uml_core_analysis_object_model}
+\end{figure}
+
+Figure \ref{fig:uml_core_analysis_object_model} shows the core FLOps UML Analysis Object Model.
+Following models will explain more concrete details about individual core components. 
+The main workflow is represented and grouped via a FLOps Project.
+Such a project links all necessary FL and ML/DevOps components together to power one entire FL user request.
+A project contains information about the user who requested it, the target platforms that should be supported (e.g. ARM/AMD) or what steps FLOps should perform after training.
+If no steps are specified the FLOps project counts as completed after training.
+Available post-training steps include building a containerized image for the trained model 
+and deploying an inference server to serve the trained model.
+The ML Model Flavor is an indicator to tell FLOps what ML framework to expect and to work with.
+Examples include Keras, Sklearn, or Pytorch.
+Each project is associated with exactly one ML Code Repository.
+This repository can be owned by the user or be a public one.
+Thus, multiple users can reuse the same repository and each user can create multiple FLOps projects per repository.
+These properties are based on the SLA from the user request. 
+
+FLOps uses the concepts of Applications and Services to manage dependent components and concepts.
+Each app can have multiple services.
+Services are bound to parent apps, they cannot exist on their own.
+Apps and services can and have to be created via the orchestrator as usable components.
+Applications themselves are collectors of information and metadata, they do not run or contain any executable code, images, or similar.
+Services are the computational components that can be deployed and undeployed.
+This split is based on Oakestra's applications and services.
+The two main FLOps app types are project-based apps and customer-facing ones.
+The Observatory app is a customer-facing app.
+There is exactly one observatory app for each user.
+Users can have multiple projects.
+The observatory hosts the tracking server and project observer services.
+The tracking server service is used to track the projects and individual FL experiments.
+It hosts the GUI. 
+(It utilizes the MLFlow tracking server mentioned in \ref{subsection:mlflow}.)
+When users request/start a new project the observatory is created with all its components in case it did not yet exist.
+Users can request access to the GUI/tracking-server independently from a project.
+A Project Observer service is used to gather and show information or updates regarding the project status to the user.
+The project observer informs the user if there are any issues during the project live time, such as dependency issues during the containerizated image builds.
+There is one Project Observer per project to improve readability and comprehension.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth]{uml_analysis_object_model_repo.png}
+    \caption{FLOps ML Code Repository UML Analysis Object Model}
+    \label{fig:uml_repo_analysis_object_model}
+\end{figure}
+
+Figure \ref{fig:uml_repo_analysis_object_model} shows additional details of the ML Code Repositories from the core model.
+Users can provide a link to ML code repositories for FLOps to augment and train.
+For this to be possible and straightforward the repository needs to fulfill the following structural requirements.
+The repository needs to have a dedicated file that lists all necessary dependencies to train its model.
+Theoretically it should be possible to extract these requirements dynamically by inspecting the code.
+However, this is a complex and error prone endeavour.
+To avoid this issues users should provide the dependencies they used for training.
+We recommend to run the training locally on some exemplary or mock data and record the dependencies via MLflow's auto logging functionality.
+This is a possible and easy approach to get a suitable dependency file.
+Note that this is not a guarantee that the dependencies will be compatible, because MLflow's dependency logging can be erroneous.
+Before providing the dependency file to FLOps we recommend to make sure the dependencies are sufficient and compatible.
+
+For FLOps to augment the ML code and utilize is properly FLOps excepts the repository to implement a model manager and data manger.
+The model manager is the interface to access the model and its data and parameters.
+It further allows to train and evaluate the model.
+It calls its linked data manager to prepare the data and retrieve it once it is ready.
+The data itself should not be part of the repository.
+The prepare data method will call a FLOps method that will be added during FL augmentation.
+The user has to define in prepareData how to preprocess the retrieved data for individual training.
+
+Both managers have an abstract parent class that users can import during implementation for guidelines.
+These templates can be found as part of the FLOps Utils pip package \cite{flops_utils_pip}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth]{uml_analysis_object_model_project.png}
+    \caption{FLOps Project UML Analysis Object Model}
+    \label{fig:uml_project_analysis_object_model}
+\end{figure}
+
+Figure \ref{fig:uml_project_analysis_object_model} shows further details about a FLOps project's contents.
+Users can customize their projects via the SLA that is included in their API requests.
+One possible customization is to specify resource constraints such as memory or storage.
+Users can customize the FL training by changing the project's training configuration.
+The same ML repository can be trained differently depending on these configurations.
+This configuration includes a mode that tells FLOps to perform different types of FL if applicable.
+Currently FLOps supports classic and (clustered) HFL.
+Only training data will be used that matches the provided data tags.
+The training rounds configure the number of training and evaluation rounds that each learner performs.
+The training cycles are only used for HFL.
+The training rounds mean the number of training rounds on performed on each learner per cycle.
+A training cycle stands for the number of training rounds between the root and cluster aggregators, which can be seen as aggregator and learners, thus classic FL.
+For example if the user requests 3 cycles and 5 rounds this means that the learners will train 5 rounds per cycle for 3 cycles.
+In total each learner will train for 15 rounds during the entire project runtime.
+The depicted attributes are only a supset of currently available and possible configurations.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth]{uml_analysis_object_model_project_services.png}
+    \caption{FLOps Project Services UML Analysis Object Model}
+    \label{fig:uml_project_services_analysis_object_model}
+\end{figure}
+
+The core figure \ref{fig:uml_core_analysis_object_model} only alluded that a project consists out of several services and depicted only the project observer.
+Figure \ref{fig:uml_project_services_analysis_object_model} expands upon this and shows important project services and their relationships.
+There are three main project services.
+The FL Image Builder is a service that builds containerized images.
+It can build the FL augmented images for the learner and aggregator as well as the inference server of the trained model.
+This distinction is made via the buildPlans.
+The builder clones the ML repository, handles and checks the provided dependencies, builds the images and pushes them to an image registry.
+During and and the end of the builder operation the service notifies other components including the project observer about its progress, current state and potential errors.
+
+The FL Aggregator manages the FL training loop and holds the global Model and strategy for training.
+It starts its internal FL server for learners to register for training.
+The aggregator starts and terminates learning rounds and cycles
+It logs results like metrics or the final trained model via the tracking server.
+Similarly to the builder it notifies other components during runtime about its progress and errors.
+
+The aggregator and learners utilize the code provided in the user's ML code repositories.
+They have direct access to the model and data managers.
+Both are injected via the image builder.
+
+The FL learners are project services that perform the FL training on local data.
+They fetch locally stored data, connect to the aggregator, and perform FL activities such as training.
+The learner uses the code found in the model and data managers and wrap itself around their implemented interface methods.
+As a results users do not need to implement the FL (boilerplate) code themselves.
+Therefore, a getParameters methods of a learner uses the getParameters method described in the user's ML repository with additional logic around it.
+Learners also notify other components about their progress or failures.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.55\textwidth]{uml_analysis_object_model_aggregators.png}
+    \caption{FLOps Aggregator Types UML Analysis Object Model}
+    \label{fig:uml_project_aggregators_analysis_object_model}
+\end{figure}
+
+Figure \ref{fig:uml_project_aggregators_analysis_object_model} shows the simplified relation between different FLOps aggregator types.
+Because FLOps support classic and hierarchical FL it needs to support different aggregator types.
+For conventional FL the classic aggregators are used, whereas for HFL one root aggregator is created with one cluster aggregator per cluster available in the orchestrator.
+The root orchestrator sees cluster orchestrators as plain learners.
+A cluster aggregator is a hybrid between an aggregator and a learner.
+
+
+
+
+
+
+
 
 \subsection{Dynamic Model}
+%TODO paraphraze
+"The dynamic model focuses on the behavior of the system. The dynamic model is
+depicted with sequence diagrams and with state machines. Sequence diagrams represent the
+interactions among a set of objects during a single use case. State machines represent the
+behavior of a single object (or a group of very tightly coupled objects). The dynamic model
+serves to assign responsibilities to individual classes and, in the process, to identify new classes,
+associations, and attributes to be added to the analysis object model."
