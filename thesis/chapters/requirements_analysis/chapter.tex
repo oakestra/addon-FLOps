@@ -41,6 +41,8 @@ Visionary scenarios portrait an almost utopian experience that will not be reali
 % Flow of events:
 \subsubsection{Demo Scenario A: FLOps workflow for a FL newcomer}
 
+TODO rephrase this so it is maybe more university than highschool? - SC prof that is not specifialized in ML or FL
+
 John is a computer science teacher at a highschool.
 He is new to FL, he has some experience in ML but no in MLOps, DevOps or automation.
 During the corona pandemic he had the change to try out different digital solutions and approaches to motivate and teach his students.
@@ -89,7 +91,7 @@ John wants to have a higher accuracy.
 He starts another FLOps project that now performs 6 rounds instead of 3.
 He notices that the second time the training starts sooner because the relevant components have already been build and reused from the integrated image registry.
 After the training has completed john sees that the new model reached 87\% accuracy.
-He wants to test it out straigt away.
+He wants to test it out straight away.
 This time he added the optional post training steps in the SLA to automatically wrap the trained model as an inference server and deploy it in the orchestrator.
 He finds this inference server and sends a request to it to check if things work out as planned.
 The inference server returns his requests with the correct prediction and presents the first interesting pattern to him.
@@ -104,43 +106,7 @@ Now John can continue finding new patterns and correlations to help his students
 TODO
 % Maybe split scenarios up by target group - enduser no experience - FL researcher - FL dev
 
-\subsection{Use Case Model}
-% TODO paraphraze!
-UML Use Case diagrams depict the system functions from the external user perspective.
-It shows system functionalities that lead to visible results for the users.
-The shown functions and use cases are based on the previously explored functional requirements.
-Unlike scenarios Use Case diagrams depict all functionalities in a non-concrete and abstract way. \cite{book:bruegge}
-
-\begin{figure}[p]
-    \begin{adjustwidth}{-0.1\paperwidth}{-0.1\paperwidth}
-        \centering
-        \includegraphics[width=0.9\paperwidth]{uml_use_case_diagram.png}
-        \caption{FLOps UML Use Case Diagram}
-        \label{fig:uml_use_case_diagram}
-    \end{adjustwidth}
-\end{figure}
-
-Figure \ref{fig:uml_use_case_diagram} shows the Use Case diagram for FLOps.
-The white use cases represent the functionalities the external users can directly trigger.
-The grey use cases are internal system actions that are directly visible or lead to visible results for the users.
-They get triggered as a result of user actions.
-For example, the user knows that FLOps is performing FL training by inspecting different provided outlets.
-FLOps tracks the training progress and results.
-These logged artifacts become incrementally visible to the user who inspects the GUI.
-Thus, the user knows that FLOps is currently performing FL training and logging.
-This diagram shows how users can interact with FLOps.
-Use cases inside the GUI boundary are directly accessible via the GUI, same goes for the API boundary.
-Other tasks are executed and accessible via FLOps combined with its orchestrator.
-Use cases that involve developing or modifying FLOps itself are not explicitly portrait.
-The depicted User actor represents endusers of varying FL expertice.
-This actor includes FL developers and researchers.
-The core usecase is starting an FL project.
-This activity kicks of a chain of events, such as building a FL enabled container image, creating and deploying the learners and aggregator(s), and performing the FL training.
-During training FLOps tracks the model and system metrics, which the user can monitor and evaluate in the GUI.
-After training the trained model can be containerized and deployed as an inference server.
-The user can access this trained model and request inference from its inference server.
-
-
+\input{chapters/requirements_analysis/subsections/use_case_diagram.tex}
 
 \subsection{FLOps Overview}
 
