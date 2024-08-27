@@ -23,13 +23,11 @@ Examples include Keras, Sklearn, or Pytorch.
 Each project is associated with exactly one ML Code Repository.
 This repository can be owned by the user or be a public one.
 Thus, multiple users can reuse the same repository, and each user can create multiple FLOps projects per repository.
-These properties are based on the SLA from the user request. 
-The following models will explain more concrete details about individual core components.
+These properties are based on the SLA from the user request.
 
 FLOps uses the concepts of Applications and Services to manage dependent components and concepts.
 Each app can have multiple services.
-Services are bound to parent apps.
-They cannot exist on their own.
+Services are bound to parent apps and cannot exist on their own.
 The orchestrator creates and realizes apps and services as usable components.
 Applications themselves are collectors of information and metadata.
 They do not run or contain any executable code, images, or similar.
@@ -58,7 +56,6 @@ There is one Project Observer per project to improve readability and comprehensi
 
 Figure \ref{fig:uml_repo_analysis_object_model} shows additional details of the ML Code Repositories from the core model.
 Users can provide a link to ML code repositories for FLOps to augment and train.
-For this to be possible and straightforward the repository needs to fulfill the following structural requirements.
 The repository must fulfill the following structural requirements for this to be possible and straightforward.
 The repository needs a dedicated file that lists all necessary dependencies to train its model.
 Theoretically, it should be possible to extract these requirements dynamically by inspecting the code.
@@ -104,10 +101,12 @@ Each learner will train for 15 rounds during the entire project runtime.
 The depicted attributes are only a subset of currently available and possible configurations.
 
 \begin{figure}[h]
-    \centering
-    \includegraphics[width=1.0\textwidth]{uml_analysis_object_model_project_services.png}
-    \caption{FLOps Project Services UML Analysis Object Model}
-    \label{fig:uml_project_services_analysis_object_model}
+    \begin{adjustwidth}{-0.1\paperwidth}{-0.1\paperwidth}
+        \centering
+        \includegraphics[width=0.80\paperwidth]{uml_analysis_object_model_project_services.png}
+        \caption{FLOps Project Services UML Analysis Object Model}
+        \label{fig:uml_project_services_analysis_object_model}
+    \end{adjustwidth}
 \end{figure}
 
 The core figure \ref{fig:uml_core_analysis_object_model} only alluded that a project consists of several services and depicted only the project observer.
@@ -121,9 +120,9 @@ During and after the builder operation, the service notifies other components, i
 
 The FL Aggregator manages the FL training loop and holds the global model and strategy for training.
 It starts its internal FL server so learners can register for training.
-The aggregator starts and terminates learning rounds and cycles
+The aggregator starts and terminates learning rounds and cycles.
 It logs results like metrics or the final trained model via the tracking server.
-Similarly to the builder, it notifies other components during runtime about their progress and errors.
+Similarly to the builder, it notifies other components during runtime about its progress and errors.
 
 The aggregator and learners utilize the code provided in the user's ML code repositories.
 They have direct access to the model and data managers.
@@ -145,6 +144,7 @@ Learners also notify other components about their progress or failures.
 
 Figure \ref{fig:uml_project_aggregators_analysis_object_model} shows the simplified relation between different FLOps aggregator types.
 Because FLOps supports classic and hierarchical FL, it must support different aggregator types.
-For conventional FL, FLOps uses the classic aggregators, whereas, for HFL, FLOps creates one root aggregator with one cluster aggregator per cluster available in the orchestrator.
+For conventional FL, FLOps uses the classic aggregators.
+For HFL, FLOps creates a single root aggregator and one cluster aggregator per cluster available in the orchestrator.
 The root orchestrator sees cluster orchestrators as plain learners.
 A cluster aggregator is a hybrid between an aggregator and a learner.
