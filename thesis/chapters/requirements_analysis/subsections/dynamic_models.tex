@@ -7,30 +7,89 @@ behavior of a single object (or a group of very tightly coupled objects). The dy
 serves to assign responsibilities to individual classes and, in the process, to identify new classes,
 associations, and attributes to be added to the analysis object model."
 
+To illustrate the different dynamics of a typical FLOps project this subsection will depict the necessary interactions for a core FLOps project.
+To make things easier many abstractions are used and the absolute base case is used.
+The base case aims to showcase a project workflow from the ground up.
+That means that no code, data, images are present yet.
+This basecase terminates after successful training.
+It has no post training steps, such as building and deploying an inference server.
+Even this simple base case is already complex enough to require multiple UML sequence diagrams.
+For example, the FLOps Management consists of multiple different components.
+To concentrate the diagram these components are grouped into one.
+Same applies for multiple worker nodes and edge devices.
 
 \begin{figure}[h]
     \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
         \centering
         \includegraphics[width=1.0\paperwidth]{uml_sequence_init.png}
-        \caption{TODO}
+        \caption{FLOps Preparation - UML Sequence Diagram}
         \label{fig:uml_sequence_init}
     \end{adjustwidth}
 \end{figure}
+
+Figure \ref{fig:uml_sequence_init} is a UML sequence diagram depicting the initial steps before a FLOps Project can start.
+Two different set of sequences can occur independently or in parallel of each other.
+The first set is depicted in the right corner.
+Before FLOps can be used to run FL worker nodes need to register with the orchestrator and stay available.
+Not every worker node is intended to be capable of performing ML training.
+Worker nodes that should participate as learners should inform the orchestrator accordingly and start the provided ML Data Server locally.
+This Server accumulate training data locally for later training.
+This process has to occur before training begins, otherwise not enough or no data will be available for training.
+Edge devices or other data sources that are nearby should send their data to these designated learner nodes.
+The infrastructure provider has to ensure that these worker nodes are properly protected and trustworthy.
+Once these steps are completed FLOps should have access to available data rich orchestrated worker nodes.
+
+The second set of tasks that should occur before using FLOps is for users to prepare their ML code.
+They should implement their ML code and structure it as required for FLOps.
+This code should be available via a accesible git-based repository.
+If the user is satisfied with his codebase he can prepare the SLA that will be send to FLOps.
+We discuss the SLA in detail in the implementation chapter.
+After both sequences have been completed the user can send his SLA to the FLOps Management API and request a new FLOps project to start.
+
 
 \begin{figure}[h]
     \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
         \centering
         \includegraphics[width=0.95\paperwidth]{uml_sequence_diagram_project_start.png}
-        \caption{TODO}
+        \caption{FLOps Project Start - UML Sequence Diagram}
         \label{fig:uml_sequence_project_start}
     \end{adjustwidth}
 \end{figure}
+
+Figure \ref{fig:uml_sequence_project_start} shows the main sequence of steps from the start of new FLOps project to the deployment of a image builder service.
+The FLOps Management registered the new project request and extracted the SLA.
+Firstly, the FLOps management creates a new observatory for the user.
+The light blue activity means that a new object is created inside the manager context, which is independent of the orchestrator and deployed components.
+This split is necessary for the FLOps management to keep track of ongoing processes, retain memory, and handle unique custom requirements that are independent of the orchestrator.
+Management object hold stateful information but are not run or used for computational workloads.
+For this the management contact the orchestrator to create a corresponding observatory application.
+Which the orchestrator requires and is similarly a stateful object without computational capabilities.
+
+Note that each colored or white rectangle on a lifeline inside the main UML sequence diagram corresponds to a specific functionality.
+Once this functionality terminates the bar stops as well.
+Usually sequence diagrams show concrete instances of classes as actors.
+We decided to use abstract actors to optimize the available space and allow for further abstractions and simplifications.
+For example, the lifeline of a observatory app inside the orchestrator could be its own actor.
+However, this would lead to redundancy and verbosity between the orchestrator and observatory actors.
+Instead these modified graphs show the lifeline of FLOps components on the right side.
+The color and dotted lines help to link those concepts together.
+Light rose orchestrator actions symbolize that a service got appended to an existing application.
+
 
 \begin{figure}[h]
     \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
         \centering
         \includegraphics[width=0.95\paperwidth]{uml_sequence_actor_builder.png}
         \caption{TODO}
-        \label{fig:uml_sequence_project_start}
+        \label{fig:uml_sequence_builder}
+    \end{adjustwidth}
+\end{figure}
+
+\begin{figure}[h]
+    \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
+        \centering
+        \includegraphics[width=0.95\paperwidth]{uml_sequence_training.png}
+        \caption{TODO}
+        \label{fig:uml_sequence_training}
     \end{adjustwidth}
 \end{figure}
