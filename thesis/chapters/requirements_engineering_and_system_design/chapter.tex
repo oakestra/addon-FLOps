@@ -1,4 +1,14 @@
-\chapter{Requirements Analysis}
+\chapter{Requirements Engineering \& System Design}
+
+\section{Requirements Elicitation \& Specification}
+
+\input{chapters/requirements_engineering_and_system_design/subsections/functional_requirements.tex}
+\input{chapters/requirements_engineering_and_system_design/subsections/nonfunctional_requirements.tex}
+
+
+% #######################################
+
+\section{Requirements Analysis}
 
 This chapter performs requirements engineering.
 It uses the problem statement \ref{section:problem_statement}, objectives \ref{section:objectives}, and weaknesses found in the FL field \ref{subsection:fl_research} as input to elicit requirements.
@@ -11,11 +21,6 @@ It is crucial to understand the basic behavior, reasoning, and environment of th
 The contributions section \ref{section:contributions} provides an overview of FLOps's functionalities and features and how they realize the discussed objectives.
 This chapter follows the Requirements Analysis Document Template by Brügge et al. \cite{book:bruegge}.
 
-\section{Proposed System}
-
-\input{chapters/requirements_analysis/subsections/functional_requirements.tex}
-
-\input{chapters/requirements_analysis/subsections/nonfunctional_requirements.tex}
 
 \section{System Models}
 
@@ -33,12 +38,22 @@ The scenarios and use cases form the functional model.
 Class and object models make the analysis object model.
 State machines and sequence diagrams create the dynamic model of the system.  \cite{book:bruegge}
 
-\input{chapters/requirements_analysis/subsections/scenarios.tex}
+\input{chapters/requirements_engineering_and_system_design/subsections/scenarios.tex}
 
-\input{chapters/requirements_analysis/subsections/use_case_diagram.tex}
+\input{chapters/requirements_engineering_and_system_design/subsections/use_case_diagram.tex}
 
-\input{chapters/requirements_analysis/subsections/flops_overview.tex}
+\input{chapters/requirements_engineering_and_system_design/subsections/flops_overview.tex}
 
-\input{chapters/requirements_analysis/subsections/analysis_object_models.tex}
+\input{chapters/requirements_engineering_and_system_design/subsections/analysis_object_models.tex}
 
-\input{chapters/requirements_analysis/subsections/dynamic_models.tex}
+\input{chapters/requirements_engineering_and_system_design/subsections/dynamic_models.tex}
+
+% maybe combine both? -> but due to complexity and limited space - better to keep seperate
+% components can show fine granined interactions in different deployments, e.g. how do the FLOps management components interact
+% or how do the deployed FLOps services interacts on the different worker nodes
+\subsection{Component Diagram}
+% maybe even redundant if the component one is already clear enough.
+% shows a more abstracted picture where stuff is deployed and the interactions between orchestrator - management - and workers
+\subsection{Deployment Diagram}
+
+% NOPE:(maybe also include explicit data management section - how d) -> place this in implementation section and go verbose
