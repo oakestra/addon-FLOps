@@ -60,6 +60,11 @@
 % \usepackage{chngpage}
 \usepackage{calc}
 
+\newcommand{\hiddensubsection}[1]{
+    \stepcounter{subsection}
+    \subsection*{\arabic{chapter}.\arabic{section}.\arabic{subsection}\hspace{1em}{#1}}
+}
+
 
 % for fachschaft_print.pdf
 \makeatletter

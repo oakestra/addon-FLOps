@@ -27,7 +27,7 @@ Figure \ref{fig:uml_sequence_init} is a UML sequence diagram depicting the initi
 Two different sets of sequences can occur independently or in parallel with each other.
 Before FLOps can run properly, FL worker nodes need to register with the orchestrator and stay available.
 Only a subset of worker nodes are intended to be capable of performing ML training.
-Worker nodes that should participate as learners should inform the orchestrator accordingly and start the provided ML Data Server locally.
+Worker nodes that should participate as learners must inform the orchestrator accordingly and start the provided ML Data Server locally.
 This server accumulates training data locally for later training.
 This process has to occur before training begins.
 Otherwise, not enough or no data will be available for training.
@@ -37,10 +37,10 @@ Once these steps are completed, FLOps should have access to available data-rich 
 
 The second set of tasks that should occur before using FLOps is for users to prepare their ML code.
 They should implement their ML code and structure it as required for FLOps.
-This code should be available via an accessible git-based repository.
+This code must be available via an accessible git-based repository.
 If the user is satisfied with his codebase, he can prepare his SLA.
 (We discuss the SLA in detail in the implementation chapter.)
-After both sequences have been completed, the user can send his SLA to the FLOps Management API and request that a new FLOps project be started.
+After both sequences have been completed, the user can send his SLA to the FLOps Management API and request the start of a new FLOps project.
 
 \begin{figure}[h]
     \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
@@ -95,8 +95,8 @@ FL actors are the aggregator(s) and learners.
 The builder service notifies the management about a successful start of this process.
 It proceeds by cloning the ML repository and checks if it complies with FLOps requirements.
 The builder also checks if the dependencies are sound.
-Once these build prerequisites are met, the builder continues to build the aggregator and learner i
-Concrete details about this build process are available in the implementation chapter.
+Once these build prerequisites are met, the builder continues to build the aggregator and learner images.
+(Concrete details about this build process are available in the implementation chapter.)
 
 Afterward, the builder notifies the project observer to inform the user about the successful build.
 Note that the sequence model action lengths do not correspond to their actual duration.
@@ -136,7 +136,7 @@ The FLOps management now creates and deploys the FL aggregator and learners.
 It uses the previously built images for this.
 Once the aggregator image is pulled and executed, it starts the FL server processes and notifies its watchers about its success.
 The aggregator waits for learners to connect before starting the training.
-In the meantime, the FL learner images were pulled and executed.
+In the meantime, the FL learner images were pulled and started.
 Each learner starts its FL client activities, such as registering with its specified aggregator.
 
 Now that all FL actors are ready, the aggregator starts the first training round and triggers the learners.
@@ -145,7 +145,7 @@ Once completed, the learners will push their model parameters to the aggregator.
 The aggregator fuses them into a new global model and returns the new global parameters to the learners.
 The learners apply those to their local model to be ready to begin the next FL training round.
 After each FL training round, the aggregator logs metrics, such as accuracy and loss, via the tracking server service.
-The FLOps Management stores the logged results.
+The FLOps management stores the logged results.
 
 After the last FL training round, the aggregator notifies its observers and logs the final trained model via the tracking service.
 The aggregator only tracks the model once to avoid wasting bandwidth or storage.

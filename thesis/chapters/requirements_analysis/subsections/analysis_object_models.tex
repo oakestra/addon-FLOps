@@ -1,7 +1,7 @@
 \subsection{Analysis Object Models}
 
 This subsection depicts FLOps' main components and their relationships in more detail.
-These models are derived from and created to resolve the elicited requirements.
+The following models are derived from and created to resolve the elicited requirements.
 They focus on the user perspective.
 It is common to use generalized and abstract UML class diagrams to depict the system's main components, properties, and functions \cite{book:bruegge}.
 
@@ -31,12 +31,12 @@ Services are bound to parent apps and cannot exist on their own.
 The orchestrator creates and realizes apps and services as usable components.
 Applications themselves are collectors of information and metadata.
 They do not run or contain any executable code, images, or similar.
-Services are the computational components that can be deployed and undeployed.
+Services are the computational components that can be deployed and un-deployed.
 This split is based on Oakestra's applications and services.
 The two main FLOps app types are project-based apps and customer-facing ones.
+
 The Observatory app is a customer-facing app.
-There is exactly one observatory app for each user.
-Users can have multiple projects.
+There is exactly one observatory app for each user, whereas users can have multiple projects.
 The observatory hosts the tracking server and project observer services.
 The tracking server service tracks the projects and individual FL experiments.
 It hosts the GUI. 
@@ -72,8 +72,7 @@ It further trains and evaluates the model.
 It calls its linked data manager to prepare the data and retrieve it once it is ready.
 The data itself should not be part of the repository.
 The prepare data method will call a FLOps method that will be added during FL augmentation.
-The user has to define in prepareData how to preprocess the retrieved data for individual training.
-
+The user has to define in prepareData how to pre-process the retrieved data for individual training.
 Both managers have an abstract parent class that users can import during implementation for guidelines.
 These templates are available as part of the FLOps Utils pip package \cite{flops_utils_pip}.
 
@@ -123,7 +122,6 @@ It starts its internal FL server so learners can register for training.
 The aggregator starts and terminates learning rounds and cycles.
 It logs results like metrics or the final trained model via the tracking server.
 Similarly to the builder, it notifies other components during runtime about its progress and errors.
-
 The aggregator and learners utilize the code provided in the user's ML code repositories.
 They have direct access to the model and data managers.
 The image builder injects both of them.
@@ -145,6 +143,6 @@ Learners also notify other components about their progress or failures.
 Figure \ref{fig:uml_project_aggregators_analysis_object_model} shows the simplified relation between different FLOps aggregator types.
 Because FLOps supports classic and hierarchical FL, it must support different aggregator types.
 For conventional FL, FLOps uses the classic aggregators.
-For HFL, FLOps creates a single root aggregator and one cluster aggregator per cluster available in the orchestrator.
+For HFL, FLOps creates a single root aggregator and one cluster aggregator per cluster, which are available in the orchestrator.
 The root orchestrator sees cluster orchestrators as plain learners.
 A cluster aggregator is a hybrid between an aggregator and a learner.
