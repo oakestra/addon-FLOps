@@ -1,21 +1,17 @@
 \subsection{Dynamic Model}
-%TODO paraphraze
-"The dynamic model focuses on the behavior of the system. The dynamic model is
-depicted with sequence diagrams and with state machines. Sequence diagrams represent the
-interactions among a set of objects during a single use case. State machines represent the
-behavior of a single object (or a group of very tightly coupled objects). The dynamic model
-serves to assign responsibilities to individual classes and, in the process, to identify new classes,
-associations, and attributes to be added to the analysis object model."
+Dynamic models illustrate the dynamic behavior of the system and the interactions between its components.
+There are different dynamic model types, such as UML activity, state chart, communication, and sequence diagrams.
+Because of the large number of components in FLOps this section focuses on sequence diagrams to cover a large set of significant interactions.
 
-To illustrate the different dynamics of a typical FLOps project this subsection will depict the necessary interactions for a core FLOps project.
+This subsection depicts the necessary interactions for a typical FLOps project.
 To make things easier many abstractions are used and the absolute base case is used.
 The base case aims to showcase a project workflow from the ground up.
 That means that no code, data, images are present yet.
-This basecase terminates after successful training.
+This base case terminates after successful training.
 It has no post training steps, such as building and deploying an inference server.
 Even this simple base case is already complex enough to require multiple UML sequence diagrams.
 For example, the FLOps Management consists of multiple different components.
-To concentrate the diagram these components are grouped into one.
+To simplify the diagram these components are grouped into one.
 Same applies for multiple worker nodes and edge devices.
 
 \begin{figure}[h]
@@ -28,9 +24,9 @@ Same applies for multiple worker nodes and edge devices.
 \end{figure}
 
 Figure \ref{fig:uml_sequence_init} is a UML sequence diagram depicting the initial steps before a FLOps Project can start.
-Two different set of sequences can occur independently or in parallel of each other.
+Two different sets of sequences can occur independently or in parallel of each other.
 The first set is depicted in the right corner.
-Before FLOps can be used to run FL worker nodes need to register with the orchestrator and stay available.
+Before FLOps can run properly, FL worker nodes need to register with the orchestrator and stay available.
 Not every worker node is intended to be capable of performing ML training.
 Worker nodes that should participate as learners should inform the orchestrator accordingly and start the provided ML Data Server locally.
 This Server accumulate training data locally for later training.
@@ -41,11 +37,10 @@ Once these steps are completed FLOps should have access to available data rich o
 
 The second set of tasks that should occur before using FLOps is for users to prepare their ML code.
 They should implement their ML code and structure it as required for FLOps.
-This code should be available via a accesible git-based repository.
+This code should be available via an accessible git-based repository.
 If the user is satisfied with his codebase he can prepare the SLA that will be send to FLOps.
 We discuss the SLA in detail in the implementation chapter.
 After both sequences have been completed the user can send his SLA to the FLOps Management API and request a new FLOps project to start.
-
 
 \begin{figure}[h]
     \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
@@ -58,14 +53,12 @@ After both sequences have been completed the user can send his SLA to the FLOps 
 
 Figure \ref{fig:uml_sequence_project_start} shows the main sequence of steps from the start of a new FLOps project to the deployment of an image builder service.
 The light blue activity bars means that a new object is created inside the manager context, which is independent of the orchestrator and deployed components.
-This split is necessary for the FLOps management to keep track of ongoing processes, retain memory, and handle unique custom requirements that are independent of the orchestrator.
 Management objects hold stateful information and are not run or used for computational workloads.
-Which the orchestrator requires and is similarly a stateful object without computational capabilities.
-
+This split is necessary for the FLOps management to keep track of ongoing processes, retain memory, and handle unique custom requirements that are independent of and unavailable in the orchestrator.
 Note that each colored or white rectangle on a lifeline inside the main UML sequence diagram corresponds to a specific functionality.
 Once this functionality terminates the bar stops as well.
 Usually sequence diagrams show concrete instances of classes as actors.
-We decided to use abstract actors to optimize the available space and allow for further abstractions and simplifications.
+We decided to use abstract actors to optimize the page space and allow for further abstractions and simplifications.
 For example, the lifeline of a observatory app inside the orchestrator could be its own actor.
 However, this would lead to redundancy and verbosity between the orchestrator and observatory actors.
 Instead these modified graphs show the lifeline of FLOps components on the right side.
@@ -77,8 +70,8 @@ Firstly, the FLOps management creates a new observatory for the user inside the 
 Afterward, the management requests to create a corresponding app inside the orchestrator.
 The same applies for the actual FLOps project.
 Once these two parent applications exist the first service is created by the management.
-The management requests the creation of the project observer as a service inside the observatory application inside the orchestrator.
-The management then requests to deploy an instance of this service on a worker node.
+The management requests the creation of the project observer as a service inside the observatory application.
+The management then requests to deploy an instance of this service on a worker node to the orchestrator.
 Now the user can access this project observer service at any time to observe the progress of his project.
 
 The FLOps management checks if its own image registry already contains images that match the requested ML repository.
@@ -100,21 +93,20 @@ Figure \ref{fig:uml_sequence_builder} shows the different interactions necessary
 Once the builder service is deployed it starts to run the build plan for actor images.
 FL actors are the aggregator and learners.
 The builder service notifies the management about a successful start of this process.
-It proceeds by cloning the ML repository and checking if it complies with FLOps requirements.
+It proceeds by cloning the ML repository and checks if it complies with FLOps requirements.
 The builder also checks if the dependencies are sound.
 Once these build prerequisites are met the builder continues with building the aggregator and learner images.
 Concrete details about this build process are available in the implementation chapter.
 
 Afterward, the builder notifies the project observer to inform the user about the successful build.
 Note that the sequence model action lengths are not corresponding to their actual duration.
-The build and push actions shows in the diagram are visualized by small rectangles even though these two actions are by far the most time consuming.
-We decided to use this design to ensure a more compact diagram.
+The build and push actions in the diagram are visualized by small rectangles even though these two actions are by far the most time consuming.
+We decided to use this design to ensure a more compact diagrams.
 In a similar fashion, the observatory and project lifelines are reduced to lines.
 
 As the last build process step the builder pushes these built images to the image registry hosted by the FLOps management.
 After the successful push the builder notifies the project observer and FLOps management about its successful completion.
-
-The FLOps management catches this message and removes teh builder from its won context and undeploys it from the orchestator and worker.
+The FLOps management catches this message and removes the builder from its own context and undeploys it from the orchestrator and worker.
 Now that the FL actor images are ready the training can begin.
 
 \begin{figure}[h]
@@ -126,30 +118,30 @@ Now that the FL actor images are ready the training can begin.
     \end{adjustwidth}
 \end{figure}
 
-Figure \ref{fig:uml_sequence_training} shows the necessary interactions to realize FL training under FLOps.
-Note that the right side omits the previously depicted FLOps component lifelines.
-We decided to remove this for this diagram because the depicted components and their lifetimes show the same behavior as the previous diagrams.
+Figure \ref{fig:uml_sequence_training} shows the necessary interactions that realize FL training under FLOps.
+Note that the right side omits the previously depicted detailed FLOps component lifelines.
+We decided to collapse this for this diagram because the depicted components and their lifetimes show a similar behavior as the previous diagrams.
 Arrows that point to the right mean that specific FLOps components are targeted.
 They are not explicitly depicted to optimize readability and reduce verbosity.
 
 After building the required images the FLOps management starts handling the FL training processes.
-Firstly, it notifies the project observer, thus the user, that FL training will start shortly.
+Firstly, it notifies the project observer that FL training will start shortly.
 Secondly, it creates and deploys the tracking server that provides the GUI.
-Users can access this GUI by following the link shown in the porject observer or directly accessing the deployed tracking service, similarly to the project observer.
+Users can access this GUI by following the link shown in the project observer or directly accessing the deployed tracking service, similarly to the project observer.
 Note that there are several differences between the project observer and the GUI.
 The project observer is a minimalistic way to inform the user about the current state and potential errors during the lifetime of a FLOps project.
 The GUI is a standalone application that focuses on tracking the training results.
+
 The FLOps management now creates and deploys the FL aggregator and learners.
 It uses the previously built images for this.
-
-Once the aggregator image is pulled and executed it starts the FL server processes and notifies its observers about its success.
-The aggregator waits for learners to connect to it to start training.
+Once the aggregator image is pulled and executed it starts the FL server processes and notifies its watchers about its success.
+The aggregator waits for learners to connect before starting the training.
 In the meantime the FL learner images got pulled and executed.
 Each learner starts its FL client activities.
 This includes registering with its specified aggregator.
 
 Now that all FL actors are ready the aggregator starts the first training round and triggers the learners.
-The learners train their individual model with the local data from their worker node.
+The learners train their individual models with the local data from their worker node.
 Once completed the learners push their model parameters to the aggregator.
 The aggregator fuses them together into a new global model and sends the new global parameters back to the learners.
 The learners apply those to their local model to be ready to begin the next FL training round.
@@ -159,8 +151,7 @@ The logged results are stored in the FLOps Management storages.
 After the last FL training round the aggregator notifies its observers and logs the final trained model via the tracking service.
 The aggregator only tracks the model once to avoid wasting bandwidth or storage.
 Afterwards the aggregator and learner activities terminate.
-Similarly to the undeployment process of the builder, the FLOps management registers the successful message.
-The management removes and undeploys the aggregator and learners.
+Similarly to the undeployment process of the builder, the FLOps management registers the successful message and removes the FL actors.
 With this the core FLOps project is concluded.
 
 In a similar way more complex configurations, modes, or post training steps are realized in FLOps.
@@ -168,7 +159,7 @@ For the post training steps the builder gets deployed once more.
 This time it runs the trained model build plan and pulls the model from the management storages.
 It pushes the built image back to the management image registry.
 The inference service gets deployed in a similar way as the FL actors.
-THe build trained model image is used for this.
+The built trained model image is used for this.
 
 
 
