@@ -1,59 +1,36 @@
 \chapter{Requirements Engineering \& System Design}
 
-\section{Requirements Elicitation \& Specification}
+This chapter performs requirements engineering and presents system models.
+These models illustrate how the system works and fulfills the found requirements.
 
-\input{chapters/requirements_engineering_and_system_design/subsections/functional_requirements.tex}
-\input{chapters/requirements_engineering_and_system_design/subsections/nonfunctional_requirements.tex}
-
-
-% #######################################
-
-\section{Requirements Analysis}
-
-This chapter performs requirements engineering.
-It uses the problem statement \ref{section:problem_statement}, objectives \ref{section:objectives}, and weaknesses found in the FL field \ref{subsection:fl_research} as input to elicit requirements.
-These requirements are specified, analyzed, and concretized. 
-This chapter starts by analyzing and deriving functional and nonfunctional requirements.
-It utilizes (UML) models and use cases to explain the proposed system's functionalities and structure.
+Usually, the requirements engineering and system design parts are split into different chapters.
+The requirements part defines and formalizes the reasons, needs, and problems of a system.
+It focuses on the application domain, which represents the proposed system and its surrounding environment.
 Its goal is to explain the new system's workflows, processes, and structural relationships without delving into concrete ways of realizing these goals.
-This chapter focuses on the application domain, which represents the proposed system and its surrounding environment.
-It is crucial to understand the basic behavior, reasoning, and environment of the system before working out how to realize these goals in a concrete manner.
-The contributions section \ref{section:contributions} provides an overview of FLOps's functionalities and features and how they realize the discussed objectives.
-This chapter follows the Requirements Analysis Document Template by Brügge et al. \cite{book:bruegge}.
+It is crucial to understand the basic behavior, reasoning, and environment of the system before working out how to realize these goals in a tangible manner.
+Conventionally, this part also includes system models.
+System models consist of object models that describe the system's structure, functional models that show its available functionalities, and dynamic models that depict how components interact.
+The system design explores an existing or proposed solution for these requirements.
+It is the first and most abstract part of the solution domain.
+Besides the system design, the solution domain covers how specific objects are designed, considering data structures and algorithms, down to concrete implementation and testing of the codebase. \cite{book:bruegge}
+
+We combine both into a single chapter because of the following reasons.
+FLOps is already an implemented system.
+There is no need to discuss and illustrate significantly simplified possible solutions for the system first and then do the same more concretely for the existing system later.
+This would lead to models and explanations with many commonalities and redundancies and bloat this work.
+The existing system satisfies the same requirements and is still explained in a simplified way via abstractions.
+For very detailed implementation the next chapter and the codebase is available \cite{flops_code}.
+The system design part directly follows and relies on the requirements engineering part \cite{book:bruegge}.
+Many aspects are interconnected and can hardly be assigned to one another, especially when discussing an existing system.
+For example the system design concerns itself how the system handles concurrency, software control, and global resources \cite{book:bruegge}.
+Usually, these aspects are described via dynamic models, which directly correspond and depend on concepts discussed in the requirements analysis \cite{book:bruegge}.
+Therefore, both use models to describe how the system works and satisfies the requirements.
+This chapter covers both aspects where the initial sections cover the application domain and the last ones the solution domain.
+Intermediate sections feature aspects of both. 
+As a result this chapter enables flexible discussions logically leading through both domains.
 
 
-\section{System Models}
 
-After eliciting and specifying requirements, this section presents scenarios and analysis models representing how the system satisfies these requirements.
-These models aim to improve the comprehension of FLOps on the application level instead of the solution one.
-The models do not depict concrete implementation.
-Instead, they show a simplified conceptual representation of FLOps' architecture and workflows.
-This includes involved components and their relationships.
-These are not identical to the actual implementation.
-The goal is to improve comprehension of the system instead of showing overwhelmingly verbose intricate details that might change in future updates.
+\input{chapters/requirements_engineering_and_system_design/sections/requirements_elicitation_and_specification.tex}
 
-System models aim to build what is called an analysis model.
-The analysis model has three distinct parts
-The scenarios and use cases form the functional model.
-Class and object models make the analysis object model.
-State machines and sequence diagrams create the dynamic model of the system.  \cite{book:bruegge}
-
-\input{chapters/requirements_engineering_and_system_design/subsections/scenarios.tex}
-
-\input{chapters/requirements_engineering_and_system_design/subsections/use_case_diagram.tex}
-
-\input{chapters/requirements_engineering_and_system_design/subsections/flops_overview.tex}
-
-\input{chapters/requirements_engineering_and_system_design/subsections/analysis_object_models.tex}
-
-\input{chapters/requirements_engineering_and_system_design/subsections/dynamic_models.tex}
-
-% maybe combine both? -> but due to complexity and limited space - better to keep seperate
-% components can show fine granined interactions in different deployments, e.g. how do the FLOps management components interact
-% or how do the deployed FLOps services interacts on the different worker nodes
-\subsection{Component Diagram}
-% maybe even redundant if the component one is already clear enough.
-% shows a more abstracted picture where stuff is deployed and the interactions between orchestrator - management - and workers
-\subsection{Deployment Diagram}
-
-% NOPE:(maybe also include explicit data management section - how d) -> place this in implementation section and go verbose
+\input{chapters/requirements_engineering_and_system_design/sections/system_models.tex}
