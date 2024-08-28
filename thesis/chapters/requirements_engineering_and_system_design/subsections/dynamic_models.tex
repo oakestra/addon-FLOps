@@ -10,7 +10,7 @@ That means that no code, data, or images are present yet.
 This base case terminates after successful training.
 It has no post-training steps, such as building and deploying an inference server.
 This simple base case is already complex enough to require multiple UML sequence diagrams.
-For example, FLOps Management consists of multiple components.
+For example, FLOps management consists of multiple components.
 For simplicity's sake, these components are grouped into one. 
 The same applies to multiple worker nodes and edge devices.
 
@@ -27,7 +27,7 @@ Figure \ref{fig:uml_sequence_init} is a UML sequence diagram depicting the initi
 Two different sets of sequences can occur independently or in parallel with each other.
 Before FLOps can run properly, FL worker nodes need to register with the orchestrator and stay available.
 Only a subset of worker nodes are intended to be capable of performing ML training.
-Worker nodes that should participate as learners must inform the orchestrator accordingly and start the provided ML Data Server locally.
+Worker nodes that should participate as learners must inform the orchestrator accordingly and start the provided ML data server locally.
 This server accumulates training data locally for later training.
 This process has to occur before training begins.
 Otherwise, not enough or no data will be available for training.
@@ -40,7 +40,7 @@ They should implement their ML code and structure it as required for FLOps.
 This code must be available via an accessible git-based repository.
 If the user is satisfied with his codebase, he can prepare his SLA.
 (We discuss the SLA in detail in the implementation chapter.)
-After both sequences have been completed, the user can send his SLA to the FLOps Management API and request the start of a new FLOps project.
+After both sequences have been completed, the user can send his SLA to the FLOps management API and request the start of a new FLOps project.
 
 \begin{figure}[h]
     \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
@@ -109,7 +109,7 @@ After the successful push, the builder notifies the project observer and FLOps m
 The FLOps management catches this message and removes the builder from its own context and undeploys it from the orchestrator and worker.
 Now that the FL actor images are ready, the training can begin.
 
-\begin{figure}[h]
+\begin{figure}[p]
     \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
         \centering
         \includegraphics[width=0.95\paperwidth]{uml_sequence_training.png}

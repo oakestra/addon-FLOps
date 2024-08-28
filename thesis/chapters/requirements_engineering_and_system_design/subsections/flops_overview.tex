@@ -20,7 +20,7 @@ Note that the management components and deployed services on orchestrated worker
 These connections are not explicitly visualized to avoid clutter.
 The services shown in the rounded rectangle depict an arbitrary number of worker nodes.
 Multiple services can run on the same worker, or every worker might only have a single service deployed.
-The FLOps system works via the interactions and relationships between the FLOps Management, the orchestrator, and the worker nodes.
+The FLOps system works via the interactions and relationships between the FLOps management, the orchestrator, and the worker nodes.
 The FLOps management is a composition of components (containers).
 Its goals and responsibilities are to manage FLOps processes and store FLOps artifacts.
 The management components coordinate automatic processes and events.
@@ -65,7 +65,7 @@ Thus, it does not expect users to provide data as part of their ML repositories.
 Instead, users need to coordinate with real data providers on the orchestrated worker nodes.
 The figure shows a deployed learner container on a worker node.
 The learner container itself has no data. 
-FLOps cooperates with the orchestrator and deploys an ML Data Server before training on user-specified worker nodes.
+FLOps cooperates with the orchestrator and deploys an ML data server before training on user-specified worker nodes.
 This data server is reachable by nearby devices via an API.
 Devices can send their data to this data server.
 The data server will store this data on the local machine.

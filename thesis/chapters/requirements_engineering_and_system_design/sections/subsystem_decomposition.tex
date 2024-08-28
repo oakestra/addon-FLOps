@@ -1,0 +1,59 @@
+\subsection{Subsystem Decomposition}
+This subsection provides a more detailed look at FLOps' overall architecture and its subsystems.
+This is a concretion of the system overview seen in Figure \ref{fig:flops_structure_overview}.
+Decomposing a large system into its sub-components provides new insights and improves comprehension of the system.
+The general approach for this endeavor is to use a UML component diagram.
+It allows to discover if the system follows teh openclosed principle of good software design.
+This principle states that a system should "stay open for extension, but closed for modification" \cite{book:bruegge}.
+To achieve this the system should strive for minimizing coupling and maximizing cohesion.
+Cohesion expresses how tightly components of the same subsystem work together.
+Coupling describes how directly dependent components from different subsystems are on each other without utilizing unifying interfaces, access points, or facades.
+
+\begin{figure}[p]
+    \begin{adjustwidth}{-0.175\paperwidth}{-0.175\paperwidth}
+        \centering
+        \includegraphics[width=0.975\paperwidth]{uml_component_diagram_overview.png}
+        \caption{FLOps Subsystem Decomposition}
+        \label{fig:component_diagram_overview}
+    \end{adjustwidth}
+\end{figure}
+
+Figure \ref{fig:component_diagram_overview} shows a UML component diagram of the major FLOps components and subsystems.
+The largest subsystems are the orchestrated layer and the FLOps management.
+The dotted lines in the diagram depict dependency relationships between components and subsystems.
+The arrow point towards a dependency.
+Some of these dotted lines could be replaced with provided and required interfaces (lollipop notation).
+We decided to use dotted lines instead to reduce complexity.
+The little squares where interfaces come out of are so called UML component ports.
+They represent concrete interaction points.
+We use them to signify that a concrete network port is well known.
+Interfaces without ports have unconventional, unknown, or complex access points.
+
+The FLOps management consists out of six components.
+The backend and artifact stores keep training metrics and models respectively.
+They are MLflow components.
+The FLOps database stores all persistent information about FLOps' projects, components, apps, and services.
+The FLOps manager coordinates all FLOps processes.
+These processes include, serving a RESTful API for user requests, coordinating deployments with the orchestrator, checking requirements via its image registry, and accessing the user's repository.
+The manager is by far the most important and largest part of the FLOps management suite.
+The MQTT broker enables lightweight communication between the manager and deployed FLOps services.
+The FLOps image registry provides full control of and direct access to images built by the image builder services.
+
+The orchestrated layer contains the control plane and the worker nodes.
+The control plane is independent of FLOps.
+Only the FLOps manager interact with it via its own REST API.
+The control plane resolves the FLOps management requests and creates, (un)deploys, or deletes components necessary for FLOps to run.
+The relevant apps and services for FLOps are deployed on a single or multiple worker nodes.
+The two key FLOps apps are the project and observatory.
+
+All project services can share their status with the manager or project observer over MQTT or socket messages.
+The three services are dependent on the FLOps image registry.
+The image builder needs to push his images to it, while the FL actors are pulled from it.
+By default, the learners and aggregator(s) communicate via gRPC (Flower).
+
+The observatory services are the project observer(s) and tracking server.
+The tracking server hosts the HTTP based GUI and is accessible over a REST API.
+The aggregator sends his logged metrics and model over the tracking server to the management stores.
+The user can interact with the system via the GUI or by accessing the event (logs) of the project observer over the control plane API or FLOps CLI.
+
+The management image registry, project's image builder and both observatory services are pulled from FLOps' public git image registry \cite{flops_code}.
