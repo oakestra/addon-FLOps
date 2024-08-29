@@ -1,8 +1,5 @@
-% talk about the support of different frameworks
-% very brief overview how many there are
-% mention how large these dependencies and images are
-
 \subsection{Dependency Management}
+
 The goal of using containerized images is to avoid the need and struggle to set up and configure machines individually.
 This setup and configuration part is especially crucial for ML workloads.
 This is the case because there are a plethora of different ML frameworks and libraries that need to cooperate with other software tools.
@@ -56,6 +53,10 @@ The newer a tool the quicker it is but it also lacks sophisticated support and m
 FLOps should support as many projects and dependencies as possible.
 For this reason we decided to use miniconda.
 It flexibly supports different python versions, easily resolves and handles dependencies, and is a lightweight solution.
+Conda now also supports multiple different dependency resolvers.
+The libmamba resolver uses Mamba.
+Since end of 2023 Conda uses the libmamba resolver by default.
+Therefore, FLOps is using one of the fastest and most reliable available dependency resolution solutions.
 
 \begin{changemargin}{0cm}{0cm}
     \centering
