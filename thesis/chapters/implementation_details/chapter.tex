@@ -1,10 +1,9 @@
 \chapter{Implementation Details}
 
-After discussing requirements and simplified system models this chapter discloses significant implementation details that power FLOps.
-FLOps is mostly implemented in Python.
+After discussing requirements and simplified system models, this chapter discloses significant details of the implementation that powers FLOps.
+We implemented FLOps mainly in Python.
 Our goal is to use state-of-the-art tools for FLOps' implementation.
 We analyzed and compared different open-source libraries and tools.
-The dependencies are listed in the codebase \cite{flops_code}.
 
 \begin{figure}[h]
     \begin{adjustwidth}{-0.175\paperwidth}{-0.175\paperwidth}
@@ -16,9 +15,10 @@ The dependencies are listed in the codebase \cite{flops_code}.
 \end{figure}
 
 Figure \ref{fig:python_projects_libraries} shows a screenshot of a subset of our internal comparison.
-We restrain from exploring and discussing our findings verbatim to avoid bloating the thesis.
-Especially because this landscape is constantly changing and better options might exist since our analysis. 
+We refrain from exploring and discussing our findings to avoid bloating the thesis.
+Especially because this landscape is constantly changing, and better options might exist since our analysis. 
 We carefully considered every dependency that FLOps relies upon.
+The dependency listings are available in the codebase \cite{flops_code}.
 
 \input{chapters/implementation_details/sections/api_and_slas.tex}
 
