@@ -2,7 +2,7 @@
 
 The goal of using containerized images is to avoid the need and struggle to set up and configure machines individually.
 This setup and configuration part is especially crucial for ML workloads.
-This is because many different ML frameworks and libraries exist and need to cooperate with other software tools.
+Many different ML frameworks and libraries exist and need to cooperate with other software tools.
 These tools cover various aspects of ML, ranging from unsupervised to supervised learning.
 Subfields include clustering, reducing feature spaces, classification, regression, and neural networks.
 Just neural networks as a field represent a multifaceted domain that requires different tools.
@@ -12,7 +12,7 @@ Popular tools include TensorFlow, Keras, PyTorch, and scikit-learn, which all ha
 Even small basic ML projects can already contain several hundred dependencies.
 All of these tools have different versions and require careful consideration and version management to avoid unexpected side effects and errors.
 
-The relevant literature almost never touches upon the aspect of the initial device configuration and setup (\ref{subsection:fl_research}).
+The relevant literature almost never touches upon the initial device configuration and setup (\ref{subsection:fl_research}).
 Most authors assume that these dependencies are already properly installed and configured on the devices.
 Many works in FL discuss and propose better ways of selecting and distributing training loads and model parameters (\ref{subsection:fl_research}).
 They also omit the aspects of dependencies.
@@ -23,18 +23,18 @@ These reasons motivated us to develop and include automatic image-build processe
 Conventionally, ML workflows are implemented in Python.
 Therefore, the mentioned dependencies are handled via Python's own package repository, PyPI (Python Package Index).
 These packages are usually installed and managed via Python's package installer pip.
-These common tools display weaknesses when it comes to resolving dependencies in extensive projects.
+These standard tools display weaknesses when resolving dependencies in extensive projects.
 It can happen that pip fails to resolve and properly install the dependencies in a compatible way.
-Additionally, because pip is implemented in Python which is not the fastest programming language, this dependency resolution can take a long time.
+Additionally, because pip is implemented in Python, which is not the fastest programming language, this dependency resolution can take a long time.
 Other tools try to resolve these weak points.
 
-A very popular alternative to pip is the Conda suite.
+A popular alternative to pip is the Conda suite.
 Conda \cite{docs:conda} is an open-source package and environment manager that is popular with ML and Data engineers.
 It focuses on Python but supports other languages as well.
 Conda provides and enables convenient virtual Python environments and resolves dependencies more successfully and quickly than pip.
 Anaconda \cite{docs:anaconda} is Conda's Python distribution that includes Conda and comes with more than 100 commonly used packages.
-This distribution is relatively massive and unfit for lightweight, minimized containerized, or CI workflows.
-Miniconda \cite{docs:miniconda} is a minimal Anaconda version that includes Conda and a minimal set of dependencies.
+This distribution is heavy-weight and unfit for lightweight, containerized, or CI workflows.
+Miniconda \cite{docs:miniconda} is a minimal Anaconda version that only includes Conda and a small mandatory set of dependencies.
 It is ideal for lightweight environments that should only include necessary (custom) dependencies.
 Conda is also implemented in Python.
 Thus, the dependency resolution process speed remains a bottleneck.
@@ -42,25 +42,24 @@ Mamba \cite{docs:mamba} is a reimplementation of Conda in C++.
 This allows Mamba to resolve dependencies a lot faster than Conda.
 Similarly to Miniconda, Micromamba \cite{docs:micromamba} is a minimal distribution of Mamba.
 
-Additionally, there is not a single unified source for packages or standard for building such packages.
-There are various different package servers, mirrors, channels, and package builders.
+Additionally, there is no single unified source for packages or standard for building such packages.
+Various package servers, mirrors, channels, and package builders exist.
 One example is Conda-Forge.
 Furthermore, the structure, build, and publish processes for Python packages have changed vastly over the years.
-Native Python only recently switched to a more homogeneous approach via pyproject.toml files.
+Native Python only recently switched to a more homogeneous approach via pyproject.toml files \cite{setuptools_userguide}.
 Previously setup.py and setup.cfg files were used for these purposes.
-On top of that, there are other tools like Poetry or the very new and lightning-fast uv.
+In addition, there are other tools like Poetry \cite{docs:poetry} or the very new and lightning-fast uv \cite{uv} manager that is implemented in Rust.
 In conclusion, Python's dependency management ecosystem is vast and complex.
 The newer a tool, the quicker it tends to be, but it also lacks sophisticated maintenance and might not support all necessary packages or versions.
 
 FLOps should support as many projects and dependencies as possible.
 For this reason, FLOps uses miniconda.
-It flexibly supports different Python versions, easily resolves and handles dependencies, and is a lightweight solution.
+It supports different Python versions, easily resolves and handles dependencies, and is a lightweight solution.
 Conda now also supports multiple different dependency resolvers.
-The libmamba resolver uses Mamba.
-Since the end of 2023, Conda has used the libmamba resolver by default.
-Therefore, FLOps is using one of the fastest and most reliable available dependency resolvers.
+Since the end of 2023, Conda has been using the libmamba resolver by default, which uses Mamba \cite{docs:conda_libmamba}.
+Therefore, FLOps uses a fast and reliable dependency resolver.
 
-Besides the existing complexity of Python's dependency landscape, ML dependencies can be very large.
+Besides the complexity of Python's dependency landscape, ML dependencies can be huge.
 \begin{changemargin}{0cm}{0cm}
     \centering
     \begin{tabular}{|c||c|c|c|c|}
@@ -79,12 +78,11 @@ Table \ref{table:conda_python_comparison} shows four pulled images and their siz
 All images use Python version 3.12.4.
 The default Python image is one GB in size.
 Its official slim alternative is almost ten times smaller.
-The full anaconda image has 4.5 GB
-The miniconda image is more than seven times smaller than the full version but more than five times larger than the slim python image.
+The full anaconda image has 4.5 GB.
+The miniconda image is more than seven times smaller than the full anaconda version but more than five times larger than the slim python image.
 Note that these are the pulled docker image sizes, not the compressed registry ones.
-The conda images are from the official continuumio project.
+(The Conda images are from the official continuumio project.)
 
-Python dependencies, especially ML ones, can be massive.
 \begin{changemargin}{0cm}{0cm}
     \centering
     \begin{tabular}{|c||c|c|c|}
@@ -101,5 +99,6 @@ Python dependencies, especially ML ones, can be massive.
 
 Table \ref{table:ml_libs_images_compared} shows a selection of pulled images of popular ML tools.
 All images are the latest official images by the ML tool providers, except scikit-learn.
-It is obvious that these images require very different and sometimes a lot of disk space and bandwidth to pull.
-Any FLOps image that is built on top of these dependencies will even be larger due to the additional FL and MLOps dependencies.
+These images can vary enormously in size.
+Some of them require a lot of disk space and bandwidth to pull.
+Any FLOps image built on top of these dependencies will be even larger due to the additional FL and MLOps dependencies.
