@@ -4,6 +4,7 @@ After discussing requirements and simplified system models this chapter disclose
 FLOps is mostly implemented in Python.
 Our goal is to use state-of-the-art tools for FLOps' implementation.
 We analyzed and compared different open-source libraries and tools.
+The dependencies are listed in the codebase \cite{flops_code}.
 
 \begin{figure}[h]
     \begin{adjustwidth}{-0.175\paperwidth}{-0.175\paperwidth}
@@ -19,46 +20,7 @@ We restrain from exploring and discussing our findings verbatim to avoid bloatin
 Especially because this landscape is constantly changing and better options might exist since our analysis. 
 We carefully considered every dependency that FLOps relies upon.
 
-\section{User Interactions with the FLOps Manager}
-This section details how users can interact with the FLOps manager.
-It shows the currently available API endpoints and the SLA structure.
-
-    \subsection{API}
-    The FLOps manager API is implemented via the Flask-OpenAPI3 framework.
-    This is a rather young and small framework that aligns Flask with OpenAPI3.
-    It uses Pydantic to verify data and automatically generate REST API and OpenAPI documentation that is compatible with popular frameworks such as Swagger.
-    We use waitress a production-quality WSGI server to host the manager's API.
-
-    \subsubsection{Currently Available Endpoints}
-        \textbf{/api/flops/projects}\newline
-        This POST endpoint triggers a new FLOps project.
-        It expects users to provide a SLA json with the required project configurations and a bearer token authorizing the user on the orchestrator.
-        If no matching images exist a image builder is created and deployed.
-        If an adequate image already exists the request concludes straight away.
-        The user receives a confirmation that the new project has successfully started.
-        \vspace{5mm}
-        \newline
-        \textbf{/api/flops/tracking}\newline
-        The tracking endpoint allows users to spawn their individual tracking servers at will independently from an active project.
-        Usually, a tracking server is created during FL training.
-        This GET endpoint returns the tracking server / GUI URL.
-        \vspace{5mm}
-        \newline
-        \textbf{/api/flops/database}\newline
-        This DELETE endpoint only allows admins to reset the FLOps database.
-        Otherwise the entire FLOps management suite needs to be reset.
-        It returns a confirmation for the user.
-        \vspace{5mm}
-        \newline
-        \textbf{/api/flops/mocks}\newline
-        This POST endpoint creates mock data providers and deploys them on fitting learner machines.
-        These date providers are discussed later on in this thesis.
-        Similarly to the project this endpoint returns a confirmation to the user.
-        \vspace{5mm}
-        \newline
-
-    \subsection{SLAs}
-
+\input{chapters/implementation_details/sections/api_and_slas.tex}
 
 \section{Image Building}
 
