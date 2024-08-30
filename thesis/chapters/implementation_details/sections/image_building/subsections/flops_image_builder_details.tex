@@ -36,6 +36,10 @@ Therefore, the aggregator image and node can be relatively lightweight compared 
 However, logging the trained model via MLflow requires access to the complete trained model, especially its structure.
 The corresponding dependencies are necessary because a model structure is defined in a concrete ML framework.
 Therefore, FLOps explicitly also includes these dependencies and the model structure in the aggregator.
+During FL training only the model parameters are transmitted.
+The aggregator's model copy is only needed at the very end of training.
+The aggregator populates its untrained model copy via its final global model parameters.
+This populated model gets logged.
 Note that the model structure is initially defined in the user's ML repository and can be easily cloned and injected into images via the builder service.
 
 The trained model build plan can only be run after the FL training is completed and the trained model is saved in the artifact store, which is hosted in the FLOps management.
