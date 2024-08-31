@@ -1,12 +1,3 @@
-\section{Local Data Management}
-
-This section explains how FLOps handles local data on learner nodes.
-It expands upon Figure \ref{fig:flops_simple_data_management} from \ref{subsection:flops_overview}.
-Firstly, it covers what kind of data and datasets suit FL and why.
-Secondly, it discusses how state-of-the-art projects in the industry handle enormous amounts of data for ML and Big Data applications.
-Thirdly, it explores how exactly FLOps manages the local data and what architecture it uses for this task.
-The last subsection showcases FLOps' mock data provider service, which makes development and testing more convenient.
-
 \subsection{Appropriate Data for FL}
 
 FL, especially cross-device FL, specializes in massive numbers of heterogeneous devices with diverse non-IID data.
@@ -34,10 +25,3 @@ We already discussed Flower Datasets briefly in \ref{subsection:flower}.
 The vital thing to know about this young project is that it uses and splits up HuggingFace datasets into non-IID data fragments.
 It enables users to turn conventional ML datasets into an FL-optimized ones.
 Users can configure this approach freely.
-
-
-\subsection{ML \& Big Data Formats}
-
-\subsection{FLOps' Local Data Management Architecture}
-
-\subsection{Mock Data Providers}
