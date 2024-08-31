@@ -1,1 +1,129 @@
 \subsection{Multi Platform}
+
+This subsection explains how FLOps builds multi-platform images.
+Usually, when end users build images they only build it for a single platform.
+Their builder knows their host's architecture and uses it as a target platform.
+When inspecting most popular public images they support multiple target platforms.
+Each image tag (e.g. latest) can have multiple digests, each representing a different platform.
+For example, the latest alpine image supports at least linux/amd64 and linux/arm/v6.
+By default, it is impossible to run images that are intended for different architectures on machines with incompatible host architectures.
+Specific workarounds via emulation exist.
+
+The key of building and referencing images that support multiple platforms are manifests.
+A plain manifest file contains information about a unique image digest.
+This information includes its media type, size, layers, and architecture.
+\begin{lstlisting}[language=json]
+    {
+        "Ref": "docker.io/library/hello-world:latest",
+        "Digest": "sha256:f3b3b28a45160805bb16542c9531888519430e9e6d6ffc09d72261b0d26ff74f",
+        "SchemaV2Manifest": {
+                "schemaVersion": 2,
+                "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+                "config": {
+                        "mediaType": "application/vnd.docker.container.image.v1+json",
+                        "size": 1520,
+                        "digest": "sha256:1815c82652c03bfd8644afda26fb184f2ed891d921b20a0703b46768f9755c57"
+                },
+                "layers": [
+                        {
+                                "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+                                "size": 972,
+                                "digest": "sha256:b04784fba78d739b526e27edc02a5a8cd07b1052e9283f5fc155828f4b614c28"
+                        }
+                ]
+        },
+        "Platform": {
+                "architecture": "amd64",
+                "os": "linux"
+        }
+}
+\end{lstlisting}
+When an image supports multiple platforms, it has multiple digests, thus multiple manifests for each digest.
+To be able to group these different manifests list-manifests were invented.
+Note that list-manifests are also called fat-manifests in docker and image indexes in the OCI standard.
+\begin{lstlisting}[language=json]
+    {
+        "schemaVersion": 2,
+        "mediaType": "application/vnd.docker.distribution.manifest.list.v2+json",
+        "manifests": [
+            {
+                "mediaType": "application/vnd.oci.image.manifest.v1+json",
+                "size": 1643,
+                "digest": "sha256:d0447f0e3ba33254cc8d8acfcf6eeba3f8b245fa43bd0de9be1438dd0fd37fb1",
+                "platform": {
+                    "architecture": "arm",
+                    "os": "linux",
+                    "variant": "v7"
+                }
+            },
+            {
+                "mediaType": "application/vnd.oci.image.manifest.v1+json",
+                "size": 1643,
+                "digest": "sha256:1ce5dbea478703c654d39d707b9256a9e7921bf0e0bc2fb393254f1ca9b8d947",
+                "platform": {
+                    "architecture": "arm64",
+                    "os": "linux"
+                }
+            },
+            {
+                "mediaType": "application/vnd.oci.image.manifest.v1+json",
+                "size": 1641,
+                "digest": "sha256:54649abd9158e2c1ebed489a05fb4eda0e2026abefca2def7ce5713cfbff60ea",
+                "platform": {
+                    "architecture": "amd64",
+                    "os": "linux"
+                }
+            }
+        ]
+    }
+\end{lstlisting}
+As a result different host architectures can pull the same image tag and pull their matching digest.
+This happens because the local builder reads the list-manifest and picks a suitable manifest and pulls its digest image.
+
+Multi-platform images is a deep topic.
+Because of its rapid development many different media types, versions, and schemas for manifests exist.
+Build machines need to use the same conventions as the image registries.
+Discussing these details here would lead to bloat.
+Excellent information about this topic is available here TODO. (CNCF distribution)
+
+Previously one had to manually build one image per target architecture, on a machine of that architecture, provide the image tag with a architecture suffix, and push it.
+Once all these different images were pushed a list-manifest had to be created and pushed.
+A convenient solution for building multi-plaftorm images nowadays is using docker's buildx builder.
+It can build and push multi-platform images concurrently with a single command.
+For example: docker buildx': docker buildx build --no-cache --platform linux/amd64,linux/arm64 -t ghcr.io/oakestra/addon-flops/image-builder:latest  . --push
+
+The FLOps image builder does not use docker to build its images.
+Buildah also supports building multi-platform images, but lacks the convenient new features of docker's buildx.
+Note that from our experience Buildah has a lack of documentation regarding building and pushing multi-platform images.
+We needed to look into its source code, read other sources, and experiment a lot until we managed to make this work.
+
+Another significant requirement for building multi-platform images on a single machine is to emulate other architectures on it, otherwise only images for the host's architecture can be build.
+It is also possible to cross-compile or use multiple dedicated builder nodes with proper architectures.
+Conventionally, QEMU is used for emulating such tasks.
+QEMU translates the requested target architecture instructions into ones the host machine can understand.
+Due to FLOps' special circumstances, which are building complex images in orchestrated containerd containers on hereogeneous devices, various different approaches seem to be available to realize emulation.
+Ideally the emulator would be part of the builder image, thus avoiding the need to modify or require anything from the worker nodes.
+After many unsuccessful attempts we decided to require worker nodes that should be able to build multi-platform images to pre-install QEMU.
+For linux machines, this can be done by installing an open-source package called qemu-user-static.
+
+In conclusion, using this approach FLOps builder service is able to build multi-platform images.
+All other FLOps (static) images, including the builder service or project observer, are also available for linux/amd64 and linux/arm64.
+These images have been conveniently build via docker's buildx.
+For example, all these images can be started on Raspberry Pi4s, but these PIs seem to lack sufficient resources to handle the FL training.
+An additional downside of multi-platform image builds comes with the slowness of emulating image builds.
+
+\begin{changemargin}{0cm}{0cm}
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|}
+        \hline
+            \textbf{Platform} & \textbf{Full Build} & \textbf{Base Image} & \textbf{Actor Images} \\
+        \hline
+            linux/amd64 & 4min & 2min 30s & 1min 30s \\
+        \hline
+            linux/arm64 & 18min & 12min & 6min 
+        \\
+        \hline
+    \end{tabular}
+    \captionof{table}{Simple Scikit-learn Build Example} 
+    \label{table:sklearn_mnist_build_example}
+\end{changemargin}
