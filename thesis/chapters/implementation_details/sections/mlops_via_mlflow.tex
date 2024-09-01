@@ -1,0 +1,125 @@
+\section{MLOps via MLflow}
+
+This section showcases how FLOps enables MLOps.
+The first subsection discusses its MLOps components and how they work together.
+The second subsection shows briefly how the GUI looks and works.
+Many details were already mentioned in previous parts of this work.
+Thus, this subsection will not repeat them but provide new insights or concretions.
+
+\subsection{MLOps Components \& Architecture}
+
+This subsection builds on top of \ref{subsection:mlflow} and \ref{subsection:subsystem_decomposition}.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth]{mlops_components.png}
+    \caption{FLOps' MLOps Architecture}
+    \label{fig:mlops_architecture}
+\end{figure}
+Figure \ref{fig:mlops_architecture} shows FLOps' MLOps architecture.
+MLflow powers many FLOps' MLOps capabilities.
+After every training round, the aggregator logs lightweight artifacts like metrics, parameters, tags, or runs.
+In addition, the aggregator stores exactly one global model copy locally.
+After every round, the aggregator checks if the new model's performance is better or worse.
+The aggregator will update its local model if the new model is better.
+At the end of the last training round, the aggregator sends the trained global model to the artifact store.
+
+An MLflow run represents an individual execution of (usually ML) code.
+Each run can collect various pieces of information, such as metrics, hyperparameters, or custom tags.
+These lightweight elements are represented as A in the Figure.
+An MLflow experiment gathers multiple runs.
+FLOps maps these MLflow terms directly to FL.
+An experiment becomes an FLOps project and runs are FL training rounds.
+
+The aggregator logs everything besides local elements over the tracking server. 
+The tracking server works as a proxy for artifacts.
+Thus, any access to any logged objects goes through the tracking server.
+The tracking server itself does not have any state.
+Its GUI showcases the stored elements in the backend and artifact stores hosted via the FLOps management.
+Note that these stores can be deployed and scaled individually onto different machines.
+There are various ways of setting up and provisioning MLflow components.
+For example, the backend store can be a local directory, a remote database, a cloud file server, or blob storage.
+The backend store hosts lightweight elements, and the artifact store hosts heavy-weight elements such as models or images.
+FLOps currently uses a MySQL database for the backend store and a vsftpd (very secure FTP daemon) server for the artifact store.
+
+It is noteworthy that no MLOps logging takes place on the learners.
+Only the aggregator uses these techniques.
+This approach works as expected regarding concrete FL metrics and models.
+MLflow also provides a way to track system metrics, which FLOps uses.
+These metrics only capture information about the aggregator, not the connected learners.
+No information belonging to individual learners gets logged.
+Furthermore, FLOps ensures that users can only access their own recorded artifacts.
+FLOps explicitly upholds theses separations to minimize possible privacy hazards and attack vectors.
+
+\subsection{GUI}
+
+This subsection showcases a few key GUI elements.
+FLOps uses MLFlow's GUI and does not modify it.
+For that reason this chapter only provides a brief selected impressions of the GUI.
+Excellent further details are available directly at MLflow \cite{mlflow:homepage}.
+
+\begin{figure}[p]
+    \begin{adjustwidth}{-0.1\paperwidth}{-0.1\paperwidth}
+        \centering
+        \includegraphics[width=0.90\paperwidth]{gui_ss_1.png}
+        \caption{MLflow's GUI Screenshot - Experiments Overview}
+        \label{fig:gui_ss_1}
+    \end{adjustwidth}
+\end{figure}
+
+The first screenshot \ref{fig:gui_ss_1} shows MLflow's experiments overview page.
+The left column lists all recorded experiments/projects.
+Only a single one is currently selected.
+Details about it are displayed to the right.
+Multiple experiments can be selected at the same time to get a view of their combined contents.
+The center piece offers shows the table view of the different FL rounds.
+Users can customize and sort this table to their liking.
+Each table row depicts a single FL round, when it was recorded, its duration.
+Only the best round contains a logged model.
+In this example it was the last (10th) round.
+
+\begin{figure}[p]
+    \begin{adjustwidth}{-0.1\paperwidth}{-0.1\paperwidth}
+        \centering
+        \includegraphics[width=0.90\paperwidth]{gui_ss_2.png}
+        \caption{MLflow's GUI Screenshot - Experiment Details}
+        \label{fig:gui_ss_2}
+    \end{adjustwidth}
+\end{figure}
+
+Figure \ref{fig:gui_ss_2} shows the detailed view of a single recorded experiment/project.
+Currently FLOps focuses on the model's accuracy and loss.
+The center piece of the screenshot shows the evolution of both across the different FL rounds.
+It shows that the model's accuracy improved and its loss decreased over time.
+Note that FLOps users can access this GUI during FL training and observe how this FL round table grows in real time.
+
+\begin{figure}[p]
+    \centering
+    \includegraphics[height=1.0\textheight]{gui_ss_3.png}
+    \caption{MLflow's GUI Screenshot - FL Round Details}
+    \label{fig:gui_ss_3}
+\end{figure}
+
+The third screenshot \ref{fig:gui_ss_3} depicts visible details when inspecting a concrete FL round.
+These details include general information such as, if and what model was recorded, the run/round ID, or when the run was created.
+In addition, it displays custom parameters that FLOps injected including, the user provided number of clients/learners via the SLA.
+This page also displays other metrics such as accuracy, or system metrics.
+
+\begin{figure}[p]
+    \begin{adjustwidth}{-0.1\paperwidth}{-0.1\paperwidth}
+        \centering
+        \includegraphics[width=0.90\paperwidth]{gui_ss_4.png}
+        \caption{MLflow's GUI Screenshot - Logged Model Details}
+        \label{fig:gui_ss_4}
+    \end{adjustwidth}
+\end{figure}
+
+The last screenshot \ref{fig:gui_ss_4} shows the logged model details page.
+The left folder shows the different aspects that were recorded.
+The model requirements, conda environment, and model (pkl) file are all present.
+This concrete example showcases a registered model (\ref{subsection:mlflow}).
+
+MLflow is a feature rich and well documented MLOps tool.
+Its GUI directly supports in-build tools to compare, analyze, and visualize these logged results.
+All of these recorded properties can be exported and shared with other people.
+This thesis is not covering all MLflow's (GUI's) features.
+Further information is available here \cite{mlflow:homepage,mlflow:docs}.
