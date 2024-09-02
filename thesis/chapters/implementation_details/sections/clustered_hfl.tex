@@ -1,0 +1,45 @@
+\section{Clustered HFL}
+
+Besides classic FL, FLOps supports (clustered) HFL.
+Oakestra's three-tiered layout supports geographically dispersed clusters.
+Each cluster has its own cluster orchestrator and set of worker nodes.
+This structure naturally alludes to use clustered and hierarchical FL.
+Remembering Figure \ref{fig:uml_project_aggregators_analysis_object_model} FLOps uses two different types of aggregators for HFL.
+The root aggregator and cluster aggregators are both deployed as services on worker nodes to distribute computational load.
+Only a single root aggregator exists and it can reside in any cluster.
+Each orchestrated cluster hosts a single cluster aggregator.
+A cluster aggregator only works with learners inside the same cluster.
+This type of geographic clustering is the reason why FLOps' HFL is a clustered HFL approach.
+
+Root aggregators treat cluster aggregators as plain learners exactly as in classic FL.
+Cluster aggregators are a combination between learner and aggregator.
+Note that Flower does not natively support HFL.
+Therefore, this approach of realizing HFL via Flower is a custom novel solution.
+
+\begin{figure}[p]
+    \begin{adjustwidth}{-0.1\paperwidth}{-0.1\paperwidth}
+        \centering
+        \includegraphics[width=0.90\paperwidth]{clustered_hfl_architecture.png}
+        \caption{FLOps clustered HFL Architecture}
+        \label{fig:flops_clustered_hfl_architecture}
+    \end{adjustwidth}
+\end{figure}
+
+Figure \ref{fig:flops_clustered_hfl_architecture} shows the detailed architecture of how FLOps realizes clustered HFL.
+This figure reuses and expands upon the stylistic conventions seen throughout this thesis, starting from Figure \ref{fig:basic_fl_intro}.
+Everything visible element beside the root aggregator is part of a single cluster.
+This setup naturally supports multiple clusters.
+
+Because the root aggregator interacts with the cluster aggregators as if they were plain learners cluster aggregators need to offer the same learner interface.
+The cluster aggregator implements the same learner interface and model manager as user ML code repositories.
+The cluster aggregator needs to be able to modify and access the underlying user ML model.
+This is necessary to properly implement the required interface and to maintain state during multiple training cycles.
+
+At the start of a new training cycle the root aggregator calls the cluster aggregator's fitModel method.
+It triggers the cluster aggregator's handleAggregator method which all aggregator types in FLOps have.
+This function perform classic FL.
+The cluster aggregator performs conventional FL training with its learners and fuses a new intermediate global model (pink M).
+
+
+When the root aggregator calls the cluster aggregator's getParameters method the cluster aggregator calls its user ML code's model manager getParameters method.
+Thus, the cluster aggregator accesses 
