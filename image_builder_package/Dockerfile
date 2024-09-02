@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y \
 
 RUN conda install -y \
         requests>=2.28.1 \
-        gitpython>=3.1.42\
+        gitpython>=3.1.42 \
         mlflow>=2.12.1
 
 RUN pip install --no-cache-dir git+https://github.com/Malyuk-A/tmp_flops_utils.git@main

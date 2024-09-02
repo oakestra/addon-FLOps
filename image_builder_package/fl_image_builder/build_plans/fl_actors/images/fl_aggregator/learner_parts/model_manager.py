@@ -21,17 +21,17 @@ class ClusterAggregatorModelManager(ModelManagerTemplate):
         pass
 
     def get_model(self) -> Any:
-        return self.ml_repo_model_manager.get_model()
+        return self.ml_repo_model_manager.get_model()  # type: ignore
 
     def get_model_parameters(self) -> Any:
-        return self.ml_repo_model_manager.get_model_parameters()
+        return self.ml_repo_model_manager.get_model_parameters()  # type: ignore
 
     def set_model_parameters(self, parameters) -> None:
-        self.ml_repo_model_manager.set_model_parameters(parameters)
+        self.ml_repo_model_manager.set_model_parameters(parameters)  # type: ignore
 
     def fit_model(self) -> int:
         # NOTE: This runs a CAg - Cluster-Learners FL training cycle.
-        self.updated_model_manager, self.used_strategy = handle_aggregator(
+        self.ml_repo_model_manager, self.used_strategy = handle_aggregator(
             aggregator_context=self.aggregator_context,
             model_manager=self.ml_repo_model_manager,
         )

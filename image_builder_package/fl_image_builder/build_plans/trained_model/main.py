@@ -4,6 +4,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from build_plans.trained_model.common import DOCKERFILE_DIR
+from build_plans.trained_model.dependency_management import handle_dependencies
 from build_plans.trained_model.preparations import prepare_build
 from flops_utils.logging import logger
 from image_management import build_image, push_image
@@ -22,6 +23,7 @@ def handle_trained_model_image_build(context: ContextTrainedModel) -> None:
     context.timer.start_new_time_frame(FULL_BUILDER_PROCESS_TIMEFRAME)
     try:
         prepare_build(context=context)
+        handle_dependencies()
 
         context.timer.start_new_time_frame(BUILD_IMAGE_TIMEFRAME)
         build_image(

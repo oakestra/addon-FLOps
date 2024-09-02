@@ -19,6 +19,7 @@ from build_plans.trained_model.common import DOCKERFILE_DIR
 # For simplicity sake we use the same.
 MODEL_ARTIFACT_NAME = "logged_model_artifact"
 DOWNLOADED_MODEL_DIR = pathlib.Path("downloaded_model")
+MODEL_URI = DOWNLOADED_MODEL_DIR / MODEL_ARTIFACT_NAME
 
 
 def _augment_dockerfile() -> None:
@@ -55,7 +56,7 @@ def _create_dockerfile() -> None:
     shell_cmd = " ".join(
         (
             "mlflow models generate-dockerfile",
-            f"--model-uri {DOWNLOADED_MODEL_DIR}/{MODEL_ARTIFACT_NAME}",
+            f"--model-uri {MODEL_URI}",
             f"--output-directory {DOCKERFILE_DIR}",
         )
     )
