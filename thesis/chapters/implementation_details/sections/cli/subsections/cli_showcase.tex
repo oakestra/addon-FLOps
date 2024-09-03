@@ -1,7 +1,7 @@
 \subsection{CLI Showcase}
 
-Here are a number of screenshots showing the current OAK CLI.
-This subsection only focuses on visually interesting command outputs. 
+This subsection presents several screenshots of the current OAK CLI.
+It only focuses on visually interesting command outputs. 
 The CLI is in active development and is subject to change.
 
 \begin{figure}[h]
@@ -13,9 +13,15 @@ The CLI is in active development and is subject to change.
     \end{adjustwidth}
 \end{figure}
 The first screenshot \ref{fig:cli_main_help} shows the main help text of the OAK CLI.
+Figure \ref{fig:cli_app_views} depicts an example of a single app displayed in different verbosity modes.
+Figure \ref{fig:cli_service_views} shows the simple and detailed view of the services from the single app from the previous figure.
+We ommit showing the exhaustive view because its JSON representation is very verbose.
+Screenshot \ref{fig:cli_service_inspection} shows the detailed inspection view of a concrete service with two instances.
+The grey text at the top shows service properties.
+The light blue text underneath it shows service instance information.
+The green text shows the latest logs of each deployed instance.
 
 \begin{figure}[h]
-    % \begin{adjustwidth}{-0.1\paperwidth}{-0.1\paperwidth}
     \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
         \centering
         \includegraphics[width=0.95\paperwidth]{cli_app_verbosities.png}
@@ -23,30 +29,19 @@ The first screenshot \ref{fig:cli_main_help} shows the main help text of the OAK
         \label{fig:cli_app_views}
     \end{adjustwidth}
 \end{figure}
-Figure \ref{fig:cli_app_views} depicts an example of a single app displayed in different verbosity modes.
 
-\begin{figure}[h]
-    % \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
-        \centering
-        % \includegraphics[width=0.95\paperwidth]{cli_services_verbosities.png}
-        \includegraphics[angle=90,origin=c,height=0.74\textheight]{cli_services_verbosities.png}
-        \caption{OAK CLI Service Views}
-        \label{fig:cli_service_views}
-    % \end{adjustwidth}
+\begin{figure}[p]
+    \centering
+    \includegraphics[angle=90,origin=c,height=0.74\textheight]{cli_services_verbosities.png}
+    \caption{OAK CLI Service Views}
+    \label{fig:cli_service_views}
 \end{figure}
-Figure \ref{fig:cli_service_views} shows the simple and detailed view of the services from the single app from the previous figure.
-We ommit showing the exhaustive view because its JSON representation is very verbose.
 
 \begin{figure}[p]
     \begin{adjustwidth}{-0.1\paperwidth}{-0.1\paperwidth}
         \centering
         \includegraphics[width=0.80\paperwidth]{cli_service_inspect}
-        % \includegraphics[width=0.95\textwidth]{cli_service_inspect}
         \caption{OAK CLI Service Inspection}
         \label{fig:cli_service_inspection}
     \end{adjustwidth}
 \end{figure}
-Screenshot \ref{fig:cli_service_inspection} shows the detailed inspection view of a concrete service with two instances.
-The grey text at the top shows service properties.
-The light blue text underneath it shows service instance information.
-The green text shows the latest logs of each deployed instance.
