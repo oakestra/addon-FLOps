@@ -1,0 +1,56 @@
+\subsection{CLI Requirements Discussion}
+
+The OAK CLI needs to satisfy the following requirements:
+\vspace{5mm}
+\newline
+\textbf{Interface for APIs}\newline
+The CLI should interact with the APIs of FLOps and Oakestra to eliviate the need for users to use external tools, know all API endpoints and how to interact with them properly.
+The key activities the CLI should support are to manage applications and services in Oakestra and to manage projects, tracking servers, and mock data providers in FLOps.
+For example, if the user wants to create a new application in Oakestra he first needs to login.
+For the login the user needs to know the login URI, create a fitting request, send it and extract his received bearer token for authentication and authorization.
+Only afterwards can users prepare their application SLA, add their token and send it to the application POST endpoint.
+Instead the CLI should offer a single command so that users can point to their application SLA and the CLI will perform the login and handle the API interaction.
+\vspace{5mm}
+\newline
+\textbf{Observability}\newline
+FLOps handles many different applications and services concurrently.
+Especially during development it is crucial to be able to observe if components behave as expected and see arising unexpected errors or behaviour as fast as possible.
+For this the CLI needs to provide its user with an overview of the current state of applications and deployed services.
+This overview should include comprehensive information about these components, such as their current status and identifying properties and details.
+It is crucial to provide timely information to the user, thus the CLI should support a way to observe the current situation at near real-time.
+This will reduce the gaps of comprehension that need to be filled by user's guesses or interpolations of the events between overviews.
+\vspace{5mm}
+\newline
+\textbf{Accelerated Workflows via Automation}\newline
+The more manual, tedious,  repetetive tasks can be accelerated via automation the more high quality work can be done and less frustration generated.
+The tool should provide ways of installing dependencies to make installing Oakestra and FLOps quicker and easier on new machines.
+The CLI should handle starting, stopping, restarting, and rebuilding Oakestra and FLOps components to make development cycles faster and more convenient.
+In addition, it should be a common place to host useful shortcuts from different individuals, including aliases or scripts.
+The CLI itself should be easy to modify and extend to accompany future demands its users.
+\vspace{5mm}
+\newline
+Based on these requirements it is easy to see that this singular tool has many responsabilities and features to offer.
+These features are of no equal interest to all its possible users.
+Relatively casual end-users require and demand other features than administrators or developers.
+The feature set is also heavily dependent on the machine the CLI is installed on.
+A machine can be a standalone control plane that only includes the root orchestrator, or a standalone cluster orchestrator.
+It can be a standalone worker node or a hybrid of several such scenarios.
+A machine can also include all these mentioned components all at once and be a monolith system.
+All these options require have different needs and on the other hand do not require all feature or are even capable of providing all features.
+For example, a worker node should not be able to restart the root orchestrator, where as the root orchestrator should not be able to tinker with sensitive worker node configurations.
+
+To fulfill all theses requirements such a tool can be split up into several tools, one for each use case or be provided by a dynamic large single tool.
+Multiple tools have the benefit of being less overwhelming, lead to smaller and tidier repositories, and users of the tool do not need to have an understanding of the whole big picture.
+The downside of multiple tools are a risk of entengeled and divergent dependencies that need to be kept track of.
+Such tools will still show certain interdepdendencies and coupling that leads to split comprehension.
+Users and especially developers would need to know exactly what tool is responsible for what and how they are interconnected, thus potentially making things more complex again.
+With split tools there is the risk of increased code duplication over time, especially if different people are developing different parts without understanding other related tools.
+The benefits of a single tool is that everything is in one place and forming a single source of truth.
+A single well-structure repository can be easier to work with for developers.
+Users would only need to install and update a single tool instead of several.
+Code and logic can be more easily reused between the same code base.
+The downsides of a single tool are the risk of high coupling and increased complexities as the project grows.
+We decided to use a single tool because we explicitly structured it to support low coupling and high cohesion.
+Its flexible design enables easy separation and extension.
+Thus all FLOps specific functionalities can be easily isolated and converted into its own CLI tool.
+We aim towards a modular monolith design which suites a smaller team like ours.
