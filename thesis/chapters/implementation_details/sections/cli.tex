@@ -115,6 +115,8 @@ Most of the subcommands below have shorter aliases to help accelerate typing.
         This flag is available for every subcommand.
     \item [version]:
         Shows the version of the currently installed OAK CLI.
+    \item [api-docs]:
+        Shows a link to Oakestra's Swagger API documentation page.
 \end{itemize}
 \vspace{5mm}
 \textbf{Applications}
@@ -176,8 +178,31 @@ Most of the subcommands below have shorter aliases to help accelerate typing.
                 They use different ML frameworks such as Scikit-learn or Pytorch with different datasets such as MNIST or CIFAR-10.
                 They use various training configurations including various numbers of learners and training rounds.
                 SLAs are available for classic and HFL projects.
-            \item [undeploy]:
-                Un-deploys a specific or all service instances of a single or every service.
+            \item [tracking]:
+                This command returns the URL to the user's tracking server.
+                If no tracking server exists it will create one.
+            \item [mock_data]:
+                Launches a mock data provider based on the specified FLOps Helper SLA.
+            \item [clear-registry]:
+                Clears the image registry hosted via the FLOps management.
+            \item [reset-database]:
+                Resets the FLOps management database.
+            \item [restart-management]:
+                Restarts all FLOps management components.
+        \end{itemize}
+\end{itemize}
+\vspace{5mm}
+\textbf{Oakestra Docker Containers}
+\begin{itemize}
+    \item [d]:
+        Oakestra control plane runs on two docker compose files for the root and cluster aggregators.
+        When developing and modifying the code of one of these components many developers were rebuilding and restarting the entire compose file or even the entire cluster to see the changes take effect.
+        This command allows to directly rebuild a single container of an Oakestra compose file which leads to the same result.
+        Rebuilding a single container takes a fraction of the time that is required to rebuild the entire compose file or cluster.
+        Thus this command enables accelerated development/change cycles.
+        \begin{itemize}
+            \item [TODO]:
+                TODO
             
         \end{itemize}
 \end{itemize}
