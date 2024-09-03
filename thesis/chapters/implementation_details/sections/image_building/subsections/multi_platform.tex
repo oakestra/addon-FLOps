@@ -40,7 +40,7 @@ Another significant requirement for building multi-platform images on a single m
 Otherwise, only images for the host's architecture can be built.
 It is also possible to cross-compile or use multiple dedicated builder nodes with proper architectures \cite{docs:docker_multiplatform_image_builds}.
 Conventionally, QEMU \cite{docs:quemu} is used to emulate such tasks.
-Docker Desktop includes QUEMU for Mac and Windows by default \cite{docs:docker_multiplatform_image_builds}.
+Docker Desktop includes QEMU for Mac and Windows by default \cite{docs:docker_multiplatform_image_builds}.
 QEMU translates the requested target architecture instructions into ones the host machine can understand.
 Due to FLOps' special circumstances, which involve building complex images in orchestrated, containerd containers on heterogeneous devices, various approaches seem to be available to realize emulation.
 Ideally, the emulator would be part of the builder image, thus avoiding the need to modify or require anything from the worker nodes.
@@ -50,7 +50,7 @@ For Linux machines, this can be done by installing an open-source package called
 In conclusion, using this approach, the FLOps builder service can build multi-platform images.
 All other FLOps (static) images, including the builder service or project observer, are also available for linux/amd64 and linux/arm64.
 For example, all these images can be started on a Raspberry Pi 4, but these devices seem to lack sufficient resources to handle the FL training.
-An additional downside of multi-platform image builds comes with the slowness of emulating image builds.
+An additional downside of multi-platform image builds comes with the slowness of emulation.
 \begin{changemargin}{0cm}{0cm}
     \centering
     \begin{tabular}{|c|c|c|c|c|c|}

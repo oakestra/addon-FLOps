@@ -11,7 +11,7 @@ We use Waitress \cite{waitress}, a production-quality WSGI server, to host the m
 \subsubsection{Currently Available Endpoints}
 \textbf{/api/flops/projects}\newline
 This POST endpoint triggers a new FLOps project.
-It expects users to provide an SLA JSON with the required project configurations and a bearer token authorizing the user on the orchestrator.
+It expects users to provide a JSON SLA with the required project configurations and a bearer token authorizing the user on the orchestrator.
 If no matching images exist, an image builder is created and deployed.
 If an adequate image already exists, the request concludes straight away.
 The user receives a confirmation that the new project has successfully started.

@@ -44,7 +44,7 @@ Note that the model structure is initially defined in the user's ML repository a
 
 The trained model build plan can only be run after the FL training is completed and the trained model is saved in the artifact store, which is hosted in the FLOps management.
 MLflow provides commands to turn stored models into containers \cite{docs:mlfow_docker_cmds}.
-The issue with this approach is that MLflow only provides this capability via docker for all these commands, including building.
+The issue with this approach is that MLflow only provides this capability via Docker for all these commands, including building.
 This approach works well directly on host machines but not inside containers (\ref{subsection:image_builders}).
 As a workaround, FLOps uses MLflow to pull the stored trained model into the builder container.
 Then, the service uses MLflow again to create a dockerfile based on this model.
@@ -67,9 +67,8 @@ One optional FLOps post-training step deploys this inference server directly aft
 \end{changemargin}
 Table \ref{table:relevant_image_sizes_for_building} shows the sizes of different relevant images to provide more context for the final results and build processes.
 The Image Builder image is the FLOps builder service.
-It is noteworthy that the official MLflow image is 784 MB.
-FLOps builder service without the MLflow (2.12.1) dependency is 900 MB.
-The increase of more than 2.4 GB only due to this dependency is worth for future investigations.
+It is noteworthy that FLOps' builder service without the MLflow (2.12.1) dependency is 900 MB and the official MLflow image is 819 MB.
+The increase of more than 2.4 GB only due to this dependency is worth investigating.
 The remaining images from the table are all from Flower \cite{flower_images}.
 Flower recently introduced a significant change (Flower Next API \cite{docs:flower_next}) in how they use FL clients and servers.
 They plan to deprecate the old approach that FLOps is using.
@@ -78,6 +77,7 @@ Explaining Flower Next and FLOps' challenges with it would bloat this thesis.
 This aspect is a great topic for future FLOps improvements.
 The client and server images from the table are deprecated.
 Their new replacements are the SuperNode and SuperLink, which are significantly smaller.
+We mention these images to compare them with FLOps' FL actor images.
 
 \begin{changemargin}{0cm}{0cm}
     \centering

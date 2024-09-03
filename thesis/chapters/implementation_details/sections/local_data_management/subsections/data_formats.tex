@@ -37,25 +37,25 @@ All of them are from Apache.
 \vspace{5mm}
 \newline
 \textbf{Arrow}\newline
-Arrow \cite{arrow_repo} is a language-agnostic columnar memory format.
+Arrow is a language-agnostic columnar memory format.
 It is optimized for modern CPUs and GPUs.
 It supports zero-copy reads, which avoid serialization and accelerate data access.
 Arrow is especially popular for interoperability.
-This format should be used for data in memory.
+This format should be used for data in memory. \cite{arrow_repo} 
 \vspace{5mm}
 \newline
 \textbf{Parquet}\newline
-Parquet \cite{docs:parquet} is also a columnar file format.
+Parquet is also a columnar file format.
 Its focus is on efficient data storage and retrieval.
 Its benefit over Arrow is that it needs less space due to its special compression and encoding.
-This format should be used to store data on disks.
+This format should be used to store data on disks. \cite{docs:parquet}
 \vspace{5mm}
 \newline
 \textbf{Arrow Flight}\newline
-Arrow Flight \cite{docs:arrow_flight} is a gRPC-based framework.
+Arrow Flight is a gRPC-based framework.
 It supports parallel data streams.
 When used with compatible data, it overcomes (de)serialization overheads and speeds up data transfer.
-Flight should be used to transport Apache formatted data over the network.
+Flight should be used to transport Apache formatted data over the network. \cite{docs:arrow_flight}
 \vspace{5mm}
 \newline
 The last subsection mentioned that FLOps uses Flower Datasets, which uses Hugging Face Datasets underneath.

@@ -43,8 +43,8 @@ When the root aggregator requests to evaluate the cluster aggregator, it retriev
 When the root aggregator calls the cluster aggregator's getParameters method, the cluster aggregator calls its user's model manager getParameters method.
 The same applies to setting parameters.
 
-In other words, the cluster aggregator mimics a leaner by using the same interface, which works on the same user-provided ML model.
-The only difference between a learner and the cluster aggregator is that the fit model method performs classic FL training rounds, and the evaluate function retrieves recorded results from the aggregator objects.
+In other words, the cluster aggregator mimics a learner by using the same interface, which works on the same user-provided ML model.
+The main differences between a learner and the cluster aggregator are that the fit model method performs classic FL training rounds, the evaluate function retrieves recorded results from the aggregator objects, and that the aggregator has no access to data.
 This way, FLOps can perform clustered hierarchical FL.
 Note that the underlying code is shared among all aggregator types, thus avoiding several similar implementations.
 I.e., the same aggregator image gets deployed with different parameters that decide the aggregator's behavior.
