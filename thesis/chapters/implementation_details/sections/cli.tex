@@ -1,0 +1,202 @@
+\section{CLI}
+
+\subsection{Motivation \& Background}
+
+During the development of FLOps we implemented several different pieces of code to automate tedious repetitive manual tasks.
+We decided to share and offer these custom auxiliary scripts by combining them into a single CLI tool.
+This tool's aims to be flexible and easily extendible.
+We have steadily improved it over the duration of this work which resulted in various different features.
+We call this tool OAK CLI.
+We expect this tool to change rapidly thus we will not discuss very specific technical details but provide a broad overview of its capabilities.
+
+It is noteworthy that Oakestra has a custom early-stage work-in-progress GUI/Frontend dashboard application and very minimal CLI tool.
+The OAK CLI is independent of both these components and replaced the legacy Oakestra CLI tool.
+
+The OAK CLI initially used Python's argparse and argcomplete packages.
+Argparse is an established feature-rich standard library.
+Its downside is that it requires a lot of boiler-plate code especially when the argument structure is a complex nested hierarchy.
+Argcomplete enables auto-/tab-completions of CLI commands.
+Enabling this functionality in a pure python tool can be tricky and require specific workarounds.
+
+OAK CLI now uses Typer.
+Typer requires minimal decorator augmentations to enable CLI applications.
+This is possible because Typer smartly utilizes available Python type hints in function signatures.
+It automatically comes with auto/tab-completion and very readable and pretty UI features that are powered by Rich.
+Rich is another very prominent package for Python terminal UIs.
+Typer is build on top of Click, one if not the most popular Python CLI framework.
+The downsides of Typer are that it is still in relatively early development.
+It did not have its first major release.
+It as some minor cutbacks compared to argparse but discussing those would bloat this work.
+
+We were motivated to create this CLI to eliviate the following challenges.
+FLOps does not offer a tool beside the OAK CLI to interact conveniently with its API.
+External tools like Postman are necessary to do so.
+Oakestra components need to be prepared and launched manually.
+Interacting with its API is possible via external tools or by its early-stage dashboard.
+While developing FLOps, especially its HFL features, we needed to work on several machines.
+Each machine needed to be properly configured and set up to enable Oakestra workloads.
+This setup included installing dependencies such as docker, golang, other custom aliases and scripts to lauch, clear and restart Oakestra components.
+In addition, developing and observing FLOps was heavily bound to the observatory features provided by Oakestra's dashboard application.
+Even during local development on a single machine accessing and working with this dashboard was cumbersome because of mandatory repetetive click-based tasks such as mandatory logins.
+We eliviated this by creating automated auto-clicker scripts via Selenium.
+Accessing this flaky dashboard on remote devises that are behind special firewalls required even more manual steps such as code modifications and multiple ssh tunnels.
+We only required the dashboard to get an overview of the deployed application and services and their statuses and logs.
+The OAK CLI satisfies these needs on its own, thus bypassing our need for the dashboard and automating manual steps.
+
+\subsection{Requirements Discussion}
+
+The OAK CLI needs to satisfy the following requirements:
+\vspace{5mm}
+\newline
+\textbf{Interface for APIs}\newline
+The CLI should interact with the APIs of FLOps and Oakestra to eliviate the need for users to use external tools, know all API endpoints and how to interact with them properly.
+The key activities the CLI should support are to manage applications and services in Oakestra and to manage projects, tracking servers, and mock data providers in FLOps.
+For example, if the user wants to create a new application in Oakestra he first needs to login.
+For the login the user needs to know the login URI, create a fitting request, send it and extract his received bearer token for authentication and authorization.
+Only afterwards can users prepare their application SLA, add their token and send it to the application POST endpoint.
+Instead the CLI should offer a single command so that users can point to their application SLA and the CLI will perform the login and handle the API interaction.
+\vspace{5mm}
+\newline
+\textbf{Observability}\newline
+FLOps handles many different applications and services concurrently.
+Especially during development it is crucial to be able to observe if components behave as expected and see arising unexpected errors or behaviour as fast as possible.
+For this the CLI needs to provide its user with an overview of the current state of applications and deployed services.
+This overview should include comprehensive information about these components, such as their current status and identifying properties and details.
+It is crucial to provide timely information to the user, thus the CLI should support a way to observe the current situation at near real-time.
+This will reduce the gaps of comprehension that need to be filled by user's guesses or interpolations of the events between overviews.
+\vspace{5mm}
+\newline
+\textbf{Accelerated Workflows via Automation}\newline
+The more manual, tedious,  repetetive tasks can be accelerated via automation the more high quality work can be done and less frustration generated.
+The tool should provide ways of installing dependencies to make installing Oakestra and FLOps quicker and easier on new machines.
+The CLI should handle starting, stopping, restarting, and rebuilding Oakestra and FLOps components to make development cycles faster and more convenient.
+In addition, it should be a common place to host useful shortcuts from different individuals, including aliases or scripts.
+The CLI itself should be easy to modify and extend to accompany future demands its users.
+\vspace{5mm}
+\newline
+Based on these requirements it is easy to see that this singular tool has many responsabilities and features to offer.
+These features are of no equal interest to all its possible users.
+Relatively casual end-users require and demand other features than administrators or developers.
+The feature set is also heavily dependent on the machine the CLI is installed on.
+A machine can be a standalone control plane that only includes the root orchestrator, or a standalone cluster orchestrator.
+It can be a standalone worker node or a hybrid of several such scenarios.
+A machine can also include all these mentioned components all at once and be a monolith system.
+All these options require have different needs and on the other hand do not require all feature or are even capable of providing all features.
+For example, a worker node should not be able to restart the root orchestrator, where as the root orchestrator should not be able to tinker with sensitive worker node configurations.
+
+To fulfill all theses requirements such a tool can be split up into several tools, one for each use case or be provided by a dynamic large single tool.
+Multiple tools have the benefit of being less overwhelming, lead to smaller and tidier repositories, and users of the tool do not need to have an understanding of the whole big picture.
+The downside of multiple tools are a risk of entengeled and divergent dependencies that need to be kept track of.
+Such tools will still show certain interdepdendencies and coupling that leads to split comprehension.
+Users and especially developers would need to know exactly what tool is responsible for what and how they are interconnected, thus potentially making things more complex again.
+With split tools there is the risk of increased code duplication over time, especially if different people are developing different parts without understanding other related tools.
+The benefits of a single tool is that everything is in one place and forming a single source of truth.
+A single well-structure repository can be easier to work with for developers.
+Users would only need to install and update a single tool instead of several.
+Code and logic can be more easily reused between the same code base.
+The downsides of a single tool are the risk of high coupling and increased complexities as the project grows.
+We decided to use a single tool because we explicitly structured it to support low coupling and high cohesion.
+Its flexible design enables easy separation and extension.
+Thus all FLOps specific functionalities can be easily isolated and converted into its own CLI tool.
+We aim towards a modular monolith design which suites a smaller team like ours.
+
+\subsection{Features}
+
+The root command is \textbf{oak}.
+All other functionalities are followup commands after oak.
+Note that the following is a simplified overview that does not depict or explain every available option and feature to avoid bloating this work and because the CLI underlies active change.
+Most of the subcommands below have shorter aliases to help accelerate typing.
+\vspace{5mm}
+\newline
+\textbf{Auxiliary/Meta}
+\begin{itemize}
+    \item [help]:
+        Shows auxiliary information.
+        This flag is available for every subcommand.
+    \item [version]:
+        Shows the version of the currently installed OAK CLI.
+\end{itemize}
+\vspace{5mm}
+\textbf{Applications}
+\begin{itemize}
+    \item [a]:
+        The pre-command to work with Oakestra applications.
+        \begin{itemize}
+            \item [create]:
+                Creates one or multiple Oakestra applications based on the provided SLA.
+                The additional optional flag -d automatically deploys all services present in the application SLAs.
+                The CLI comes with pre-build common app SLAs that users can inspect and modify to their liking.
+            \item [delete]:
+                Deletes one or all applications.
+            \item [show]:
+                Displays an overview of the current applications.
+                The overview comes in three different variations.
+                The simple view shows a table of all applications with minimal additional information such as, their number of services and their ID.
+                The detailed view shows a table with additional information columns.
+                The exhaustive view shows the verbatim underlying json object showing all available details.
+                The -v flag (verbosity) toggles between these versions.
+                This overview gets printed a single time.
+                The -l flag (live-display) starts an overview that refreshes itself every three seconds.
+        \end{itemize}
+\end{itemize}
+\vspace{5mm}
+\textbf{Services}
+\begin{itemize}
+    \item [s]:
+        The command to work with Oakestra services.
+        Remember that services are part of applications.
+        They cannot be created in isolation.
+        Usually, one first creates an application and then deploys the services mentioned in its SLA.
+        \begin{itemize}
+            \item [deploy]:
+                Deploys a new service instance.
+            \item [undeploy]:
+                Un-deploys a specific or all service instances of a single or every service.
+            \item [show]:
+                The show subcommand for services works exactly as for applications including the verbosity and live-display flags.
+                The difference between them is the displayed information.
+                The service show subcommand shows dedicated information regarding services and not applications.
+            \item [inspect]:
+                The inspect commands shows detailed information of a single service instead of all services like in the show command.
+                The main benefit of inspecting a service is to see its latest logs.
+                This command also offers the -l (live-display) flag, thus users can observe service instance logs close to real-time.
+        \end{itemize}
+\end{itemize}
+\vspace{5mm}
+\textbf{FLOps}
+\begin{itemize}
+    \item [addon flops]:
+        FLOps is one of Oakestra's addons.
+        The addon subcommand tells the CLI to show addon related commands.
+        The flops subcommand shows the available FLOps CLI commands.
+        \begin{itemize}
+            \item [project]:
+                Starts a new FLOps project.
+                The CLI currently provides several pre-build project SLAs.
+                They use different ML frameworks such as Scikit-learn or Pytorch with different datasets such as MNIST or CIFAR-10.
+                They use various training configurations including various numbers of learners and training rounds.
+                SLAs are available for classic and HFL projects.
+            \item [undeploy]:
+                Un-deploys a specific or all service instances of a single or every service.
+            
+        \end{itemize}
+\end{itemize}
+
+
+
+
+\subsubsection{Showcase}
+
+Here are a number of screenshots showing the current OAK CLI.
+Remember that the CLI is in active development and is suspect for change.
+
+\begin{figure}[h]
+    \begin{adjustwidth}{-0.1\paperwidth}{-0.1\paperwidth}
+        \centering
+        \includegraphics[width=0.90\paperwidth]{cli_main_help.png}
+        \caption{OAK CLI main help text: oak -h}
+        \label{fig:cli_main_help}
+    \end{adjustwidth}
+\end{figure}
+
+The first screenshot \ref{fig:cli_main_help} shows the main help text of the OAK CLI.
