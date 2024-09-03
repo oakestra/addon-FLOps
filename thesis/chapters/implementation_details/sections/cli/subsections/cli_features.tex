@@ -1,8 +1,7 @@
 \subsection{CLI Features}
 
 The root command is \textbf{oak}.
-All other functionalities are followup commands after oak.
-Note that the following is a simplified overview that does not depict or explain every available option and feature to avoid bloating this work and because the CLI underlies active change.
+The following is a simplified overview that does not depict or explain every available option and feature to avoid bloating this work because the CLI underlies active change.
 Most of the subcommands below have shorter aliases to help accelerate typing.
 \vspace{5mm}
 \newline
@@ -24,42 +23,41 @@ Most of the subcommands below have shorter aliases to help accelerate typing.
         \begin{itemize}
             \item [create]:
                 Creates one or multiple Oakestra applications based on the provided SLA.
-                The additional optional flag -d automatically deploys all services present in the application SLAs.
+                The additional optional flag -d automatically deploys all services present in the application SLA.
                 The CLI comes with pre-build common app SLAs that users can inspect and modify to their liking.
             \item [delete]:
                 Deletes one or all applications.
             \item [show]:
-                Displays an overview of the current applications.
-                The overview comes in three different variations.
-                The simple view shows a table of all applications with minimal additional information such as, their number of services and their ID.
-                The detailed view shows a table with additional information columns.
-                The exhaustive view shows the verbatim underlying json object showing all available details.
-                The -v flag (verbosity) toggles between these versions.
-                This overview gets printed a single time.
-                The -l flag (live-display) starts an overview that refreshes itself every three seconds.
+            Displays an overview of the current applications.
+            The overview comes in three different variations.
+            The simple view shows a table of all applications with minimal additional information, such as their number of services and ID.
+            The detailed view shows a table with additional information columns.
+            The exhaustive view shows the verbatim underlying JSON object showing all available details.
+            The -v flag (verbosity) toggles between these versions.
+            This overview gets printed a single time.
+            The -l flag (live-display) starts an overview that refreshes itself every three seconds.
         \end{itemize}
 \end{itemize}
 \vspace{5mm}
 \textbf{Services}
 \begin{itemize}
     \item [s]:
-        The command to work with Oakestra services.
+        The pre-command to work with Oakestra services.
         Remember that services are part of applications.
         They cannot be created in isolation.
-        Usually, one first creates an application and then deploys the services mentioned in its SLA.
+        Usually, one creates an application and then deploys the services mentioned in its SLA.
         \begin{itemize}
             \item [deploy]:
                 Deploys a new service instance.
             \item [undeploy]:
                 Un-deploys a specific or all service instances of a single or every service.
             \item [show]:
-                The show subcommand for services works exactly as for applications including the verbosity and live-display flags.
+                The show subcommand for services works exactly as for applications, including the verbosity and live-display flags.
                 The difference between them is the displayed information.
-                The service show subcommand shows dedicated information regarding services and not applications.
             \item [inspect]:
-                The inspect commands shows detailed information of a single service instead of all services like in the show command.
+                The inspect command shows detailed information of a single service instead of all services.
                 The main benefit of inspecting a service is to see its latest logs.
-                This command also offers the -l (live-display) flag, thus users can observe service instance logs close to real-time.
+                This command also offers the -l (live-display) flag, so users can observe service instance logs close to real-time.
         \end{itemize}
 \end{itemize}
 \vspace{5mm}
@@ -67,18 +65,18 @@ Most of the subcommands below have shorter aliases to help accelerate typing.
 \begin{itemize}
     \item [addon flops]:
         FLOps is one of Oakestra's addons.
-        The addon subcommand tells the CLI to show addon related commands.
+        The addon subcommand tells the CLI to show addon-related commands.
         The flops subcommand shows the available FLOps CLI commands.
         \begin{itemize}
             \item [project]:
                 Starts a new FLOps project.
                 The CLI currently provides several pre-build project SLAs.
                 They use different ML frameworks such as Scikit-learn or Pytorch with different datasets such as MNIST or CIFAR-10.
-                They use various training configurations including various numbers of learners and training rounds.
+                They use varying training configurations, including various numbers of learners and training rounds.
                 SLAs are available for classic and HFL projects.
             \item [tracking]:
                 This command returns the URL to the user's tracking server.
-                If no tracking server exists it will create one.
+                If no tracking server exists, it will create one.
             \item [mock-data]:
                 Launches a mock data provider based on the specified FLOps Helper SLA.
             \item [clear-registry]:
@@ -93,24 +91,23 @@ Most of the subcommands below have shorter aliases to help accelerate typing.
 \textbf{Oakestra Docker Containers}
 \begin{itemize}
     \item [d]:
-        Oakestra's control plane runs on two docker compose files for the root and cluster aggregators.
-        When developing and modifying the code of one of these components many developers were rebuilding and restarting the entire compose file or even the entire cluster to see the changes take effect.
-        This command allows to directly rebuild a single container of an Oakestra compose file which leads to the same result.
-        Rebuilding a single container takes a fraction of the time that is required to rebuild the entire compose file or cluster.
-        Thus this command enables accelerated development/change cycles.
+        Oakestra's control plane runs on two Docker compose files for the root and cluster aggregators.
+        When developing and modifying the code of one of these components, many developers rebuilt and restarted the entire compose file or even the entire cluster to see the changes take effect.
+        This command allows one to rebuild a single container of an Oakestra compose file directly, which leads to the same result.
+        Rebuilding a single container takes a fraction of the time required to rebuild the entire compose file or cluster.
+        Thus, this command enables accelerated development/change cycles.
         Users can decide if they want to restart or rebuild an Oakestra container.
-        A --cache-less flag is available for the restart command to ensure all changes are propagated.
+        A --cache-less flag is available for the rebuild command to ensure all changes are propagated.
 \end{itemize}
 \vspace{5mm}
 \textbf{Worker Node}\newline
 The w pre-command includes commands that are specific for worker nodes.
 \begin{itemize}
     \item [ctr delete-images]:
-        Deletes all containerd images located on the host machine.
         This command is especially useful when developing images.
-        For example, a worker node needs to pull the FLOps image builder service image before running its container.
-        When developing this image and pushing it as the same (latest) version containerd does not sees that the same tag is already present locally and does not pull the updated version.
-        After using this command one can be sure that the next used image will in fact be the latest pushed one.
+        For example, a worker node must pull the FLOps image builder service image before running its container.
+        When developing this image and pushing it as the same (latest) version, containerd sees that the tag is already present locally and does not pull the updated version.
+        After using this command, one can be sure that the next image used will be the latest pushed one.
 \end{itemize}
 \vspace{5mm}
 \textbf{Installer}\newline
@@ -122,10 +119,10 @@ The OAK-CLI uses Ansible to perform the installation.
 \end{itemize}
 \vspace{5mm}
 \textbf{Configuration}\newline
-To avoid overwhelming users with all these available features and only showing commands that are applicable and useful for their concrete use case the CLI is configurable.
+The CLI is configurable to avoid overwhelming users with all these available features and only shows applicable and useful commands for their concrete use case.
 It stores these configurations persistently in a config file via Python's configparser library.
-Users should set their intended use case via the CLI so unlock the relevant commands.
-As a result the CLI can be a fine-tuned tool for different user groups and scenarios.
+Users should set their intended use case via the CLI to unlock the relevant commands.
+As a result, the CLI can be a fine-tuned tool for different user groups and scenarios.
 \begin{itemize}
     \item [c]:
         The pre-command to enter the CLI configuration commands.
@@ -136,15 +133,15 @@ As a result the CLI can be a fine-tuned tool for different user groups and scena
                 This command allows users to pick their preferred CLI features.
             \item [key-vars]:
                 Various commands depend on properly configured CLI key variables.
-                If users try to run a command where a key variable is undefined the CLI will ask the user to define it first.
-                One example for such a key variable is the path to the cloned Oakestra or FLOps repository.
-                Without this pointer the CLI is unaware where Oakestra's or FLOps' compose files are located.
+                If users try to run a command where a key variable is undefined, the CLI will ask the user to define it first.
+                One example of such a key variable is the path to the cloned Oakestra or FLOps repository.
+                These pointers let the CLI know where Oakestra's or FLOps' compose files reside.
         \end{itemize}
 \end{itemize}
 \vspace{5mm}
 \textbf{Evaluation}\newline
 The evaluation commands are very experimental and might get removed from the CLI.
-We used them run the evaluations for FLOps.
+We used them to run the evaluations for FLOps.
 
 \begin{itemize}
     \item [evaluate]:
