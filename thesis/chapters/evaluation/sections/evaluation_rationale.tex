@@ -4,5 +4,73 @@
 % little focus on actual training more on getting there and the steps that enable it
 % table of experiments
 \section{Rationale}
+FLOps is an entirely new system that connects various custom and pre-made components that together power a large set of features and functionalities.
+This plethora of interconnected parts enable a huge number of possible combinations that each could be tested.
+For example, one evaluation experiment can be testing a single base-case FLOps project.
+We take a look at a simple SLA example similar to \ref{subsection:SLAs} and we apply variables to possible configurations.
+\vspace{5mm}
+\newline
+\textbf{Variables defining a FLOps Project}
+\begin{itemize}
+    \item [R]:
+        The ML Repository.
+        Includes arbitrary complex and different ML code.
+    \item [F]:
+        The ML Model Flavor / Framework.
+        Many different ones exist.
+    \item [D]:
+        The dataset that is used for training and evaluation can greatly impact the final model.
+    \item [B]:
+        A boolean value indicating if development base images should be used to speed up builds.
+    \item [P]:
+        The number of supported platforms.
+        Currently FLOps supports two different platforms, which can be used together or in isolation.
+        Thus, P offers three different options.
+    \item [H]:
+        The boolean flag indicating if FLOps should use classic or hierarchical FL.
+    \item [T]:
+        The number of training rounds or cycles.
+    \item [L]:
+        The number of required learners.
+    \item [S]:
+        The underlying setup of devices.
+        We worked with a monolith and multi-cluster setup.
+\end{itemize}
 
-\subsection{Chosen Experiments}
+Even if we greatly simplify and assume that all these variables only have two possible assignments we get an overwhelming number of combinations.
+Each of these variables are independent of each other.
+For example F is based on the framework used in R, but R can implement different models with the same framework, thus the number of permutations stays the same.
+Therefore, each simplified boolean variable combined with each other results in $ 2^9 = 512$ unique experiments.
+We aim to present representative results, so every experiment is repeated ten times.
+We call such repeated experiments as evaluation cycles.
+Such cycles range take half an hour to several hours to complete.
+This long runtime combined with the total number of possible permutations make it infeasable to test every single combination.
+For this reason we decided to focus on ten different experiments that represent comprehensive combinations of these variables.
+Therefore, cover a wide range of possible scenarios.
+Table \ref{table:chosen_experiments} depicts our selected experiments and our reasons for choosing them.
+
+
+\begin{figure}[p]
+    \input{tables/evaluation_experiments.tex}
+\end{figure}
+
+% \begin{changemargin}{0cm}{0cm}
+%     \centering
+%     \begin{tabular}{|m{2.4cm}||c|c|c|c|c|c|c|c|}
+%         \hline
+%             \textbf{Experiment Name} & \textbf{Rationale} & \textbf{Machine Setup} & \textbf{Dataset} & \textbf{ML Framework} & \textbf{Project Size} & \textbf{FL Mode} & \textbf{Uses BaseImages} & \textbf{Platform} \\
+%         \hline
+%             Base Case - Simplest &
+%             0.9.0 &
+%             Monolith &
+%             MNIST &
+%             Scikit-learn &
+%             Small &
+%             hierarchical &
+%             No BaseImages &
+%             Only linux/amd64
+%         \\
+%     \end{tabular}
+%     \captionof{table}{Updated FL Framework Comparison} 
+%     \label{table:chosen_experiments}
+% \end{changemargin}
