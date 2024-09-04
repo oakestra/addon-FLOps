@@ -1,4 +1,5 @@
 \section{Experimental Setup}
+
 We evaluated FLOps on two different setups.
 The first setup is a monolithic development machine that hosts all Oakestra and FLOps components.
 \vspace{5mm}
@@ -11,9 +12,9 @@ The first setup is a monolithic development machine that hosts all Oakestra and 
     \item [Storage]: 470 GB
 \end{itemize}
 
-The second setup is a multi-cluster with a total of three identical virtual machines that are part of our chair's infrastructure.
+The second setup is a multi-cluster with three identical virtual machines that are part of our chair's infrastructure.
 We used one machine as a pure control plane that only managed Oakestra's root orchestrator and FLOps management components.
-The other two machines represented one cluster each with its own cluster orchestrator and worker node.
+The other two machines represented one cluster, each with its own cluster orchestrator and worker node.
 \vspace{5mm}
 \newline
 \textbf{Multi-cluster Setup}
@@ -27,41 +28,39 @@ The other two machines represented one cluster each with its own cluster orchest
 \subsection{Evaluation Procedure}
 
 We extended the OAK CLI to evaluate FLOps automatically.
-We have added several sophisticated Ansible playbooks and roles that the CLI triggers to run workloads on the monolith or multi-cluster setup via ssh.
+We have added several sophisticated Ansible playbooks and roles that the CLI triggers to run workloads on the monolith or multi-cluster setup via SSH.
 These Ansible components heavily utilize other OAK CLI commands to clean up experiments and launch new projects.
-As a side-effect this automation simulates how real users might interact with the system.
-Before each experiment run the playbook ensures a clean experiment environment.
-This step includes flushing any legacy experiment CSV files, removing all orchestrated applications and services, clearing containerd image caches, restarting the FLOps management components and flushing its image registry.
-Once the enviroment is clear for a new experiment/project the playbook starts a new evaluation round.
-At each round multiple CSV files are generated.
+As a side-effect, this automation simulates how real users might interact with the system.
+Before each experiment run, the playbook ensures a clean experiment environment.
+This step includes flushing any legacy experiment CSV files, removing all orchestrated applications and services, clearing containerd image caches, restarting the FLOps management components, and flushing its image registry.
+The playbook starts a new evaluation round once the environment is clean for a new experiment/project.
+At each round, multiple CSV files are generated.
 In addition, it starts custom Python daemon scripts on every device that will scrape system metrics and append them to a CSV file every five seconds.
 Afterward, the playbook requests a specific project configuration that matches one of the selected experiments.
-While the project is running the playbook is actively listening for event messages in the FLOps manager logs.
-Any FLOps project's lifetime can be split up into specific stages such as, FL-Actors-Image-Build or FL-Training.
-A followup stage can only occur if the previous one was successful.
-Once the playbook spots such a message that indicates a transition to a next stage it will write this change to a file.
-This file is actively scanned by the Python daemons and its stage content is included in the CSV files.
-As a result the CSV files that include the system metrics also include the respective project stage and timestamp.
-At the end of each project the playbook repeats its cleanup steps and starts the next evaluation round.
-Once all evaluation rounds are finished the playbook terminates, prints out each individual 
+
+While the project is running, the playbook actively listens for event messages in the FLOps manager logs.
+Any FLOps project's lifetime can be split into stages such as FL-Actors-Image-Build or FL-Training.
+A follow-up stage can only occur if the previous one was successful.
+Once the playbook spots a message indicating a transition to the next stage, it will write this change to a file.
+The Python daemons actively scan this file and include its stage content in the CSV files.
+Consequently, the CSV files that include the system metrics also include the respective project stage and timestamp.
+At the end of each project, the playbook repeats its cleanup steps and starts the next evaluation round.
+Once all evaluation rounds are finished, the playbook terminates and prints out the sums of individual step runtimes. 
 \begin{figure}[h]
-    % \begin{adjustwidth}{-0.1\paperwidth}{-0.1\paperwidth}
         \centering
-        % \includegraphics[width=0.80\paperwidth]{evaluation_playbook.png}
         \includegraphics[width=0.90\textwidth]{evaluation_playbook.png}
         \caption{Exemplary Evaluation Playbook Recap}
         \label{fig:evaluation_playbook_result}
-    % \end{adjustwidth}
 \end{figure}
 Figure \ref{fig:evaluation_playbook_result} shows such a playbook recap.
-This specific evaluation cycle took seven and a half hours to complete and was one of the longest experiments.
-Usually, all one CSV file per evaluation run gets stored on the local device and numbered.
-In the multi-cluster case the playbook copies over all CSV files from all devices onto the caller device.
-At the end of each experiment cycle a folder of CSV files is available that represent the recorded results of the experiment.
+This specific evaluation cycle took seven and a half hours and was one of the longest experiments.
+Usually, one CSV file per evaluation run gets stored and numbered on the local device.
+In the multi-cluster case, the playbook copies all CSV files from all devices onto the caller device.
+At the end of each experiment cycle, a folder of CSV files representing the recorded results is available.
 
-To visualize these results we created several Python scripts to parse, combine, pre-process, and visualize the information stored in the CSV files.
-We use seaborn and matplotlib for this endevour.
-As a result we have uniform minimalistic jupyter notebooks that present the recorded information via sophisticated and visually appealing graphs.
+To visualize these results, we created several Python scripts to parse, combine, pre-process, and visualize the information stored in the CSV files.
+We use Seaborn and Matplotlib for this endeavor.
+As a result, we have uniform, minimalistic Jupyter notebooks that present the recorded information via sophisticated and visually appealing graphs.
 All this code is available here \cite{cli_code}.
-Note that we hardcoded several aspects of this code to out concrete use case.
+Note that we hardcoded several aspects of this code to our concrete use case.
 Expanding and making this evaluation code more reusable is a prime candidate for future work.
