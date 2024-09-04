@@ -45,32 +45,14 @@ We aim to present representative results, so every experiment is repeated ten ti
 We call such repeated experiments as evaluation cycles.
 Such cycles range take half an hour to several hours to complete.
 This long runtime combined with the total number of possible permutations make it infeasable to test every single combination.
-For this reason we decided to focus on ten different experiments that represent comprehensive combinations of these variables.
+For this reason we decided to focus on a manageable subset of different experiments that represent comprehensive combinations of these variables.
 Therefore, cover a wide range of possible scenarios.
-Table \ref{table:chosen_experiments} depicts our selected experiments and our reasons for choosing them.
-
+Table \ref{table:chosen_experiments_part_1} depicts our selected experiments and our reasons for choosing them.
 
 \begin{figure}[p]
-    \input{tables/evaluation_experiments.tex}
+    \input{tables/evaluation_experiments_1.tex}
 \end{figure}
 
-% \begin{changemargin}{0cm}{0cm}
-%     \centering
-%     \begin{tabular}{|m{2.4cm}||c|c|c|c|c|c|c|c|}
-%         \hline
-%             \textbf{Experiment Name} & \textbf{Rationale} & \textbf{Machine Setup} & \textbf{Dataset} & \textbf{ML Framework} & \textbf{Project Size} & \textbf{FL Mode} & \textbf{Uses BaseImages} & \textbf{Platform} \\
-%         \hline
-%             Base Case - Simplest &
-%             0.9.0 &
-%             Monolith &
-%             MNIST &
-%             Scikit-learn &
-%             Small &
-%             hierarchical &
-%             No BaseImages &
-%             Only linux/amd64
-%         \\
-%     \end{tabular}
-%     \captionof{table}{Updated FL Framework Comparison} 
-%     \label{table:chosen_experiments}
-% \end{changemargin}
+\begin{figure}[p]
+    \input{tables/evaluation_experiments_2.tex}
+\end{figure}
