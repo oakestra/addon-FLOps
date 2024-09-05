@@ -6,7 +6,7 @@ This part focuses on experiment (1).
 All mentioned graphs are also available for all other experiments.
 Showcasing all of them would heavily bloat this work.
 Thus, we omit them.
-These graphs and the underlying CSV files are available in the extended OAK CLI code evaluation folder \cite{cli_code}.
+These graphs and the underlying CSV files are available in the extended OAK CLI code's evaluation folder \cite{cli_code}.
 
 \subsubsection{CPU \& Memory}
 
@@ -67,7 +67,7 @@ The reasons for this can be manifold, such as different current image pull speed
     \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
         \centering
         \includegraphics[width=0.99\paperwidth]{eval_1_simplest_explanation_shift.png}
-        \caption{Individual Experiment Run Durations}
+        \caption{Individual Experiment Memory Usage}
         \label{fig:eval_1_simplest_explanation_shift}
     \end{adjustwidth}
 \end{figure}
@@ -125,6 +125,8 @@ Especially during image-building processes, much space is freed up again due to 
 Figure \ref{fig:eval_1_simplest_net_io} shows the network loads received and sent over a project runtime.
 The most significant increases are during built image pushes.
 They occur around minute five when the base image is pushed, at the end of the FL-Actors Image Build stage phase, and when the trained-model image build stage bleeds into its deployment stage.
+We omit to present violin-box plots detailing net-IO because this additional information does not lead to any significant insights.
+
 These values should be strictly increasing due to the accumulative nature of network IO counters.
 This plot shows dips.
 The reason for this is connected to removed containers.
@@ -132,9 +134,8 @@ The displayed lines are the sums of all received and sent traffic detectible on 
 This includes virtual network interfaces of containers.
 For example, there is a noticeable decrease between the FL-Actors image build and aggregator deployment stages.
 I.e., between the moment the builder service finishes pushing its images and terminates and before these build services get deployed.
-The image builder container had its own virtual network interface, which was included in the total sum as one of the lines.
+The image builder container had its own virtual network interface, which was included in the total sum and represented as a plotted line.
 Once the container is removed, its virtual network interface is also deleted, and its accumulated net IO will be removed from the sum of the following system metrics scrapes.
-We omit to present violin-box plots detailing net-io because this additional information does not lead to any significant insights.
 
 \subsubsection{Stage Runtimes \& Training Results}
 
