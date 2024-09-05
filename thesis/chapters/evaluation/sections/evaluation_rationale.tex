@@ -48,6 +48,9 @@ Thus, we aim to verify and evaluate whether it works rather than how competitive
 We focus on the general workflow and the necessary steps to power such processes instead of optimizing FL training results.
 Tables \ref{table:chosen_experiments_part_1} and \ref{table:chosen_experiments_part_2} depict our selected experiments and our reasons for choosing them.
 The tinted cells highlight the critical changes between experiments.
+Small classic FL experiments use two learners for three training rounds, and large classic FL experiments use four learners with ten learning rounds.
+Small HFL experiments use two learners per cluster for three training rounds and two training cycles.
+In total each learner trains for six rounds.
 We explicitly try to change only singular variables to facilitate comparisons and understand how individual variables impact the whole workflow.
 
 \begin{figure}[p]
