@@ -109,6 +109,7 @@ Figure \ref{fig:eval_1_simplest_disk_space_stages} shows the disk space changes 
 The aggregator (FL-actors) deployment stage takes up the most space.
 The trained-model image deployment stage is minimal compared to the first builder deployment because of the local containerd image storage.
 Containerd pulls the builder image once and reuses it afterward.
+This means that dedicated worker nodes that handle several project builds can pull these reoccurring images once and reuse them for all projects.
 Especially during image-building processes, much space is freed up again due to garbage collection.
 
 \subsubsection{Network IO}
@@ -142,7 +143,7 @@ Once the container is removed, its virtual network interface is also deleted, an
 \begin{figure}[h]
     \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
         \centering
-        \includegraphics[width=0.99\paperwidth]{eval_1_simplest_stage_durations.png}
+        \includegraphics[width=0.95\paperwidth]{eval_1_simplest_stage_durations.png}
         \caption{Experiment 1: Stage Durations}
         \label{fig:eval_1_simplest_stage_durations}
     \end{adjustwidth}
@@ -153,20 +154,19 @@ The FL training stage is relatively short because the training configuration is 
 The image build stages both take up the vast majority of time.
 The FL-actors image build process involves more images with complex dependency resolutions.
 Thus, this build stage takes over twice as long as the trained-model image build.
-
 Figures \ref{fig:eval_1_simplest_accuracies} and \ref{fig:eval_1_simplest_loss} show the accuracies and losses of the trained models after each evaluation round.
 They prove that FLOps can train ML models in a stable way.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.99\textwidth]{eval_1_simplest_accuracy.png}
+    \includegraphics[width=0.95\textwidth]{eval_1_simplest_accuracy.png}
     \caption{Experiment 1: Trained Model Accuracies}
     \label{fig:eval_1_simplest_accuracies}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.99\textwidth]{eval_1_simplest_loss.png}
+    \includegraphics[width=0.95\textwidth]{eval_1_simplest_loss.png}
     \caption{Experiment 1: Trained Model Loss}
     \label{fig:eval_1_simplest_loss}
 \end{figure}
