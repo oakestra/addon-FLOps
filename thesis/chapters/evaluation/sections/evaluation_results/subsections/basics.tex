@@ -28,7 +28,7 @@ Deployment stages represent time frames in which components and services for the
 Most stages do not utilize much of the available CPU except during the FL actor deployment stage and FL training, which makes sense because this experiment uses the CPU for training.
 On average, this simple base case takes 12 minutes to complete on the monolith system.
 
-\begin{figure}[p]
+\begin{figure}[h]
     \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
         \centering
         \includegraphics[width=0.99\paperwidth]{eval_1_simplest_cpu_boxviolin.png}
@@ -43,10 +43,10 @@ What is remarkable is that the deployment stage for the FL actors (Aggregator De
 Multiple services' rapid creation, deployment, and orchestration can explain this.
 Both image build stages have many outliers, indicating that the build process is highly heterogeneous.
 
-\begin{figure}[p]
+\begin{figure}[h]
     \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
         \centering
-        \includegraphics[width=0.99\paperwidth]{eval_1_simplest_memory_boxviolin.png}
+        \includegraphics[width=0.95\paperwidth]{eval_1_simplest_memory_boxviolin.png}
         \caption{Experiment 1: Memory Utilization by Stage}
         \label{fig:eval_1_simplest_memory_boxviolin}
     \end{adjustwidth}
@@ -55,9 +55,10 @@ Both image build stages have many outliers, indicating that the build process is
 Figure \ref{fig:eval_1_simplest_memory_boxviolin} is similar to the previous plot but depicts the memory utilization per stage.
 The FL training stage is the most consuming.
 All other stages are below 60\% memory utilization except for the FL actors builder and its deployment stages, which have multiple outliers that reach the high 70s.
-Unlike CPU outliers, which only lead to throttling memory, outliers can lead to out-of-memory exceptions and failures.
+Unlike CPU outliers, which only lead to throttling, memory outliers can lead to out-of-memory exceptions and failures.
 Thus, it is vital to be aware of such behavior.
 
+\pagebreak
 \subsubsection{Normalization}
 
 Individual evaluations range in duration.
@@ -75,6 +76,7 @@ It is clear to see that the usage pattern is the same but shifted over time.
 We normalized the average of these rounds to compare and visualize them properly.
 Otherwise, stage borders become duplicated and overlapped, means and confidence intervals do not lead to meaningful outcomes, and the graphs are more confusing than helpful.
 
+\pagebreak
 \subsubsection{Disk Space}
 
 \begin{figure}[h]
@@ -87,23 +89,24 @@ Otherwise, stage borders become duplicated and overlapped, means and confidence 
 \end{figure}
 
 Graph \ref{fig:eval_1_simplest_disk_space} shows how the disk space changes over the project's lifetime.
-There was a total average change of 14 GB.
+There was a total average increase of 14 GB.
 It starts with the Image-Builder-Deployment stage, where the Image-Builder image is pulled.
 Many components and dependencies are downloaded and pushed to the registry on the same monolithic device during the FL actors' build process.
 The jump in disk space in the aggregator (FL actors) deployment stage is because containerd needs to pull these build images.
 Thus, the monolith will have the same image in the image registry and its local containerd image context.
 During FL training, the disk space remains the same, which verifies that even when using FLOps with demanding lengthy training configurations and models, no disk space issues will arise due to its training process.
 Disk space occasionally goes down due to the system's garbage collection, which is independent of FLOps or Oakestra.
-\begin{figure}[p]
+
+\begin{figure}[h]
     \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
         \centering
-        \includegraphics[width=0.99\paperwidth]{eval_1_simplest_disk_stages_box.png}
+        \includegraphics[width=0.95\paperwidth]{eval_1_simplest_disk_stages_box.png}
         \caption{Experiment 1: Disk Space Changes per Stage}
         \label{fig:eval_1_simplest_disk_space_stages}
     \end{adjustwidth}
 \end{figure}
 Figure \ref{fig:eval_1_simplest_disk_space_stages} shows the disk space changes per stage.
-The aggregator (FL-actors) deployment stage uses up the most.
+The aggregator (FL-actors) deployment stage takes up the most space.
 The trained-model image deployment stage is minimal compared to the first builder deployment because of the local containerd image storage.
 Containerd pulls the builder image once and reuses it afterward.
 Especially during image-building processes, much space is freed up again due to garbage collection.
@@ -121,7 +124,7 @@ Especially during image-building processes, much space is freed up again due to 
 
 Figure \ref{fig:eval_1_simplest_net_io} shows the network loads received and sent over a project runtime.
 The most significant increases are during built image pushes.
-They occur around minute five when the base image is pushed at the end of the FL-Actors Image Build stage phase and bleeds from the trained-model image build stage into its deployment stage.
+They occur around minute five when the base image is pushed, at the end of the FL-Actors Image Build stage phase, and when the trained-model image build stage bleeds into its deployment stage.
 These values should be strictly increasing due to the accumulative nature of network IO counters.
 This plot shows dips.
 The reason for this is connected to removed containers.
@@ -150,19 +153,20 @@ The image build stages both take up the vast majority of time.
 The FL-actors image build process involves more images with complex dependency resolutions.
 Thus, this build stage takes over twice as long as the trained-model image build.
 
-\begin{figure}[h]
+Figures \ref{fig:eval_1_simplest_accuracies} and \ref{fig:eval_1_simplest_loss} show the accuracies and losses of the trained models after each evaluation round.
+They prove that FLOps can train ML models in a stable way.
+
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.99\textwidth]{eval_1_simplest_accuracy.png}
     \caption{Experiment 1: Trained Model Accuracies}
     \label{fig:eval_1_simplest_accuracies}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.99\textwidth]{eval_1_simplest_loss.png}
     \caption{Experiment 1: Trained Model Loss}
     \label{fig:eval_1_simplest_loss}
 \end{figure}
 
-Figures \ref{fig:eval_1_simplest_accuracies} and \ref{fig:eval_1_simplest_loss} show the accuracies and losses of the trained models after each evaluation round.
-They prove that FLOps can train ML models in a stable way.
