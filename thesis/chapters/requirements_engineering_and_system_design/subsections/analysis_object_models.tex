@@ -61,11 +61,14 @@ The repository needs a dedicated file that lists all necessary dependencies to t
 Theoretically, it should be possible to extract these requirements dynamically by inspecting the code.
 However, this is a complex and error-prone endeavor.
 To avoid these issues, users should provide the dependencies they used for training.
-We recommend running the training locally on some exemplary or mock data and recording the dependencies via MLflow's auto-logging functionality.
+\vspace{5mm}
+\newline
+\textbf{Recommendation}: We recommend running the training locally on some exemplary or mock data and recording the dependencies via MLflow's auto-logging functionality.
 This is an easy and viable approach to getting a suitable dependency file.
 Note that this does not guarantee compatibility because MLflow's dependency logging can be erroneous.
 Before providing the dependency file to FLOps, we recommend ensuring the dependencies are sufficient and compatible.
-
+\vspace{5mm}
+\newline
 For FLOps to augment and utilize the ML code properly, FLOps excepts the repository to implement a model manager and data manager.
 The model manager is the interface that accesses the model and its data and parameters.
 It further trains and evaluates the model.
