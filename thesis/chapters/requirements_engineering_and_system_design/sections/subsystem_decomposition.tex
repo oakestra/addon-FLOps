@@ -21,15 +21,6 @@ Coupling describes how components from different subsystems directly depend on e
 
 Figure \ref{fig:component_diagram_overview} shows a UML component diagram of the major FLOps components and subsystems.
 The largest subsystems are the orchestrated layer and the FLOps management.
-The dotted lines in the diagram depict dependency relationships between components and subsystems.
-The arrow points towards a dependency.
-Some of these dotted lines could be replaced with provided and required interfaces (lollipop notation).
-We decided to use dotted lines instead to reduce complexity.
-The little squares where some interfaces come out of are so-called UML component ports.
-They represent concrete interaction points.
-We use them to signify that a concrete network port is well known.
-Interfaces without ports have unconventional, unknown, or complex access points.
-
 The FLOps management consists of six components.
 The backend and artifact stores keep training metrics and models, respectively.
 They are MLflow components.
