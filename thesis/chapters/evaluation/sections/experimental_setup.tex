@@ -46,18 +46,10 @@ The Python daemons actively scan this file and include its stage content in the 
 Consequently, the CSV files that include the system metrics also include the respective project stage and timestamp.
 At the end of each project, the playbook repeats its cleanup steps and starts the next evaluation round.
 Once all evaluation rounds are finished, the playbook terminates and prints out the sums of individual step runtimes. 
-\begin{figure}[t]
-        \centering
-        \includegraphics[width=0.90\textwidth]{evaluation_playbook.png}
-        \caption{Exemplary Evaluation Playbook Recap}
-        \label{fig:evaluation_playbook_result}
-\end{figure}
-Figure \ref{fig:evaluation_playbook_result} shows such a playbook recap.
-This specific evaluation cycle took seven and a half hours and was one of the longest experiments.
-Usually, one CSV file per evaluation run gets stored and numbered on the local device.
+
+One CSV file per evaluation run gets stored and numbered on the local device.
 In the multi-cluster case, the playbook copies all CSV files from all devices onto the caller device.
 At the end of each experiment cycle, a folder of CSV files representing the recorded results is available.
-
 To visualize these results, we created several Python scripts to parse, combine, pre-process, and visualize the information stored in the CSV files.
 We use Seaborn and Matplotlib for this endeavor.
 As a result, we have uniform, minimalistic Jupyter notebooks that present the recorded information via sophisticated and visually appealing graphs.
