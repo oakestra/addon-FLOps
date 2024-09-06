@@ -4,7 +4,6 @@
 
 Figure \ref{fig:eval_2_cpu_mem} shows the CPU and memory utilization of experiment (2).
 Because this project configuration uses more learners and training rounds, it is logical that the FL training stage will last longer.
-This is also visible in the stage durations of Figure \ref{fig:eval_2_simplest_stage_durations}, where FL training is now the longest stage.
 Note that this larger example is still relatively small compared to ML/FL training periods that take multiple hours or days to complete.
 As a result, the CPU utilization during training is less spread than for (1) and concentrates in the high 90-100\% range.
 Memory shows a similar shift from the low 60s to the low 70s.
@@ -18,15 +17,6 @@ Extended training periods lead to better results in this case.
         \includegraphics[width=0.85\paperwidth]{eval_2_simple_large_cpu_and_mem.png}
         \caption{Experiment 2: CPU \& Memory}
         \label{fig:eval_2_cpu_mem}
-    \end{adjustwidth}
-\end{figure}
-
-\begin{figure}[H]
-    \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
-        \centering
-        \includegraphics[width=0.90\paperwidth]{eval_2_simple_large_stage_durations.png}
-        \caption{Experiment 2: Stage Durations}
-        \label{fig:eval_2_simplest_stage_durations}
     \end{adjustwidth}
 \end{figure}
 
@@ -52,7 +42,7 @@ Thus, libraries that are dedicated to restricted devices should be analyzed and 
 \begin{figure}[H]
     \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
         \centering
-        \includegraphics[width=0.85\paperwidth]{eval_5_simple_pytorch_cpu_and_mem.png}
+        \includegraphics[width=0.80\paperwidth]{eval_5_simple_pytorch_cpu_and_mem.png}
         \caption{Experiment 5: CPU \& Memory}
         \label{fig:eval_5_cpu_mem}
     \end{adjustwidth}
@@ -61,7 +51,7 @@ Thus, libraries that are dedicated to restricted devices should be analyzed and 
 \begin{figure}[H]
     \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
         \centering
-        \includegraphics[width=0.85\paperwidth]{eval_5_simple_pytorch_disk_space.png}
+        \includegraphics[width=0.80\paperwidth]{eval_5_simple_pytorch_disk_space.png}
         \caption{Experiment 5: Disk Space}
         \label{fig:eval_5_disk_space}
     \end{adjustwidth}
@@ -70,7 +60,7 @@ Thus, libraries that are dedicated to restricted devices should be analyzed and 
 \begin{figure}[H]
     \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
         \centering
-        \includegraphics[width=0.85\paperwidth]{eval_5_simple_pytorch_net_io.png}
+        \includegraphics[width=0.80\paperwidth]{eval_5_simple_pytorch_net_io.png}
         \caption{Experiment 5: Network IO}
         \label{fig:eval_5_net_io}
     \end{adjustwidth}
