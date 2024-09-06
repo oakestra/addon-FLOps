@@ -1,0 +1,83 @@
+% HFL on monolith
+% non-HFL (base-case) on multi-cluster
+% HFL on multi-cluster
+% diff HFL configurations & discussion
+
+% DONT forget to inlcude the proof of concept here first!
+\subsection{Multi-cluster \& HFL}
+
+\subsubsection{Classic FL on the Multi-Cluster Setup}
+
+Before analyzing how real HFL perform on multiple clusters we need to verify that the second setup is capable of classic FL and compare it to the monolith setup.
+Observing the aggregated sum of metrics from all three devices leads to flat and less insightful plots.
+For this reason many following graphs will depict metrics by device.
+Figure \ref{fig:eval_7_cpu} shows the CPU utilization of the cluster setup during experiment (7).
+It depicts how the control plane root device only manages components but does not perform any heavy operations as intended.
+Its CPU utilization is constantly at a very low level.
+The orchestrator selected and deployed the image builder service on cluster-B.
+That is why it is the only busy device during the initial image build phase.
+Notably, this scheduling decision seems to be deterministic.
+Cluster-B was selected every single run by the orchestrator.
+FLOps does not tell the orchestrator to use the same cluster for the image builders.
+Once FL actor deployment and training starts the CPU utilization is distributed among both cluster nodes.
+Figure \ref{fig:eval_7_mem} shows the memory utilization of the devices.
+The memory stays stable when no workloads are performed on a device, which is the case for the root at all times and for cluster-A while cluster-B is building the images. 
+
+Figure \ref{fig:eval_7_disk_space} shows the disk space increase of the devices.
+It shows how cluster-B's disk space is increasing during the build process due to the dependencies and layers that are pulled and build.
+As well as a drop after the build process is finalized and the builder service undeployed.
+In the middle of the build process cluster-B pushes the built base image to the root that hosts the image registry.
+There is no significant increase when cluster-B pushes the FL-actor images because of the reuse of the common base-layers.
+The disk space of cluster-A only starts increasing when the FL-actors are deployed on it.
+Matching the disk space changes Figures \ref{fig:eval_7_net_received} and \ref{fig:eval_7_net_send} show the received and send network changes on the devices.
+
+The FLOps stages of experiment (7) do not show any remarkable outliers and resemble the base-case.
+The only difference is that due to the weaker hardware the project and all its stages take longer.
+The final training results are equivalent to (1).
+
+\begin{figure}[H]
+    \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
+        \centering
+        \includegraphics[width=0.85\paperwidth]{evaluations/multicluster_hfl/eval_9_7_simple_multicluster_cpu_split.png}
+        \caption{Experiment 7: CPU Utilization}
+        \label{fig:eval_7_cpu}
+    \end{adjustwidth}
+\end{figure}
+
+\begin{figure}[H]
+    \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
+        \centering
+        \includegraphics[width=0.85\paperwidth]{evaluations/multicluster_hfl/eval_9_7_simple_multicluster_mem_split.png}
+        \caption{Experiment 7: Memory Utilization}
+        \label{fig:eval_7_mem}
+    \end{adjustwidth}
+\end{figure}
+
+\begin{figure}[H]
+    \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
+        \centering
+        \includegraphics[width=0.85\paperwidth]{evaluations/multicluster_hfl/eval_9_7_simple_multicluster_disk_split.png}
+        \caption{Experiment 7: Disk Space}
+        \label{fig:eval_7_disk_space}
+    \end{adjustwidth}
+\end{figure}
+
+\begin{figure}[H]
+    \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
+        \centering
+        \includegraphics[width=0.85\paperwidth]{evaluations/multicluster_hfl/eval_9_7_simple_multicluster_net_received.png}
+        \caption{Experiment 7: Received Network}
+        \label{fig:eval_7_net_received}
+    \end{adjustwidth}
+\end{figure}
+
+\begin{figure}[H]
+    \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
+        \centering
+        \includegraphics[width=0.85\paperwidth]{evaluations/multicluster_hfl/eval_9_7_simple_multicluster_net_send.png}
+        \caption{Experiment 7: Send Network}
+        \label{fig:eval_7_net_send}
+    \end{adjustwidth}
+\end{figure}
+
+\subsubsection{Minimal HFL base-case on a monolith Cluster}
