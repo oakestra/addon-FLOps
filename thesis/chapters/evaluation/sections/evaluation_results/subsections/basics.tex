@@ -31,14 +31,14 @@ On average, this simple base case takes 12 minutes to complete on the monolith s
 \begin{figure}[h]
     \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
         \centering
-        \includegraphics[width=0.99\paperwidth]{eval_1_simplest_cpu_boxviolin.png}
+        \includegraphics[width=0.90\paperwidth]{eval_1_simplest_cpu_boxviolin.png}
         \caption{Experiment 1: CPU Utilization by Stage}
         \label{fig:eval_1_simplest_cpu_boxviolin}
     \end{adjustwidth}
 \end{figure}
 
 Figure \ref{fig:eval_1_simplest_cpu_boxviolin} shows a box-violin plot of the CPU utilization for different experiment stages.
-The largest median CPU consumption occurs in the FL training stage.
+The largest median CPU utilization occurs in the FL training stage.
 What is remarkable is that the deployment stage for the FL actors (Aggregator Deployment in the plot) also has high CPU utilization.
 Multiple services' rapid creation, deployment, and orchestration can explain this.
 Both image build stages have many outliers, indicating that the build process is highly heterogeneous.
@@ -46,14 +46,14 @@ Both image build stages have many outliers, indicating that the build process is
 \begin{figure}[h]
     \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
         \centering
-        \includegraphics[width=0.95\paperwidth]{eval_1_simplest_memory_boxviolin.png}
+        \includegraphics[width=0.90\paperwidth]{eval_1_simplest_memory_boxviolin.png}
         \caption{Experiment 1: Memory Utilization by Stage}
         \label{fig:eval_1_simplest_memory_boxviolin}
     \end{adjustwidth}
 \end{figure}
 
 Figure \ref{fig:eval_1_simplest_memory_boxviolin} is similar to the previous plot but depicts the memory utilization per stage.
-The FL training stage is the most consuming.
+The FL training stage is the most consuming one.
 All other stages are below 60\% memory utilization except for the FL actors builder and its deployment stages, which have multiple outliers that reach the high 70s.
 Unlike CPU outliers, which only lead to throttling, memory outliers can lead to out-of-memory exceptions and failures.
 Thus, it is vital to be aware of such behavior.
