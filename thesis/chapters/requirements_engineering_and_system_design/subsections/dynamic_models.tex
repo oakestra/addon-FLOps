@@ -43,7 +43,7 @@ This code must be available via an accessible git-based repository.
 If the user is satisfied with his codebase, he can prepare his SLA.
 (We discuss the SLA in detail in the implementation chapter.)
 After both sequences have been completed, the user can send his SLA to the FLOps management API and request the start of a new FLOps project.
-
+\vspace{5mm}
 \begin{figure}[h]
     \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
         \centering
@@ -52,7 +52,7 @@ After both sequences have been completed, the user can send his SLA to the FLOps
         \label{fig:uml_sequence_project_start}
     \end{adjustwidth}
 \end{figure}
-
+\newline
 Figure \ref{fig:uml_sequence_project_start} shows the main sequence of steps from starting a new FLOps project to deploying an image builder service.
 The light blue activity bars mean that FLOps creates a new object inside the manager context, independent of the orchestrator and deployed components.
 Management objects hold stateful information and are not run or used for computational workloads.
@@ -67,6 +67,7 @@ Instead, these modified graphs show the lifeline of FLOps components on the righ
 The color and dotted lines help to link those concepts together.
 Light rose orchestrator actions symbolize a service being appended to an existing application.
 
+\subsubsection{1. Project Start}
 The FLOps Management registered the new project request and extracted the SLA.
 Firstly, the FLOps management creates a new observatory for the user inside the FLOps management context.
 The management requests to create a corresponding app inside the orchestrator.
@@ -80,7 +81,11 @@ The FLOps management checks if its image registry already contains images that m
 For this, the management contacts the ML repository to check its latest state.
 In this example, the registry is empty.
 Therefore, new images are required.
+
+\subsubsection{2. FL-Actors Image-Builder Deployment}
 The management creates a new image builder service and deploys it similarly to the project observer.
+
+\subsubsection{3. FL-Actors Image Build}
 
 \begin{figure}[h]
     \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
@@ -90,7 +95,6 @@ The management creates a new image builder service and deploys it similarly to t
         \label{fig:uml_sequence_builder}
     \end{adjustwidth}
 \end{figure}
-
 Figure \ref{fig:uml_sequence_builder} shows the interactions necessary to augment user ML code into FL-enabled containerized images.
 Once the builder service is deployed, it executes the build plan for actor images.
 FL actors are the aggregator(s) and learners.
@@ -126,6 +130,7 @@ We collapse these details for this diagram because the depicted components and t
 Arrows that point to the right mean that specific FLOps components are targeted.
 They are not explicitly depicted to optimize readability and reduce verbosity.
 
+\subsubsection{4. FL-Actors Deployment (Aggregator Deployment Stage)}
 After building the required images, the FLOps management will start handling the FL training processes.
 Firstly, it notifies the project observer that FL training will start shortly.
 Secondly, it creates and deploys the tracking server that provides the GUI.
@@ -141,6 +146,7 @@ The aggregator waits for learners to connect before starting the training.
 In the meantime, the FL learner images were pulled and started.
 Each learner starts its FL client activities, such as registering with its specified aggregator.
 
+\subsubsection{5. FL Training}
 Now that all FL actors are ready, the aggregator starts the first training round and triggers the learners.
 The learners train their models with the local data from their worker node.
 When completed, the learners will push their model parameters to the aggregator.
@@ -155,6 +161,7 @@ Afterward, the aggregator and learner activities terminate.
 Similarly to the builder's un-deployment process, the FLOps management registers the successful message and removes the FL actors.
 With this, the core FLOps project is concluded.
 
+\subsubsection{Further Stages}
 Similarly, FLOps realizes more complex configurations, modes, or post-training steps.
 For the post-training steps, the builder gets deployed again.
 This time, it runs the trained model build plan and pulls the model from the FLOps management.
