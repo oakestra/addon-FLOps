@@ -1,15 +1,15 @@
 % \section{Limitations \& Future Work}
-\section{Status}
+\section{Current Status, Limitations \& Future Work}
 % Build-times (mention experimental new build tools (slim, nydus, etc.))
 % Dependency Hell (Build/MLflow,etc)
 % Occasional Flakiness due to implementation (new to pydantic)
 
 % https://aneescraftsmanship.com/circle-symbols%E2%97%8B%E2%97%8F%E2%97%8D%E2%97%97%E2%97%94%E2%97%99%E2%A6%BF-in-latex/
 \begin{itemize}
-    \item [\faCircleO] \textbf{Not Implemented} : FLOps does not meet the requirement in its current form. 
-	\item [\faDotCircleO] \textbf{Partially Implemented} : FLOps only partially meets the requirement.
-	\item [\faArrowCircleRight] \textbf{Implemented MVP} : FLOps fulfils the requirement in a minimal viable way. Features can be further extended.
-	\item [\faCircle] \textbf{Fully Implemented} : FLOps fully realized the requirement.
+    \item [\faCircleO] \textbf{Not Implemented}: FLOps does not meet the requirement in its current form. 
+	\item [\faDotCircleO] \textbf{Partially Implemented}: FLOps only partially meets the requirement.
+	\item [\faArrowCircleRight] \textbf{Implemented MVP}: FLOps fulfils the requirement in a minimal viable way. Features can be further extended.
+	\item [\faCircle] \textbf{Fully Implemented}: FLOps fully realizes the requirement.
 \end{itemize}
 
 \input{tables/conclusion_functional_reqs_status.tex}
@@ -28,6 +28,28 @@ Analyzing and comparing these variations and letting users decide how to create 
 
 \input{tables/conclusion_nonfunctional_reqs_status.tex}
 
+Table \ref{table:status_nonfunctional_reqs} shows the fulfillment grade of nonfunctional requirements by the current FLOps version.
+FLOps only partially realizes NFR-2.2.2.
+During the development of FLOps we had to introduce several minor changes and additions to Oakestra for it to handle FLOps workflows.
+FLOps project structure follows the application and service structure of Oakestra which seems to be different to other orchestators like Kubernetes.
+We did not try to run FLOps via another orchestrator like Kubernetes due to the restricted time.
+Therefore, we cannot tell how straightforward it is to use FLOps with other orchestrators.
+Nontheless, FLOps communicates via strict decoupled APIs and SLAs with Oakestra, thus replacing or extending these interaction points to other orchestrators should be straightforward.
+In addition, Jabok Kempter's work (TODO) to combine Oakestra and Kubernets alludes that FLOps can be run on Kubernetes even as a Oakestra addon.
+We marked NFR-3.1 as MVP implemented and NFR-3.2 as partially implemented because FLOps is capable of running on monolith and small multi-cluster setups with varing numbers of FL-actors.
+We did not try to run FLOps on a truly large scale, such as several hundred or thousand devices yet, thus cannot indefinitely confirm that FLOps is capable of handling large scale deployments.
+Regarding availability, FLOps includes several mechanism of communication and error/event handling.
+However, if FLOps services or applications are tinkered with or removed/deleted from an external non FLOps source current FLOps is incapable of reacting accordingly.
+We hope to change this once FLOps is connected to Mahmoud ElKodary's Oakestra addon marketplace and hooks so it is able to responde and receive these vital events and react accordingly.
+
+\subsubsection{Security \& Privacy}
+Security and privacy are foundational concerns of FL.
+Our priority with FLOps was to create and verify its foundational architecture and components.
+Due to the lack of access to proper certificates and to accelerate FLOps' development we omitted privacy and security concerns.
+This includes the use of HTTP instead of HTTPS or the lack of supported FL security features such as secure aggregation.
+This aspect is one of the most important for future work.
+The good news are that Flower, the image registry, and local data management Apache suite all come with security features that simply need to be configured properly.
+
 % Security & Privacy 
 % GPU
 % Personalized FL <- mention papers here (make an introduction here)
@@ -35,9 +57,9 @@ Analyzing and comparing these variations and letting users decide how to create 
 % More FL - diff directions - diff algos
 % More ML Frameworks & Datasets Experiments
 % Experimentation with edge focused ML frameworks, PI, etc (multi-platform/edge)
-\subsection{Federated Learning via FLOps}
+\subsubsection{Federated Learning via FLOps}
 
 % More automation via more CLI integration, etc
 % Integrate with Mahmouds work
 % Evaluated primarily on Monolith machine - the resources could be analyzed in greater detail (per container/service) remove host,etc traffic/consumption
-\subsection{Complementary Components \& Integrations}
+\subsubsection{Complementary Components \& Integrations}
