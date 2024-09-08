@@ -1,46 +1,56 @@
-% \section{Limitations \& Future Work}
 \section{Current Status, Limitations \& Future Work}
-% Build-times (mention experimental new build tools (slim, nydus, etc.))
-% Dependency Hell (Build/MLflow,etc)
-% Occasional Flakiness due to implementation (new to pydantic)
+
+Table \ref{table:status_functional_reqs} depicts how well the current FLOps implementation fulfills its functional requirements.
+We count FR-1.3 and FR-2 as MVP implemented because FLOps supports different FL scenarios, such as classic and clustered HFL, as well as various project configurations.
+Multiple additional FL strategies, algorithms, and Flower configurations exist that can and should be analyzed and added to future FLOps versions to allow a broader range of FL capabilities.
+FLOps currently supports Scikit-learn, PyTorch, and TensorFlow.
+Other ML flavors can be easily added by extending the underlying minimal enum structure.
+We regard FR-6's inference serving as MVP implemented because enabling inference serving was not a primary focus point of FLOps.
+Instead, inference serving is FLOps's last post-training step.
+Thus, we did not invest too much time into this feature.
+It should be thoroughly tested and investigated to be seen as fully realized.
+MLflow offers different ways of turning trained models into inference servers \cite{mlflow_inference_serving}.
+Analyzing and comparing these variations and letting users decide how to create inference servers is a valid choice for future work.
 
 % https://aneescraftsmanship.com/circle-symbols%E2%97%8B%E2%97%8F%E2%97%8D%E2%97%97%E2%97%94%E2%97%99%E2%A6%BF-in-latex/
 \begin{itemize}
     \item [\faCircleO] \textbf{Not Implemented}: FLOps does not meet the requirement in its current form. 
 	\item [\faDotCircleO] \textbf{Partially Implemented}: FLOps only partially meets the requirement.
-	\item [\faArrowCircleRight] \textbf{Implemented MVP}: FLOps fulfils the requirement in a minimal viable way. Features can be further extended.
+	\item [\faArrowCircleRight] \textbf{Implemented MVP}: FLOps fulfills the requirement in a minimal viable way. Features can be further extended.
 	\item [\faCircle] \textbf{Fully Implemented}: FLOps fully realizes the requirement.
 \end{itemize}
 
-\input{tables/conclusion_functional_reqs_status.tex}
+\begin{figure}[p]
+	\input{tables/conclusion_functional_reqs_status.tex}
+	\input{tables/conclusion_nonfunctional_reqs_status.tex}	
+\end{figure}
 
-Table \ref{table:status_functional_reqs} depicts how well the current FLOps implementation fulfills its functional requirements.
-We count FR-1.3 and FR-2 as MVP implemented because FLOps does support different FL scenarios such as classic and clustered HFL as well as various project configurations.
-This support is not exhaustive.
-There exist multiple additional FL strategies, algorithms, and Flower configurations that can and should be analyzed and added to future FLOps versions to allow a wider range of FL capabilities.
-FLOps currently supports Scikit-learn, Pytorch, and Tensorflow.
-Other ML flavors can be easily added by extending the underlying minimal enum structure.
-We regard FR-6's inference serving as MVP implemented because enabling inference serving is not a primary focus point of FLOps.
-Instead inference serving is FLOps currently last post-training step thus we did not invest too much time into this feature.
-To be seen as fully implemented it should be thoroughly tested and investigated.
-MLflow offers different ways of turing trained models into inference servers.
-Analyzing and comparing these variations and letting users decide how to create inference servers is a valid piece of future work.
 
-\input{tables/conclusion_nonfunctional_reqs_status.tex}
-
-Table \ref{table:status_nonfunctional_reqs} shows the fulfillment grade of nonfunctional requirements by the current FLOps version.
+Table \ref{table:status_nonfunctional_reqs} shows the grade of fulfillment of nonfunctional requirements in the current FLOps version.
 FLOps only partially realizes NFR-2.2.2.
-During the development of FLOps we had to introduce several minor changes and additions to Oakestra for it to handle FLOps workflows.
-FLOps project structure follows the application and service structure of Oakestra which seems to be different to other orchestators like Kubernetes.
-We did not try to run FLOps via another orchestrator like Kubernetes due to the restricted time.
-Therefore, we cannot tell how straightforward it is to use FLOps with other orchestrators.
-Nontheless, FLOps communicates via strict decoupled APIs and SLAs with Oakestra, thus replacing or extending these interaction points to other orchestrators should be straightforward.
-In addition, Jabok Kempter's work (TODO) to combine Oakestra and Kubernets alludes that FLOps can be run on Kubernetes even as a Oakestra addon.
-We marked NFR-3.1 as MVP implemented and NFR-3.2 as partially implemented because FLOps is capable of running on monolith and small multi-cluster setups with varing numbers of FL-actors.
-We did not try to run FLOps on a truly large scale, such as several hundred or thousand devices yet, thus cannot indefinitely confirm that FLOps is capable of handling large scale deployments.
-Regarding availability, FLOps includes several mechanism of communication and error/event handling.
-However, if FLOps services or applications are tinkered with or removed/deleted from an external non FLOps source current FLOps is incapable of reacting accordingly.
-We hope to change this once FLOps is connected to Mahmoud ElKodary's Oakestra addon marketplace and hooks so it is able to responde and receive these vital events and react accordingly.
+During the development of FLOps, we had to introduce several minor changes and additions to Oakestra so that it could handle FLOps workflows.
+The FLOps project structure follows Oakestra's application and service structure, which differs from that of other orchestrators like Kubernetes.
+Due to the restricted time, we did not try to run FLOps via another orchestrator.
+Therefore, we need to find out how straightforward using FLOps with other orchestrators is.
+Nonetheless, FLOps communicates with Oakestra via decoupled APIs and SLAs.
+Replacing or extending these interaction points to other orchestrators should be straightforward.
+In addition, Jabok Kempter's work combining Oakestra and Kubernetes \cite{thesis:tum_jakob_kempter_kubernetes_oakestra} alludes that FLOps can run on Kubernetes as an Oakestra addon.
+
+We marked NFR-3.1 as MVP implemented and NFR-3.2 as partially implemented because FLOps can run on monolithic and small multi-cluster setups with varying FL actors.
+We have yet to try to run FLOps on a truly large scale, such as several hundred or thousand devices.
+Therefore, we cannot indefinitely confirm that It can handle large-scale deployments.
+Regarding availability, FLOps includes several mechanisms of communication, error and event handling.
+However, if FLOps services or applications are modified or deleted by an external non-FLOps source, current FLOps is incapable of reacting accordingly.
+We hope to change this once FLOps is connected to the new Oakestra event hooks \cite{thesis:tum_mahmoud} so it can respond to and receive these vital events and react accordingly.
+
+
+\subsubsection{Implementation}
+FLOps includes many pre-made and custom components that we linked and implemented from the grounds up.
+We did so by using various state-of-the-art frameworks and tools.
+Many of these tools we worked with for the very first time during this work and had no prior experience, training, or peer review in.
+Thus, various aspects of the implementation might be utilizing these SOTA tools in a subpar way.
+FLOps' codebase is a solo-man project that lacks any code review from other people or domain/tool experts.
+To improve robustness and code-quality people with expertise in these domains should review the code and elevate it to follow the gold standards of these tools.
 
 \subsubsection{Image Building}
 FLOps uses a sophisticated image building architecture and processes yet the evaluations have shown that this aspect is taking up a significant portion of project run times.
