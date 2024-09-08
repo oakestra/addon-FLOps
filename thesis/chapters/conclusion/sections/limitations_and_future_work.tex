@@ -45,26 +45,26 @@ We hope to change this once FLOps is connected to the new Oakestra event hooks \
 
 
 \subsubsection{Implementation}
-FLOps includes many pre-made and custom components that we linked and implemented from the grounds up.
-We did so by using various state-of-the-art frameworks and tools.
-Many of these tools we worked with for the very first time during this work and had no prior experience, training, or peer review in.
-Thus, various aspects of the implementation might be utilizing these SOTA tools in a subpar way.
-FLOps' codebase is a solo-man project that lacks any code review from other people or domain/tool experts.
-To improve robustness and code-quality people with expertise in these domains should review the code and elevate it to follow the gold standards of these tools.
+In addition to using existing libraries and frameworks, FLOps includes many custom components we implemented using various state-of-the-art tools and techniques from the ground up.
+During this work, we used many of these tools for the first time, with no prior experience or training in them.
+Thus, some aspects of the implementation might utilize these tools subparly.
+FLOps' codebase is a one-man project that lacks code reviews from others or domain/tool experts.
+To improve robustness and code quality, individuals with expertise in these domains should review the code and elevate it to follow the gold standards of these tools.
 
 \subsubsection{Image Building}
-FLOps uses a sophisticated image building architecture and processes yet the evaluations have shown that this aspect is taking up a significant portion of project run times.
-To further improve the build times and shrink the final images more newer experimental solutions should be explored.
+FLOps uses a sophisticated image-building architecture and processes, yet evaluations show that this aspect takes up a significant portion of project run times and lead to large images.
+New experimental solutions should be explored to improve the build times further and shrink the final images.
 One way would be to replace the current Conda-Mamba solution with uv \cite{uv}.
-Other tools worth exploring to slim down images are found here \cite{slim,dragonfly,nydus}.
+Other tools worth exploring to slim down images include \cite{slim,dragonfly,nydus}.
 
 \subsubsection{Security \& Privacy}
-Security and privacy are foundational concerns of FL.
-Our priority with FLOps was to create and verify its foundational architecture and components.
-Due to the lack of access to proper certificates and to accelerate FLOps' development we omitted privacy and security concerns.
-This includes the use of HTTP instead of HTTPS or the lack of supported FL security features such as secure aggregation.
+Security and privacy are FL's foundational concerns.
+Our priority with FLOps was to create and verify its rudimentary architecture, components, and workflows.
+We did not focus on privacy and security concerns due to the lack of access to proper certificates and to accelerate FLOps' development.
+This includes using HTTP instead of HTTPS or not supporting FL security features such as secure aggregation.
 This aspect is one of the most important for future work.
-The good news are that Flower, the image registry, and local data management Apache suite all come with security features that simply need to be configured properly.
+Notably, Flower, the image registry, and the local data management Apache suite all have security features.
+FLOps can utilize these features by enabling and appropriately configuring them.
 
 \subsubsection{Federated Learning via FLOps}
 Classic and clustered HFL is already working via FLOps.
