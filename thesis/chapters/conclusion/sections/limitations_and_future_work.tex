@@ -42,6 +42,12 @@ Regarding availability, FLOps includes several mechanism of communication and er
 However, if FLOps services or applications are tinkered with or removed/deleted from an external non FLOps source current FLOps is incapable of reacting accordingly.
 We hope to change this once FLOps is connected to Mahmoud ElKodary's Oakestra addon marketplace and hooks so it is able to responde and receive these vital events and react accordingly.
 
+\subsubsection{Image Building}
+FLOps uses a sophisticated image building architecture and processes yet the evaluations have shown that this aspect is taking up a significant portion of project run times.
+To further improve the build times and shrink the final images more newer experimental solutions should be explored.
+One way would be to replace the current Conda-Mamba solution with uv \cite{uv}.
+Other tools worth exploring to slim down images are found here \cite{slim,dragonfly,nydus}.
+
 \subsubsection{Security \& Privacy}
 Security and privacy are foundational concerns of FL.
 Our priority with FLOps was to create and verify its foundational architecture and components.
@@ -50,16 +56,30 @@ This includes the use of HTTP instead of HTTPS or the lack of supported FL secur
 This aspect is one of the most important for future work.
 The good news are that Flower, the image registry, and local data management Apache suite all come with security features that simply need to be configured properly.
 
-% Security & Privacy 
-% GPU
-% Personalized FL <- mention papers here (make an introduction here)
-% Extended/Modified HFL
-% More FL - diff directions - diff algos
-% More ML Frameworks & Datasets Experiments
-% Experimentation with edge focused ML frameworks, PI, etc (multi-platform/edge)
 \subsubsection{Federated Learning via FLOps}
+Classic and clustered HFL is already working via FLOps.
+There are many other possible improvements that should be considered for future work.
+Possible directions include exploring and adding FL native security and privacy mechanisms or extending the already available functionalities by adding more parameters and different algorithms.
+FLOps so far did not focus on GPU workloads, which are straightforward to add via Flower.
+In addition, FLOps should be tried out with ML frameworks that are specifically targeted for resource restricted edge and IoT devices.
+These experiments should be evaluated on real edge devices such as Raspberry Pis and hybrid setups.
 
-% More automation via more CLI integration, etc
-% Integrate with Mahmouds work
-% Evaluated primarily on Monolith machine - the resources could be analyzed in greater detail (per container/service) remove host,etc traffic/consumption
+One major aspect that should be investigated is personalized FL.
+Flower already supports PFL thus it should be straightforward to enable these features to FLOps.
+Custom solutions only using FLOps are also possible.
+For classic PFL after training the global model this model could be deployed on every learner and trained further for local use only and then used for inference serving.
+The sidecar or multi-model PFL solution could look like this.
+The global model would be trained as is but a personal model would also be trained concurrently and not shared or updated with other learners.
+Once the training is done the local model could be turned into an inference server.
+Hybrids between both are also possible.
+Our reading contained multiple interesting PFL papers so we think this directions is very promising and worth working on.
+
 \subsubsection{Complementary Components \& Integrations}
+The FLOps project has to be currently cloned, configured slightly and launched to work with it.
+FLOps is a collection of components and relies upon its orchestrator and is heavily supported by its CLI.
+This CLI could be further improved to automate even more aspects of FLOps and its orchestrator dependency.
+Ideally the CLI could be installed via pip and with a single command the entire needed dependencies, repositories and components of FLOps and its orchestrator would be installed and launched to make working with these tools as easy and quick as possible.
+Realizing this goal is not hard because the CLI already has many necessary functionalities that simply needs to be expanded and combined.
+Besides this FLOps should be properly integrated into Oakestra's new addon marketplace and augmented via its hooks to react to events.
+Once this is realized FLOps will be even more responsive and easier for users to work with.
+
