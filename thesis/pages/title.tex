@@ -9,16 +9,22 @@
   \vspace{5mm}
   {\large\MakeUppercase{\getUniversity{}} \par}
 
-  \vspace{20mm}
+  % \vspace{20mm}
+  \vspace{10mm}
   {\Large \getDoctype{} in \getDegree{} \par}
 
-  \vspace{15mm}
+  % \vspace{15mm}
+  % \vspace{10mm}
+  \vspace{7mm}
   {\huge\bfseries \getTitle{} \par}
 
-  \vspace{10mm}
+  % \vspace{10mm}
+  \vspace{5mm}
   {\huge\bfseries \foreignlanguage{ngerman}{\getTitleGer{}} \par}
 
-  \vspace{15mm}
+  % \vspace{15mm}
+  % \vspace{10mm}
+  \vspace{7mm}
   \begin{tabular}{l l}
     Author:          & \getAuthor{}         \\
     Supervisor:      & \getSupervisor{}     \\
@@ -26,8 +32,7 @@
     Submission Date: & \getSubmissionDate{} \\
   \end{tabular}
 
-  \IfFileExists{logos/faculty-\fg.pdf}{%
-    \vfill{}
-    \includegraphics[height=20mm]{logos/faculty-\fg.pdf}
-  }{}
+  \vfill{}
+  % \vspace{10mm}
+  \includegraphics[height=20mm]{tum_fakultät.png}
 \end{titlepage}
