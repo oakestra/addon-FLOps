@@ -111,24 +111,18 @@ It seems that researchers assume others to already have working FL environments.
 Furthermore, they seem to motivate their readers to optimize these setups based on their findings instead of replicating and configuring such an FL setup initially.
 These tendencies are visible when inspecting the ML and FL frameworks and libraries the authors mentioned they used.
 The following figure is again based on our examined papers.
-Figure \ref{fig:fl_research_ml_frameworks} shows that most authors did not explicitly state what ML framework or library they used for their work.
+Figure \ref{fig:fl_research_ml_and_fl_frameworks} shows that most authors did not explicitly state what ML framework or library they used for their work.
 Many researchers used Pytorch and TensorFlow.
 
 \begin{figure}[h]
-    \centering
-    \includegraphics[width=0.9\textwidth]{fl_research_ml_frameworks.png}
-    \caption{Distribution of mentioned ML Frameworks in FL Papers}
-    \label{fig:fl_research_ml_frameworks}
+    \begin{adjustwidth}{-0.1\paperwidth}{-0.1\paperwidth}
+        \centering
+        \includegraphics[width=0.8\paperwidth]{fl_research_ml_and_fl_frameworks.png}
+        \caption{Distribution of mentioned ML and FL Frameworks in FL Papers}
+        \label{fig:fl_research_ml_and_fl_frameworks}
+    \end{adjustwidth}
 \end{figure}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.9\textwidth]{fl_research_fl_frameworks.png}
-    \caption{Distribution of mentioned FL Frameworks in FL Papers}
-    \label{fig:fl_research_fl_frameworks}
-\end{figure}
-
-Figure \ref{fig:fl_research_fl_frameworks} shows that FL researchers rarely mention what FL frameworks they use for their work.
+The figure also shows that FL researchers rarely mention what FL frameworks they use for their work.
 It is much more common for authors to mention what ML framework they used than what FL framework they used.
 Possible reasons for this might be that ML as a field is a lot older, more sophisticated, widespread, and established.
 The same applies to ML frameworks.
