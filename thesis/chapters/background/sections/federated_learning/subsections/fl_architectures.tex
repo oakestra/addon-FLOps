@@ -14,9 +14,10 @@ Due to the nature of these devices and their environments, cross-device FL needs
 Challenges include non-IID data, heterogeneous device hardware, different network conditions, learner outages, or stragglers.
 Various techniques exist to navigate these challenging conditions, including specialized algorithms for aggregation or learner selection.
 These strategies can consider bias, availability, resources, and battery life.
-FLOps focuses on cross-device FL.
-Note that from now on, when we mention FL in this work, we mean cross-device FL.
-
+\vspace{2mm}
+\newline\textbf{From now on, when we mention FL in this work, we mean cross-device FL because FLOps focuses on cross-device workloads.}
+\vspace{5mm}
+\newline
 Different FL architectures exist to support large-scale FL environments.
 FLOps wants to benefit from the unique three-tiered Oakestra \cite{paper:oakestra_usenix} architecture.
 Such a scenario has two main challenges.
@@ -77,6 +78,7 @@ A management overhead arises with more components, including handling fault tole
 Bad synchronization can amplify straggler problems.
 Balancing refers to combining and harmonizing intermediate parameters to get a good global model.
 These findings show that special FL architectures, such as HFL, require careful consideration and correct implementation.
+\cite{book:fl,paper:decentralized_edge_intelligence_dynamic_resource_allocation_framework_hfl,hpfl_over_massive_mobile_edge_computing_networks}
 
 The benefits of HFL are its dynamic scalability and load balancing.
 One can easily add or remove intermediate aggregators and their connected learners.
