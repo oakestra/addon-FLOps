@@ -23,76 +23,34 @@ These properties include one or multiple categories in which the paper fits in.
 Additional properties include the initial problems or challenges the authors tried to resolve, their contributions, results, limitations, and envisioned future work.
 We also noted what ML or FL frameworks or libraries they claimed to use.
 
+Table \ref{table:fl_research_table_1} depicts a subset of the analyzed FL papers.
+It presents the documented contributions, limitations, and future work properties.
+The remaining FL papers are available in Appendix \ref{appendix:fl_research}.
+These tables provide a good impression of the examined FL papers.
+Patterns and trends can be extracted from these papers based on the documented properties.
+
 \begin{figure}[p]
     \input{tables/fl_research_table_1.tex}
 \end{figure}
-
-\begin{figure}[p]
-    \input{tables/fl_research_table_2.tex}
-\end{figure}
-
-\begin{figure}[p]
-    \input{tables/fl_research_table_3.tex}
-\end{figure}
-
-Tables \ref{table:fl_research_table_1}, \ref{table:fl_research_table_2}, and \ref{table:fl_research_table_3} depict our analyzed FL papers.
-They present the documented contributions, limitations, and future work properties.
-When there is no content (-) in the "Limitations \& Future Work" column that means that the authors did not mention any explicitly and that we did not notice anything specifically.
-These tables provide a good impression of the examined FL papers.
-Patterns and trends can be extracted from these papers based on the documented properties.
 
 Patterns and trends help to better understand the research field of FL as a whole.
 Figure \ref{fig:fl_research_categories} shows the different categories and their distribution.
 Most examined papers focused on performance, trying new concepts, finding best practices, and exploring different FL architectures.
 Only two papers focused on deployment and orchestration.
-
 \begin{figure}[p]
     \centering
     \includegraphics[width=1.0\textwidth]{fl_research_categories.png}
     \caption{FL Paper Categories}
     \label{fig:fl_research_categories}
 
-    \includegraphics[width=1.0\textwidth]{fl_research_problem_challenge.png}
-    \caption{Targeted Problems \& Challenges of FL Papers}
-    \label{fig:fl_research_problem_challenge}
-\end{figure}
-
-Figure \ref{fig:fl_research_problem_challenge} reveals a similar trend.
-The primary focus is on investigating new concepts or improving existing performance, scalability, and complexity bottlenecks.
-Several papers have aimed to narrow the gap between industry and research or make FL easier to use.
-This ease of use seems to focus on improving already configured and working FL setups.
-The main contributions seen in Figure \ref{fig:fl_research_contributions} strengthen this assumption.
-Mathematical and conceptual proofs dominate this chart.
-They prove that novel architectures and algorithms work as proposed.
-Contributions do not seem to focus on improving the initial setup, deployment, and configuration processes.
-
-\begin{figure}[p]
-    \centering
-    \includegraphics[width=1.0\textwidth]{fl_research_contributions.png}
-    \caption{FL Paper Contributions}
-    \label{fig:fl_research_contributions}
-
     \includegraphics[width=0.9\textwidth]{fl_research_achieved_results.png}
     \caption{Achieved Results of FL Papers}
     \label{fig:fl_research_achieved_results}
 \end{figure}
-
-The achieved results mirror previous findings.
+The achieved results match these categories.
 Figure \ref{fig:fl_research_achieved_results} shows that these contributions lead to more efficient FL.
 Improved aspects include speed, resource utilization, training results, and handling of heterogeneous data.
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.9\textwidth]{fl_research_limitations_future_work.png}
-    \caption{Limitations \& Future Work of FL Papers}
-    \label{fig:fl_research_limitations_future_work}
-\end{figure}
-
-Figure \ref{fig:fl_research_limitations_future_work} reflects this perception.
-If specified, the focal point is on improving privacy and security, further performance optimizations, or adding support for more ML use cases.
-Even the future focus is not on optimizing accessibility, usability, or the mentioned initial vital steps.
-These documented properties might be biased, and the inspected sample size of papers is relatively small.
-To improve confidence in these findings, we compare them with the total number of published works about FL.
+Additional insights about the research problems, contributions, limitations, and future work of the examined FL papers are available in the appendix \ref{appendix:fl_research}.
 
 \begin{figure}[H]
     \centering
@@ -101,6 +59,8 @@ To improve confidence in these findings, we compare them with the total number o
     \label{fig:fl_publications_compared}
 \end{figure}
 
+These documented properties might be biased, and the inspected sample size of papers is relatively small.
+To improve confidence in these findings, we compare them with the total number of published works about FL.
 Figure \ref{fig:fl_publications_compared} depicts how many works have been published in FL with specific keywords that match our custom categories.
 We applied the same method to gather the data as for \ref{fig:fl_documents_research}.
 The global results paint a similar picture as our samples.
