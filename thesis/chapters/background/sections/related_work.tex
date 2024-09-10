@@ -1,111 +1,64 @@
 \section{Related Work}
 
-Only two previous works \cite{paper:fl_toward_on_demand_client_deployment_at_edge, paper:global_fl_platform_for_iot} mentioned in \ref{subsection:fl_research} resemble FLOps.
+Only two previous works \cite{paper:fl_toward_on_demand_client_deployment_at_edge, paper:global_fl_platform_for_iot} mentioned in subsection \ref{subsection:fl_research} resemble FLOps.
 Both also noticed the lack of research regarding dynamically deploying ML and FL capabilities via containers.
 They use different technologies and offer different functionality compared to FLOps.
 They focus on other aspects and do not incorporate MLOps tools, automatic image builds, or automatic deployment of trained model inference servers.
 
-\hiddensubsection{On the feasibility of Federated Learning towards on-demand client deployment at the edge}
 In 2023, Chahoud et al. \cite{paper:fl_toward_on_demand_client_deployment_at_edge} proposed a three-layered FL architecture running on Kubernetes.
-Each following component has a matching image in DockerHub.
-Newly joining devices can simply pull these images.
-\vspace{5mm}
-\newline
-\textbf{Server}\newline
-The first layer is the server or service provider.
-The server has various managerial responsibilities.
+The first layer is the server or service provider that handles managerial responsibilities.
 It serves container images to voluntary devices and maintains secure connections to other layers.
-The server is the aggregator that manages the global model.
+The server aggregates the global model using a threshold to handle stragglers and missing or failed updates.
 Together with the mini-servers, it determines which nodes should form a cluster.
 It handles service deployments and client selection after receiving requests from mini-servers.
-
 Various components are part of the server.
-An oracle engine supports building the base model that will be sent out to clients.
-The oracle determines the required type of ML technique, such as classic ML or DL, based on the environment.
-An enhanced FL aggregator handles stragglers and missing updates from failed learners.
-The aggregator uses a threshold to determine if an update should be included or discarded.
-A Kubeadm environment initializer that turns devices into mini-servers.
-This decision is based on available devices and the level of client mobility.
-Additional setup steps are performed, such as cluster creation and population or container deployment on worker nodes.
-A communication manager upholds a stable connection between the different layers.
-An orchestrator manager administers the second layer mini-servers.
-It can dynamically determine and change which devices should be mini-servers.
-This task helps to gather better data for FL.
-\vspace{5mm}
-\newline
-\textbf{Orchestrators / mini-servers}\newline
-Mini-servers handle Kubeadm clusters and surveil device movements.
+An oracle engine determines the required ML type and builds the client base model.
+A Kubeadm environment initializer turns devices into mini-servers based on availability.
+An orchestrator manager dynamically administers the second layer mini-servers which handle clusters and surveil devices.
 They deploy containers and add workers to clusters.
-Similar to cluster orchestrators in Oakestra, mini-servers distribute management tasks and workloads among themselves and away from the server.
-A mini-server containers a client profiler component and a client manager.
-The former gathers worker metrics, and the latter informs the server about environmental changes.
-Relevant changes include joining and leaving clients.
-The client manager also protects against client starvation.
-\vspace{5mm}
-\newline
-\textbf{User Devices}\newline
-User devices are the FL learners.
-They contain a client profiler that shares the machine metrics with a corresponding mini-server.
-The profiler also informs the mini-server in case of failures.
-\vspace{5mm}
-\newline
-Open challenges and future work include more efficient and secure selection algorithms.
-More sophisticated logic is required to select learners for training to optimize FL results via data heterogeneity.
-Selecting devices to become mini-servers is a potential security hazard.
-Currently, the authors assume mini-servers to be trustworthy and reliable.
+Mini-servers distribute management tasks and workloads among themselves and away from the server while gathering metrics and informing the server via aggregated updates.
+Mini-servers and the "root" server resemble Oakestra's root and cluster orchestrators.
 
-Their evaluation results show that their FL solution is only 10\% worse than the centralized alternative.
-
-The similarities between their work and FLOps are as follows:
-Both focus on making FL easy to use and do not focus on optimizing models or algorithms.
-They enable on-the-fly dynamic deployment and setup of FL components on unprepared devices via containerization technologies.
-Both provide prepared container images via public registries.
-Their work's mini-servers and "root" server resemble Oakestra's root and cluster orchestrators.
-Oakestra is a dedicated orchestrator, while their work's components are auxiliaries with fewer features.
-
-Their work used a different orchestrator, FL framework (augmented FedML), and image registry.
-FLOps supports classic and hierarchical FL.
-Their work only supports HFL.
-They used a single hardcoded dataset and ML model for evaluation.
-Their work does not offer different scenarios or utilize dedicated MLOps features and techniques.
-FLOps allows users to build and train various custom ML code.
-Their work focuses on 6G and the actual real-world movement of people, whereas FLOps is more general and feature-rich.
-
-
-\hiddensubsection{Towards Developing a Global Federated Learning Platform for IoT}
 In 2022, Safri et al. \cite{paper:global_fl_platform_for_iot} developed a prototype to improve FL on IoT devices.
-This work enables distributed ML model deployment, federated task orchestration, and system state and model performance monitoring.
-They called their approach FedIoT.
+This work focuses on enterprise IoT and enables distributed ML model deployment, federated task orchestration, and system state and model performance monitoring.
 This three-layered architecture resembles the one from \cite{paper:fl_toward_on_demand_client_deployment_at_edge} and Oakestra.
-Their root server/orchestrator is called global orchestrator.
-It acts as an FL aggregator and dynamically configures and deploys local orchestrators via an API.
-Their local orchestrator is not equivalent to cluster orchestrators or mini-servers.
-Their work focuses on enterprise IoT.
+Their root server/orchestrator acts as an FL aggregator and dynamically configures and deploys local orchestrators via an API.
+Their local orchestrator is different from cluster orchestrators or mini-servers.
 IoT devices are usually incapable of handling common ML training due to their limited resources.
 Their work acknowledges this and uses the IoT devices only as data providers but not as learners.
 Therefore, their work performs classic FL instead of HFL.
 Local orchestrators are learners in their architecture.
 They need to be in proximity to IoT devices to receive their data.
 Additionally, they provide customizable data preprocessing and evaluation code to be injected via the API.
-
-Their work offers additional tooling, such as a custom compressor and monitoring.
-The compressor is a dedicated component that reduces the size of large files.
+Their work offers additional tooling, such as a custom compressor, which reduces the size of large files and monitoring.
 Monitoring agents are deployed on the local and global orchestrators that measure resources and CO2.
 A custom GUI presents these metrics.
 
-In future work, the authors wanted to add more FL algorithms and more sophisticated logic to select participants for training based on the monitored metrics.
+Open challenges and future work include more efficient and secure selection algorithms.
+To optimize FL results via data heterogeneity, more sophisticated (metrics-based) logic is required to select learners for training.
+Chahoud et al. wanted to investigate the mini-server selection to minimize potential security hazards.
 
-There are obvious similarities between their work and FLOps/Oakestra.
-Both want to provide a one-in-all solution to perform FL on tangible devices via containerization and orchestration.
+There are apparent similarities between their works and FLOps/Oakestra.
+All three focus on making FL easy to use and do not focus on optimizing models or algorithms.
+Containerization technologies enable on-the-fly dynamic deployment and setup of FL components on unprepared devices.
+All provide prepared container images via public registries.
+Safri et al. also want to provide a one-in-all solution to perform FL on tangible devices.
 They want to automate setup, dependency management, configuration, and metric gathering.
 Additionally, they want to improve comprehension and observability by providing a GUI.
 
-Their work differs from FLOps in multiple ways besides FLOps' larger set of features.
-As mentioned above, their work only offers classic FL and has a different and less mature architecture than FLOps, thanks to Oakestra.
-Their paper is very short and thus lacks details and readability.
+Their works differ from FLOps in multiple ways besides FLOps' more extensive set of features.
+They use different orchestrators, FL frameworks (augmented FedML), and image registries.
+Oakestra is a dedicated orchestrator, while their work's components are auxiliaries with fewer features and less mature architectures.
+FLOps supports classic and hierarchical FL.
+\cite{paper:fl_toward_on_demand_client_deployment_at_edge} only support HFL, and \cite{paper:global_fl_platform_for_iot} only support classic FL.
+They used a single hardcoded dataset and ML model for evaluation.
+Their works do not offer different scenarios or utilize dedicated MLOps features and techniques.
+FLOps allows users to build and train various custom ML code.
+Chahoud et al. focus on 6G and the actual real-world movement of people, whereas FLOps is more general and feature-rich.
+Safri et al.'s paper is very short and thus lacks details and readability.
 It has no open-sourced code to inspect and replicate its implementation.
 FLOps has this thesis documenting it in great detail and is fully open source.
-Safri et al. implemented most components by themselves from the ground up, such as orchestration and FL.
+Their works implement most components by themselves from the ground up, such as orchestration and FL.
 FLOps utilizes and combines existing sophisticated solutions to offer higher-quality features and performance.
-For example, their work's GUI is a simple Grafana dashboard that offers a lot fewer features and is read-only.
+For example, \cite{paper:global_fl_platform_for_iot}'s GUI is a simple Grafana dashboard with fewer features and is read-only.
 FLOps utilizes MLflow to provide a sophisticated graphical suite of MLOps tools and functionalities.
