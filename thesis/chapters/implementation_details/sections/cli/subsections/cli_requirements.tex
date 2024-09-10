@@ -5,7 +5,7 @@ The OAK CLI needs to satisfy the following requirements:
 \newline
 \textbf{Interface for APIs}\newline
 The CLI should interact with the APIs of FLOps and Oakestra to alleviate the need for users to use external tools, know all API endpoints, and know how to interact with them appropriately.
-The key activities the CLI should support are managing applications and services in Oakestra and start projects in FLOps.
+The key activities the CLI should support are managing applications and services in Oakestra and starting projects in FLOps.
 For example, if the user wants to create a new application in Oakestra he first needs to login.
 For the login, the user needs to know the login URI, create a fitting request, send it, and extract the received bearer token for authentication and authorization.
 Only afterward can users prepare their application SLA, add their token, and send it to the application POST endpoint.
@@ -17,9 +17,9 @@ The CLI will perform the login and handle the API interactions.
 FLOps handles many different applications and services concurrently.
 Especially during development, it is crucial to observe whether components behave as expected and identify unexpected errors or behavior as quickly as possible.
 For this, the CLI needs to provide its users with an overview of the current state of applications and deployed services.
-This overview should include comprehensive information about these components, such as their current status and critical properties and details.
+This overview should include comprehensive information about these components, such as their current status, critical properties, and details.
 It is crucial to provide timely information to the user.
-The CLI should support a way to observe the current situation close to real time.
+The CLI should support a way to observe the current situation close to real-time.
 \vspace{5mm}
 \newline
 \textbf{Accelerated Workflows via Automation}\newline
@@ -40,11 +40,11 @@ A machine can also simultaneously include all these mentioned components and be 
 All these options require different needs and, conversely, do not require all features or are not capable of or intended to provide all features.
 For example, a worker node should be unable to restart the root orchestrator, whereas the root orchestrator should not be able to tinker with sensitive worker node configurations.
 
-A tool that fulfills all mentioned requirements can be divided into several, one for each use case, or provided by a dynamic large single tool.
+A tool that fulfills all mentioned requirements can be divided into several, one for each use case or provided by a dynamic large single tool.
 Multiple tools have the benefit of being less overwhelming, leading to smaller and tidier repositories, and users do not need to understand the big picture.
 The downside of multiple tools is the risk of entangled and divergent dependencies that need to be managed.
 Such tools will still show interdependencies and coupling, leading to split comprehension.
-Users, and especially developers, would need to know exactly what tool is responsible for what and how they are interconnected, potentially making things more complex.
+Users, especially developers, would need to know exactly what tool is responsible for what and how they are interconnected, potentially making things more complex.
 With split tools, there is the risk of increased code duplication over time, especially if different people develop different parts without understanding related tools.
 The benefit of a single tool is that everything is in one place and forms a single source of truth.
 Developers can efficiently work with a single well-structured repository.
