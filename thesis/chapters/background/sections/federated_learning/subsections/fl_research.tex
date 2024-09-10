@@ -42,10 +42,6 @@ Patterns and trends can be extracted from these papers based on the documented p
     \input{tables/fl_research_table_1.tex}
 \end{figure}
 
-Patterns and trends help to better understand the research field of FL as a whole.
-Figure \ref{fig:fl_research_categories} shows the different categories and their distribution.
-Most examined papers focused on performance, trying new concepts, finding best practices, and exploring different FL architectures.
-Only two papers focused on deployment and orchestration.
 \begin{figure}[p]
     \centering
     \includegraphics[width=1.0\textwidth]{fl_research_categories.png}
@@ -56,17 +52,16 @@ Only two papers focused on deployment and orchestration.
     \caption{Achieved Results of FL Papers}
     \label{fig:fl_research_achieved_results}
 \end{figure}
+
+Patterns and trends help to better understand the research field of FL as a whole.
+Figure \ref{fig:fl_research_categories} shows the different categories and their distribution.
+Most examined papers focused on performance, trying new concepts, finding best practices, and exploring different FL architectures.
+Only two papers focused on deployment and orchestration.
+
 The achieved results match these categories.
 Figure \ref{fig:fl_research_achieved_results} shows that these contributions lead to more efficient FL.
 Improved aspects include speed, resource utilization, training results, and handling of heterogeneous data.
 Additional insights about the research problems, contributions, limitations, and future work of the examined FL papers are available in the appendix \ref{appendix:fl_research}.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1.0\textwidth]{fl_publications_compared.png}
-    \caption{Evolution of FL Publications based on Keywords}
-    \label{fig:fl_publications_compared}
-\end{figure}
 
 These documented properties might be biased, and the inspected sample size of papers is relatively small.
 To improve confidence in these findings, we compare them with the total number of published works about FL.
@@ -82,15 +77,6 @@ These tendencies are visible when inspecting the ML and FL frameworks and librar
 The following figure is again based on our examined papers.
 Figure \ref{fig:fl_research_ml_and_fl_frameworks} shows that most authors did not explicitly state what ML framework or library they used for their work.
 Many researchers used Pytorch and TensorFlow.
-
-\begin{figure}[h]
-    \begin{adjustwidth}{-0.1\paperwidth}{-0.1\paperwidth}
-        \centering
-        \includegraphics[width=0.8\paperwidth]{fl_research_ml_and_fl_frameworks.png}
-        \caption{Distribution of mentioned ML and FL Frameworks in FL Papers}
-        \label{fig:fl_research_ml_and_fl_frameworks}
-    \end{adjustwidth}
-\end{figure}
 The figure also shows that FL researchers rarely mention what FL frameworks they use for their work.
 It is much more common for authors to mention what ML framework they used than what FL framework they used.
 Possible reasons for this might be that ML as a field is a lot older, more sophisticated, widespread, and established.
@@ -102,3 +88,19 @@ However, due to the framework's immaturity, the researchers might not deem it im
 Another possible explanation is that FL researchers are experts in FL and can set up and configure FL from the ground up.
 Either way, this lack of transparency makes reproducing or extending their work challenging, if not infeasible.
 These gaps in FL research motivated the creation of FLOps.
+
+\begin{figure}[p]
+    \centering
+    \includegraphics[width=1.0\textwidth]{fl_publications_compared.png}
+    \caption{Evolution of FL Publications based on Keywords}
+    \label{fig:fl_publications_compared}
+    \vspace{2cm}
+    \begin{adjustwidth}{-0.1\paperwidth}{-0.1\paperwidth}
+        \centering
+        \includegraphics[width=0.8\paperwidth]{fl_research_ml_and_fl_frameworks.png}
+        \caption{Distribution of mentioned ML and FL Frameworks in FL Papers}
+        \label{fig:fl_research_ml_and_fl_frameworks}
+    \end{adjustwidth}
+\end{figure}
+
+\pagebreak
