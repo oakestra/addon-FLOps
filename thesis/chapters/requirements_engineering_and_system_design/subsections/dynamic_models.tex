@@ -108,8 +108,6 @@ When these build prerequisites are met, the builder continues to build the aggre
 Afterward, the builder notifies the project observer to inform the user about the successful build.
 Note that the sequence model action lengths do not correspond to their actual duration.
 Short rectangles visualize the build and push actions in the diagram, even though these two actions are by far the most time-consuming.
-We use this design to ensure more compact diagrams.
-In a similar fashion, the observatory and project lifelines are reduced to lines.
 
 As the last build process step, the builder pushes these built images to the image registry hosted by the FLOps management.
 After the successful push, the builder notifies the project observer and FLOps management of its successful completion.

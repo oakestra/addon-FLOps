@@ -69,7 +69,7 @@ Note that this does not guarantee compatibility because MLflow's dependency logg
 Before providing the dependency file to FLOps, we recommend ensuring the dependencies are sufficient and compatible.
 \vspace{5mm}
 \newline
-For FLOps to augment and utilize the ML code properly, FLOps excepts the repository to implement a model manager and data manager.
+For FLOps to augment and utilize the ML code properly, FLOps requires the repository to implement a model manager and data manager.
 The model manager is the interface that accesses the model and its data and parameters.
 It further trains and evaluates the model.
 It calls its linked data manager to prepare the data and retrieve it once it is ready.
@@ -87,7 +87,7 @@ These templates are available as part of the FLOps Utils pip package \cite{flops
 \end{figure}
 
 Figure \ref{fig:uml_project_analysis_object_model} shows further details about the contents of an FLOps project.
-Users can customize their projects via the SLA that is part of their API requests.
+Users can customize their projects via the SLA (\ref{subsection:SLAs}) that is part of their API requests (\ref{subsection:api}).
 One possible customization is to specify resource constraints such as memory or storage.
 Users can customize the FL training by changing the project's training configuration.
 The same ML repository can be trained differently depending on these configurations.
