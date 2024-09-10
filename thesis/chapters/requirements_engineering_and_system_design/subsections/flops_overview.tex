@@ -25,13 +25,6 @@ The FLOps manager uses the orchestrator to create, (un)deploy, and remove differ
 The manager spreads computationally heavy image builds and FL training across the worker nodes.
 The GUI and inference servers also run on worker nodes.
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.8\textwidth]{simple_builder.png}
-    \caption{Simplified FLOps Image Builder Processes}
-    \label{fig:flops_simple_image_builder}
-\end{figure}
-
 Figure \ref{fig:flops_simple_image_builder} shows a simplified overview of FLOps' image builder processes.
 The container images get built on worker nodes.
 Worker B stands for an arbitrary worker node capable of building images, i.e., the worker has enough resources and privileges.
@@ -43,6 +36,13 @@ These images get pushed to the FLOps image registry.
 When the learners, aggregators, or inference servers are needed, their corresponding images are pulled from that registry onto an orchestrated worker node and executed.
 Image builder services only exist when they are needed.
 The FLOps manager removes them after building images for a concrete FLOps project.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{simple_builder.png}
+    \caption{Simplified FLOps Image Builder Processes}
+    \label{fig:flops_simple_image_builder}
+\end{figure}
 
 \begin{figure}[H]
     \begin{adjustwidth}{-0.1\paperwidth}{-0.1\paperwidth}

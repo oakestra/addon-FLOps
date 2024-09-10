@@ -47,7 +47,7 @@ A project observer service gathers and displays information or updates regarding
 The project observer informs the user of any issues during the project's live time, such as dependency issues during the containerized image builds.
 There is one project observer per project to improve readability and comprehension.
 
-\begin{figure}[h]
+\begin{figure}[t]
     \centering
     \includegraphics[width=1.0\textwidth]{uml_analysis_object_model_repo.png}
     \caption{FLOps ML Code Repository UML Analysis Object Model}
@@ -79,7 +79,7 @@ The user has to define in prepareData how to pre-process the retrieved data for 
 Both managers have an abstract parent class that users can import during implementation for guidelines.
 These templates are available as part of the FLOps Utils pip package \cite{flops_utils_pip}.
 
-\begin{figure}[h]
+\begin{figure}[t]
     \centering
     \includegraphics[width=1.0\textwidth]{uml_analysis_object_model_project.png}
     \caption{FLOps Project UML Analysis Object Model}
@@ -102,7 +102,7 @@ For example, if the user requests three cycles and five rounds, the learners wil
 Each learner will train for 15 rounds during the entire project runtime.
 The depicted attributes are only a subset of currently available and possible configurations.
 
-\begin{figure}[h]
+\begin{figure}[t]
     \begin{adjustwidth}{-0.1\paperwidth}{-0.1\paperwidth}
         \centering
         \includegraphics[width=0.80\paperwidth]{uml_analysis_object_model_project_services.png}
@@ -136,7 +136,7 @@ As a result, users do not need to implement the FL (boilerplate) code themselves
 Therefore, a learner's getParameters method uses the getParameters method described in the user's ML repository with additional logic around it.
 Learners also notify other components about their progress or failures.
 
-\begin{figure}[h]
+\begin{figure}[t]
     \centering
     \includegraphics[width=0.55\textwidth]{uml_analysis_object_model_aggregators.png}
     \caption{FLOps Aggregator Types UML Analysis Object Model}

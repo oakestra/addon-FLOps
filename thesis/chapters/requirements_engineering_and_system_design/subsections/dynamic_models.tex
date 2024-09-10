@@ -15,7 +15,11 @@ For simplicity's sake, these components are grouped into one.
 The same applies to multiple worker nodes and edge devices.
 To improve readability and comprehension we split up the project into stages.
 
-\begin{figure}[h]
+
+
+\subsubsection{0. Preparation}
+
+\begin{figure}[t]
     \begin{adjustwidth}{-0.1\paperwidth}{-0.1\paperwidth}
         \centering
         \includegraphics[width=0.9\paperwidth]{uml_sequence_init.png}
@@ -24,8 +28,6 @@ To improve readability and comprehension we split up the project into stages.
     \end{adjustwidth}
 \end{figure}
 
-\pagebreak
-\subsubsection{0. Preparation}
 Figure \ref{fig:uml_sequence_init} is a UML sequence diagram depicting the initial steps before a FLOps project can start.
 Two different sets of sequences can occur independently or in parallel with each other.
 Before FLOps can run properly, FL worker nodes need to register with the orchestrator and stay available.
@@ -44,16 +46,9 @@ This code must be available via an accessible git-based repository.
 If the user is satisfied with his codebase, he can prepare his SLA.
 (We discuss the SLA in detail in the implementation chapter.)
 After both sequences have been completed, the user can send his SLA to the FLOps management API and request the start of a new FLOps project.
-\vspace{5mm}
-\begin{figure}[h]
-    \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
-        \centering
-        \includegraphics[width=0.95\paperwidth]{uml_sequence_diagram_project_start.png}
-        \caption{FLOps Project Start - UML Sequence Diagram}
-        \label{fig:uml_sequence_project_start}
-    \end{adjustwidth}
-\end{figure}
-\newline
+
+\subsubsection{1. Project Start}
+
 Figure \ref{fig:uml_sequence_project_start} shows the main sequence of steps from starting a new FLOps project to deploying an image builder service.
 The light blue activity bars mean that FLOps creates a new object inside the manager context, independent of the orchestrator and deployed components.
 Management objects hold stateful information and are not run or used for computational workloads.
@@ -68,7 +63,6 @@ Instead, these modified graphs show the lifeline of FLOps components on the righ
 The color and dotted lines help to link those concepts together.
 Light rose orchestrator actions symbolize a service being appended to an existing application.
 
-\subsubsection{1. Project Start}
 The FLOps Management registered the new project request and extracted the SLA.
 Firstly, the FLOps management creates a new observatory for the user inside the FLOps management context.
 The management requests to create a corresponding app inside the orchestrator.
@@ -83,12 +77,21 @@ For this, the management contacts the ML repository to check its latest state.
 In this example, the registry is empty.
 Therefore, new images are required.
 
+\begin{figure}[t]
+    \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
+        \centering
+        \includegraphics[width=0.95\paperwidth]{uml_sequence_diagram_project_start.png}
+        \caption{FLOps Project Start - UML Sequence Diagram}
+        \label{fig:uml_sequence_project_start}
+    \end{adjustwidth}
+\end{figure}
+
 \subsubsection{2. FL-Actors Image-Builder Deployment}
 The management creates a new image builder service and deploys it similarly to the project observer.
 
 \subsubsection{3. FL-Actors Image Build}
 
-\begin{figure}[h]
+\begin{figure}[t]
     \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
         \centering
         \includegraphics[width=0.95\paperwidth]{uml_sequence_actor_builder.png}
@@ -96,6 +99,7 @@ The management creates a new image builder service and deploys it similarly to t
         \label{fig:uml_sequence_builder}
     \end{adjustwidth}
 \end{figure}
+
 Figure \ref{fig:uml_sequence_builder} shows the interactions necessary to augment user ML code into FL-enabled containerized images.
 Once the builder service is deployed, it executes the build plan for actor images.
 FL actors are the aggregator(s) and learners.
