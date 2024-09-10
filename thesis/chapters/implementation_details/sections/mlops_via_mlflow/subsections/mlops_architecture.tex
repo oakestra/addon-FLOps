@@ -1,12 +1,14 @@
 \subsection{MLOps Components \& Architecture}
 
-This subsection builds on top of the discussed MLflow background (\ref{subsection:mlflow}) and subsystem decomposition (\ref{subsection:subsystem_decomposition}).
 \begin{figure}[h]
     \centering
     \includegraphics[width=1.0\textwidth]{mlops_components.png}
     \caption{FLOps' MLOps Architecture}
     \label{fig:mlops_architecture}
 \end{figure}
+
+This subsection builds on top of the discussed MLflow background (\ref{subsection:mlflow}) and subsystem decomposition (\ref{subsection:subsystem_decomposition}).
+
 Figure \ref{fig:mlops_architecture} shows FLOps' MLOps architecture.
 MLflow powers many FLOps' MLOps capabilities.
 After every training round, the aggregator logs lightweight artifacts like metrics, parameters, tags, or runs.

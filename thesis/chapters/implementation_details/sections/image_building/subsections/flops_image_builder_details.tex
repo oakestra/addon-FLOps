@@ -52,19 +52,22 @@ FLOps' builder service augments this dockerfile to support multiple platforms an
 This built image wraps the trained model via an inference server.
 One optional FLOps post-training step deploys this inference server directly after the builder service terminates.
 
-\begin{changemargin}{0cm}{0cm}
-    \centering
-    \begin{tabular}{|c||c|c|c|c|c|c|}
-        \hline
-            \textbf{Image} & Image Builder & MLflow & Client & Server & SuperNode & SuperLink \\
-        \hline
-            \textbf{Size} & 3.0 GB & 819 MB & 1.16 GB & 1.13 GB & 232 MB & 232 MB
-        \\
-        \hline
-    \end{tabular}
-    \captionof{table}{Important FLOps Image Sizes (30.08.2024)} 
-    \label{table:relevant_image_sizes_for_building}
-\end{changemargin}
+\begin{figure}[b]
+    \begin{changemargin}{0cm}{0cm}
+        \centering
+        \begin{tabular}{|c||c|c|c|c|c|c|}
+            \hline
+                \textbf{Image} & Image Builder & MLflow & Client & Server & SuperNode & SuperLink \\
+            \hline
+                \textbf{Size} & 3.0 GB & 819 MB & 1.16 GB & 1.13 GB & 232 MB & 232 MB
+            \\
+            \hline
+        \end{tabular}
+        \captionof{table}{Important FLOps Image Sizes (30.08.2024)} 
+        \label{table:relevant_image_sizes_for_building}
+    \end{changemargin}
+\end{figure}
+
 Table \ref{table:relevant_image_sizes_for_building} shows the sizes of different relevant images to provide more context for the final results and build processes.
 The Image Builder image is the FLOps builder service.
 It is noteworthy that FLOps' builder service without the MLflow (2.12.1) dependency is 900 MB and the official MLflow image is 819 MB.
@@ -79,19 +82,21 @@ The client and server images from the table are deprecated.
 Their new replacements are the SuperNode and SuperLink, which are significantly smaller.
 We mention these images to compare them with FLOps' FL actor images.
 
-\begin{changemargin}{0cm}{0cm}
-    \centering
-    \begin{tabular}{|c|c|c|c|c|c|}
-        \hline
-            \textbf{Standalone} & \textbf{Base} & \textbf{Learner} & \textbf{Aggregator} & \textbf{Total Process} & \textbf{Base Image Build} \\
-        \hline
-            515 MB & 2.79 GB & 2.79 GB & 3.55 GB & 6min 20s & 3min 53s
-        \\
-        \hline
-    \end{tabular}
-    \captionof{table}{Simple Scikit-learn MNIST Build Example} 
-    \label{table:sklearn_mnist_build_example}
-\end{changemargin}
+\begin{figure}[t]
+    \begin{changemargin}{0cm}{0cm}
+        \centering
+        \begin{tabular}{|c|c|c|c|c|c|}
+            \hline
+                \textbf{Standalone} & \textbf{Base} & \textbf{Learner} & \textbf{Aggregator} & \textbf{Total Process} & \textbf{Base Image Build} \\
+            \hline
+                515 MB & 2.79 GB & 2.79 GB & 3.55 GB & 6min 20s & 3min 53s
+            \\
+            \hline
+        \end{tabular}
+        \captionof{table}{Simple Scikit-learn MNIST Build Example} 
+        \label{table:sklearn_mnist_build_example}
+    \end{changemargin}
+\end{figure}
 Table \ref{table:sklearn_mnist_build_example} shows a singular example of running a FLOps project using Scikit-learn and the MNIST dataset.
 The Standalone refers to the standalone Scikit-learn image from Table \ref{table:ml_libs_images_compared}.
 The base and learner images are equally large because the learner image only changes the files it works with but reuses all dependencies from the base image.

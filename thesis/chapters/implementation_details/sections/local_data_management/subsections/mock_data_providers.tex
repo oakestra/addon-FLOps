@@ -10,14 +10,13 @@ The code is available here \cite{flops_code}.
 Subsection \ref{subsection:api} shows the API endpoint for creating such mock data providers.
 The FLOps Helper SLA for mock data providers looks as follows:
 \begin{lstlisting}
-    {
-        % The ID has to match the user's orchestrator ID.
+    {   % The ID has to match the user's orchestrator ID.
         "customerID": "Admin",
         "mock_data_configuration": {
             % This value can be any dataset name available in Hugging Face.
             "dataset_name": "cifar10",
             "number_of_partitions": 1,
-            "data_tag": "cifar10"
+            "data_tag": "cifar10" 
         }
     }
 \end{lstlisting}

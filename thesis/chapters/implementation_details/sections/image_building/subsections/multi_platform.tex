@@ -51,23 +51,27 @@ In conclusion, using this approach, the FLOps builder service can build multi-pl
 All other FLOps (static) images, including the builder service or project observer, are also available for linux/amd64 and linux/arm64.
 For example, all these images can be started on a Raspberry Pi 4, but these devices seem to lack sufficient resources to handle the FL training.
 An additional downside of multi-platform image builds comes with the slowness of emulation.
-\begin{changemargin}{0cm}{0cm}
-    \centering
-    \begin{tabular}{|c|c|c|c|c|c|}
-        \hline
-            \textbf{Platform} & \textbf{Full Build} & \textbf{Base Image} & \textbf{Actor Images} \\
-        \hline
-            linux/amd64 & 4min & 2min 30s & 1min 30s \\
-        \hline
-            linux/arm64 & 18min & 12min & 6min 
-        \\
-        \hline
-    \end{tabular}
-    \captionof{table}{Simple Scikit-learn Multi-Platform Build Times Example} 
-    \label{table:sklearn_mnist_multi_platform_build_example}
-\end{changemargin}
+
 Table \ref{table:sklearn_mnist_multi_platform_build_example} shows a simple example of FLOps' builder service's build times for different platforms.
 The build machine natively supports linux/amd64.
 Therefore, this build is much faster than the emulated arm one.
 Both rows show the build times when only a single platform is requested.
 The build times would be combined to support both platforms simultaneously.
+
+\begin{figure}[t]
+    \begin{changemargin}{0cm}{0cm}
+        \centering
+        \begin{tabular}{|c|c|c|c|c|c|}
+            \hline
+                \textbf{Platform} & \textbf{Full Build} & \textbf{Base Image} & \textbf{Actor Images} \\
+            \hline
+                linux/amd64 & 4min & 2min 30s & 1min 30s \\
+            \hline
+                linux/arm64 & 18min & 12min & 6min 
+            \\
+            \hline
+        \end{tabular}
+        \captionof{table}{Simple Scikit-learn Multi-Platform Build Times Example} 
+        \label{table:sklearn_mnist_multi_platform_build_example}
+    \end{changemargin}
+\end{figure}

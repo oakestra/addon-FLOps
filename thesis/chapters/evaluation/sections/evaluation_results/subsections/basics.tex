@@ -59,8 +59,6 @@ Thus, it is vital to be aware of such behavior.
 \pagebreak
 \subsubsection{Normalization}
 
-Individual evaluations range in duration.
-The reasons for this can be manifold, such as different current image pull speeds due to local network conditions or remote registry loads.
 \begin{figure}[h]
     % \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
         \centering
@@ -70,6 +68,10 @@ The reasons for this can be manifold, such as different current image pull speed
         \label{fig:eval_1_simplest_explanation_shift}
     % \end{adjustwidth}
 \end{figure}
+
+Individual evaluations range in duration.
+The reasons for this can be manifold, such as different current image pull speeds due to local network conditions or remote registry loads.
+
 Figure \ref{fig:eval_1_simplest_explanation_shift} shows the memory usage of individual evaluation rounds over time.
 It is clear to see that the usage pattern is the same but shifted over time.
 We normalized the average of these rounds to compare and visualize them properly.
@@ -91,7 +93,7 @@ Containerd pulls the builder image once and reuses it afterward.
 This means that dedicated worker nodes that handle several project builds can pull these reoccurring images once and reuse them for all projects.
 Especially during image-building processes, much space is freed up again due to garbage collection.
 
-\begin{figure}[h]
+\begin{figure}[t]
     \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
         \centering
         \includegraphics[width=0.99\paperwidth]{eval_1_simplest_disk_pace_linegraph.png}
@@ -138,7 +140,7 @@ They prove that FLOps can train ML models in a stable way.
 \begin{figure}[H]
     \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
         \centering
-        \includegraphics[width=0.90\paperwidth]{eval_1_simplest_stage_durations.png}
+        \includegraphics[width=0.80\paperwidth]{eval_1_simplest_stage_durations.png}
         \caption{Experiment 1: Stage Durations}
         \label{fig:eval_1_simplest_stage_durations}
     \end{adjustwidth}

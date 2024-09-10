@@ -82,6 +82,15 @@ The final training results are equivalent to (1).
 
 \subsubsection{Minimal HFL base-case on a monolith Cluster}
 
+\begin{figure}[H]
+    \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
+        \centering
+        \includegraphics[width=0.90\paperwidth]{evaluations/multicluster_hfl/eval_8_6_monolith_hfl_cpu_mem.png}
+        \caption{Experiment 6: Monolith HFL CPU \& Memory}
+        \label{fig:eval_6_cpu_mem}
+    \end{adjustwidth}
+\end{figure}
+
 Figure \ref{fig:eval_6_cpu_mem} shows the CPU and memory utilization of experiment (6).
 Its purpose is to be a minimal HFL base-case that only uses a single cluster.
 In additon, this experiment proofs that FLOps' custom clustered HFL solution works.
@@ -90,14 +99,6 @@ Every other metric stays similar to (1).
 This includes the stage durations, disk space, net IO, and training results.
 CPU and memory utilization are slightly increased in the deployment and training stages because of more FL actors.
 
-\begin{figure}[H]
-    \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
-        \centering
-        \includegraphics[width=0.95\paperwidth]{evaluations/multicluster_hfl/eval_8_6_monolith_hfl_cpu_mem.png}
-        \caption{Experiment 6: Monolith HFL CPU \& Memory}
-        \label{fig:eval_6_cpu_mem}
-    \end{adjustwidth}
-\end{figure}
 
 \subsubsection{HFL on the Multi-Clustered Setup}
 

@@ -60,19 +60,21 @@ Since the end of 2023, Conda has been using the libmamba resolver by default, wh
 Therefore, FLOps uses a fast and reliable dependency resolver.
 
 Besides the complexity of Python's dependency landscape, ML dependencies can be huge.
-\begin{changemargin}{0cm}{0cm}
-    \centering
-    \begin{tabular}{|c||c|c|c|c|}
-        \hline
-            \textbf{Image} & python:3.12.4 & python:3.12.4-slim & anaconda3:latest & miniconda3:latest \\
-        \hline
-            \textbf{Size} & 1.02 GB & 133 MB & 4.5 GB & 611 MB
-        \\
-        \hline
-    \end{tabular}
-    \captionof{table}{Conda Python Image Size Comparison (29.08.2024)} 
-    \label{table:conda_python_comparison}
-\end{changemargin}
+\begin{figure}[t]
+    \begin{changemargin}{0cm}{0cm}
+        \centering
+        \begin{tabular}{|c||c|c|c|c|}
+            \hline
+                \textbf{Image} & python:3.12.4 & python:3.12.4-slim & anaconda3:latest & miniconda3:latest \\
+            \hline
+                \textbf{Size} & 1.02 GB & 133 MB & 4.5 GB & 611 MB
+            \\
+            \hline
+        \end{tabular}
+        \captionof{table}{Conda Python Image Size Comparison (29.08.2024)} 
+        \label{table:conda_python_comparison}
+    \end{changemargin}
+\end{figure}
 
 Table \ref{table:conda_python_comparison} shows four pulled images and their sizes.
 All images use Python version 3.12.4.
@@ -83,22 +85,24 @@ The miniconda image is more than seven times smaller than the full anaconda vers
 Note that these are the pulled docker image sizes, not the compressed registry ones.
 (The Conda images are from the official continuumio project.)
 
-\begin{changemargin}{0cm}{0cm}
-    \centering
-    \begin{tabular}{|c||c|c|c|}
-        \hline
-            \textbf{Image} & smizy/scikit-learn-docker & tensorflow/tensorflow & pytorch/pytorch \\
-        \hline
-            \textbf{Size} & 515 MB & 1.86 GB & 7.6 GB
-        \\
-        \hline
-    \end{tabular}
-    \captionof{table}{A selection of popular ML library images and their sizes (29.08.2024)} 
-    \label{table:ml_libs_images_compared}
-\end{changemargin}
-
 Table \ref{table:ml_libs_images_compared} shows a selection of pulled images of popular ML tools.
 All images are the latest official images by the ML tool providers, except scikit-learn.
 These images can vary enormously in size.
 Some of them require a lot of disk space and bandwidth to pull.
 Any FLOps image built on top of these dependencies will be even larger due to the additional FL and MLOps dependencies.
+
+\begin{figure}[t]
+    \begin{changemargin}{0cm}{0cm}
+        \centering
+        \begin{tabular}{|c||c|c|c|}
+            \hline
+                \textbf{Image} & smizy/scikit-learn-docker & tensorflow/tensorflow & pytorch/pytorch \\
+            \hline
+                \textbf{Size} & 515 MB & 1.86 GB & 7.6 GB
+            \\
+            \hline
+        \end{tabular}
+        \captionof{table}{A selection of popular ML library images and their sizes (29.08.2024)} 
+        \label{table:ml_libs_images_compared}
+    \end{changemargin}
+    \end{figure}
