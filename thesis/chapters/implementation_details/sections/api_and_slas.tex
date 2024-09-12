@@ -9,7 +9,7 @@ It uses Pydantic to verify data and automatically generate REST API and OpenAPI 
 We use Waitress \cite{waitress}, a production-quality WSGI server, to host the manager's API.
 
 \subsubsection{Currently Available Endpoints}
-\textbf{/api/flops/projects}\newline
+\texttt{/api/flops/projects}\newline
 This POST endpoint triggers a new FLOps project.
 It expects users to provide a JSON SLA with the required project configurations and a bearer token authorizing the user on the orchestrator.
 If no matching images exist, an image builder is created and deployed.
@@ -17,19 +17,19 @@ If an adequate image already exists, the request concludes straight away.
 The user receives a confirmation that the new project has successfully started.
 \vspace{5mm}
 \newline
-\textbf{/api/flops/tracking}\newline
+\texttt{/api/flops/tracking}\newline
 The tracking endpoint allows users to spawn their personal tracking servers at will independently from an active project.
 Usually, a tracking server is created during FL training.
 This GET endpoint returns the tracking server / GUI URL.
 \vspace{5mm}
 \newline
-\textbf{/api/flops/database}\newline
+\texttt{/api/flops/database}\newline
 This DELETE endpoint only allows admins to reset the FLOps database.
 Otherwise, the entire FLOps management suite needs a restart.
 It returns a confirmation for the user.
 \vspace{5mm}
 \newline
-\textbf{/api/flops/mocks}\newline
+\texttt{/api/flops/mocks}\newline
 This POST endpoint creates mock data providers and deploys them on fitting learner machines.
 We discuss these data providers later on in this thesis.
 Similar to the project, this endpoint returns a confirmation to the user.

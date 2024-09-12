@@ -61,14 +61,13 @@ The build times would be combined to support both platforms simultaneously.
 \begin{figure}[t]
     \begin{changemargin}{0cm}{0cm}
         \centering
-        \begin{tabular}{|c|c|c|c|c|c|}
+        \begin{tabular}{|c|c|c|c|c|c|c|}
             \hline
-                \textbf{Platform} & \textbf{Full Build} & \textbf{Base Image} & \textbf{Actor Images} \\
+            \textbf{Builder Architecture} & \textbf{Target Platform} & \textbf{Full Build} & \textbf{Base Image} & \textbf{Actor Images} \\
             \hline
-                linux/amd64 & 4min & 2min 30s & 1min 30s \\
+            linux/amd64 & linux/amd64 & 4min & 2min 30s & 1min 30s \\
             \hline
-                linux/arm64 & 18min & 12min & 6min 
-            \\
+            linux/amd64 & linux/arm64 & 18min & 12min & 6min \\
             \hline
         \end{tabular}
         \captionof{table}{Simple Scikit-learn Multi-Platform Build Times Example} 

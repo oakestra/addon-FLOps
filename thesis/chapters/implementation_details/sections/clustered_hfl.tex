@@ -34,13 +34,14 @@ This approach requires implementing this interface properly and maintaining the 
 Therefore, the cluster aggregator needs to be able to modify and access the underlying user ML model.
 This model is the main reference point for model parameters in a cluster aggregator.
 
-At the start of a new training cycle the root aggregator calls the cluster aggregator's fitModel method.
-It triggers the cluster aggregator's handleAggregator method, which all aggregator types in FLOps have.
+At the start of a new training cycle the root aggregator calls the cluster aggregator's \texttt{fitModel} method.
+It triggers the cluster aggregator's \texttt{handleAggregator} method, which all aggregator types in FLOps have.
 The cluster aggregator performs conventional FL training with its learners and fuses new intermediate global parameters (pink P).
 Then, it updates its model copy stored in the user's model manager.
-By default, Flower also evaluates the model during training. The custom FLOps aggregator strategy can store and accumulate evaluation results.
+By default, Flower also evaluates the model during training.
+The custom FLOps aggregator strategy can store and accumulate evaluation results.
 When the root aggregator requests to evaluate the cluster aggregator, it retrieves the stored values from the strategy and context objects.
-When the root aggregator calls the cluster aggregator's getParameters method, the cluster aggregator calls its user's model manager getParameters method.
+When the root aggregator calls the cluster aggregator's \texttt{getParameters} method, the cluster aggregator calls its user's model manager \texttt{getParameters} method.
 The same applies to setting parameters.
 
 In other words, the cluster aggregator mimics a learner by using the same interface, which works on the same user-provided ML model.

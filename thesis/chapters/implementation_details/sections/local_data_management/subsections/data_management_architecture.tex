@@ -34,15 +34,15 @@ This volume now contains several different Parquet files from different sources.
 It uses Parquet files based on the last subsection's recommendations.
 
 The next sequence of steps starts from the user's data manager.
-During its initialization (A1), when the leaner service is run, it triggers its prepareData function (A2).
-This method calls the wrapper/adapter function loadDataset (A3).
-The loadDataset function calls the loadDataFromMLDataServer function (A4).
+During its initialization (A1), when the leaner service is run, it triggers its \texttt{prepareData} function (A2).
+This method calls the wrapper/adapter function \texttt{loadDataset} (A3).
+The \texttt{loadDataset} function calls the \texttt{loadDataFromMLDataServer} function (A4).
 This function is not available for users during development.
 It is instead injected by the builder service, so it is exclusively available in the learner image's augmented FL code.
 
-The Data Loading's loadDataFromMLDataServer function contacts its Flight client to request all matching files from the local ML data server (A5).
+The Data Loading's \texttt{loadDataFromMLDataServer} function contacts its Flight client to request all matching files from the local ML data server (A5).
 The match is performed based on the user's project SLA.
-This SLA includes a dataTags key that is a list of string tags.
+This SLA includes a \texttt{dataTags} key that is a list of string tags.
 When devices send over their files, they must provide a data tag.
 The ML data server will store these data files in the format seen in the Figure's legend.
 The name starts with a singular data tag and ends with a unique hash based on the file's content.
@@ -60,5 +60,5 @@ The data manager now has access to the necessary dataset and can perform custom 
 Users can freely configure and implement this preprocessing to ensure the retrieved data is usable for their ML model.
 
 When FL training starts, the user's model manager will initially set the model data (B1).
-Its getData method (B2) contacts the data manager and returns its prepared compatible dataset (B3).
+Its \texttt{getData} method (B2) contacts the data manager and returns its prepared compatible dataset (B3).
 In conclusion, these steps enable FLOps to manage and provide real local FL data to diverse user ML code for training and evaluation.

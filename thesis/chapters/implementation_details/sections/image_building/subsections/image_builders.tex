@@ -9,14 +9,14 @@ FLOps requires a more complex approach to build images.
 Its image builder is a service running on a worker node that Oakestra orchestrates.
 This service is a containerd container.
 It is not possible to simply run docker in such an environment to build images.
-The critical issue here is that docker cannot be run trivially in another container due to restricted privileges and access to host system capabilities.
-A popular workaround, especially for CI/CD workloads, is called Docker in Docker (DinD).
+The critical issue here is that docker cannot be run trivially in another container due to restricted privileges and access to host system capabilities \cite{paper:dind}.
+A popular workaround, especially for CI/CD workloads, is called Docker in Docker (DinD) \cite{paper:dind}.
 Many CI/CD tools support DinD natively.
 One example includes GitLab's CI/CD.
 Setting up and using DinD manually on a host machine is non-trivial and error-prone.
 Getting docker to work inside managed Oakestra containers is even more challenging.
 One significant reason for these issues is that docker requires its daemon to run for building images.
-Nested Docker daemons are a complicated matter that can require significant adjustments to how the orchestrator coordinates containerization on worker nodes.
+Nested Docker daemons are a complicated matter \cite{paper:dind} that can require significant adjustments to how the orchestrator coordinates containerization on worker nodes.
 For example, the orchestrator could require worker nodes to mount their docker sockets to the container, which would lead to further security risks.
 
 The only functionality that FLOps requires here is building images inside containers, not executing them from within.
