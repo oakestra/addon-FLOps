@@ -11,8 +11,7 @@ Its CPU utilization is constantly at a very low level.
 The orchestrator selected and deployed the image builder service on cluster B.
 That is why it is the only busy device during the initial image build phase.
 Notably, this scheduling decision seems to be deterministic.
-The orchestrator selected Cluster B for every single run.
-FLOps does not tell the orchestrator to use the same cluster for the image builders.
+The orchestrator independently selected Cluster B for every single run.
 Once FL actor deployment and training start, CPU utilization gets distributed among both cluster nodes.
 Figure \ref{fig:eval_7_mem} shows the memory utilization of the devices.
 The memory stays stable when no workloads are performed on a device, which is the case for the root at all times and for cluster-A while cluster-B is building the images. 
@@ -26,9 +25,10 @@ In the middle of the build process, cluster B pushes the built base image to the
 Cluster-B pushes the FL-actor images without a significant increase because the common base layers are reused.
 The disk space of cluster-A only starts increasing when the FL actors are deployed on it.
 Figures \ref{fig:eval_7_net_received} and \ref{fig:eval_7_net_send} show the received and sent network changes on the devices, matching the disk space changes.
-
-The FLOps stages of the experiment (7) do not show any remarkable outliers and resemble the base case.
+The FLOps stages seen in Figure \ref{fig:eval_7_stage_durations} of experiment (7) do not show any remarkable outliers and resemble the base case.
 The only difference is that the project and its stages take longer due to the weaker hardware.
+Project stages on our multi-cluster setup take approximately 0.67 to 7.5 (average 2.88) times longer than on the monolith setup.
+Because stages have different durations and weights the overall runtime of a project only increased by approximately 1.67 times.
 The final training results are equivalent to (1).
 
 
@@ -61,16 +61,23 @@ The final training results are equivalent to (1).
 \begin{figure}[p]
     \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
         \centering
-        \includegraphics[width=0.95\paperwidth]{evaluations/experiment_7/net_received.pdf}
+        \includegraphics[width=0.83\paperwidth]{evaluations/experiment_7/net_received.pdf}
         \caption{Experiment 7: Received Network}
         \label{fig:eval_7_net_received}
     \end{adjustwidth}
 
     \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
         \centering
-        \includegraphics[width=0.95\paperwidth]{evaluations/experiment_7/net_sent.pdf}
+        \includegraphics[width=0.83\paperwidth]{evaluations/experiment_7/net_sent.pdf}
         \caption{Experiment 7: Send Network}
         \label{fig:eval_7_net_send}
+    \end{adjustwidth}
+
+    \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
+        \centering
+        \includegraphics[width=0.80\paperwidth]{evaluations/experiment_7/stage_durations.pdf}
+        \caption{Experiment 7: Stage Durations}
+        \label{fig:eval_7_stage_durations}
     \end{adjustwidth}
 \end{figure}
 
@@ -105,22 +112,29 @@ In (8), the figure clearly shows that the CPU is utilized more and distributed m
 This is the case because each cluster gets its own cluster aggregator and set of learners.
 This more homogeneous utilization also applies to memory, as Figure \ref{fig:eval_8_mem} shows.
 All other metrics show a similar change from (7) to (8) as from (1) to (6).
-This includes disk space, net IO, stage durations, and training results.
+This includes disk space, net IO, stage durations (Figure \ref{fig:eval_8_stage_durations}), and training results.
 These findings prove that FLOps can perform clustered HFL on distributed multi-cluster devices.
 
 
 \begin{figure}[p]
     \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
         \centering
-        \includegraphics[width=0.95\paperwidth]{evaluations/experiment_8/cpu.pdf}
+        \includegraphics[width=0.85\paperwidth]{evaluations/experiment_8/cpu.pdf}
         \caption{Experiment 8: Multi-Cluster HFL CPU Utilization}
         \label{fig:eval_8_cpu}
     \end{adjustwidth}
 
     \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
         \centering
-        \includegraphics[width=0.95\paperwidth]{evaluations/experiment_8/mem.pdf}
+        \includegraphics[width=0.85\paperwidth]{evaluations/experiment_8/mem.pdf}
         \caption{Experiment 8: Multi-Cluster HFL Memory Utilization}
         \label{fig:eval_8_mem}
+    \end{adjustwidth}
+
+    \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
+        \centering
+        \includegraphics[width=0.80\paperwidth]{evaluations/experiment_8/stage_durations.pdf}
+        \caption{Experiment 8: Stage Durations}
+        \label{fig:eval_8_stage_durations}
     \end{adjustwidth}
 \end{figure}
