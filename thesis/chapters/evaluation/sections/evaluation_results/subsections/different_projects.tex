@@ -14,7 +14,8 @@ Extended training periods lead to better results in this case.
 \begin{figure}[t]
     \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
         \centering
-        \includegraphics[width=0.85\paperwidth]{eval_2_simple_large_cpu_and_mem.png}
+        % \includegraphics[width=0.85\paperwidth]{eval_2_simple_large_cpu_and_mem.png}
+        \includegraphics[width=0.90\paperwidth]{evaluations/experiment_2/cpu_mem.pdf}
         \caption{Experiment 2: CPU \& Memory}
         \label{fig:eval_2_cpu_mem}
     \end{adjustwidth}
@@ -35,32 +36,32 @@ These heavy dependencies are also visible in the network IO in Figure \ref{fig:e
 The garbage collection is strongly present and visible in this case.
 The tiny number of learners and training rounds lead to a small accuracy of 40\% of the final models.
 
-As a result, these experiments prove that FLOps can handle different FL training configurations using various ML frameworks, repositories, and datasets.
+These experiments prove that FLOps can handle different FL training configurations using various ML frameworks, repositories, and datasets.
 They also unveil that using popular classic ML libraries might be unrealistic for resource-constrained edge devices.
 Thus, libraries that are dedicated to restricted devices should be analyzed and tried out as future work.
 
-\begin{figure}[H]
+
+\begin{figure}[p]
     \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
         \centering
-        \includegraphics[width=0.80\paperwidth]{eval_5_simple_pytorch_cpu_and_mem.png}
+        % \includegraphics[width=0.80\paperwidth]{eval_5_simple_pytorch_cpu_and_mem.png}
+        \includegraphics[width=0.85\paperwidth]{evaluations/experiment_5/cpu_mem.pdf}
         \caption{Experiment 5: CPU \& Memory}
         \label{fig:eval_5_cpu_mem}
     \end{adjustwidth}
-\end{figure}
 
-\begin{figure}[H]
     \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
         \centering
-        \includegraphics[width=0.80\paperwidth]{eval_5_simple_pytorch_disk_space.png}
+        % \includegraphics[width=0.80\paperwidth]{eval_5_simple_pytorch_disk_space.png}
+        \includegraphics[width=0.85\paperwidth]{evaluations/experiment_5/disk_linear.pdf}
         \caption{Experiment 5: Disk Space}
         \label{fig:eval_5_disk_space}
     \end{adjustwidth}
-\end{figure}
 
-\begin{figure}[H]
     \begin{adjustwidth}{-0.2\paperwidth}{-0.2\paperwidth}
         \centering
-        \includegraphics[width=0.80\paperwidth]{eval_5_simple_pytorch_net_io.png}
+        % \includegraphics[width=0.80\paperwidth]{eval_5_simple_pytorch_net_io.png}
+        \includegraphics[width=0.85\paperwidth]{evaluations/experiment_5/net_io.pdf}
         \caption{Experiment 5: Network IO}
         \label{fig:eval_5_net_io}
     \end{adjustwidth}
