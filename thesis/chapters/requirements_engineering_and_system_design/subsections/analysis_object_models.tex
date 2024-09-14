@@ -75,7 +75,7 @@ It further trains and evaluates the model.
 It calls its linked data manager to prepare the data and retrieve it once it is ready.
 The data itself should not be part of the repository.
 The prepare data method will call a FLOps method that will be added during FL augmentation.
-The user has to define in prepareData how to pre-process the retrieved data for individual training.
+The user has to define in \texttt{prepareData} how to pre-process the retrieved data for individual training.
 Both managers have an abstract parent class that users can import during implementation for guidelines.
 These templates are available as part of the FLOps Utils pip package \cite{flops_utils_pip}.
 
@@ -133,7 +133,7 @@ The FL learners are project services that perform the FL training on local data.
 They fetch locally stored data, connect to the aggregator, and perform FL activities such as training.
 The learner uses the code found in the model and data managers and wraps itself around their implemented interface methods.
 As a result, users do not need to implement the FL (boilerplate) code themselves.
-Therefore, a learner's getParameters method uses the getParameters method described in the user's ML repository with additional logic around it.
+Therefore, a learner's \texttt{getParameters} method uses the \texttt{getParameters} method described in the user's ML repository with additional logic around it.
 Learners also notify other components about their progress or failures.
 
 \begin{figure}[t]

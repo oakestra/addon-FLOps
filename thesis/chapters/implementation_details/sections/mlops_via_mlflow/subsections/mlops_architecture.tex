@@ -15,7 +15,7 @@ After every training round, the aggregator logs lightweight artifacts like metri
 In addition, the aggregator stores exactly one global model copy locally.
 After every round, the aggregator checks if the new model's performance is better or worse.
 The aggregator will update its local model if the new model is better.
-At the end of the last training round, the aggregator sends the trained global model to the artifact store.
+At the end of the last training round, the aggregator sends the best trained global model to the artifact store.
 
 An MLflow run represents an individual execution of (usually ML) code.
 Each run can collect various pieces of information, such as metrics, hyperparameters, or custom tags.

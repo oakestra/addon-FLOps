@@ -39,7 +39,7 @@ It is ideal for lightweight environments that should only include necessary (cus
 Conda is also implemented in Python.
 Thus, the dependency resolution process speed remains a bottleneck.
 Mamba \cite{docs:mamba} is a reimplementation of Conda in C++.
-This allows Mamba to resolve dependencies a lot faster than Conda.
+This allows Mamba to resolve dependencies a significantly faster than Conda.
 Similarly to Miniconda, Micromamba \cite{docs:micromamba} is a minimal distribution of Mamba.
 
 Additionally, there is no single unified source for packages or standard for building such packages.
@@ -75,7 +75,6 @@ Besides the complexity of Python's dependency landscape, ML dependencies can be 
         \label{table:conda_python_comparison}
     \end{changemargin}
 \end{figure}
-
 Table \ref{table:conda_python_comparison} shows four pulled images and their sizes.
 All images use Python version 3.12.4.
 The default Python image is one GB in size.
@@ -88,7 +87,7 @@ Note that these are the pulled docker image sizes, not the compressed registry o
 Table \ref{table:ml_libs_images_compared} shows a selection of pulled images of popular ML tools.
 All images are the latest official images by the ML tool providers, except scikit-learn.
 These images can vary enormously in size.
-Some of them require a lot of disk space and bandwidth to pull.
+Some of them require several GBs of disk space and bandwidth to pull.
 Any FLOps image built on top of these dependencies will be even larger due to the additional FL and MLOps dependencies.
 
 \begin{figure}[t]

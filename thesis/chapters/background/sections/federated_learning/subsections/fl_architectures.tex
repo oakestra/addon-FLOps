@@ -41,7 +41,7 @@ CFL can form clusters based on local data distribution, training latency, availa
 The issue of the singular aggregator as a bottleneck persists.
 The main challenge for CFL is choosing a suitable clustering strategy and criteria for the concrete use case.
 If the criteria are biased, updates from preferred clusters might be heavily favored, resulting in a biased global model with bad generalization.
-Another task properly profiling the nodes to match them to the correct cluster.
+Another task is to properly profile the nodes to match them to the correct cluster.
 The entire cluster suffers if a slow outlier is present in a cluster.
 Node properties can vary over time, so cluster membership has to be dynamic.
 Too intrusive profiling can lead to compromised privacy.
@@ -50,10 +50,10 @@ CFL can be combined with other architectures.
 A downside of CFL is that a proper clustering strategy is use-case-dependent and challenging to optimize.
 CFL does not really solve scalability issues on its own.
 Its clustering overhead becomes critical with larger numbers of nodes.
-More information about CFL is available in \cite{
+\cite{
     paper:cluster_based_secure_aggregation_for_fl,
     paper:fedat_high_performance_communication_efficient_fl_with_asynch_tiers,
-    book:fl,paper:decentralized_edge_intelligence_dynamic_resource_allocation_framework_hfl}.
+    book:fl,paper:decentralized_edge_intelligence_dynamic_resource_allocation_framework_hfl}
 
 \subsubsection{Hierarchical FL}
 \begin{figure}[b]
@@ -89,13 +89,13 @@ More components lead to more transmitted messages.
 These messages all need to be secured and encrypted.
 With more components and nodes, adversaries can take advantage of more possible backdoors.
 HFL provides a powerful way to improve scalability for FL if done right.
-Additional information and interesting uses of HLF are available in \cite{
+\cite{
     paper:deploying_fl_in_hierarchical_edge_architecture,
     paper:hfl_with_momentum_acceleration_in_multi_tier_networks,
     paper:hfl_with_privacy,
     paper:decentralized_edge_intelligence_dynamic_resource_allocation_framework_hfl,
     book:fl,
-    hpfl_over_massive_mobile_edge_computing_networks}.
+    hpfl_over_massive_mobile_edge_computing_networks}
 
 
 \subsubsection{Decentralized FL}
