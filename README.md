@@ -1,4 +1,10 @@
-# FLOps Management
+# FLOps 
+
+The documentation is a work in progress.
+
+Please take a look at the [releases](https://github.com/oakestra/addon-FLOps/releases).
+
+<!-- # FLOps Management
 <img src="https://github.com/oakestra/plugin-FLOps-management/assets/65814168/c8ba7bce-634e-46a3-a62c-5c152b7f4829" alt="Description of image" width="50%" height="auto">
 
 ## FLOps Manager
@@ -31,9 +37,9 @@ TODO/WIP
 
 
 
-TODO  update readme
+TODO  update readme -->
 
-# FLOps Project Components
+<!-- # FLOps Project Components
 <img src="https://github.com/oakestra/plugin-FLOps-project-components/assets/65814168/40cccf6c-25fc-437d-bae4-7f799b7f326c" alt="Description of image" width="50%" height="auto">
 
 A FLOps Project is a logical unit that groups together all related FLOps components that are necessary to fulfill a concrete user FLOps request.
@@ -58,4 +64,4 @@ Thus supporting multiple FLOps projects and components running at the same time 
 - The FL Server that aggregates the Learner updates.
 
 ## FL Learner
-- The FL Client that trains the model and sends its updates ot the aggregator.
+- The FL Client that trains the model and sends its updates ot the aggregator. -->
