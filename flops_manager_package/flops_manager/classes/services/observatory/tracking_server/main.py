@@ -53,7 +53,7 @@ class TrackingServer(FLOpsService):
                     service_namespace=self.namespace,
                 ),
                 compute=SlaCompute(
-                    code="ghcr.io/oakestra/addon-flops/tracking-server:thesis",
+                    code="ghcr.io/oakestra/addon-flops/tracking-server:latest",
                     cmd=" ".join(
                         (
                             "mlflow",

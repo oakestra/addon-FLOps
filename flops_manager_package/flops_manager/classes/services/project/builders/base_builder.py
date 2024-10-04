@@ -75,7 +75,7 @@ class FLOpsBaseImageBuilder(FLOpsProjectService, abc.ABC):
                     service_namespace=self.namespace,
                 ),
                 compute=SlaCompute(
-                    code="ghcr.io/oakestra/addon-flops/image-builder:thesis",
+                    code="ghcr.io/oakestra/addon-flops/image-builder:latest",
                     one_shot_service=True,
                     cmd=self._prepare_cmd(),
                 ),
