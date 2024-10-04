@@ -8,7 +8,6 @@
 import sys
 
 import datasets  # type: ignore
-
 from flops_utils.logging import logger
 
 

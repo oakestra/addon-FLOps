@@ -3,7 +3,6 @@ import socket
 import sys
 
 import paho.mqtt.client as paho_mqtt
-
 from flops_utils.logging import logger
 from flops_utils.mqtt_topics import SupportedTopic
 

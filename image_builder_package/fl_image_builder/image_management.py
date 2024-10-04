@@ -20,9 +20,7 @@ def build_image(
     should_notify_observer: bool = False,
     build_cmd_addition: str = "",
 ) -> None:
-    image_name_with_tag = (
-        image_name_with_tag or build_directory or context.get_image_name()
-    )
+    image_name_with_tag = image_name_with_tag or build_directory or context.get_image_name()
     cwd = pathlib.Path.cwd()
     # Important: Be very careful how and where you run buildah.
     # If you run buildah incorrectly it can easily kill your host system.

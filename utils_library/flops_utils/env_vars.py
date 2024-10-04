@@ -5,9 +5,7 @@ from flops_utils.logging import logger
 
 DOCKER_HOST_IP_LINUX = "172.17.0.1"
 
-_ERROR_MESSAGE = (
-    "Terminating. Make sure to set the environment variables first. Missing: "
-)
+_ERROR_MESSAGE = "Terminating. Make sure to set the environment variables first. Missing: "
 
 
 def get_env_var(name: str, default: str = "") -> str:
