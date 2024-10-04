@@ -5,7 +5,7 @@ gitpython ~= 3.1.42
 # Might be worth investigating as FUTURE WORK.
 #mlflow-skinny ~= 2.12.1
 mlflow ~= 2.12.1
-git+https://github.com/Malyuk-A/tmp_flops_utils.git@main
+git+https://github.com/oakestra/addon-FLOps.git@main#subdirectory=utils_library
 
 # Not used because pydantic needs rust and other tooling which would further bload the current slim base image.
 # pydantic ~= 2.6.4 

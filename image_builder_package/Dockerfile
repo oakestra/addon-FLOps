@@ -20,6 +20,6 @@ RUN conda install -y \
         gitpython>=3.1.42 \
         mlflow>=2.12.1
 
-RUN pip install --no-cache-dir git+https://github.com/Malyuk-A/tmp_flops_utils.git@main
+RUN pip install --no-cache-dir git+https://github.com/oakestra/addon-FLOps.git@main#subdirectory=utils_library
 
 COPY /fl_image_builder /image_builder

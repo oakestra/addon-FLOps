@@ -1,2 +1,2 @@
 flwr_datasets == 0.1.0
-git+https://github.com/Malyuk-A/tmp_flops_utils.git@main
+git+https://github.com/oakestra/addon-FLOps.git@main#subdirectory=utils_library

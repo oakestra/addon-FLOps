@@ -35,11 +35,6 @@ ENV FLOPS_MQTT_BROKER_URL=flops_mqtt
 
 ENV SYSTEM_MANAGER_PORT=10000
 
-RUN poetry add git+https://github.com/Malyuk-A/tmp_flops_utils.git@main
-#RUN poetry add git+https://github.com/oakestra/addon-FLOps.git@main#subdirectory=utils_library/flops_utils
-# !!!!!!!!!!!!!! TODO test if this is infact working as expected, if so, continue with migrating futher places wher flops_utils is used 
-# Do not forget the CLI
-# Once this is confirmed to be working, put the legacy project in private mode,
-# once this is also working maybe even delete the legacy project
+RUN poetry add git+https://github.com/oakestra/addon-FLOps.git@main#subdirectory=utils_library
 
 CMD ["poetry", "run", "python", "main.py"]
