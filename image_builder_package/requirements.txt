@@ -1,6 +1,8 @@
 requests ~=2.28.1
 gitpython ~= 3.1.42
-# NOTE: TODO add comment if things work out about how skinny works and the full fledged thing needs a ton of breaking depenendcies, etc.
+# NOTE: There exists a more light-weight option for mlflow.
+# However, it comes with many missing and breaking depenendcies, etc.
+# Might be worth investigating as FUTURE WORK.
 #mlflow-skinny ~= 2.12.1
 mlflow ~= 2.12.1
 git+https://github.com/Malyuk-A/tmp_flops_utils.git@main

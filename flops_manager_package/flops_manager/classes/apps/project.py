@@ -32,8 +32,6 @@ class _TrainingConfiguration(BaseModel):
     )
     training_cycles: int = Field(
         default=1,
-        # TODO check naming with ML/FL naming conventions
-        # Maybe "period, round, cycle" are already coined and mean something different.
         description="""
         (Only applicable for the 'hierarchical' mode.)
         The number of training & evaluation rounds performed between

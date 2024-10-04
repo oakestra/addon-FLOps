@@ -44,14 +44,10 @@ class SlaConstraint(BaseModel):
 
 class LatencyConstraint(SlaConstraint):
     type = "latency"
-    # TODO
-    pass
 
 
 class GeoConstraint(SlaConstraint):
     type = "geo"
-    # TODO
-    pass
 
 
 class AddonConstraint(SlaConstraint):

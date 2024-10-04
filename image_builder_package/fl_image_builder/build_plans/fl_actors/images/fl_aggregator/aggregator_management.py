@@ -61,7 +61,10 @@ def handle_aggregator(
 
     try:
         model_manager = model_manager or get_model_manager()
-        if not aggregator_context.track_locally and aggregator_context.should_use_mlflow:
+        if (
+            not aggregator_context.track_locally
+            and aggregator_context.should_use_mlflow
+        ):
             mlflow.set_tracking_uri(aggregator_context.mlflow_tracking_server_url)
         if aggregator_context.should_use_mlflow:
             # NOTE: A MLflow experiment consists of multiple runs.
@@ -73,7 +76,9 @@ def handle_aggregator(
             aggregator_context=aggregator_context,
             model_manager=model_manager,
             mlflow_experiment_id=(
-                mlflow_experiment.experiment_id if aggregator_context.should_use_mlflow else None
+                mlflow_experiment.experiment_id
+                if aggregator_context.should_use_mlflow
+                else None
             ),
             # NOTE: The Flower Strategy lacks the notion of the number of expected training rounds.
             requested_total_number_of_training_rounds=aggregator_context.training_iterations,
@@ -82,8 +87,11 @@ def handle_aggregator(
             min_evaluate_clients=aggregator_context.min_evaluate_clients,
             # NOTE: Instead of waiting for a random Learner to provide the init params.
             # We let the Aggregator set the init params.
-            # TODO: add paper reference - that shows that
-            # setting init params can give a massive boost/benefit.
+            #
+            # Paper - 2022 - Nguyen et al.
+            # "Where to Begin?
+            # On the Impact of Pre-Training and Initialization in Federated Learning"
+            # This paper proves that setting init params can give a massive boost/benefit.
             # (We are not doing anything fancy here yet - but this can be easily enhanced.)
             #
             # This also enables us to chain together multiple training cycles,
@@ -98,6 +106,8 @@ def handle_aggregator(
             # More info: https://discuss.flower.ai/t/how-do-i-start-from-a-pre-trained-model/73/2
             # TODO: Add a check in the builder to verify that the user provided code
             # (the get_params() method) can be properly transformed into Flower Parameters.
+            # I.e. verify that the user provided code fits our FLOps requirements
+            # (structural, methods, etc.)
             initial_parameters=fl.common.ndarrays_to_parameters(
                 model_manager.get_model_parameters()  # type: ignore
             ),
