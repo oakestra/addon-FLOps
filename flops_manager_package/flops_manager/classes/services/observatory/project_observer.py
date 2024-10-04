@@ -50,7 +50,7 @@ class FLOpsProjectObserver(FLOpsService):
                     service_namespace=self.namespace,
                 ),
                 compute=SlaCompute(
-                    code="ghcr.io/oakestra/addon-flops/project-observer:latest",
+                    code="ghcr.io/oakestra/addon-flops/project-observer:thesis",
                     cmd=" ".join(
                         (
                             FLOPS_SERVICE_CMD_PREFIX,
