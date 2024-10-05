@@ -1,3 +1,5 @@
+# NOTE: This logging file provides a common logger utility for all FLOps components.
+# This avoid the risk of creating divergent duplicates of loggers in different places.
 # Reference:
 # https://alexandra-zaharia.github.io/posts/make-your-own-custom-color-formatter-with-python-logging/
 

@@ -40,6 +40,11 @@ class TimeFrame:
 
 @dataclass
 class Timer:
+    """
+    This custom timer can be used to easily record how long specific parts of code execution take.
+    It is currently only used by the image builder to track the duration of individual steps.
+    """
+
     time_stamps: Dict[str, datetime] = field(default_factory=dict)
     time_frames: Dict[str, TimeFrame] = field(default_factory=dict)
 

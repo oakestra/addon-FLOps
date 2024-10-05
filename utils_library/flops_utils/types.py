@@ -6,15 +6,17 @@ class CustomEnum(enum.Enum):
         return self.value
 
 
-# These flavors are a subset of MLflow's model flavors.
-# They are used to decide which MLflow model flavor to use.
-# https://mlflow.org/docs/latest/models.html#built-in-model-flavors
 class MLModelFlavor(str, enum.Enum):
+    """These flavors are a subset of MLflow's model flavors.
+    They are used to decide which MLflow model flavor to use.
+    https://mlflow.org/docs/latest/models.html#built-in-model-flavors
+    """
+
     SKLEARN = "sklearn"  # Scikit-learn
     PYTORCH = "pytorch"
     TENSORFLOW = "tensorflow"
     KERAS = "keras"
-    # This list can be further expanded.
+    # This list can be further expanded to allow further libraries & frameworks.
 
 
 class FLOpsMode(str, enum.Enum):

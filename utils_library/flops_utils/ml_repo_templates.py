@@ -7,6 +7,7 @@ class DataManagerTemplate(ABC):
     @abstractmethod
     def _prepare_data(self) -> Any:
         """Calls the load_ml_data function and does data preprocessing, etc. (optional)
+
         The Learner does not yet have the data from the worker node.
         To get this data please use the 'load_ml_data' function which can be imported like this:
         ```
@@ -18,6 +19,7 @@ class DataManagerTemplate(ABC):
     @abstractmethod
     def get_data(self) -> Tuple[Any, Any]:
         """Get the necessary data for training and evaluation.
+
         This data has to be already prepared/preprocessed.
 
         This method is intended to be called by the ModelManager.
@@ -32,12 +34,13 @@ class ModelManagerTemplate(ABC):
     @abstractmethod
     def set_model_data(self) -> None:
         """Gets the data from the DataManager and makes it available to the model.
+
         Do not include this method call in the ModelManager init function.
         The aggregator also needs the model but does not have access to the data.
 
         This function will be called by the FLOps Learner only.
 
-        Heavily depends on the underlying model and ML library.
+        It heavily depends on the underlying model and ML library.
 
         Examples: ()
         - self.trainloader, self.testloader = DataManager().get_data()
@@ -73,9 +76,10 @@ class ModelManagerTemplate(ABC):
 
         Examples:
         - self.model.set_weights(parameters)
+
         - params_dict = zip(self.model.state_dict().keys(), parameters)
-          state_dict = OrderedDict({k: torch.tensor(v) for k, v in params_dict})
-          self.model.load_state_dict(state_dict, strict=True)
+        - state_dict = OrderedDict({k: torch.tensor(v) for k, v in params_dict})
+        - self.model.load_state_dict(state_dict, strict=True)
         """
         pass
 

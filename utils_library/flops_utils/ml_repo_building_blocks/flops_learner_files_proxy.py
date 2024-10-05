@@ -1,6 +1,6 @@
 # Note: This proxy is used to provide ML repo developers/users with stub FLOps Learner components.
 # E.g. The ML repo developer does not have access to any data of the worker nodes yet.
-# This data will be fetched by the Learner's data_loading from the Data Manager Sidecar.
+# This data will be fetched by the Learner's data_loading from the Data Manager Sidecar/ML-Server.
 # This data_loading is part of the Learner image and should be abstracted away from the ML repo.
 # To be able to include the data_loading methods in the ML repo code these mocks are provided.
 # These mocks will be replaced with the real implementation during the FLOps image build process.

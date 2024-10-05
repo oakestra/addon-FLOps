@@ -1,3 +1,9 @@
+# NOTE: This is the FLOps Management Suite
+# It contains all managerial FLOps components.
+# As of now all of them are part of this single docker compose, thus run on a single machine.
+# For simplicity sake, it is currently configured to be launched on the same machine as the Oakestra Root Orchestrator.
+# If the need arises to split those components up between multiple machines this approach needs to be reworked.
+
 version: "3.3"
 
 name: flops_management
@@ -109,6 +115,8 @@ volumes:
 # an easy solution is to place the flops services into the same docker network.
 # Otherwise the flops services cannot be reached by the RO services.
 # https://stackoverflow.com/a/42114724
+# If we want to decouple them and host the FLOps services on different machines
+# this networking needs to be reworked.
 networks:
   root_orchestrator_default:
     external: true

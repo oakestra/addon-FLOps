@@ -39,6 +39,10 @@ class Topic:
 
 
 class SupportedTopic(CustomEnum):
+    """
+    This enum class represent all MQTT topics that the FLOps Manager supports.
+    """
+
     PROJECT_OBSERVER_FAILED = str(Topic(subject=Subject.PROJECT_OBSERVER, status=Status.FAILED))
 
     FL_ACTORS_IMAGE_BUILDER_STARTED = str(

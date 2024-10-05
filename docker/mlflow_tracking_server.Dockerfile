@@ -1,7 +1,7 @@
 FROM python:3.10-slim-buster
 LABEL org.opencontainers.image.source=https://github.com/oakestra/addon-flops
 
-# To be able to use MySQL for MLflow we need to install multiple python dependencies.
+# To be able to use MySQL for MLflow we need to install multiple Python dependencies.
 RUN pip install \
         mlflow==2.12.1 \
         pymysql==1.1.0 \
