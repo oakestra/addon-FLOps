@@ -16,7 +16,7 @@ def load_and_send_data_to_server() -> None:
     #
     # Later in the learner the dataset gets fetched and split up into train and test set.
     # Which is not the best because we currently do not consider/use the original test set at all
-    # and split the original train set into train and test!
+    # and split the original train set into train and test.
     #
     # We could fetch both the train and test, merge them and push them to get a larger dataset.
     partition_type = "train"

@@ -24,7 +24,7 @@ MODEL_URI = DOWNLOADED_MODEL_DIR / MODEL_ARTIFACT_NAME
 
 def _augment_dockerfile() -> None:
     """The MLflow created Dockerfile is not capable to be used
-    for multi-platform (especially arm) builds.
+    for multi-platform (especially ARM) builds.
     We augment it to enable multi-platform support."""
 
     DOCKERFILE_PATH = DOCKERFILE_DIR / "Dockerfile"

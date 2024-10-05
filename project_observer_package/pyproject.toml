@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "project_observer"
 version = "1.0.0"
-description = "The User Interface for the FLOps addon of Oakestra"
+description = "A Project Observer service collects user-intended events and messages in a read-only way based on a specific FLOps project."
 authors = ["Alexander Malyuk <malyuk.alexander1999@gmail.com>"]
 
 [tool.poetry.dependencies]

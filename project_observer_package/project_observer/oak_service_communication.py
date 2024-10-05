@@ -13,7 +13,7 @@ SERVER_IP = "0.0.0.0"
 
 def handle_oak_service_communication() -> None:
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.bind((SERVER_IP, int(SERVER_PORT)))
+    server_socket.bind((SERVER_IP, int(SERVER_PORT)))  # type: ignore
 
     server_socket.listen(1)
     logger.info("Project Observer started")

@@ -24,9 +24,6 @@ WORKDIR /fl_base
 RUN rm Dockerfile requirements.txt
 
 RUN conda install -n base conda-libmamba-solver &&\
-    # NOTE: AFAIK conda supports its classic solver which is (usually)
-    # more reliable, backward compatible, but also slower
-    # and the LibMamba solver which can be a lot faster yet less robust.
     # https://conda.io/projects/conda/en/latest/dev-guide/deep-dives/solvers.html
     # https://conda.github.io/conda-libmamba-solver/user-guide/
     conda config --set solver libmamba &&\

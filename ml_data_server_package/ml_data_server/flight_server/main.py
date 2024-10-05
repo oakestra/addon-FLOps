@@ -31,7 +31,11 @@ class FlightServer(flight.FlightServerBase):
         descriptor = flight.FlightDescriptor.for_path(dataset.encode("utf-8"))
         endpoints = [flight.FlightEndpoint(dataset, [self._location])]
         return flight.FlightInfo(
-            schema, descriptor, endpoints, metadata.num_rows, metadata.serialized_size
+            schema,
+            descriptor,
+            endpoints,
+            metadata.num_rows,
+            metadata.serialized_size,
         )
 
     def list_flights(self, context, criteria):
@@ -47,7 +51,7 @@ class FlightServer(flight.FlightServerBase):
     def do_put(self, context, descriptor, reader, writer):
         dataset = descriptor.path[0].decode("utf-8")
         dataset_path = self._repo / dataset
-        # Read the uploaded data and write to Parquet incrementally
+        # Read the uploaded data and write to Parquet incrementally.
         with dataset_path.open("wb") as sink:
             with parquet.ParquetWriter(sink, reader.schema) as writer:
                 for chunk in reader:
@@ -55,7 +59,7 @@ class FlightServer(flight.FlightServerBase):
 
     def do_get(self, context, ticket):
         dataset = ticket.ticket.decode("utf-8")
-        # Stream data from a file
+        # Stream data from a file.
         dataset_path = self._repo / dataset
         reader = parquet.ParquetFile(dataset_path)
         return flight.GeneratorStream(reader.schema_arrow, reader.iter_batches())

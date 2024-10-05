@@ -51,7 +51,7 @@ def handle_aggregator(
     then a fresh new MM instance gets created just for this training cycle.
 
     If a MM is provided it will get used instead and returned afterwards.
-    NOTE: this MM will be properly changes, e.g. its weights/model updated/trained.
+    NOTE: this MM will be properly changed, e.g. its weights/model updated/trained.
 
     Returns an updated/trained MM and the Flower Strategy object that was used for training.
 
