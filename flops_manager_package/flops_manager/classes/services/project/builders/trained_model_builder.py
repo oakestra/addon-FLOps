@@ -11,7 +11,8 @@ from pydantic import Field
 
 
 class TrainedModelImageBuilder(FLOpsBaseImageBuilder):
-    tracking_server_uri: str = Field(examples=["http://192.168.178.44:7027"])
+    # TODO: Change port back to 7027 once the networking/port bug has been fixed.
+    tracking_server_uri: str = Field(examples=["http://10.30.X.Y:5000"])
     run_id: str = Field(description="The MLflow run-id of the trained model")
 
     def _prepare_cmd(self) -> str:

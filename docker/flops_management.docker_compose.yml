@@ -30,7 +30,7 @@ services:
     ports:
       - "5072:5072"
     networks:
-      - root_orchestrator_default
+      - oakestra_default
   
   flops_image_registry:
     image: image_registry
@@ -43,7 +43,7 @@ services:
     ports:
       - "5073:5073"
     networks:
-      - root_orchestrator_default
+      - oakestra_default
 
   flops_mqtt:
     image: eclipse-mosquitto:2
@@ -58,7 +58,7 @@ services:
       - /mosquitto/log
 
   flops_db:
-    image: mongo:3.6
+    image: mongo:5.0
     container_name: flops_db
     hostname: flops_db
     ports:
@@ -118,5 +118,5 @@ volumes:
 # If we want to decouple them and host the FLOps services on different machines
 # this networking needs to be reworked.
 networks:
-  root_orchestrator_default:
+  oakestra_default:
     external: true

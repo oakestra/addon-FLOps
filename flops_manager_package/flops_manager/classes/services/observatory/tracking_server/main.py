@@ -15,7 +15,8 @@ from flops_manager.utils.sla.components import (
 )
 from pydantic import AliasChoices, Field
 
-TRACKING_SERVER_PORT = 7027
+# TODO: Return back to 7027 after the networking port bug is resolved.
+TRACKING_SERVER_PORT = 5000
 
 
 class TrackingServer(FLOpsService):
@@ -74,6 +75,7 @@ class TrackingServer(FLOpsService):
             details=SlaDetails(
                 rr_ip=self.ip,  # type: ignore
                 resources=SlaResources(memory=200, vcpus=1, storage=0),
-                port=str(TRACKING_SERVER_PORT),
+                # TODO: Revert back to 7027 once the networking/port bug is fixed.
+                port=f"7027:{TRACKING_SERVER_PORT}",
             ),
         )
