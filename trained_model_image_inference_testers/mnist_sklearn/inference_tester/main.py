@@ -1,13 +1,20 @@
 import json
+import sys
 import time
 
 import numpy
 import pandas as pd
 import requests
 from datasets import load_dataset
-from flops_utils.env_vars import get_env_var
 from flops_utils.logging import logger
 from icecream import ic
+
+model_server_url = sys.argv[1]
+
+if not model_server_url:
+    logger.fatal(f"Please provide a proper 'Model Server URL' (e.g. http://<ip>:8080)'")
+    sys.exit(1)
+
 
 mnist = load_dataset("mnist", trust_remote_code=True)
 
@@ -24,10 +31,6 @@ while True:
     flattened_image_data = image_array.flatten()
     df = pd.DataFrame([flattened_image_data])
     csv_data = df.to_csv(index=False)
-
-    model_server_url = get_env_var(
-        name="TRAINED_MODEL_URL",  # Example: "http://192.168.178.44:8080"
-    )
 
     logger.info("Sending inference request to the trained model container")
     headers = {"Content-Type": "text/csv"}
