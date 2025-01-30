@@ -1,5 +1,8 @@
 import hashlib
 
+from flops_utils.types import AggregatorType
+from pydantic import Field
+
 from flops_manager.classes.services.project.aggregators.classic_aggregator import (
     ClassicFLAggregator,
 )
@@ -15,8 +18,6 @@ from flops_manager.utils.sla.components import (
     SlaNames,
     SlaResources,
 )
-from flops_utils.types import AggregatorType
-from pydantic import Field
 
 
 class ClusterFLAggregator(ClassicFLAggregator):

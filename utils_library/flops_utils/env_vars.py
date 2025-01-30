@@ -10,7 +10,7 @@ _ERROR_MESSAGE = "Terminating. Make sure to set the environment variables first.
 
 def get_env_var(name: str, default: str = "") -> str:
     env_var = os.environ.get(name) or default
-    if env_var is None:
+    if env_var is None or env_var == "":
         logger.fatal(f"{_ERROR_MESSAGE}'{name}'")
         sys.exit(1)
     return env_var

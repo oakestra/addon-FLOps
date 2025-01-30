@@ -1,9 +1,10 @@
 import abc
 
+from pydantic import AliasChoices, Field
+
 from flops_manager.classes.apps.app_base import FLOpsApp
 from flops_manager.database.common import retrieve_from_db_by_customer_id
 from flops_manager.utils.sla.components import SlaComponentsWrapper, SlaCore, SlaNames
-from pydantic import AliasChoices, Field
 
 
 class FLOpsCustomerFacingApp(FLOpsApp, abc.ABC):
@@ -16,7 +17,8 @@ class FLOpsCustomerFacingApp(FLOpsApp, abc.ABC):
             core=SlaCore(
                 customerID=self.customer_id,
                 names=SlaNames(
-                    # TODO investigate if this can lead to name collisions
+                    # TODO(malyuka): investigate
+                    # if this can lead to name collisions
                     # keep in mind: 1 observer for 1 user - so we could be fine
                     app_name=self.namespace,
                     app_namespace=self.namespace,

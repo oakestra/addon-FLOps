@@ -5,6 +5,7 @@ import time
 import paho.mqtt.client as paho_mqtt
 from flops_utils.logging import logger
 from flops_utils.mqtt_topics import SupportedTopic, Target
+
 from project_observer.ui_context import get_ui_context
 
 _mqtt_client = None
@@ -16,7 +17,6 @@ def _on_new_message(client, userdata, message) -> None:
 
 
 def _reconnect(client):
-
     FIRST_RECONNECT_DELAY = 1
     RECONNECT_RATE = 2
     MAX_RECONNECT_COUNT = 12
@@ -40,7 +40,6 @@ def _reconnect(client):
 
 
 def _init_mqtt() -> paho_mqtt.Client:
-
     global _mqtt_client
     _mqtt_client = paho_mqtt.Client(paho_mqtt.CallbackAPIVersion.VERSION2)  # type: ignore
 

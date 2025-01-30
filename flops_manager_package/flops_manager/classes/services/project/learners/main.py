@@ -1,3 +1,5 @@
+from pydantic import Field
+
 from flops_manager.api.service_management import deploy
 from flops_manager.classes.services.project.project_service import FLOpsProjectService
 from flops_manager.image_management.fl_actor_images import (
@@ -19,7 +21,6 @@ from flops_manager.utils.sla.components import (
     SlaNames,
     SlaResources,
 )
-from pydantic import Field
 
 
 class FLLearners(FLOpsProjectService):

@@ -1,5 +1,7 @@
 from typing import Optional
 
+from pydantic import Field
+
 from flops_manager.classes.apps.observatory import FLOpsObservatory
 from flops_manager.classes.apps.project import FLOpsProject
 from flops_manager.classes.services.service_base import FLOpsService
@@ -14,7 +16,6 @@ from flops_manager.utils.sla.components import (
     SlaNames,
     SlaResources,
 )
-from pydantic import Field
 
 
 class FLOpsProjectObserver(FLOpsService):

@@ -1,5 +1,7 @@
 from typing import Optional
 
+from pydantic import BaseModel, Field
+
 from flops_manager.classes.apps.helper import FLOpsHelperApp
 from flops_manager.classes.services.service_base import FLOpsService
 from flops_manager.utils.common import get_shortened_unique_id
@@ -15,7 +17,6 @@ from flops_manager.utils.sla.components import (
     SlaNames,
     SlaResources,
 )
-from pydantic import BaseModel, Field
 
 
 class _MockDataConfiguration(BaseModel):
@@ -62,7 +63,7 @@ class MockDataProvider(FLOpsService):
                 self.mock_data_configuration.dataset_name,
                 str(self.mock_data_configuration.number_of_partitions),
                 self.mock_data_configuration.data_tag,
-                # TODO: add ip (instance IP) option to specify where exactly
+                # TODO(malyuka): add ip (instance IP) option to specify where exactly
                 # to send mock data to
             )
         )

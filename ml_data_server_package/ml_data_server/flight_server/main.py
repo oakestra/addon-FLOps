@@ -13,7 +13,6 @@ DATA_VOLUME = pathlib.Path("/ml_data_server_volume")
 
 
 class FlightServer(flight.FlightServerBase):
-
     def __init__(
         self,
         location=f"grpc://0.0.0.0:{ML_DATA_MANAGER_PORT}",

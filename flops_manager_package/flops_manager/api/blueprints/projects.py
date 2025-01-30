@@ -3,10 +3,11 @@ from typing import Tuple
 
 import flask
 import flask_openapi3
+from flops_utils.logging import colorful_logger as logger
+
 from flops_manager.flops_management.flops_projects import handle_new_flops_project
 from flops_manager.mqtt.sender import notify_project_observer
 from flops_manager.utils.exceptions.main import FLOpsManagerException
-from flops_utils.logging import colorful_logger as logger
 
 projects_blp = flask_openapi3.APIBlueprint(
     "projects",

@@ -3,9 +3,10 @@ from typing import Tuple
 
 import flask
 import flask_openapi3
+from flops_utils.logging import colorful_logger as logger
+
 from flops_manager.flops_management.mock_data_providers import handle_new_mock_data_provider
 from flops_manager.utils.exceptions.main import FLOpsManagerException
-from flops_utils.logging import colorful_logger as logger
 
 mock_data_provider_blp = flask_openapi3.APIBlueprint(
     "mock_data_providers",

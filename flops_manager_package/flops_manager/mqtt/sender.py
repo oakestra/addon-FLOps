@@ -1,6 +1,7 @@
-from flops_manager.mqtt.main import get_mqtt_client
 from flops_utils.logging import colorful_logger as logger
 from flops_utils.mqtt_topics import Target
+
+from flops_manager.mqtt.main import get_mqtt_client
 
 
 def notify_project_observer(

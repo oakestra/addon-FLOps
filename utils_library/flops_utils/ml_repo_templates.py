@@ -3,7 +3,6 @@ from typing import Any, Tuple
 
 
 class DataManagerTemplate(ABC):
-
     @abstractmethod
     def _prepare_data(self) -> Any:
         """Calls the load_ml_data function and does data preprocessing, etc. (optional)
@@ -30,7 +29,6 @@ class DataManagerTemplate(ABC):
 
 
 class ModelManagerTemplate(ABC):
-
     @abstractmethod
     def set_model_data(self) -> None:
         """Gets the data from the DataManager and makes it available to the model.

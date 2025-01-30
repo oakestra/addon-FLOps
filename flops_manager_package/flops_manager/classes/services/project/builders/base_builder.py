@@ -1,5 +1,8 @@
 import abc
 
+from flops_utils.logging import logger
+from pydantic import Field
+
 from flops_manager.classes.services.project.project_service import FLOpsProjectService
 from flops_manager.database.common import retrieve_from_db_by_project_id
 from flops_manager.mqtt.sender import notify_project_observer
@@ -17,8 +20,6 @@ from flops_manager.utils.sla.components import (
     SlaNames,
     SlaResources,
 )
-from flops_utils.logging import logger
-from pydantic import Field
 
 
 class FLOpsBaseImageBuilder(FLOpsProjectService, abc.ABC):
@@ -82,7 +83,7 @@ class FLOpsBaseImageBuilder(FLOpsProjectService, abc.ABC):
             ),
             details=SlaDetails(
                 resources=SlaResources(
-                    # TODO fine-tune -> Currently the Trained-Model Image Builder
+                    # TODO(malyuka): fine-tune -> Currently the Trained-Model Image Builder
                     # has a flaky deployment behavior "NoActiveClustersWithCapacity" is shown
                     # but when undeploy and redeploy manually it works.
                     memory=0,  # 2000,

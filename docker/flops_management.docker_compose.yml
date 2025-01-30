@@ -30,7 +30,7 @@ services:
     ports:
       - "5072:5072"
     networks:
-      - root_orchestrator_default
+      - oakestra
   
   flops_image_registry:
     image: image_registry
@@ -43,7 +43,7 @@ services:
     ports:
       - "5073:5073"
     networks:
-      - root_orchestrator_default
+      - oakestra
 
   flops_mqtt:
     image: eclipse-mosquitto:2
@@ -58,7 +58,7 @@ services:
       - /mosquitto/log
 
   flops_db:
-    image: mongo:3.6
+    image: mongo:8.0
     container_name: flops_db
     hostname: flops_db
     ports:
@@ -111,12 +111,11 @@ volumes:
   vsftpd_logs:
 
 
-# To be able for the root-orchestrator (RO) compose services to reach the flops services
+# To be able for the flops services to reach the root-orchestrator (RO) compose services
 # an easy solution is to place the flops services into the same docker network.
-# Otherwise the flops services cannot be reached by the RO services.
 # https://stackoverflow.com/a/42114724
 # If we want to decouple them and host the FLOps services on different machines
 # this networking needs to be reworked.
 networks:
-  root_orchestrator_default:
+  oakestra:
     external: true

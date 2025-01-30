@@ -1,12 +1,13 @@
 from abc import ABC
 from typing import Optional
 
+from pydantic import AliasChoices, Field
+
 from flops_manager.api.service_management import append_service_to_app, deploy, undeploy
 from flops_manager.classes.apps.app_base import FLOpsApp
 from flops_manager.classes.base import FlOpsOakestraBaseClass
 from flops_manager.database.common import remove_from_db_by_project_id
 from flops_manager.utils.sla.generator import generate_sla
-from pydantic import AliasChoices, Field
 
 
 class FLOpsService(FlOpsOakestraBaseClass, ABC):

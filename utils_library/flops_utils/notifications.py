@@ -25,7 +25,6 @@ def notify_flops_manager(
     error_msg: str = "",
     mqtt_port: int = 9027,
 ) -> None:
-
     payload = msg_payload.copy()
     payload.update(
         {
@@ -33,7 +32,7 @@ def notify_flops_manager(
             **({"error_msg": error_msg} if error_msg else {}),
         }
     )
-    mqtt_client = paho_mqtt.Client(paho_mqtt.CallbackAPIVersion.VERSION1)  # type: ignore
+    mqtt_client = paho_mqtt.Client(paho_mqtt.CallbackAPIVersion.VERSION2)  # type: ignore
     mqtt_client.connect(mqtt_ip, mqtt_port)
     mqtt_client.publish(
         topic=topic.value,

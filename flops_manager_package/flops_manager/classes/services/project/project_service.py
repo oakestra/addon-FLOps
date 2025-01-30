@@ -1,9 +1,10 @@
 from abc import ABC
 from typing import Optional
 
+from pydantic import Field
+
 from flops_manager.classes.apps.project import FLOpsProject
 from flops_manager.classes.services.service_base import FLOpsService
-from pydantic import Field
 
 
 class FLOpsProjectService(FLOpsService, ABC):

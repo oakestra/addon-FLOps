@@ -11,7 +11,6 @@ from utils.arg_parsing import parse_args
 
 
 class Learner(flwr.client.NumPyClient):
-
     def __init__(self):
         logger.debug("Start Learner Init")
         self.model_manager = get_model_manager()

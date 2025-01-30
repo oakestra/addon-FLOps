@@ -34,7 +34,7 @@ def build_image(
     platforms = " ".join(
         [f"--platform {platform.value}" for platform in context.supported_platforms]
     )
-    # TODO read further about buildah options/flags - might improve the build further.
+    # TODO(malyuka): read further about buildah options/flags - might improve the build further.
     build_cmd = " ".join(
         (
             "buildah build",

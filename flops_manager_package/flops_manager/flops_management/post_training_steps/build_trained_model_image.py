@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from flops_utils.logging import colorful_logger as logger
+
 from flops_manager.classes.services.observatory.project_observer import FLOpsProjectObserver
 from flops_manager.classes.services.observatory.tracking_server.management import (
     get_tracking_server,
@@ -12,7 +14,6 @@ from flops_manager.classes.services.project.builders.trained_model_builder impor
 from flops_manager.database.common import retrieve_from_db_by_project_id
 from flops_manager.mqtt.sender import notify_project_observer
 from flops_manager.utils.types import PostTrainingSteps
-from flops_utils.logging import colorful_logger as logger
 
 if TYPE_CHECKING:
     from flops_manager.classes.apps.project import FLOpsProject

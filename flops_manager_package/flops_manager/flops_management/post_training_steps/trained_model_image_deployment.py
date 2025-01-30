@@ -2,11 +2,12 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from flops_utils.logging import colorful_logger as logger
+
 from flops_manager.classes.apps.helper import FLOpsHelperApp
 from flops_manager.classes.services.helper.trained_model import TrainedModel
 from flops_manager.image_management.trained_model_images import get_trained_model_image_name
 from flops_manager.mqtt.sender import notify_project_observer
-from flops_utils.logging import colorful_logger as logger
 
 if TYPE_CHECKING:
     from flops_manager.classes.apps.project import FLOpsProject
