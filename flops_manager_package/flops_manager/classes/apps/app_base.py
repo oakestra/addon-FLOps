@@ -1,10 +1,11 @@
 from abc import ABC
 
+from pydantic import AliasChoices, Field
+
 from flops_manager.api.app_management import create_app
 from flops_manager.classes.base import FlOpsOakestraBaseClass
 from flops_manager.utils.sla.generator import generate_sla
 from flops_manager.utils.types import Application
-from pydantic import AliasChoices, Field
 
 
 class FLOpsApp(FlOpsOakestraBaseClass, ABC):

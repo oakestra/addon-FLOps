@@ -25,7 +25,6 @@ def notify_flops_manager(
     error_msg: str = "",
     mqtt_port: int = 9027,
 ) -> None:
-
     payload = msg_payload.copy()
     payload.update(
         {

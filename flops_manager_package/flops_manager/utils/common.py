@@ -9,7 +9,7 @@ def get_shortened_unique_id(id: str) -> str:
 
 def generate_ip(unique_id: str, object: BaseModel) -> str:
     # NOTE: These numerical gymnastics are intended to avoid IP collisions.
-    # TODO/Future work: this logic needs to be more bullet proof.
+    # TODO(malyuka): /Future work: this logic needs to be more bullet proof.
     # I.e. we need to ask the OAK components for available IPs instead of conjuring one ourselves.
 
     unique_int = int(unique_id, 16) % 65536

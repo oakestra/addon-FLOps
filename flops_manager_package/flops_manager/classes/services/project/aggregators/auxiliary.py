@@ -1,3 +1,5 @@
+from flops_utils.types import AggregatorType
+
 from flops_manager.classes.services.project.aggregators.classic_aggregator import (
     ClassicFLAggregator,
 )
@@ -6,7 +8,6 @@ from flops_manager.classes.services.project.aggregators.cluster_aggregator impor
 )
 from flops_manager.classes.services.project.aggregators.root_aggregator import RootFLAggregator
 from flops_manager.database.common import retrieve_from_db_by_project_id
-from flops_utils.types import AggregatorType
 
 
 def _get_matching_aggregator_class(

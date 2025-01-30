@@ -1,9 +1,10 @@
 from abc import ABC, abstractmethod
 from typing import ClassVar, Optional
 
+from pydantic import BaseModel, Field
+
 from flops_manager.database.common import add_to_db
 from flops_manager.utils.sla.components import SlaComponentsWrapper
-from pydantic import BaseModel, Field
 
 
 class FlOpsOakestraBaseClass(BaseModel, ABC):

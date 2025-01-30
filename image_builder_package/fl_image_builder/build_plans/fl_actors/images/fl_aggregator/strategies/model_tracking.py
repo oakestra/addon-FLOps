@@ -23,7 +23,6 @@ def handle_model_tracking(
     current_rounds_loss: float,
     should_use_mlflow: bool = False,
 ) -> None:
-
     def update_best_found_model():
         strategy.best_found_accuracy = current_rounds_accuracy
         strategy.best_found_loss = current_rounds_loss

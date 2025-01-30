@@ -1,5 +1,7 @@
 from typing import Optional
 
+from pydantic import Field
+
 from flops_manager.classes.apps.helper import FLOpsHelperApp
 from flops_manager.classes.services.service_base import FLOpsService
 from flops_manager.utils.common import generate_ip, get_shortened_unique_id
@@ -12,7 +14,6 @@ from flops_manager.utils.sla.components import (
     SlaNames,
     SlaResources,
 )
-from pydantic import Field
 
 
 class TrainedModel(FLOpsService):
@@ -46,9 +47,9 @@ class TrainedModel(FLOpsService):
             ),
             details=SlaDetails(
                 rr_ip=self.ip,  # type: ignore
-                # TODO: Need adjusting
+                # TODO(malyuka): Need adjusting
                 resources=SlaResources(memory=200, vcpus=1, storage=0),
-                # TODO: Revert back to just TRAINED_MODEL_PORT once the port bug is fixed.
+                # TODO(malyuka): Revert back to just TRAINED_MODEL_PORT once the port bug is fixed.
                 port=f"8088:{TRAINED_MODEL_PORT}",
             ),
         )

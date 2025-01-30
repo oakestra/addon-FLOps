@@ -99,7 +99,7 @@ def handle_aggregator(
             # i.e. all Learner responses fail but the Aggregator continues
             # to fast-forward through his training-rounds.)
             # More info: https://discuss.flower.ai/t/how-do-i-start-from-a-pre-trained-model/73/2
-            # TODO: Add a check in the builder to verify that the user provided code
+            # TODO(malyuka): Add a check in the builder to verify that the user provided code
             # (the get_params() method) can be properly transformed into Flower Parameters.
             # I.e. verify that the user provided code fits our FLOps requirements
             # (structural, methods, etc.)

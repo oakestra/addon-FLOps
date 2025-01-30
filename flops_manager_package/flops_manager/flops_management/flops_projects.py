@@ -1,5 +1,7 @@
 import threading
 
+from flops_utils.logging import colorful_logger as logger
+
 from flops_manager.classes.apps.observatory import FLOpsObservatory
 from flops_manager.classes.apps.project import FLOpsProject
 from flops_manager.classes.services.observatory.project_observer import FLOpsProjectObserver
@@ -7,7 +9,6 @@ from flops_manager.classes.services.project.builders.fl_actors_builder import FL
 from flops_manager.flops_management.training import handle_fl_training_processes
 from flops_manager.image_management.fl_actor_images import check_if_latest_matching_images_exist
 from flops_manager.mqtt.sender import notify_project_observer
-from flops_utils.logging import colorful_logger as logger
 
 
 def handle_new_flops_project(request_data: dict, bearer_token: str) -> None:

@@ -1,12 +1,13 @@
 from typing import List
 
+from flops_utils.types import CustomEnum
+
 from flops_manager.image_management.common import get_flops_image_prefix
 from flops_manager.ml_repo_management import get_sanitize_ml_repo_name
 from flops_manager.registry_management import (
     get_current_registry_image_repo_names,
     get_current_tags_for_image_in_registry,
 )
-from flops_utils.types import CustomEnum
 
 
 class FLActorImageTypes(CustomEnum):

@@ -2,6 +2,9 @@
 
 import json
 
+from flops_utils.logging import colorful_logger as logger
+from flops_utils.mqtt_topics import SupportedTopic
+
 from flops_manager.classes.services.project.aggregators.auxiliary import (
     handle_aggregator_failed,
     handle_aggregator_success,
@@ -14,8 +17,6 @@ from flops_manager.classes.services.project.learners.termination import handle_l
 from flops_manager.mqtt.main import get_mqtt_client
 from flops_manager.mqtt.sender import notify_project_observer
 from flops_manager.utils.exceptions.main import FLOpsManagerException
-from flops_utils.logging import colorful_logger as logger
-from flops_utils.mqtt_topics import SupportedTopic
 
 
 def _on_new_message(client, userdata, message) -> None:
@@ -25,7 +26,6 @@ def _on_new_message(client, userdata, message) -> None:
         topic = message.topic
         logger.debug(f"Received message: '{decoded_message}' for topic '{topic}'")
         match topic:
-
             case SupportedTopic.PROJECT_OBSERVER_FAILED.value:
                 logger.critical(data)
 

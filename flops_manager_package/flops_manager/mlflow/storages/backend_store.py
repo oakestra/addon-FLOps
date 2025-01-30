@@ -1,9 +1,10 @@
 from contextlib import contextmanager
 
 import pymysql
+from flops_utils.logging import colorful_logger as logger
+
 from flops_manager.mlflow.storages.common import get_user_store_name
 from flops_manager.utils.env_vars import BACKEND_STORE_IP
-from flops_utils.logging import colorful_logger as logger
 
 # NOTE/Future Work:
 # Currently the Tracking Server is used as a proxy for both stores,

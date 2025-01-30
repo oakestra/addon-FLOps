@@ -3,9 +3,10 @@ from typing import Tuple
 
 import flask
 import flask_openapi3
+from flops_utils.logging import colorful_logger as logger
+
 from flops_manager.database.main import reset_db
 from flops_manager.utils.exceptions.main import FLOpsManagerException
-from flops_utils.logging import colorful_logger as logger
 
 database_blp = flask_openapi3.APIBlueprint(
     "database",

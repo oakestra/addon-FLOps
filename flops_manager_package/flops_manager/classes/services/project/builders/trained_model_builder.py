@@ -1,3 +1,6 @@
+from flops_utils.logging import logger
+from pydantic import Field
+
 from flops_manager.classes.apps.project import FLOpsProject
 from flops_manager.classes.services.project.builders.base_builder import FLOpsBaseImageBuilder
 from flops_manager.database.common import retrieve_from_db_by_project_id
@@ -6,12 +9,10 @@ from flops_manager.flops_management.post_training_steps.trained_model_image_depl
 )
 from flops_manager.mqtt.sender import notify_project_observer
 from flops_manager.utils.types import PostTrainingSteps
-from flops_utils.logging import logger
-from pydantic import Field
 
 
 class TrainedModelImageBuilder(FLOpsBaseImageBuilder):
-    # TODO: Change port back to 7027 once the networking/port bug has been fixed.
+    # TODO(malyuka): Change port back to 7027 once the networking/port bug has been fixed.
     tracking_server_uri: str = Field(examples=["http://10.30.X.Y:5000"])
     run_id: str = Field(description="The MLflow run-id of the trained model")
 

@@ -3,11 +3,12 @@ from typing import Tuple
 
 import flask
 import flask_openapi3
+from flops_utils.logging import colorful_logger as logger
+
 from flops_manager.classes.services.observatory.tracking_server.management import (
     get_tracking_server,
 )
 from flops_manager.utils.exceptions.main import FLOpsManagerException
-from flops_utils.logging import colorful_logger as logger
 
 tracking_blp = flask_openapi3.APIBlueprint(
     "tracking",

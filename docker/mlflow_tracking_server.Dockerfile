@@ -7,6 +7,6 @@ RUN pip install \
         pymysql==1.1.0 \
         cryptography==42.0.7
 
-# TODO: Turn back to 7027 - once the networking bug is fixed
+# TODO(malyuka): Turn back to 7027 - once the networking bug is fixed
 ENV TRACKING_SERVER_PORT=5000
 EXPOSE $TRACKING_SERVER_PORT

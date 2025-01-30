@@ -7,9 +7,10 @@ from flwr.common import EvaluateRes, FitIns, FitRes, Parameters, Scalar, paramet
 from flwr.server.client_manager import ClientManager
 from flwr.server.client_proxy import ClientProxy
 from flwr.server.strategy.aggregate import weighted_loss_avg
+from utils.aggregator_context import AggregatorContext
+
 from strategies.logging import handle_system_metrics_logging, init_logging, log_project_params
 from strategies.model_tracking import handle_model_tracking
-from utils.aggregator_context import AggregatorContext
 
 
 class FLOpsFedAvg(fl.server.strategy.FedAvg):

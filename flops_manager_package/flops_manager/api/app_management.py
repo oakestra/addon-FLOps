@@ -1,5 +1,7 @@
 from typing import Optional
 
+from pydantic import BaseModel
+
 from flops_manager.api.request_management.custom_http import HttpMethods
 from flops_manager.api.request_management.custom_requests import (
     CustomRequest,
@@ -11,7 +13,6 @@ from flops_manager.api.utils.consts import SYSTEM_MANAGER_URL
 from flops_manager.utils.exceptions.main import FLOpsManagerException
 from flops_manager.utils.exceptions.types import FlOpsExceptionTypes
 from flops_manager.utils.types import SLA, Application
-from pydantic import BaseModel
 
 
 def create_app(
@@ -31,7 +32,7 @@ def create_app(
             custom_headers={"Authorization": bearer_token} if bearer_token else None,
         ),
         aux=RequestAuxiliaries(
-            what_should_happen=f"Create new {app_type }application",
+            what_should_happen=f"Create new {app_type}application",
             show_msg_on_success=True,
             flops_exception_type=FlOpsExceptionTypes.APP_CREATE,
         ),
@@ -49,7 +50,7 @@ def create_app(
         raise FLOpsManagerException(
             flops_exception_type=FlOpsExceptionTypes.APP_CREATE,
             flops_project_id=flops_project_id,
-            text=f"Could not find new {app_type } app after creating it",
+            text=f"Could not find new {app_type} app after creating it",
         )
 
     return new_app

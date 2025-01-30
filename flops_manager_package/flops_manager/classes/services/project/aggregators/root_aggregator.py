@@ -1,3 +1,6 @@
+from flops_utils.logging import colorful_logger as logger
+from flops_utils.types import AggregatorType
+
 from flops_manager.classes.apps.project import FLOpsProject
 from flops_manager.classes.services.project.aggregators.classic_aggregator import (
     ClassicFLAggregator,
@@ -25,8 +28,6 @@ from flops_manager.utils.sla.components import (
     SlaNames,
     SlaResources,
 )
-from flops_utils.logging import colorful_logger as logger
-from flops_utils.types import AggregatorType
 
 
 class RootFLAggregator(ClassicFLAggregator):
@@ -83,7 +84,7 @@ class RootFLAggregator(ClassicFLAggregator):
             ),
         )
 
-    # TODO/FUTURE WORK: Refactor the two methods a bit to reduce code duplication.
+    # TODO(malyuka): /FUTURE WORK: Refactor the two methods a bit to reduce code duplication.
     @classmethod
     def handle_aggregator_failed(cls, aggregator_failed_msg: dict) -> None:
         logger.debug(aggregator_failed_msg)
