@@ -5,6 +5,6 @@
 
 📚 Check out the [FLOps **Wiki**](https://www.oakestra.io/docs/concepts/flops/overview/#flops-addon) to get started.
 
-## 📕 Requirements 
+## Requirements 
 - Linux (preferably Debian/Ubuntu)
 - Python Version **3.10+**
