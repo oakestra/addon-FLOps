@@ -9,10 +9,10 @@ from datasets import load_dataset
 from flops_utils.logging import logger
 from icecream import ic
 
-model_server_url = sys.argv[1]
+model_server_service_ip = sys.argv[1]
 
-if not model_server_url:
-    logger.fatal(f"Please provide a proper 'Model Server URL' (e.g. http://<ip>:8080)'")
+if not model_server_service_ip:
+    logger.fatal("Please provide a proper 'Model Server Service IP' e.g. ~ 10.30.X.Y '")
     sys.exit(1)
 
 
@@ -35,7 +35,7 @@ while True:
     logger.info("Sending inference request to the trained model container")
     headers = {"Content-Type": "text/csv"}
     response = requests.post(
-        f"{model_server_url}/invocations",
+        f"http://{model_server_service_ip}:8080/invocations",
         headers=headers,
         data=csv_data,
     )

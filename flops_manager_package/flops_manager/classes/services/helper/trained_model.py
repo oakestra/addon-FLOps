@@ -45,6 +45,7 @@ class TrainedModel(FLOpsService):
                 compute=SlaCompute(code=self.image_name),
             ),
             details=SlaDetails(
+                rr_ip=self.ip,  # type: ignore
                 # TODO: Need adjusting
                 resources=SlaResources(memory=200, vcpus=1, storage=0),
                 # TODO: Revert back to just TRAINED_MODEL_PORT once the port bug is fixed.

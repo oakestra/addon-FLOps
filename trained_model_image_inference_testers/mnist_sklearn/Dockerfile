@@ -13,4 +13,3 @@ RUN poetry install
 RUN poetry add git+https://github.com/oakestra/addon-FLOps.git@main#subdirectory=utils_library
 
 ENTRYPOINT ["poetry", "run", "python", "main.py"]
-CMD ["http://localhost:8080"]
