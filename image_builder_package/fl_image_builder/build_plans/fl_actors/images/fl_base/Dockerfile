@@ -1,14 +1,7 @@
 # NOTE:
 # Docker pull max gets reached very quickly when using the dockerhub image.
 # Pushing a retagged miniconda image to a github repo ommits this problem.
-# 
-# The latest miniconda3 images seem to be buggy and lead to errors.
-# https://github.com/conda/conda/issues/13560
-# Thus we use an older image version where this bug does not occur.
-# TODO: Update this image to the latest version once this bug is fixed by conda.
-# Buggy images: 24.4.0-0, 24.3.0-0, 24.1.2-0 (maybe more)
-#FROM ghcr.io/oakestra/addon-flops/aux-miniconda3:23.10.0-1
-FROM docker.io/continuumio/miniconda3:24.11.1-0
+FROM ghcr.io/oakestra/addon-flops/aux-miniconda3:24.11.1-0
 LABEL org.opencontainers.image.source=https://github.com/oakestra/addon-flops
 
 RUN apt-get update && apt-get install -y \
