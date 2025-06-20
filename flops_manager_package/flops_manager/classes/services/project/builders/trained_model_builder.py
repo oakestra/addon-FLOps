@@ -12,7 +12,7 @@ from flops_manager.utils.types import PostTrainingSteps
 
 
 class TrainedModelImageBuilder(FLOpsBaseImageBuilder):
-    # TODO(malyuka): Change port back to 7027 once the networking/port bug has been fixed.
+    # TODO: Change port back to 7027 once the networking/port bug has been fixed.
     tracking_server_uri: str = Field(examples=["http://10.30.X.Y:5000"])
     run_id: str = Field(description="The MLflow run-id of the trained model")
 

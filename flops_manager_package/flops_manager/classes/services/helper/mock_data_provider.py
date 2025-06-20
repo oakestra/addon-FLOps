@@ -63,7 +63,7 @@ class MockDataProvider(FLOpsService):
                 self.mock_data_configuration.dataset_name,
                 str(self.mock_data_configuration.number_of_partitions),
                 self.mock_data_configuration.data_tag,
-                # TODO(malyuka): add ip (instance IP) option to specify where exactly
+                # TODO: add ip (instance IP) option to specify where exactly
                 # to send mock data to
             )
         )

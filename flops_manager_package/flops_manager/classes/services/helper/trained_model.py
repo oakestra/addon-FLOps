@@ -47,9 +47,9 @@ class TrainedModel(FLOpsService):
             ),
             details=SlaDetails(
                 rr_ip=self.ip,  # type: ignore
-                # TODO(malyuka): Need adjusting
+                # TODO: Need adjusting
                 resources=SlaResources(memory=200, vcpus=1, storage=0),
-                # TODO(malyuka): Revert back to just TRAINED_MODEL_PORT once the port bug is fixed.
+                # TODO: Revert back to just TRAINED_MODEL_PORT once the port bug is fixed.
                 port=f"8088:{TRAINED_MODEL_PORT}",
             ),
         )
