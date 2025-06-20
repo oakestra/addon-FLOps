@@ -83,7 +83,7 @@ class FLOpsBaseImageBuilder(FLOpsProjectService, abc.ABC):
             ),
             details=SlaDetails(
                 resources=SlaResources(
-                    # TODO(malyuka): fine-tune -> Currently the Trained-Model Image Builder
+                    # TODO: fine-tune -> Currently the Trained-Model Image Builder
                     # has a flaky deployment behavior "NoActiveClustersWithCapacity" is shown
                     # but when undeploy and redeploy manually it works.
                     memory=0,  # 2000,

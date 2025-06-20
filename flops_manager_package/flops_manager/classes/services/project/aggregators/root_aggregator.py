@@ -84,7 +84,7 @@ class RootFLAggregator(ClassicFLAggregator):
             ),
         )
 
-    # TODO(malyuka): /FUTURE WORK: Refactor the two methods a bit to reduce code duplication.
+    # TODO: /FUTURE WORK: Refactor the two methods a bit to reduce code duplication.
     @classmethod
     def handle_aggregator_failed(cls, aggregator_failed_msg: dict) -> None:
         logger.debug(aggregator_failed_msg)

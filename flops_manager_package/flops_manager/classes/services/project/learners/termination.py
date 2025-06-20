@@ -13,8 +13,8 @@ def handle_learner_failed(learner_failed_msg: dict) -> None:
     logger.debug(learner_failed_msg)
     flops_project_id = learner_failed_msg["flops_project_id"]
     # NOTE: The learners will be undeployed as part of the aggregation failure handling.
-    # TODO(malyuka): Decouple this.
+    # TODO: Decouple this.
 
-    # TODO(malyuka): By improving this code a couple of redundant DB calls can be omitted.
+    # TODO: By improving this code a couple of redundant DB calls can be omitted.
     aggregator_class = get_matching_aggregator_class_based_on_project_id(flops_project_id)
     aggregator_class.handle_aggregator_failed(learner_failed_msg)  # type: ignore

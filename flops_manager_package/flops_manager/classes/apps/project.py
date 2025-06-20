@@ -14,7 +14,7 @@ from flops_manager.utils.exceptions.types import FlOpsExceptionTypes
 from flops_manager.utils.sla.components import SlaComponentsWrapper, SlaCore, SlaDetails, SlaNames
 from flops_manager.utils.types import Application, PostTrainingSteps
 
-# TODO(malyuka): /Future Work: Add additional Pydantic checking:
+# TODO: /Future Work: Add additional Pydantic checking:
 # e.g.: training_rounds > 1
 #       min_..._clients > 1, etc.
 
@@ -60,7 +60,7 @@ class _TrainingConfiguration(BaseModel):
 
 
 class _ResourceConstraints(BaseModel):
-    # TODO(malyuka): Fine-tune these values. + incorporate them in the final Project component SLAs.
+    # TODO: Fine-tune these values. + incorporate them in the final Project component SLAs.
     memory: int = 100
     vcpus: int = 1
     storage: int = 0
