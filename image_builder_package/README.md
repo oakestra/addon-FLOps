@@ -27,9 +27,11 @@ docker build -t ghcr.io/oakestra/addon-flops/image-builder:latest .
 ### Running the builder image (for testing if the image works)
 
 ```
+#run the observer
 docker run -d -p 2727:2727 ghcr.io/oakestra/addon-flops/project-observer:latest poetry run python main.py 123456 131.159.24.51 9027
-docker run --privileged ghcr.io/oakestra/addon-flops/image-builder:latest python3 main.py https://github.com/Malyuk-A/mlflower-test-a https://192.168.178.44:5073 123456 192.168.178.44 9027 10.30.27.3
-docker run --privileged ghcr.io/oakestra/addon-flops/image-builder:latest python3 main.py 131.159.24.51 123456 131.159.24.51 131.159.24.51 fl_actors https://github.com/Malyuk-A/mlflower-test-a keras
+
+#run the build 
+docker run --privileged ghcr.io/oakestra/addon-flops/image-builder:latest python3 main.py <ROOT_IP> 123456 <ROOT_IP> <ROOT_IP> fl_actors https://github.com/Malyuk-A/mlflower-test-a keras
 ```
 NOTE:
 - The builder image will be used in the containerd environment of Oakestra so it is not the same as running it in a local privileged docker environment. 
