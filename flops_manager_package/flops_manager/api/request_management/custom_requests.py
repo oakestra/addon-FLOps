@@ -46,7 +46,7 @@ class CustomRequest:
         self.url = self.core.base_url
         if self.core.api_endpoint is not None:
             self.url = f"{self.core.base_url}{self.core.api_endpoint}"
-        if self.core.query_params is not None:
+        if self.core.query_params:
             self.url += f"?{self.core.query_params}"
 
         if self.core.custom_headers:

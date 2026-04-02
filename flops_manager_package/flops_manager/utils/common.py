@@ -16,8 +16,9 @@ def generate_ip(unique_id: str, object: BaseModel) -> str:
 
     type_based_hash_offset = hash(type(object))
     magic_number = (unique_int + type_based_hash_offset) % (10**6)
+    magic_str = str(magic_number).zfill(7)
 
-    third_octet = int(str(magic_number)[0:3]) % 256
-    forth_octet = int(str(magic_number)[4:7]) % 256
+    third_octet = int(magic_str[0:3]) % 256
+    forth_octet = int(magic_str[4:7]) % 256
 
     return f"10.30.{third_octet}.{forth_octet}"

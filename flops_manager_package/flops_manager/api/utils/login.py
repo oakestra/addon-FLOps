@@ -36,7 +36,7 @@ def get_login_token() -> str:
     if (
         _login_token == ""
         or _last_login_time is None
-        or (datetime.now() - _last_login_time).total_seconds() > 10
+        or (datetime.now() - _last_login_time).total_seconds() > 540
     ):
         return _login_and_set_token()
 
