@@ -1,4 +1,5 @@
 import json
+import time
 from dataclasses import dataclass, field
 from http import HTTPStatus
 from typing import Any, NamedTuple, Optional
@@ -9,6 +10,10 @@ from flops_manager.api.utils.login import get_login_token
 from flops_manager.utils.exceptions.main import FLOpsManagerException
 from flops_manager.utils.exceptions.types import FlOpsExceptionTypes
 from flops_utils.logging import colorful_logger as logger
+
+_MAX_RETRIES = 3
+_RETRY_DELAY_SECONDS = 2
+_REQUEST_TIMEOUT_SECONDS = 30
 
 
 class RequestCore(NamedTuple):
@@ -62,6 +67,7 @@ class CustomRequest:
         self.args = {
             "url": self.url,
             "verify": False,
+            "timeout": _REQUEST_TIMEOUT_SECONDS,
             **({"headers": self.headers} if self.headers else {}),
             **({"json": self.core.data} if self.core.data else {}),
         }
@@ -77,22 +83,32 @@ class CustomRequest:
         )
 
     def execute(self) -> Any:
-        error_msg = ""
-        try:
-            self.response = self.core.http_method.call(**self.args)
-            self.response.status = HTTPStatus(self.response.status_code)
-            if self.response.status == HTTPStatus.OK:
-                if self.aux.show_msg_on_success:
-                    logger.info(f"Success: '{self.aux.what_should_happen}'")
-                response = self.response.json()
-                if isinstance(response, str):
-                    response = json.loads(response)
-                return response
+        last_exception_msg = ""
+        for attempt in range(_MAX_RETRIES):
+            try:
+                self.response = self.core.http_method.call(**self.args)
+                self.response.status = HTTPStatus(self.response.status_code)
+                if self.response.status == HTTPStatus.OK:
+                    if self.aux.show_msg_on_success:
+                        logger.info(f"Success: '{self.aux.what_should_happen}'")
+                    response = self.response.json()
+                    if isinstance(response, str):
+                        response = json.loads(response)
+                    return response
+                break  # Non-OK HTTP response — don't retry.
+            except requests.exceptions.ConnectionError as e:
+                last_exception_msg = f"exception: {e}: "
+                if attempt < _MAX_RETRIES - 1:
+                    logger.warning(
+                        f"'{self.aux.what_should_happen}' connection attempt"
+                        f" {attempt + 1}/{_MAX_RETRIES} failed, retrying in {_RETRY_DELAY_SECONDS}s"
+                    )
+                    time.sleep(_RETRY_DELAY_SECONDS)
+            except requests.exceptions.RequestException as e:
+                last_exception_msg = f"exception: {e}: "
+                break
 
-        except requests.exceptions.RequestException as e:
-            error_msg = f"exception: {e}: "
-
-        error_msg += self._create_failure_msg()
+        error_msg = last_exception_msg + self._create_failure_msg()
 
         raise FLOpsManagerException(
             flops_exception_type=self.aux.flops_exception_type,
